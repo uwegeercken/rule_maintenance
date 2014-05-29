@@ -1,0 +1,87 @@
+import com.datamelt.db.DbFile;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+if(cancelled!=null && cancelled.equals("save file"))
+{
+	code=request.getParameter("code");
+	filename=request.getParameter("name");
+	filetype=request.getParameter("filetype");
+	File f;
+	if(!filename.endsWith(".vm") && !filename.endsWith(".bsh"))
+	{
+		if(filetype.equals("template"))
+		{
+			fullfilename = filename + ".vm";
+		}
+		else
+		{
+			fullfilename = filename + ".bsh";
+		}
+	}
+	else
+	{
+		fullfilename = filename;
+	}
+	if(filetype.equals("template"))
+	{
+		f= new File(templatespath + "/" + fullfilename);
+	}
+	else
+	{
+		f= new File(scriptspath + "/" + fullfilename);
+	}
+	if(filelocation.equals("database"))
+	{
+		DbFile file = new DbFile();
+		file.setConnection(connection);
+		file.setFileName(fullfilename);
+		file.setCode(code);
+		fileid = request.getParameter("fileid");
+		if(fileid!=null)
+		{
+			file.setId(Integer.parseInt(fileid));
+			file.update();
+		}
+		else
+		{
+			file.insert();
+		}
+		
+	}
+	else
+	{
+		FileOutputStream out = new FileOutputStream(f); 
+		PrintStream p = new PrintStream(out);
+		p.println (code);
+		p.close();
+		out.close();
+	}
+}
+
+if(filelocation.equals("database"))
+{
+	ArrayList list = DbCollections.getAllDatabaseFiles(connection, "bsh");
+	context.put("filelist",list);
+
+	ArrayList templateslist = DbCollections.getAllDatabaseFiles(connection, "vm");
+	context.put("templateslist",templateslist);
+}
+else
+{
+	f = new File(scriptspath);
+	File[] files = f.listFiles();
+	Arrays.sort(files);
+	context.put("filelist",files);
+	context.put("filepath",scriptspath);
+
+	f2 = new File(templatespath);
+	File[] files2 = f2.listFiles();
+	Arrays.sort(files2);
+	context.put("templateslist",files2);
+	context.put("templatespath",templatespath);
+}
+
+templatename="filelist.vm";

@@ -1,0 +1,47 @@
+import com.datamelt.db.User;
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.RssChannel;
+import com.datamelt.util.Message;
+import java.text.SimpleDateFormat;
+import java.sql.PreparedStatement;
+
+userid = request.getParameter("userid");
+password = request.getParameter("password");
+
+user = new User();
+user.setUserid(userid);
+user.setConnection(connection);
+user.loadByUserid();
+
+if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals(""))
+{
+	infomessage.type="error";
+	infomessage.text="Login invalid";
+	
+	templatename="login.vm";
+}
+else
+{
+   	if(user.isPasswordOk(password))
+   	{
+	   	
+	   	request.getSession().setAttribute("authenticated","true");
+	    request.getSession().setAttribute("user",user);
+		context.put("user",user);
+		
+		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		PreparedStatement ps = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
+		user.updateLastLogin(ps,dateTime.format(new Date()));
+		
+		templatename="welcome.vm";
+	}
+	else
+	{
+		infomessage.type="error";
+		infomessage.text="password invalid";
+		
+		templatename="login.vm";
+	
+	}
+
+}

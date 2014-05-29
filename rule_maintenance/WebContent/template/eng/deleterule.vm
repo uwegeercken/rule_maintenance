@@ -1,0 +1,19 @@
+#set($pagetitle='Delete Rule')
+<p class="heading">Delete Rule</p>
+<form method="POST" action="process?action=bsh&scriptname=deleterule&ruleid=${rule.id}&rulegroupid=${rulegroup.id}"> 
+<div class="unit" tag="$!rulesubgroup.name">
+	<div class="grouptop">
+		<p class="small">rule</p>
+		<p class="big">${rule.name}</p>
+		<p class="normal">${rule.description}</p>
+		<p class="normal">$!{rule.ruleLogic}</p>
+	</div>
+</div>
+<div class="bottomtext">
+	<p>Are you sure you want to delete this rule?</p>
+	<p><input type="submit" value="delete rule" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+</div>
+</form>
+<br>
+<br>
+<br>

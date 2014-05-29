@@ -1,0 +1,41 @@
+#set($pagetitle='Generate Project Rule File')
+<p class="heading">Generate Project Rule File</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>Generate zip file.</p>
+	<p>Generate a zip file containing all rules and actions of a selected project. Only rule groups that are valid on the selected Validity Date below will be included.</p>
+	<p>You will be promted to save the zip file in the location of your choice.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=sendfile"> 
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Project:</td>
+		<td>
+			<select name="id" size="1">
+			<option value="0"></option>
+			#foreach($project in $projects)
+					<option value="$project.id">${project.name}, ${project.description}</option>
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Validity Date:</td>
+		<td>
+			<input name="selecteddate" type="text" size="40" maxlength="10" value="$!{today}"> (format: YYYY-MM-DD)
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="generate" name="submit">
+		</td>
+	</tr>
+	
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p align="center"><b>#insert_message($infomessage)</b></p>
+#end
+

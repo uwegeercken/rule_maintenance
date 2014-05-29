@@ -1,0 +1,15 @@
+#set($pagetitle='List of Checks')
+<p class="heading">List of Checks</p>
+<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
+#foreach($check in $checks)
+	<div class="unit" tag="$!{check.name}">
+		<div class="grouptop">
+			<p class="small">check</p>
+			<p class="big">$!{check.name}</a></p>
+			<p class="normal">$!check.description</p>
+		</div>
+		<div>
+			<p class="small">check single field: #if($!check.checkSingleField==0)false#else true#end</p>
+		</div>
+	</div>
+#end

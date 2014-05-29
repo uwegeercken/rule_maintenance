@@ -1,0 +1,239 @@
+import com.datamelt.db.Rule;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	
+	RuleSubgroup ruleSubgroup = new RuleSubgroup();
+	ruleSubgroup.connection = connection;
+	ruleSubgroup.id = Long.parseLong(request.getParameter("rulesubgroupid"));
+	ruleSubgroup.load();
+	context.put("rulesubgroup",ruleSubgroup);
+	
+	RuleGroup rulegroup = new RuleGroup();
+    rulegroup.setConnection(connection);
+    rulegroup.setId(Long.parseLong(request.getParameter("rulegroupid")));
+    rulegroup.load();
+	context.put("rulegroup",rulegroup);
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = Long.parseLong(request.getParameter("projectid"));;
+	project.load();
+	context.put("project",project);
+	
+	if(cancelled.equals("save"))
+	{
+		id=Long.parseLong(request.getParameter("id"));
+		rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
+	
+		Rule ruleNew = new Rule();
+		ruleNew.connection = connection;
+		ruleNew.rulesubgroupId = rulesubgroupid;
+		ruleNew.name=request.getParameter("name");
+		ruleNew.description=request.getParameter("description");
+		ruleNew.check.id = Long.parseLong(request.getParameter("check_id"));
+		ruleNew.check.connection = connection;
+		ruleNew.check.load();
+		if(request.getParameter("object1_parameter")!=null && !request.getParameter("object1_parameter").trim().equals(""))
+		{
+			ruleNew.object1Classname = "RowFieldCollection";
+			ruleNew.object1Methodname = "getFieldValue";
+			ruleNew.object1Parameter = request.getParameter("object1_parameter");
+			ruleNew.object1Parametertype.id = 1;
+			ruleNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id")); 
+		}
+		else
+		{
+			ruleNew.object1Classname = null;
+			ruleNew.object1Methodname = null;
+			ruleNew.object1Parameter = null;
+			ruleNew.object1Parametertype.id = 0;
+			ruleNew.object1Type.id = 0;
+		}
+		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
+		{
+			ruleNew.object2Classname = "RowFieldCollection";
+			ruleNew.object2Methodname = "getFieldValue";
+			ruleNew.object2Parameter = request.getParameter("object2_parameter");
+			ruleNew.object2Parametertype.id = 1;
+			ruleNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
+		}
+		else
+		{
+			ruleNew.object2Classname = null;
+			ruleNew.object2Methodname = null;
+			ruleNew.object2Parameter = null;
+			ruleNew.object2Parametertype.id = 0;
+			ruleNew.object2Type.id = 0;
+		}
+		
+		ruleNew.expectedValue = request.getParameter("expectedvalue");
+		ruleNew.expectedValueType.id = Long.parseLong(request.getParameter("expectedvalue_type_id"));
+		ruleNew.messagePassed = request.getParameter("messagepassed");
+		ruleNew.messageFailed = request.getParameter("messagefailed");
+	
+		Rule rule = new Rule();
+		rule.setConnection(connection);
+		if(id>0)
+		{
+			ruleNew.setId(id);
+			rule.setId(id);
+			rule.load();
+			if(ruleNew.name.length()==0 )
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(!ruleNew.name.equals(rule.name) && ruleNew.exist(ruleNew.name) && ruleNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Rule already exists.";
+			}
+			else if(ruleNew.object1Parameter==null || ruleNew.object1Type.id==0 || ruleNew.object1Parameter.length()==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 1 and Type must be specified";
+			}
+			else if(ruleNew.check.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Check must be specified";
+			}
+			else if(ruleNew.check.checkSingleField==1 && (ruleNew.object2Parameter!=null || ruleNew.object2Parametertype.id>0))
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2, Type not allowed for the selected Check";
+			}
+			else if(ruleNew.check.checkSingleField==1 && ruleNew.expectedValue.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Expected Value not allowed for the selected Check";
+			}
+			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter!=null && ruleNew.expectedValue.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2, Type and Expected Value can not be specified both";
+			}
+			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter==null && ruleNew.expectedValue.length()==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2, Type or Expected Value must be specified";
+			}
+			else if(ruleNew.object2Parameter!=null && ruleNew.object2Parameter.length()>0 && ruleNew.object2Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Field 2 is specified";
+			}
+			else if(ruleNew.expectedValue!=null && ruleNew.expectedValue.length()>0 && ruleNew.expectedValueType.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Expected Value is specified";
+			}
+			else if(ruleNew.messagePassed.trim().equals("") || ruleNew.messageFailed.trim().equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Message Passed and Message failed must be specified";
+			}
+			else
+			{
+				ruleNew.user.id = user.id;
+				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL));
+				infomessage.text="Rule updated.";
+			}
+		}
+		else
+		{
+			if(ruleNew.name.length()==0 )
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(ruleNew.exist(ruleNew.name) && ruleNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Rule already exists.";
+			}
+			else if(ruleNew.object1Parameter==null || ruleNew.object1Type.id==0 || ruleNew.object1Parameter.length()==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 1 and Type must be specified";
+			}
+			else if(ruleNew.check.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Check must be specified";
+			}
+			else if(ruleNew.check.checkSingleField==1 && (ruleNew.object2Parameter!=null || ruleNew.object2Parametertype.id>0))
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2 and Type not allowed for the selected Check";
+			}
+			else if(ruleNew.check.checkSingleField==1 && ruleNew.expectedValue.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Expected Value not allowed for the selected Check";
+			}
+			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter!=null && ruleNew.expectedValue.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2, Type and Expected Value can not be specified both";
+			}
+			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter==null && ruleNew.expectedValue.length()==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field 2, Type or Expected Value must be specified";
+			}
+			else if(ruleNew.object2Parameter!=null && ruleNew.object2Parameter.length()>0  && ruleNew.object2Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Field 2 is specified";
+			}
+			else if(ruleNew.expectedValue!=null && ruleNew.expectedValue.length()>0 && ruleNew.expectedValueType.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Expected Value is specified";
+			}
+			else if(ruleNew.messagePassed.trim().equals("") || ruleNew.messageFailed.trim().equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Message Passed and Message failed must be specified";
+			}
+			else
+			{
+				ruleNew.user.id = user.id;
+				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL));
+				infomessage.text="Rule added.";
+			}
+		}
+		
+		ruleNew.load();
+		context.put("rule",ruleNew);
+		templatename="editrule.vm";
+		
+		ArrayList checks = DbCollections.getAllChecks(connection);
+		context.put("checks",checks);
+	
+		ArrayList types = DbCollections.getAllTypes(connection);
+		context.put("types",types);
+
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroup.id);
+		context.put("rulesubgroups",list);
+		
+		ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroup.id);
+		context.put("rulegroupactions",actions);
+
+		templatename="listrulesubgroups.vm";
+	}
+	
+
+}

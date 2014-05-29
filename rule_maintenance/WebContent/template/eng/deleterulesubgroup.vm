@@ -1,0 +1,21 @@
+#set($pagetitle='Delete Rule Subgroup')
+<p class="heading">Delete Rule Subgroup</p>
+<form method="POST" action="process?action=bsh&scriptname=deleterulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">subgroup</p>
+		<p class="big">$!{rulesubgroup.name}</p>
+		<p class="normal">$!{rulesubgroup.description}</p>
+	</div>
+	<div>
+		<p class="small">rules connected by: $!{rulesubgroup.ruleOperator}</p>
+	</div>
+</div>
+<div class="bottomtext">
+<p>Are you sure you want to delete this subgroup, including all rules and actions?</p>
+<p><input type="submit" value="delete rule subgroup" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+</div>
+</form>
+<br>
+<br>
+<br>

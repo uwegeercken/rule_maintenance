@@ -1,0 +1,99 @@
+import com.datamelt.db.RuleGroup;
+import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.Rule;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	copyFromId=Long.parseLong(request.getParameter("copy_id"));
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = Long.parseLong(request.getParameter("projectid"));
+	project.load();
+	context.put("project", project);
+	
+	if(cancelled.equals("copy"))
+	{
+		
+
+		RuleGroup rulegroupNew = new RuleGroup();	
+		rulegroupNew.connection = connection;
+		rulegroupNew.name=request.getParameter("name");
+		rulegroupNew.description=request.getParameter("description");
+		rulegroupNew.validFrom=request.getParameter("valid_from");
+		rulegroupNew.validUntil=request.getParameter("valid_until");
+		rulegroupNew.projectId = Long.parseLong(request.getParameter("projectid"));
+	
+		RuleGroup rulegroup = new RuleGroup();
+		rulegroup.setConnection(connection);
+		
+		if(!rulegroupNew.exist(rulegroupNew.name) && rulegroupNew.name.length()>0)
+		{
+			rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL));
+			
+			RuleGroup rulegroupCopy = new RuleGroup();
+			rulegroupCopy.connection = connection;
+			rulegroupCopy.id = copyFromId;
+			rulegroupCopy.load();
+			rulegroupCopy.loadRuleSubgroups();
+			rulegroupCopy.loadRuleGroupActions();
+			for(int i=0;i<rulegroupCopy.ruleSubgroups.size();i++)
+			{
+				RuleSubgroup subgroup = rulegroupCopy.ruleSubgroups.get(i);
+				subgroup.rulegroupId = rulegroupNew.id;
+				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				
+				for(int f=0;f<subgroup.rules.size();f++)
+				{
+					Rule rule = subgroup.rules.get(f);
+					rule.rulesubgroupId = subgroup.id;
+					rule.insert(connection.getPreparedStatement(Rule.INSERT_SQL));
+				}
+			}
+			
+			for(int f=0;f<rulegroupCopy.ruleSubgroups.size();f++)
+			{
+				RuleGroupAction action = rulegroupCopy.actions.get(f);
+				action.rulegroupId = rulegroupNew.id;
+				action.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL));
+			}
+			
+			infomessage.text="Rule Group added. Subgroups, rules and actions copied.";
+		}
+		else if(rulegroupNew.exist(rulegroupNew.name) && rulegroupNew.name.length()>0)
+		{
+			infomessage.type="error";
+			infomessage.text="RuleGroup already exists.";
+		}
+		else
+		{
+			infomessage.type="error";
+			infomessage.text="Name must be specified.";
+		}
+	
+		context.put("rulegroup",rulegroupNew);
+		
+		ArrayList list = DbCollections.getAllRuleGroups(connection,Long.parseLong(request.getParameter("projectid")));
+		context.put("rulegroups",list);
+		
+		templatename="copyrulegroup.vm";
+		
+
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllRuleGroups(connection,project.Id);
+		context.put("rulegroups",list);
+		
+		templatename="listrulegroups.vm";
+	}
+	
+
+}

@@ -1,0 +1,31 @@
+#set($pagetitle='Login Page')
+<p class="heading">Login Page</p>
+<p>To be able to modify the content of the Rule Maintenance database, you need to login to authenticate yourself against the system.</p>
+<p>Enter your userid and password to login below.</p>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=authenticate"> 
+<table align="center" border="0" bgcolor="#5C6F90" cellpadding="2" cellspacing="4">
+	<tr> 
+		<td>Userid:</td>
+		<td><input type="text" id="userid" name="userid" size="20" maxlength="20" value="$!{userid}"></td>
+	</tr>
+	<tr>
+		<td>Password:</td> 
+		<td><input type="password" name="password" size="20" maxlength="40"></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input type="submit" value="Login" name="submit"></td>
+	</tr>
+</table>
+</form>
+</div>
+#insert_focus_scriptcode("userid")
+
+#if (${infomessage})
+	<p align="center"><b>#insert_message($infomessage)</b></p>
+#end
+
+<br>
+<br>
+<br>
+

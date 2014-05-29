@@ -1,0 +1,78 @@
+#set($pagetitle='Rules List')
+<p class="heading">Rules List - Project: ${project.name} - Rule Group: ${rulegroup.name}</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Rule Groups List"></a>&nbsp;<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=0&rulegroupid=${rulegroup.id}&mode=change"><img height="24" width="24" src="img/plus_blue.png" title="add subgroup"></a>&nbsp;<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=0&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img height="24" width="24" src="img/plus_green.png" title="add action"></a></p>
+<div id="help">
+	<p>List of available subgroups, rules and actions for the selected rule group.</p>
+	<p>Subgroups are connected to the previous subgroup by [and] or [or]. Rules in a subgroup are connected by [and] or [or].</p>
+	<p>Actions apply to the rule group.</p>
+	<p><img height="24" width="24" src="img/plus_blue.png">&nbsp;add subgroup&nbsp;<img height="24" width="24" src="img/plus_green.png">&nbsp;add action &nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add rule&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy/rule/action</p>
+</div>
+	#set($counter=0)
+	#foreach($rulesubgroup in $rulesubgroups)
+	#if($counter>0)
+			<div class="connector">
+				<p><b>$!rulesubgroup.intergroupOperator</b></p>
+			</div>
+		#end
+		<div class="unitclear" tag="$!rulesubgroup.name">
+			<a href="process?action=bsh&ro=1&scriptname=selectdeleterulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete subgroup"></a>
+			<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit subgroup"></a>
+			<a href="process?action=bsh&ro=1&scriptname=selecteditrule&mode=add&id=0&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="add" height="24px" width="24px" src="img/plus_red.png" title="add rule"></a>
+			#if($counter %2==0)
+				<div class="grouptop">
+			#else
+				<div class="grouptop2">
+			#end
+			<p class="small">subgroup</p>
+			<p class="big">$!{rulesubgroup.name}</p>
+			<p class="normal">$!{rulesubgroup.description}</p>
+			</div>
+			<div>
+				<p class="small">rules connector: $!{rulesubgroup.ruleOperator}</p>
+			</div>
+		</div>
+		
+		#foreach($rule in $rulesubgroup.rules)
+			<div class="unit" tag="$!rulesubgroup.name">
+				<a href="process?action=bsh&ro=1&scriptname=selectdeleterule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete rule"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit rule"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=add&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy rule"></a>
+				#if($counter %2==0)
+					<div class="grouptop">
+				#else
+					<div class="grouptop2">
+				#end
+					<p class="small">rule</p>
+					<p class="big">${rule.name}</p>
+					<p class="normal">${rule.description}</p>
+					<p class="normal">$!{rule.ruleLogic}</p>
+				</div>
+			</div>
+		#end
+		
+		#set($counter=$counter+1)
+	#end
+	<div class="horizontaldevider">
+		<hr>
+	</div>
+	#set($counter2=0)
+		#foreach($action in $rulegroupactions)
+			#if($counter2==0)
+				<div class="unitclear" tag="$!rulesubgroup.name">
+			#else
+			<div class="unit" tag="$!rulesubgroup.name">
+			#end
+				<a href="process?action=bsh&ro=1&scriptname=selectdeleteaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete action"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit action"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy action"></a>
+				<div class="grouptopaction">
+					<p class="big">$action.name</p>
+					<p class="normal">$action.description</p>
+					<p class="normal">$action.actionLogic</p>
+				</div>
+				<div>
+					<p>execute action when: $action.executeIf</p>
+				</div>
+			</div>
+			#set($counter2=$counter2+1)
+		#end

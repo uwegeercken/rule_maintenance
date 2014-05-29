@@ -1,0 +1,21 @@
+#set($pagetitle='Delete Rule Group')
+<p class="heading">Delete Rule Group</p>
+<form method="POST" action="process?action=bsh&scriptname=deleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">rulegroup</p>
+		<p class="big">$!{rulegroup.name}</p>
+		<p class="normal">$!{rulegroup.description}</p>
+	</div>
+	<div>
+		<p class="small">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
+	</div>
+</div>
+<div class="bottomtext">
+<p>Are you sure you want to delete this group, including subgroups, rules and actions?</p>
+<p><input type="submit" value="delete rule group" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+</div>
+</form>
+<br>
+<br>
+<br>

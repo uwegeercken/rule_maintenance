@@ -1,0 +1,37 @@
+import java.sql.PreparedStatement;
+
+writeaction="true";
+cancelled= request.getParameter("submit");
+
+ruleid=Long.parseLong(request.getParameter("ruleid"));
+rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+
+if(cancelled.equals("delete rule"))
+{
+	Rule rule = new Rule();
+	rule.connection = connection;
+	rule.id= ruleid;
+
+	PreparedStatement ps = connection.getPreparedStatement(Rule.DELETE_SQL);
+	rule.delete(ps);
+}
+
+ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
+context.put("rulesubgroups",list);
+
+ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupId);
+context.put("rulegroupactions",actions);
+	
+RuleGroup rulegroup = new RuleGroup();
+rulegroup.setConnection(connection);
+rulegroup.setId(rulegroupid);
+rulegroup.load();
+context.put("rulegroup",rulegroup);
+		
+Project project = new Project();
+project.setConnection(connection);
+project.setId(rulegroup.projectId);
+project.load();
+context.put("project",project);
+
+templatename="listrulesubgroups.vm";

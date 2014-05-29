@@ -1,0 +1,26 @@
+#set($pagetitle='Edit menu')
+
+<p class="heading">Edit menu</p>
+<p>This page allows you to edit the menu.</p>
+<br>
+<form method="POST" action="process?action=bsh&scriptname=editmenu&name=${filename}"> 
+<table width="95%" border="0">
+	<tr> 
+		<td>Filename: $!{filename}</td>
+	</tr>
+	<tr> 
+		<td>Code:<br /><textarea name="code" cols="120" rows="20">$!{filecode}</textarea></td>
+	</tr>
+	<tr>
+		<td align="center">
+			<input type="submit" value="save file" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+

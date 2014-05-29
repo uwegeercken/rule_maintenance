@@ -1,0 +1,29 @@
+#set($pagetitle='Mail Message Files List')
+<p class="heading">Mail Message Files List</p>
+<p>Below is a list of all available mail message files from the database. Click on &quot;edit&quot; on the right hand side of the row to modify the mail message file details.</p>
+<br />
+<table width="94%" border="0" align="center">
+	<tr class="light">
+		<td width="90%">Filename</td>
+		<td width="10%">&nbsp;</td>
+	
+	</tr>
+	#set($counter=0)
+	#foreach($mailmessagefile in $mailmessagefiles)
+	#if($counter==1)
+		#set($counter=0)
+		<tr class="light2">
+	#else
+		#set($counter=$counter+1)
+		<tr>
+	#end
+		<td>$!mailmessagefile.filename</td>
+		<td></td>
+	</tr>
+	
+	#end
+</table>
+<br>
+
+<br>
+<br>

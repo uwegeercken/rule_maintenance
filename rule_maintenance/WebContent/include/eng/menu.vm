@@ -1,0 +1,31 @@
+#set($user=${req.getAttribute("user")})	
+<div id='cssmenu'>
+	<ul>
+		<li><a href="process?action=bsh&scriptname=welcome">start page</a></li>
+		#if(!$user)
+			<li><a href="process?action=bsh&scriptname=login">login</a></li>
+		#else
+			<li><a href="process?action=bsh&scriptname=selectupdatepassword">password</a></li>
+			<li><a href="process?action=bsh&scriptname=logout">logout</a></li>
+		#end
+	</ul>
+#if($user)
+	<ul>	
+		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">list projects</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">generate file</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selecttestproject">test project</a></li>
+	</ul>
+	#end
+#if($user.isInGroup("Admin"))
+	<ul>
+		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
+		<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
+	</ul>
+#end
+	<ul>
+		<li><a href="process?action=bsh&scriptname=about">about</a></li>
+	</ul>
+
+</div>
+

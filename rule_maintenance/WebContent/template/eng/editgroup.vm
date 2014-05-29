@@ -1,0 +1,39 @@
+#set($pagetitle='Rule Group Maintenance')
+<p class="heading">Rule Group maintenance $!{group.name}</p>
+<p>This page allows you to edit the currently selected rule group.</p>
+<p>Back to: <a href="process?action=bsh&ro=1&scriptname=listgroups">list of rule groups</a></p>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editgroup"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editgroup&id=${group.id}"> 
+#end
+<input type="hidden" name="id" value="${group.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{group.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{group.description}">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+

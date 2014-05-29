@@ -1,0 +1,125 @@
+#set($pagetitle='Rule Maintenance')
+<p class="heading">Rule maintenance - Project ${project.name} - Rule Group: ${rulegroup.name} - Rule Subgroup: ${rulesubgroup.name}</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+<div id="help">
+	<p>Add or update the selected rule.</p>
+	<p>Enter a name and description for the rule and specify field 1 and its type. The rule engine will retrieve the data from this field.</p>
+	<p>Specify which type of check should be applied by the rule engine.</p>
+	<p>Specify either field 2 and its type or the expected value and its type. The rule engine will compare the data to what was retrieved from field1.</p>
+	<p>Define the messages to be used in case the rule passes or fails. You can use the variable $1 which contains the data from field1 and $0 which contains the compare value.</p> 
+</div>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editrule&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editrule&id=${rule.id}&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"> 
+#end
+<input type="hidden" name="id" value="${rule.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{rule.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{rule.description}">
+		</td>
+	</tr>
+	<tr>
+		<td>Field 1:</td>
+		<td>
+			<input name="object1_parameter" type="text" size="40" maxlength="255" value="$!{rule.object1Parameter}">
+			Type: <select name="object1_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${rule.object1Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>Check:</td>
+		<td>		
+			<select name="check_id" size="1">
+			<option value="0"></option>
+			#foreach($check in $checks)
+				#if(${rule.check.id}==${check.id})
+					<option selected value="$check.id">${check.name}</option>
+				#else
+					<option value="$check.id">${check.name}</option>
+				#end
+			#end
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td>Field 2:</td>
+		<td>
+			<input name="object2_parameter" type="text" size="40" maxlength="255" value="$!{rule.object2Parameter}">
+			Type: <select name="object2_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${rule.object2Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>Expected Value:</td>
+		<td>
+			<input name="expectedvalue" type="text" size="40" maxlength="255" value="$!{rule.expectedValue}">
+			Type: <select name="expectedvalue_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${rule.expectedValueType.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Message Passed:</td>
+		<td>
+			<input name="messagepassed" type="text" size="40" maxlength="255" value="$!{rule.messagePassed}">
+		</td>
+	</tr>
+	<tr>
+		<td>Message Failed:</td>
+		<td>
+			<input name="messagefailed" type="text" size="40" maxlength="255" value="$!{rule.messageFailed}">
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+#if(${rule.id}>0)
+<p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
+#end

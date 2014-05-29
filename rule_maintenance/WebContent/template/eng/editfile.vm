@@ -1,0 +1,41 @@
+#set($pagetitle='Edit file')
+
+<p class="heading">Edit file</p>
+<p>This page allows you to edit the currently selected file.</p>
+<br>
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editfile"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editfile&name=${filename}&filetype=${filetype}&fileid=${fileid}"> 
+#end
+<table width="95%" border="0">
+	#if($mode=="add")
+	<tr> 
+		<td>Filename:<br />
+			<input name="name" type="text" size="80" maxlength="254" value="$!{filename}">
+			<select name="filetype" size="1">
+		      <option selected value="template">Template</option>
+		      <option value="script">Script</option>
+		    </select>
+		</td>
+	</tr>
+	#else<tr> 
+		<td>Filename: $!{filename}</td>
+	</tr>
+	#end
+	<tr> 
+		<td>Code:<br /><textarea name="code" cols="120" rows="20">$!{filecode}</textarea></td>
+	</tr>
+	<tr>
+		<td align="center">
+			<input type="submit" value="save file" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+

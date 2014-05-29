@@ -1,0 +1,86 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.DbCollections;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled= request.getParameter("submit");
+	
+	if(cancelled.equals("save"))
+	{
+		id=Long.parseLong(request.getParameter("id"));
+		name=request.getParameter("name");
+		description=request.getParameter("description");
+	
+		Project project = new Project();
+		project.setConnection(connection);
+		if(id>0)
+		{
+			project.setId(id);
+			project.load();
+			if((project.name.equals(name) ||(!project.name.equals(name)&& !project.exist(name))) && name.length()>0)
+			{
+				project.setName(name);
+				project.setDescription(description);
+				project.user.id = user.id;
+				project.update(connection.getPreparedStatement(Project.UPDATE_SQL));
+				infomessage.text="Project updated.";
+			}
+			else if(!project.name.equals(name)&& project.exist(name) && name.length()>0)
+			{
+				project.setName(name);
+				project.setDescription(description);
+				infomessage.type="error";
+				infomessage.text="Project already exists.";
+			}
+			else
+			{
+				project.setName(name);
+				project.setDescription(description);
+				infomessage.type="error";
+				infomessage.text="Project name must be specified.";
+			}
+		}
+		else
+		{
+			if(!project.exist(name) && name.length()>0)
+			{
+				project.setName(name);
+				project.setDescription(description);
+				project.user.id = user.id;
+				project.insert(connection.getPreparedStatement(Project.INSERT_SQL));
+				infomessage.text="Project added.";
+			}
+			else if(project.exist(name) && name.length()>0)
+			{
+				project.setName(name);
+				project.setDescription(description);
+				infomessage.type="error";
+				infomessage.text="Project already exists.";
+			}
+			else
+			{
+				project.setName(name);
+				project.setDescription(description);
+				infomessage.type="error";
+				infomessage.text="Project name must be specified.";
+			}
+		}
+		
+		project.load();
+		context.put("project",project);
+		templatename="editproject.vm";
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllProjects(connection);
+		context.put("projects",list);
+		templatename="listprojects.vm";
+	}
+	
+
+}

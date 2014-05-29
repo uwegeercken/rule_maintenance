@@ -1,0 +1,65 @@
+import java.io.*;
+import com.datamelt.db.Rule;
+import com.datamelt.db.RuleSubgroup;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+
+	Project project = new Project();
+	project.connection = connection;
+	project.id = Long.parseLong(request.getParameter("projectid"));;
+	project.load();
+	context.put("project",project);
+	
+	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+	RuleGroup ruleGroup = new RuleGroup();
+	ruleGroup.connection = connection;
+	ruleGroup.id = rulegroupid;
+	ruleGroup.load();
+	context.put("rulegroup",ruleGroup);
+	
+	rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
+	RuleSubgroup ruleSubgroup = new RuleSubgroup();
+	ruleSubgroup.connection = connection;
+	ruleSubgroup.id = rulesubgroupid;
+	ruleSubgroup.load();
+	context.put("rulesubgroup",ruleSubgroup);
+	
+	id=Long.parseLong(request.getParameter("id"));
+	
+	mode=request.getParameter("mode");
+	context.put("mode",mode);
+	if(mode!=null && !mode.equals("add"))
+	{
+		Rule rule = new Rule();
+		rule.connection = connection;
+		rule.id=id;
+		rule.load();
+		context.put("rule",rule);
+	}
+	else
+	{
+		Rule rule = new Rule();
+		if(id>0)
+		{
+			rule.connection = connection;
+			rule.id=id;
+			rule.load();
+			rule.id=0;
+		}
+		context.put("rule",rule);
+	}
+	
+	ArrayList checks = DbCollections.getAllChecks(connection);
+	context.put("checks",checks);
+	
+	ArrayList types = DbCollections.getAllTypes(connection);
+	context.put("types",types);
+	
+	templatename="editrule.vm";
+}

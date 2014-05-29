@@ -1,0 +1,94 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.tools.scheduling.Report;
+import com.datamelt.tools.velocity.VelocityDataWriter;
+import com.datamelt.web.Controller;
+import java.text.SimpleDateFormat;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		id=Long.parseLong(request.getParameter("id"));
+		reportid=Long.parseLong(request.getParameter("reportid"));
+
+		Report report = new Report(id);
+		report.connection = connection;
+		report.id=reportid;
+		report.load();
+
+		String outputFolder = "/tmp"; // attention: this is actually where the ant task writes the output file - so it is defined there!
+		
+		String baseFolder = Controller.getProperty(Controller.CONTEXT_PATH);
+		String tempFolder = baseFolder + "tmp";
+		String antTasksFolder = tempFolder + "/ant_tasks";
+		String apacheAntFolder = "/usr/bin/ant";
+		
+		String attachmentName = report.getSingleInstance().getMailAttachmentName();
+		String fileExtension = report.getSingleInstance().getRendering().getFileExtension();
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+		//String today = sdf.format(new Date());
+		
+		String velocityTemplate = "scheduling_01.vm";
+		
+		//String fileName = attachmentName + "_" + today + fileExtension;
+		String fileName = attachmentName + fileExtension;
+		String fullFileName = outputFolder + "/" + fileName;
+		
+		response.reset();
+		
+		if(fileExtension.equals(".pdf"))
+		{
+	    	response.setContentType("application/pdf");
+	    }
+	    else if(fileExtension.equals(".xls") || fileExtension.equals(".xlsx"))
+	    {
+	    	response.setContentType("application/msexcel");
+	    }
+	    else if(fileExtension.equals(".png"))
+	    {
+	    	response.setContentType("image/png");
+	    }
+	    else if(fileExtension.equals(".html"))
+	    {
+	    	response.setContentType("text/html");
+	    }
+	    else if(fileExtension.equals(".xml"))
+	    {
+	    	response.setContentType("text/xml");
+	    }
+	    else if(fileExtension.equals(".txt"))
+	    {
+	    	response.setContentType("text/plain");
+	    }
+    	response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+		VelocityDataWriter filewriter = new VelocityDataWriter(tempFolder);
+		filewriter.setTemplateName(velocityTemplate);
+		filewriter.addObject("report", report);
+		
+		String xmlFileName = report.getSingleInstance().description + ".xml";		
+		filewriter.write(antTasksFolder + "/" + xmlFileName);
+			
+		String cmd = apacheAntFolder + " -f " + antTasksFolder +"/" + xmlFileName;
+		Runtime run = Runtime.getRuntime();
+		Process process = run.exec(cmd);
+		process.waitFor();
+
+ 		File generatedFile = new File(fullFileName);
+		InputStream inputStream = new FileInputStream(generatedFile); 
+		byte[] bytes = new byte[generatedFile.length()];
+		inputStream.read(bytes);
+
+
+	    OutputStream output = response.getOutputStream();
+    	output.write(bytes);
+    	output.close();
+    
+		
+
+        
+		templatename="listinstances.vm";
+}

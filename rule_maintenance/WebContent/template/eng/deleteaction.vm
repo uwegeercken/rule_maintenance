@@ -1,0 +1,19 @@
+#set($pagetitle='Delete Rule Group Action')
+<p class="heading">Delete Rule Group Action - project: ${project.name} - rule group: ${rulegroup.name}</p>
+<form method="POST" action="process?action=bsh&scriptname=deleteaction&actionid=${action.id}&rulegroupid=${rulegroup.id}"> 
+	<div class="unit" tag="$!rulesubgroup.name">
+		<div class="grouptop">
+			<p class="small">action</p>
+			<p class="big">${action.name}</p>
+			<p class="normal">${action.description}</p>
+			<p class="normal">$!{action.actionLogic}</p>
+		</div>
+	</div>
+	<div class="bottomtext">
+		<p>Are you sure you want to delete this action?</p>
+		<p><input type="submit" value="delete action" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+	</div>
+</form>
+<br>
+<br>
+<br>

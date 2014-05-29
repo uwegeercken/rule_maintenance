@@ -1,0 +1,42 @@
+#set($layout="eng/testproject.vm")
+#set($pagetitle='Test Project Rule File')
+<p class="heading">Test Results Project: ${project.name}, ${project.description}</p>
+
+#if (${infomessage})
+	<p align="center"><b>#insert_message($infomessage)</b></p>
+#end
+
+#if(${records.size()}>0)
+<hr>
+<p>Number of records: ${records.size()} of ${limit}</p>
+<table align="center" width="95%" border="0">
+#set($rowcounter=0)
+#set($counter=0)
+#foreach($record in $records)
+	#if($rowcounter==0)
+		<tr class="light">
+		<td align="center">[status]</td>
+		#foreach($field in ${record.fields})
+			<td align="center">${field.getName()}</td>
+		#end
+		</tr>
+	#end
+	
+</tr>	
+#if($counter==1)
+	#set($counter=0)
+	<tr class="light2">
+#else
+	#set($counter=$counter+1)
+	<tr>
+#end
+	<td align="center">#if(${record.isRowFailed()})failed #else passed #end</td>
+	#foreach($field in ${record.fields})
+		<td align="center">$!{field.getValue()}#if($field.updated)&nbsp;&sup1;#end</td>
+	#end
+</tr>
+	#set($rowcounter=$rowcounter+1)
+#end
+</table>
+<p>&sup1; = updated field</p>
+#end

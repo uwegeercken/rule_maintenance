@@ -1,0 +1,33 @@
+#set($pagetitle='Mail Hosts List')
+<p class="heading">Mail Hosts List</p>
+<p>Below is a list of all available mail hosts from the database. Click on &quot;edit&quot; on the right hand side of the row to modify the mail host details.</p>
+<br />
+<table width="94%" border="0" align="center">
+	<tr class="light">
+		<td width="40%">Hostname</td>
+		<td width="20%">Mail From</td>
+		<td width="20%">Mail Reply To</td>
+		<td width="10%">&nbsp;</td>
+	
+	</tr>
+	#set($counter=0)
+	#foreach($host in $mailhosts)
+	#if($counter==1)
+		#set($counter=0)
+		<tr class="light2">
+	#else
+		#set($counter=$counter+1)
+		<tr>
+	#end
+		<td>$!host.hostname</td>
+		<td>$!host.mailFrom</td>
+		<td>$!host.mailReplyTo</td>
+		<td></td>
+	</tr>
+	
+	#end
+</table>
+<br>
+
+<br>
+<br>

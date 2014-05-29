@@ -1,0 +1,40 @@
+#set($pagetitle='RSS Group List')
+<p class="heading">RSS Group List</p>
+<p>Below is a list of all available rss groups currently in use. Click on &quot;edit&quot; on the right hand side of the row to update the group.</p>
+<p>You may also <a href="process?action=bsh&scriptname=selecteditgroup&id=0&mode=add">add a group</a></p>
+<br />
+<table width="94%" border="0" align="center">
+	<tr class="light">
+		<td width="30%">Name</td>
+		<td width="30%">Description</td>
+		<td width="10%">Valid From</td>
+		<td width="10%">Valid Until</td>
+		<td width="10%">&nbsp;</td>
+		<td width="5%">&nbsp;</td>
+		<td width="5%">&nbsp;</td>
+	
+	</tr>
+	#set($counter=0)
+	#foreach($group in $groups)
+	#if($counter==1)
+		#set($counter=0)
+		<tr class="light2">
+	#else
+		#set($counter=$counter+1)
+		<tr>
+	#end
+		<td>$!group.name</td>
+		<td>$!group.description</td>
+		<td>$!group.validFrom</td>
+		<td>$!group.validUntil</td>
+		<td><a href="process?action=bsh&ro=1&scriptname=listgroupchannels&id=${group.id}">channels...</a></td>
+		<td><a href="process?action=bsh&ro=1&scriptname=listgroupusers&id=${group.id}">users...</a></td>
+		<td><a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=${group.id}&mode=change">edit...</a></td>
+	</tr>
+	
+	#end
+</table>
+<br>
+
+<br>
+<br>

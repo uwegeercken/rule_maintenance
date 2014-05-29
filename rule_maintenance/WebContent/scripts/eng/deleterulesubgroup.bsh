@@ -1,0 +1,47 @@
+import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.Rule;
+import java.sql.PreparedStatement;
+
+writeaction="true";
+cancelled= request.getParameter("submit");
+
+rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
+rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+
+if(cancelled.equals("delete rule subgroup"))
+{
+	RuleSubgroup rulesubgroup = new RuleSubgroup();
+	rulesubgroup.connection = connection;
+	rulesubgroup.id= rulesubgroupid;
+	rulesubgroup.load();
+
+	for(int i;i<rulesubgroup.rules.size();i++)
+	{
+		Rule rule = rulesubgroup.rules.get(i);
+		PreparedStatement psRule = connection.getPreparedStatement(Rule.DELETE_SQL);
+		rule.delete(psRule);
+	}
+
+	PreparedStatement ps = connection.getPreparedStatement(RuleSubgroup.DELETE_SQL);
+	rulesubgroup.delete(ps);
+}
+
+ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
+context.put("rulesubgroups",list);
+
+RuleGroup rulegroup = new RuleGroup();
+rulegroup.setConnection(connection);
+rulegroup.setId(rulegroupid);
+rulegroup.load();
+context.put("rulegroup",rulegroup);
+
+ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupid);
+context.put("rulegroupactions",actions);		
+
+Project project = new Project();
+project.setConnection(connection);
+project.setId(rulegroup.projectId);
+project.load();
+context.put("project",project);
+
+templatename="listrulesubgroups.vm";

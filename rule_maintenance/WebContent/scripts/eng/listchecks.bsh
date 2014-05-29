@@ -1,0 +1,14 @@
+import com.datamelt.db.DbCollections;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		ArrayList list = DbCollections.getAllChecks(connection);
+		context.put("checks",list);
+
+	
+		templatename="listchecks.vm";
+}

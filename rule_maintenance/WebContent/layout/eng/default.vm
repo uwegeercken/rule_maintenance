@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Business Rules Maintenance Tool | $!{pagetitle}</title>
+<link rel="stylesheet" type="text/css" href="css/style_new.css">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<style type="text/css">
+<!--
+body
+{
+	background-color: #FFAA55;
+	font: normal 9pt/1.2 verdana, sans-serif;
+}
+-->
+</style>
+<script>
+function openNewWindow(url) {
+	var myWindow = window.open(url,"","width=800,height=600");
+}
+
+</script>
+
+
+
+<body>
+
+<div class="top">
+	#parse("logo.vm")
+</div>
+
+<div class="navbar">
+	<p class="navbar"><a href="process?action=bsh&scriptname=about">about</a> : #if(${request.session.getAttribute("user")})<a href="process?action=bsh&scriptname=logout">logout $!{request.session.getAttribute("user").name}</a>#else <a href="process?action=bsh&scriptname=login">login</a>#end</p>
+</div>
+
+<div class="left">
+	#parse("eng/menu.vm")
+</div>
+<div class="data">
+	$screen_content
+	<br />
+</div>
+</body>
+</html>

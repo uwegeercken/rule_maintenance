@@ -1,0 +1,19 @@
+import com.datamelt.db.Project;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	projectid=Long.parseLong(request.getParameter("projectid"));
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = projectid;
+	project.load();
+	context.put("project",project);
+
+	templatename="deleteproject.vm";
+}

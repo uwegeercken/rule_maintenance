@@ -1,0 +1,33 @@
+import java.io.*;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	filename=request.getParameter("name");
+	buffer = new StringBuffer();
+	try
+	{
+		File f;
+		f= new File(menupath + "/" + filename);
+		FileReader fr = new FileReader(f); 
+		BufferedReader br = new BufferedReader(fr); 
+		while ( (line=br.readLine()) != null )
+		{ 
+			buffer.append(line + "\r\n");
+		} 
+		fr.close();
+		filecode=buffer.toString();
+	}
+	catch(Exception ex)
+	{
+		infomessage.type="error";
+		infomessage.text="an error has occurred when processing the file.";
+	}
+	context.put("filename",filename);
+	context.put("filecode",filecode);
+	templatename="editmenu.vm";
+}

@@ -1,0 +1,45 @@
+#set($pagetitle='Project Maintenance')
+<p class="heading">Project maintenance</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
+<div id="help">
+	<p>Edit the selected project.</p>
+	<p>Enter the name and description of the project.</p>
+</div>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editproject"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editproject&id=${project.id}"> 
+#end
+<input type="hidden" name="id" value="${project.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{project.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{project.description}">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+#if(${project.id}>0)
+</br>
+<p class="small">last edited by: ${project.user.name}, ${project.lastUpdate}</p>
+#end

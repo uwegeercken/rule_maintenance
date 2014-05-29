@@ -1,0 +1,85 @@
+import java.io.*;
+import com.datamelt.db.Project;
+import com.datamelt.util.RuleGroupFileCreator;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
+cancelled= request.getParameter("submit");
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	if(cancelled!=null && cancelled.equals("generate"))
+	{
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+		
+		id=Long.parseLong(request.getParameter("id"));
+		selecteddate=request.getParameter("selecteddate");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		boolean validselecteddate = false;
+		try
+		{
+        	sdf.parse(selecteddate);
+        	validselecteddate = true;
+     	}
+     	catch(ParseException e)
+     	{
+         	validselecteddate = false;
+     	}
+     	
+     	if(validselecteddate && id >0)
+     	{
+			Project project = new Project();
+		    project.setConnection(connection);
+		    project.setId(id);
+		    project.load();
+			
+			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
+		
+			fileCreator.projectName = project.name;
+			fileCreator.templatePath = realPath + "template";
+			fileCreator.outputPath = realPath + "tmp";
+			fileCreator.templateName = "ruleengine.vm";
+			fileCreator.selectedDate = selecteddate;
+			
+			project.loadRuleGroups(fileCreator.selectedDate);
+			
+			fileCreator.writeFiles(project);
+			String fileName = fileCreator.zipFiles(project);
+
+			response.setContentType("application/zip");  
+		    response.setHeader("Content-Disposition","attachment;filename=\"" + project.name + ".zip\"");
+			
+			File f = new File(fileName);  
+		    byte[] arBytes = new byte[(int)f.length()];  
+		    FileInputStream is = new FileInputStream(f);  
+		    is.read(arBytes); 
+		    
+		    op = response.getOutputStream();  
+		    op.write(arBytes);  
+		    op.flush();
+		    //op.close();  
+
+		}
+		else
+		{
+			infomessage.type="error";
+			infomessage.text="Select a Project and specify a valid Validity Date";
+			
+			ArrayList list = DbCollections.getAllProjects(connection);
+			context.put("projects",list);
+		
+			if(validselecteddate)
+			{
+				context.put("today",selecteddate);
+			}
+			templatename="sendfile.vm";
+		}
+	}
+	
+}

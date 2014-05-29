@@ -1,0 +1,108 @@
+import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+	rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
+	if(cancelled.equals("save"))
+	{
+		RuleSubgroup rulesubgroupNew = new RuleSubgroup();	
+		rulesubgroupNew.connection = connection;
+		rulesubgroupNew.name=request.getParameter("name");
+		rulesubgroupNew.description=request.getParameter("description");
+		rulesubgroupNew.rulegroupId = Long.parseLong(request.getParameter("rulegroupid"));
+		rulesubgroupNew.intergroupOperator = request.getParameter("intergroupoperator");
+		rulesubgroupNew.ruleOperator = request.getParameter("ruleoperator");
+		
+		RuleSubgroup rulesubgroup = new RuleSubgroup();
+		rulesubgroup.setConnection(connection);
+		if(rulesubgroupid>0)
+		{
+			rulesubgroupNew.setId(rulesubgroupid);
+			rulesubgroup.setId(rulesubgroupid);
+			rulesubgroup.load();
+			
+			if((rulesubgroupNew.name.equals(rulesubgroup.name) ||(!rulesubgroupNew.name.equals(rulesubgroup.name)&& !rulesubgroupNew.exist(rulesubgroupNew.name))) && rulesubgroupNew.name.length()>0 )
+			{
+				rulesubgroupNew.user.id = user.id;
+				rulesubgroupNew.update(connection.getPreparedStatement(RuleSubgroup.UPDATE_SQL));
+				infomessage.text="Rule Subgroup updated.";
+			}
+			else if(!rulesubgroupNew.name.equals(rulesubgroup.name) && rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Rule Subgroup already exists.";
+			}
+			else
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+		}
+		else
+		{
+			if(!rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
+			{
+				rulesubgroupNew.user.id = user.id;
+				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				infomessage.text="Rule Subgroup added.";
+			}
+			else if(rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Rule Subgroup already exists.";
+			}
+			else
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+		}
+		
+		rulesubgroupNew.load();
+		context.put("rulesubgroup",rulesubgroupNew);
+		
+		RuleGroup rulegroup = new RuleGroup();
+        rulegroup.setConnection(connection);
+        rulegroup.setId(rulegroupId);
+        rulegroup.load();
+		context.put("rulegroup",rulegroup);
+		
+		Project project = new Project();
+        project.setConnection(connection);
+        project.setId(rulegroup.projectId);
+        project.load();
+        context.put("project",project);
+		
+		templatename="editrulesubgroup.vm";
+
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupid);
+		context.put("rulesubgroups",list);
+
+		RuleGroup rulegroup = new RuleGroup();
+        rulegroup.setConnection(connection);
+        rulegroup.setId(rulegroupId);
+        rulegroup.load();
+		context.put("rulegroup",rulegroup);
+		
+		Project project = new Project();
+        project.setConnection(connection);
+        project.setId(rulegroup.projectId);
+        project.load();
+		context.put("project",project);
+		
+		templatename="listrulesubgroups.vm";
+	}
+	
+
+}

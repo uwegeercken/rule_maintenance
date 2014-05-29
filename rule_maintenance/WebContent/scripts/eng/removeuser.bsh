@@ -1,0 +1,19 @@
+import com.datamelt.db.DbCollections;
+import java.sql.PreparedStatement;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		groupid	= Long.parseLong(request.getParameter("groupid"));
+		userid	= Long.parseLong(request.getParameter("id"));
+
+		// to be completed
+
+		context.put("users",list);
+	
+		templatename="listgroupusers.vm";
+}

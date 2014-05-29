@@ -1,0 +1,172 @@
+import java.io.*;
+import com.datamelt.db.Project;
+import com.datamelt.util.RuleGroupFileCreator;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import com.datamelt.rules.engine.BusinessRulesEngine;
+import com.datamelt.util.RowFieldCollection;
+import com.datamelt.util.RowField;
+import com.datamelt.db.MySqlConnection;
+import java.sql.ResultSet;
+import java.util.zip.ZipFile;
+
+cancelled= request.getParameter("submit");
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	if(cancelled!=null && cancelled.equals("test data"))
+	{
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+		
+		id=Long.parseLong(request.getParameter("id"));
+		selecteddate=request.getParameter("selecteddate");
+		recordlimit=Long.parseLong(request.getParameter("limit"));
+		outputtype=Long.parseLong(request.getParameter("outputtype"));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		boolean validselecteddate = false;
+		try
+		{
+        	sdf.parse(selecteddate);
+        	validselecteddate = true;
+     	}
+     	catch(ParseException e)
+     	{
+         	validselecteddate = false;
+     	}
+     	
+     	if(validselecteddate && id >0)
+     	{
+			Project project = new Project();
+		    project.setConnection(connection);
+		    project.setId(id);
+		    project.load();
+			
+			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
+		
+			fileCreator.projectName = project.name;
+			fileCreator.templatePath = realPath + "template";
+			fileCreator.outputPath = realPath + "tmp";
+			fileCreator.templateName = "ruleengine.vm";
+			fileCreator.selectedDate = selecteddate;
+			
+			project.loadRuleGroups(fileCreator.selectedDate);
+			
+			fileCreator.writeFiles(project);
+			String fileName = fileCreator.zipFiles(project);
+
+			BusinessRulesEngine ruleEngine = new BusinessRulesEngine(new ZipFile(fileName));
+			ruleEngine.printStream = null;
+			ruleEngine.actionsPrintStream = null;
+			long counter=0;
+			ArrayList records = new ArrayList();			
+			MySqlConnection testdataConnection;
+			boolean error=false;
+			try
+			{
+				testdataConnection = new MySqlConnection(project.databaseHostname,project.databaseName,project.databaseUserid,project.databaseUserPassword);
+			}   
+		    catch(Exception ex)
+			{
+				error=true;
+				infomessage.type="error";
+				infomessage.text="Error connecting to database or retrieving records";
+			}
+		    if(!error)
+		    {
+			
+				String sql="select * from " + project.databaseTableName + " limit " + recordlimit;
+		        ResultSet rs = testdataConnection.getResultSet(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE,sql);
+	            int numberOfColumns = rs.getMetaData().getColumnCount();
+	            while (rs.next())
+			    {
+			        RowFieldCollection rowFieldCollection = new RowFieldCollection();
+			        for(int i=0;i< numberOfColumns;i++)
+			        {
+			        	rowFieldCollection.addField(new RowField(rs.getMetaData().getColumnName(i+1),rs.getString(i+1)));
+			        }
+			        
+			        try
+					{
+			        	ruleEngine.run("row: " + counter, rowFieldCollection);
+					}
+					catch(Exception ex)
+					{
+						infomessage.type="error";
+						infomessage.text="error running the rule engine" + ex.toString();
+					}
+			
+			
+			        if(outputtype==0)
+			        {
+			        	if(ruleEngine.getNumberOfGroupsFailed()>0)
+			        	{
+			        		rowFieldCollection.setRowFailed(true);
+			        	}
+				        records.add(rowFieldCollection);
+				    }
+			        else if(ruleEngine.getNumberOfGroupsFailed()==0 && outputtype==1)
+			        {
+				        records.add(rowFieldCollection);
+				    }
+				    else if(ruleEngine.getNumberOfGroupsFailed()>0 && outputtype==2)
+			        {
+				        records.add(rowFieldCollection);
+				        rowFieldCollection.setRowFailed(true);
+				    }
+				    
+				    ruleEngine.ruleExecutionCollection.clear();
+			        counter++;
+		    	}
+		    	rs.close();
+		    	testdataConnection.close();
+				
+				context.put("records",records);
+			}
+						
+			
+			
+			context.put("limit",recordlimit);
+			context.put("outputtype",outputtype);
+			context.put("projectid",id);
+			
+			context.put("project",project);
+			
+			ArrayList list = DbCollections.getAllProjects(connection);
+			context.put("projects",list);
+		
+			if(validselecteddate)
+			{
+				context.put("today",selecteddate);
+			}
+
+			
+			templatename="listtestresults.vm";
+		}
+		else
+		{
+			infomessage.type="error";
+			infomessage.text="Select a Project and specify a valid Validity Date";
+			
+			ArrayList list = DbCollections.getAllProjects(connection);
+			context.put("projects",list);
+		
+			if(validselecteddate)
+			{
+				context.put("today",selecteddate);
+			}
+			
+			context.put("projectid",id);
+			context.put("limit",recordlimit);
+			context.put("outputtype",outputtype);
+			
+			templatename="testproject.vm";
+		}
+	}
+	
+}

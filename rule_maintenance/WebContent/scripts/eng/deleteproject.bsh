@@ -1,0 +1,20 @@
+import java.sql.PreparedStatement;
+
+writeaction="true";
+cancelled= request.getParameter("submit");
+
+projectid=Long.parseLong(request.getParameter("projectid"));
+
+if(cancelled.equals("delete project"))
+{
+	Project project = new Project();
+	project.setConnection(connection);
+	project.setId(projectid);
+	PreparedStatement ps = connection.getPreparedStatement(Project.DELETE_SQL);
+	project.delete(ps);
+}
+		
+ArrayList list = DbCollections.getAllProjects(connection);
+context.put("projects",list);
+
+templatename="listprojects.vm";

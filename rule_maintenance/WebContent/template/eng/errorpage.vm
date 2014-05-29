@@ -1,0 +1,11 @@
+#set($pagetitle='Error Page')
+<p class="heading">Error Page</p>
+<p>A logical error occurred. Please read the message below to find out about the details of the problem and inform the administrator accordingly.</p>
+<br>
+#if (${infomessage})
+	<p><b>#insert_message($infomessage)</b></p><br />
+	<p>Additional Info:<br /> $!{infomessage.additionalInfo}</p>
+#end
+<br>
+<br>
+<br>

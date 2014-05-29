@@ -1,0 +1,155 @@
+import com.datamelt.db.RuleGroup;
+import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.DbCollections;
+import java.text.ParseException;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	id=Long.parseLong(request.getParameter("id"));
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = Long.parseLong(request.getParameter("projectid"));
+	project.load();
+	context.put("project", project);
+	
+	if(cancelled.equals("save"))
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		RuleGroup rulegroupNew = new RuleGroup();	
+		rulegroupNew.connection = connection;
+		rulegroupNew.name=request.getParameter("name");
+		rulegroupNew.description=request.getParameter("description");
+		rulegroupNew.validFrom=request.getParameter("valid_from");
+		rulegroupNew.validUntil=request.getParameter("valid_until");
+		rulegroupNew.projectId = Long.parseLong(request.getParameter("projectid"));
+		
+		boolean validFromFormatOk = false;
+		boolean validUntilFormatOk = false;
+		try
+		{
+        	sdf.parse(rulegroupNew.validFrom);
+        	validFromFormatOk = true;
+     	}
+     	catch(ParseException e)
+     	{
+         	validFromFormatOk = false;
+     	}
+     	try
+		{
+        	sdf.parse(rulegroupNew.validUntil);
+        	validUntilFormatOk = true;
+     	}
+     	catch(ParseException e)
+     	{
+          validUntilFormatOk = false;
+     	}
+     	
+     	
+		RuleGroup rulegroup = new RuleGroup();
+		rulegroup.setConnection(connection);
+		if(id>0)
+		{
+			rulegroupNew.setId(id);
+			rulegroup.setId(id);
+			rulegroup.load();
+			if(rulegroupNew.name.length()==0 )
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(!rulegroupNew.name.equals(rulegroup.name) && rulegroupNew.exist(rulegroupNew.name))
+			{
+				infomessage.type="error";
+				infomessage.text="Rule Group already exists.";
+			}
+			else if(rulegroupNew.validFrom==null || rulegroupNew.validFrom.equals("") || rulegroupNew.validUntil==null || rulegroupNew.validUntil.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Valid From and Valid Until can not be empty.";
+			}
+			else if(validFromFormatOk==false)
+			{
+				infomessage.type="error";
+				infomessage.text="Valid From format invalid.";
+			}
+			else if(validUntilFormatOk==false)
+			{
+				infomessage.type="error";
+				infomessage.text="Valid Until format invalid.";
+			}
+			else 
+			{
+				rulegroupNew.user.id = user.id;
+				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL));
+				infomessage.text="Rule Group updated.";
+			}
+		}
+		else
+		{
+			if(rulegroupNew.name.length()==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(rulegroupNew.exist(rulegroupNew.name))
+			{
+				infomessage.type="error";
+				infomessage.text="RuleGroup already exists.";
+			}
+			else if(rulegroupNew.validFrom==null || rulegroupNew.validFrom.equals("") || rulegroupNew.validUntil==null || rulegroupNew.validUntil.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Valid From and Valid Until can not be empty.";
+			}
+			else if(validFromFormatOk==false)
+			{
+				infomessage.type="error";
+				infomessage.text="Valid From format invalid.";
+			}
+			else if(validUntilFormatOk==false)
+			{
+				infomessage.type="error";
+				infomessage.text="Valid Until format invalid.";
+			}
+			else
+			{
+				rulegroupNew.user.id = user.id;
+				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL));
+				
+				RuleSubgroup subgroup = new RuleSubgroup();
+				subgroup.rulegroupId = rulegroupNew.id;
+				subgroup.name= "subgroup_1";
+				subgroup.description= "subgroup 1";
+				subgroup.intergroupOperator="and";
+				subgroup.ruleOperator="and";
+				subgroup.connection = connection;
+				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				
+				infomessage.text="Rule Group added.";
+			}
+		}
+		
+		rulegroupNew.load();
+		context.put("rulegroup",rulegroupNew);
+		templatename="editrulegroup.vm";
+		
+
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllRuleGroups(connection,project.Id);
+		context.put("rulegroups",list);
+		
+		templatename="listrulegroups.vm";
+	}
+	
+
+}

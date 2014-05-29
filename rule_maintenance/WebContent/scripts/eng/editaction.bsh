@@ -1,0 +1,254 @@
+import com.datamelt.db.RuleGroupAction;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	
+	RuleGroup rulegroup = new RuleGroup();
+    rulegroup.setConnection(connection);
+    rulegroup.setId(Long.parseLong(request.getParameter("rulegroupid")));
+    rulegroup.load();
+	context.put("rulegroup",rulegroup);
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = Long.parseLong(request.getParameter("projectid"));;
+	project.load();
+	context.put("project",project);
+	
+	if(cancelled.equals("save"))
+	{
+		id=Long.parseLong(request.getParameter("id"));
+	
+		RuleGroupAction actionNew = new RuleGroupAction();
+		actionNew.connection = connection;
+		actionNew.rulegroupId = Long.parseLong(request.getParameter("rulegroupid"));
+		actionNew.name=request.getParameter("name");
+		actionNew.description=request.getParameter("description");
+		actionNew.action.id = Long.parseLong(request.getParameter("action_id"));
+		actionNew.action.connection = connection;
+		actionNew.action.load();
+		actionNew.parameter1=request.getParameter("parameter1");
+		actionNew.parameter1Type.id=Long.parseLong(request.getParameter("parameter1_type_id"));
+		actionNew.parameter2=request.getParameter("parameter2");
+		actionNew.parameter2Type.id=Long.parseLong(request.getParameter("parameter2_type_id"));
+		actionNew.parameter3=request.getParameter("parameter3");
+		actionNew.parameter3Type.id=Long.parseLong(request.getParameter("parameter3_type_id"));
+		actionNew.executeIf=request.getParameter("executeif");
+		if(request.getParameter("object1_parameter")!=null && !request.getParameter("object1_parameter").trim().equals(""))
+		{
+			actionNew.object1Classname = "com.datamelt.util.RowFieldCollection";
+			actionNew.object1Methodname = "getFieldValue";
+			actionNew.object1Parameter = request.getParameter("object1_parameter");
+			actionNew.object1Parametertype.id = 1;
+			actionNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id")); 
+		}
+		else
+		{
+			actionNew.object1Classname = null;
+			actionNew.object1Methodname = null;
+			actionNew.object1Parameter = null;
+			actionNew.object1Parametertype.id = 0;
+			actionNew.object1Type.id = 0;
+		}
+		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
+		{
+			actionNew.object2Classname = "com.datamelt.util.RowFieldCollection";
+			actionNew.object2Methodname = "setFieldValue";
+			actionNew.object2Parameter = request.getParameter("object2_parameter");
+			actionNew.object2Parametertype.id = 1;
+			actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
+		}
+		else
+		{
+			actionNew.object2Classname = null;
+			actionNew.object2Methodname = null;
+			actionNew.object2Parameter = null;
+			actionNew.object2Parametertype.id = 0;
+			actionNew.object2Type.id = 0;
+		}
+		
+		RuleGroupAction action = new RuleGroupAction();
+		action.setConnection(connection);
+		if(id>0)
+		{
+			actionNew.setId(id);
+			action.setId(id);
+			action.load();
+			if(actionNew.name.length()==0 )
+			{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(!actionNew.name.equals(action.name) && actionNew.exist(actionNew.name) && actionNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Action already exists.";
+			}
+			else if(actionNew.executeIf==null || actionNew.executeIf=="")
+			{
+				infomessage.type="error";
+				infomessage.text="Execute if Rule Group must be selected";
+			}
+			else if((actionNew.object2Parameter==null || actionNew.object2Type.id==0 || actionNew.object2Parameter.length()==0))
+			{
+				infomessage.type="error";
+				infomessage.text="Field to update and Type must be specified";
+			}
+			else if(actionNew.action.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Action must be specified";
+			}
+			else if(actionNew.object1Parameter!=null && actionNew.object1Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field Type must be selected when Field is specified";
+			}
+			else if(actionNew.object1Parameter==null && actionNew.object1Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field must be specified when Field Type is specified";
+			}
+			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 1 must be specified when Parameter 1 Type is specified";
+			}
+			else if(actionNew.parameter1!=null && actionNew.parameter1.length()>0 && actionNew.parameter1Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 1 Type must be specified when Parameter 1 is specified";
+			}
+			else if((actionNew.parameter2==null || actionNew.parameter2.length()==0) && actionNew.parameter2Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 2 must be specified when Parameter 2 Type is specified";
+			}
+			else if(actionNew.parameter2!=null && actionNew.parameter2.length()>0 && actionNew.parameter2Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 2 Type must be specified when Parameter 2 is specified";
+			}
+			else if((actionNew.parameter3==null || actionNew.parameter3.length()==0) && actionNew.parameter3Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 3 must be specified when Parameter 3 Type is specified";
+			}
+			else if(actionNew.parameter3!=null && actionNew.parameter3.length()>0 && actionNew.parameter3Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 3 Type must be specified when Parameter 3 is specified";
+			}
+			
+			else
+			{
+				actionNew.user.id = user.id;
+				actionNew.user.connection = connection;
+				actionNew.user.load();
+				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL));
+				infomessage.text="Action updated.";
+			}
+		}
+		else
+		{
+			if(actionNew.name.length()==0 )
+			{ 
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+			}
+			else if(actionNew.exist(actionNew.name) && actionNew.name.length()>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Action already exists.";
+			}
+			else if((actionNew.object2Parameter==null || actionNew.object2Type.id==0 || actionNew.object2Parameter.length()==0))
+			{
+				infomessage.type="error";
+				infomessage.text="Field to update and Type must be specified";
+			}
+			else if(actionNew.action.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Action must be specified";
+			}
+			else if(actionNew.object1Parameter!=null && actionNew.object1Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field Type must be selected when Field is specified";
+			}
+			else if(actionNew.object1Parameter==null && actionNew.object1Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field must be specified when Field Type is specified";
+			}
+			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 1 must be specified when Parameter 1 Type is specified";
+			}
+			else if(actionNew.parameter1!=null && actionNew.parameter1.length()>0 && actionNew.parameter1Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 1 Type must be specified when Parameter 1 is specified";
+			}
+			else if((actionNew.parameter2==null || actionNew.parameter2.length()==0) && actionNew.parameter2Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 2 must be specified when Parameter 2 Type is specified";
+			}
+			else if(actionNew.parameter2!=null && actionNew.parameter2.length()>0 && actionNew.parameter2Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 2 Type must be specified when Parameter 2 is specified";
+			}
+			else if((actionNew.parameter3==null || actionNew.parameter3.length()==0) && actionNew.parameter3Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 3 must be specified when Parameter 3 Type is specified";
+			}
+			else if(actionNew.parameter3!=null && actionNew.parameter3.length()>0 && actionNew.parameter3Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Parameter 3 Type must be specified when Parameter 3 is specified";
+			}
+			else
+			{
+				actionNew.user.id = user.id;
+				actionNew.user.connection = connection;
+				actionNew.user.load();
+				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL));
+				infomessage.text="Action added.";
+			}
+		}
+		
+		actionNew .load();
+		context.put("action",actionNew);
+		templatename="editaction.vm";
+		
+		ArrayList actions = DbCollections.getAllActions(connection);
+		context.put("actions",actions);
+	
+		ArrayList types = DbCollections.getAllTypes(connection);
+		context.put("types",types);
+
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroup.id);
+		context.put("rulesubgroups",list);
+		
+		ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroup.id);
+		context.put("rulegroupactions",actions);
+
+		templatename="listrulesubgroups.vm";
+	}
+	
+
+}

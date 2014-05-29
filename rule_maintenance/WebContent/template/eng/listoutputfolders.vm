@@ -1,0 +1,31 @@
+#set($pagetitle='Output Folder List')
+<p class="heading">Output Folder List</p>
+<p>Below is a list of all available output folders from the database. Click on &quot;edit&quot; on the right hand side of the row to modify the output folder details.</p>
+<br />
+<table width="94%" border="0" align="center">
+	<tr class="light">
+		<td width="35%">Description</td>
+		<td width="55%">Name</td>
+		<td width="10%">&nbsp;</td>
+	
+	</tr>
+	#set($counter=0)
+	#foreach($outputfolder in $outputfolders)
+	#if($counter==1)
+		#set($counter=0)
+		<tr class="light2">
+	#else
+		#set($counter=$counter+1)
+		<tr>
+	#end
+		<td>$!outputfolder.description</td>
+		<td>$!outputfolder.name</td>
+		<td></td>
+	</tr>
+	
+	#end
+</table>
+<br>
+
+<br>
+<br>

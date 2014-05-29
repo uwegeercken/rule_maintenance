@@ -1,0 +1,139 @@
+#set($pagetitle='Test Project Rule File')
+<p class="heading">Test Project Rule File</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>Test Project against the rules of a selected project.</p>
+	<p>Select the project and input a validity date. Only rulegroups which are valid on the given date are considered.</p>
+	<p>Choose the output type and the numbers fo rows that shall be tested.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=testproject" target="testdata"> 
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Project:</td>
+		<td>
+			<select name="id" size="1">
+			<option value="0"></option>
+			#foreach($project in $projects)
+				#if($project.id==$projectid)
+					<option selected value="$project.id">${project.name}, ${project.description}</option>
+				#else
+					<option value="$project.id">${project.name}, ${project.description}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Validity Date:</td>
+		<td>
+			<input name="selecteddate" type="text" size="40" maxlength="10" value="$!{today}"> (format: YYYY-MM-DD)
+		</td>
+	</tr>
+	<tr>
+		<td>Output Type:</td>
+		<td>		
+			<select name="outputtype" size="1">
+				#if(${outputtype}==1)
+					<option selected value="1">only passed rows</option>
+				#else
+					<option value="1">only passed rows</option>
+				#end
+				#if(${outputtype}==2)
+					<option selected value="2">only failed rows</option>
+				#else
+					<option value="2">only failed rows</option>
+				#end
+				<option value="0">all rows</option>				
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td>Number of Test Rows:</td>
+		<td>		
+			<select name="limit" size="1">
+				#if(${limit}==50)
+					<option selected value="50">50</option>
+				#else
+					<option value="50">50</option>
+				#end
+				#if(${limit}==100)
+					<option selected value="100">100</option>
+				#else
+					<option value="100">100</option>
+				#end
+				#if(${limit}==250)
+					<option selected value="250">250</option>
+				#else
+					<option value="250">250</option>
+				#end
+				#if(${limit}==500)
+					<option selected value="500">500</option>
+				#else
+					<option value="500">500</option>
+				#end
+				#if(${limit}==1000)
+					<option selected value="1000">1000</option>
+				#else
+					<option value="1000">1000</option>
+				#end
+				#if(${limit}==5000)
+					<option selected value="5000">5000</option>
+				#else
+					<option value="5000">5000</option>
+				#end
+				#if(${limit}==10000)
+					<option selected value="10000">10000</option>
+				#else
+					<option value="10000">10000</option>
+				#end
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="test data" name="submit">
+		</td>
+	</tr>
+	
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p align="center"><b>#insert_message($infomessage)</b></p>
+#end
+
+#if(${records.size()}>0)
+<hr>
+<p>Number of records: ${records.size()}</p>
+<table align="center" width="95%" border="0">
+#set($rowcounter=0)
+#set($counter=0)
+#foreach($record in $records)
+	#if($rowcounter==0)
+		<tr class="light">
+		<td align="center">[status]</td>
+		#foreach($field in ${record.fields})
+			<td align="center">${field.getName()}</td>
+		#end
+		</tr>
+	#end
+	
+</tr>	
+#if($counter==1)
+	#set($counter=0)
+	<tr class="light2">
+#else
+	#set($counter=$counter+1)
+	<tr>
+#end
+	<td align="center">#if(${record.isRowFailed()})failed #else passed #end</td>
+	#foreach($field in ${record.fields})
+		<td align="center">$!{field.getValue()}#if($field.updated)&nbsp;&sup1;#end</td>
+	#end
+</tr>
+	#set($rowcounter=$rowcounter+1)
+#end
+</table>
+<p>&sup1; = updated field</p>
+#end

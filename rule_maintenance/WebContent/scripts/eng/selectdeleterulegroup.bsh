@@ -1,0 +1,24 @@
+import com.datamelt.db.RuleGroup;
+import com.datamelt.db.Project;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	RuleGroup rulegroup = new RuleGroup();
+	rulegroup.connection = connection;
+	rulegroup.id = Long.parseLong(request.getParameter("rulegroupid"));
+	rulegroup.load();
+	context.put("rulegroup",rulegroup);
+
+	Project project = new Project();
+	project.setConnection(connection);
+	project.setId(Long.parseLong(request.getParameter("projectid")));
+	project.load();
+	context.put("project",project);
+
+	templatename="deleterulegroup.vm";
+}

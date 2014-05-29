@@ -1,0 +1,5 @@
+
+   	request.getSession().removeAttribute("authenticated");
+    request.getSession().removeAttribute("user");
+                
+	templatename="login.vm";

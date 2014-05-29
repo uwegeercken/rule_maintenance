@@ -1,0 +1,17 @@
+import com.datamelt.db.DbCollections;
+import java.text.SimpleDateFormat;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		ArrayList list = DbCollections.getAllProjects(connection);
+		context.put("projects",list);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		context.put("today",sdf.format(new Date()));
+	
+		templatename="sendfile.vm";
+}

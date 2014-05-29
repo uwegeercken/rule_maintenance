@@ -1,0 +1,22 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Project;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		projectId=Long.parseLong(request.getParameter("projectid"));
+		ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
+		context.put("rulegroups",list);
+
+		Project project = new Project();
+        project.setConnection(connection);
+        project.setId(projectId);
+        project.load();
+		
+		context.put("project",project);
+	
+		templatename="listrulegroups.vm";
+}

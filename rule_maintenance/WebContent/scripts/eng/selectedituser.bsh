@@ -1,0 +1,29 @@
+import java.io.*;
+import com.datamelt.db.User;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	id=Long.parseLong(request.getParameter("id"));
+	mode=request.getParameter("mode");
+	context.put("mode",mode);
+	if(mode!=null && !mode.equals("add"))
+	{
+		User rssUser = new User();
+		rssUser.connection = connection;
+		rssUser.id=id;
+		rssUser.load();
+		context.put("rssuser",rssUser);
+	}
+	else
+	{
+		User rssUser = new User();
+		context.put("rssuser",rssUser);
+	}
+	
+	templatename="edituser.vm";
+}

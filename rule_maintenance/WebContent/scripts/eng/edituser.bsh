@@ -1,0 +1,82 @@
+import com.datamelt.db.User;
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled= request.getParameter("submit");
+	
+	if(cancelled.equals("save"))
+	{
+		id=Long.parseLong(request.getParameter("id"));
+		name=request.getParameter("name");
+		userid=request.getParameter("userid");
+	
+		User rssUser = new User();
+		rssUser.setConnection(connection);
+		if(id>0)
+		{
+			rssUser.setId(id);
+			rssUser.load();
+			if((rssUser.userid.equals(userid) ||(!rssUser.userid.equals(userid)&& !rssUser.exist(userid))) && userid.length()>0 && name.length()>0 )
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				rssUser.update(connection.getPreparedStatement(User.UPDATE_SQL));
+				infomessage.text="User updated.";
+			}
+			else if(!rssUser.userid.equals(userid)&& rssUser.exist(userid) && userid.length()>0)
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				infomessage.type="error";
+				infomessage.text="User already exists.";
+			}
+			else
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				infomessage.type="error";
+				infomessage.text="Userid and name must be specified.";
+			}
+		}
+		else
+		{
+			if(!rssUser.exist(userid) && userid.length()>0 && name.length()>0)
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				rssUser.insert(connection.getPreparedStatement(User.INSERT_SQL));
+				infomessage.text="User added.";
+			}
+			else if(rssUser.exist(userid)&& userid.length()>0)
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				infomessage.type="error";
+				infomessage.text="User already exists.";
+			}
+			else
+			{
+				rssUser.setName(name);
+				rssUser.setUserid(userid);
+				infomessage.type="error";
+				infomessage.text="Userid and name must be specified.";
+			}
+		}
+		context.put("rssuser",rssUser);
+		templatename="edituser.vm";
+	}
+	else
+	{
+		ArrayList list = DbCollections.getAllUsers(connection);
+		context.put("users",list);
+		templatename="listusers.vm";
+	}
+	
+
+}

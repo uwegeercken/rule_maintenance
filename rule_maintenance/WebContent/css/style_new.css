@@ -1,0 +1,392 @@
+<style type="text/css">
+<!--
+@charset 'UTF-8';
+body
+{
+	background-color: white;
+	font: normal 9pt/1.4 verdana, sans-serif;
+}
+
+* {
+	background-color: white;
+	font: normal 9pt/1.4 verdana, sans-serif;
+}
+
+p
+{
+	margin:3px;
+	padding:3px;
+	font: normal 9pt/1.4 verdana, sans-serif;	
+}
+
+p.small
+{
+	margin: 3px;
+	padding: 3px;
+	font: normal 8pt/1.0 verdana, sans-serif;
+	font-style: italic;
+}
+
+p.heading, b
+{
+	background: #282828;
+	color: #d8d8d8;
+	margin:3px;
+	padding:6px;
+	font: normal 9pt/1.4 verdana, sans-serif;	
+	line-height:2;
+	border-radius: 4px;
+	width: 98%;
+}
+
+.errormessage
+{
+	padding-top: 20px;
+	color: red;
+	font-weight: bold;
+		
+}
+
+a
+{
+    color: #A32954;
+    border-color: rgba(163, 41, 84, 0.33);
+}
+
+.unit 
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	margin: 8px;
+	width: 280px;
+	height: 180px;
+	float: left;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+}
+
+.unitclear 
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	margin: 8px;
+	width: 280px;
+	height: 180px;
+	float: left;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+  	clear: both;
+}
+
+.grouptop 
+{
+	height: 80%;
+	border-top: 3px solid #3a3a3a;
+}
+
+.grouptop2 
+{
+	height: 80%;
+	border-top: 3px solid #f06343;
+}
+
+.grouptopaction 
+{
+	height: 80%;
+	border-top: 3px solid green;
+}
+
+.grouptop > p.big > a, .grouptop > p.big, .grouptop2 > p.big > a, .grouptop2 > p.big, .grouptopaction > p.big > a, .grouptopaction > p.big
+{
+	font: normal 14pt/1.4 verdana, sans-serif;
+	float: left;
+	color: #4472B9;
+}
+
+.grouptop > p.normal, .grouptop2 > p.normal, .grouptopaction > p.normal   
+{
+	font: normal 8pt/1.2 verdana, sans-serif;
+	clear:both;
+}
+
+img.delete 
+{
+	position:absolute;
+	margin-top: 6px;
+	margin-left: 250px;
+}
+
+img.edit 
+{
+	position:absolute;
+	margin-top: 150px;
+	margin-left: 250px;
+}
+
+img.copy 
+{
+	position:absolute;
+	margin-top: 150px;
+	margin-left: 220px;
+}
+
+img.add 
+{
+	position:absolute;
+	margin-top: 150px;
+	margin-left: 190px;
+}
+
+.bottomtext 
+{
+	padding: 10px;
+	float: left;
+	clear:both;
+}
+
+img.copy_external, img.add_external 
+{
+	margin-left: 10px;
+}
+
+a:link
+{
+	color:#4472B9;
+	text-decoration: none;
+}
+
+a:visited
+{
+	color:#4472B9;
+	text-decoration: none;
+}
+
+a:hover   
+{
+	color:#4472B9;
+	text-decoration: underline;
+}
+
+a:active  
+{
+	color:#4472B9;
+	text-decoration: none;
+} 
+
+.formbox > form > table
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	margin: 10px;
+	margin-left: 20px;
+	padding: 10px;
+	padding-top: 20px;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+  	clear: both;
+}
+
+tr.light > td
+{
+	background: #f06343;
+	color: #d8d8d8;
+	border-radius: 4px;
+}
+
+tr.light2 > td
+{
+	background:  #E8E8E8;
+	
+}
+
+td.title
+{
+	font: normal 16pt/1.6 verdana, sans-serif;
+}
+
+div.data {
+	position: absolute;
+	margin-top: 0px;
+	margin-left: 170px;
+	width: 80%;
+}
+
+div.connector {
+	margin-left: 100px;
+	padding: 10px;
+	clear: both;
+}
+
+div.horizontaldevider {
+	margin: 10px;
+	padding: 10px;
+	clear: both;
+}
+
+#help
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	margin: 8px;
+	background: #FFFFF5;
+	float: left;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+  	clear: left;
+  	display:none;
+}
+
+#help p, #help img
+{
+	background: #FFFFF5;
+}
+
+#filter
+{
+	clear: both;
+} 
+
+/* GT stylesheet */
+#cssmenu > ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+	line-height: 1;
+	width: 120px;
+
+}
+
+/* The container */
+#cssmenu > ul {
+	margin-top: 3px;
+	width: 120px;
+	float:left;
+	clear: both;
+}
+
+	/* The list elements which contain the links */
+	#cssmenu > ul li {
+		display: block;
+		margin: 0;
+		padding: 0;
+		width: 120px;	
+	}
+
+		/* General link styling */
+		#cssmenu > ul li a {
+			/* Layout */
+			display: block;
+			position: relative;
+			margin: 0;
+			border-top: 1px dotted #3a3a3a;
+			border-bottom: 1px dotted #1b1b1b;
+			padding: 11px 20px;
+			width: 110px;
+
+			/* Typography */
+			font-family: Helvetica, Arial, sans-serif;
+			color: #d8d8d8;
+			text-decoration: none;
+			text-transform: uppercase;
+			text-shadow: 0 1px 1px #000;
+			font-size: 13px;
+			font-weight: 300;
+			
+
+			/* Background & effects */
+			background: #282828;
+		}
+
+		/* Rounded corners for the first link of the menu/submenus */
+		#cssmenu > ul li:first-child>a {
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			border-top: 0;
+		}
+
+		/* Rounded corners for the last link of the menu/submenus */
+		#cssmenu > ul li:last-child>a {
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+			border-bottom: 0;
+		}
+
+
+		/* The hover state of the menu/submenu links */
+		#cssmenu > ul li>a:hover, #cssmenu > ul li:hover>a {
+			color: #fff;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
+			background: #f06343;
+			background: -webkit-linear-gradient(bottom, #f06343, #f27d63);
+			background: -ms-linear-gradient(bottom, #f06343, #f27d63); 
+			background: -moz-linear-gradient(bottom, #f06343, #f27d63);
+			background: -o-linear-gradient(bottom, #f06343, #f27d63);
+			border-color: transparent;
+		}
+
+		/* The arrow indicating a submenu */
+		#cssmenu > ul .has-sub>a::after {
+			content: '';
+			position: absolute;
+			top: 16px;
+			right: 10px;
+			width: 0px;
+			height: 0px;
+
+			/* Creating the arrow using borders */
+			border: 4px solid transparent;
+			border-left: 4px solid #d8d8d8; 
+		}
+
+		/* The same arrow, but with a darker color, to create the shadow effect */
+		#cssmenu > ul .has-sub>a::before {
+			content: '';
+			position: absolute;
+			top: 17px;
+			right: 10px;
+			width: 0px;
+			height: 0px;
+
+			/* Creating the arrow using borders */
+			border: 4px solid transparent;
+			border-left: 4px solid #000;
+		}
+
+		/* Changing the color of the arrow on hover */
+		#cssmenu > ul li>a:hover::after, #cssmenu > ul li:hover>a::after {
+			border-left: 4px solid #fff;
+		}
+
+		#cssmenu > ul li>a:hover::before, #cssmenu > ul li:hover>a::before {
+			border-left: 4px solid rgba(0, 0, 0, .3);
+		}
+
+	
+		/* THE SUBMENUS */
+		#cssmenu > ul ul {
+			position: absolute;
+			left: 150px;
+			top: -9999px;
+			padding-left: 5px;
+			opacity: 0;
+			/* The fade effect, created using an opacity transition */
+			-webkit-transition: opacity .3s ease-in;
+			-moz-transition: opacity .3s ease-in;
+			-o-transition: opacity .3s ease-in;
+			-ms-transition: opacity .3s ease-in;
+		}
+
+		/* Showing the submenu when the user is hovering the parent link */
+		#cssmenu > ul li:hover>ul {
+			top: 0px;
+			opacity: 1;
+		}
+
+
+-->
+</style>

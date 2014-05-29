@@ -1,0 +1,34 @@
+
+## Create a table cell with href, passing style, width and value
+#macro(style_href_cell $style $width $value)
+	<td class="$style" width="$width">
+		#if ($value && $value!="")<a href="http://${value}">${value}</a>#else&nbsp;#end
+	</td>
+#end
+
+## focus on a form field on the page
+#macro(insert_focus_scriptcode $fieldid)
+<script type="text/Javascript" language="JavaScript">
+<!--
+	document.getElementById("$fieldid").focus();
+//-->
+</script>
+
+#end
+
+## display a message
+#macro(insert_message $message)
+	#if($message.type=="error")
+		<font color="red">$message.text</font>
+	#else
+		$message.text
+	#end
+#end
+
+#macro(makelink $link $text)
+	#if($user.isInGroup(2))
+		<a href="$link">$text</a>
+	#else
+		<font color="grey">$text</font>
+	#end
+#end

@@ -1,0 +1,37 @@
+#set($pagetitle='File List')
+<p class="heading">File List</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&scriptname=selecteditfile&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add file"></a><a href="process?action=bsh&scriptname=selecteditmenu&name=menu.vm"><img class="edit_external" height="24px" width="24px" src="img/edit.png" title="edit menu"></a></p>
+<div id="help">
+	<p>List of available files beanshell scripts and apache velocity templates.</p>
+	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new file&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit menu</p>
+</div>
+
+<div id="filter">
+	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
+</div>
+	#foreach($filename in $filelist)
+		<div class="unit" tag="$!{filename.name}">
+			<a href="process?action=bsh&scriptname=selectdeletefile&name=${filename.name}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete file"></a>
+			<a href="process?action=bsh&scriptname=selecteditfile&name=${filename.name}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit file"></a>
+			<div class="grouptop">
+				<p class="small">script file</p>
+				<p class="big">$!{filename.name}</p>
+			</div>
+		</div>
+	#end
+	#set($counter=0)
+	#foreach($filename in $templateslist)
+		#if($counter==0)
+			<div class="unitclear" tag="$!{project.name}">
+		#else
+			<div class="unit" tag="$!{filename.name}">
+		#end
+			<a href="process?action=bsh&scriptname=selectdeletefile&name=${filename.name}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete file"></a>
+			<a href="process?action=bsh&scriptname=selecteditfile&name=${filename.name}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit file"></a>
+			<div class="grouptop">
+				<p class="small">template file</p>
+				<p class="big">$!{filename.name}</p>
+			</div>
+		</div>
+		#set($counter=$counter+1)
+	#end

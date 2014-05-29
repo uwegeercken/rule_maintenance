@@ -1,0 +1,80 @@
+#set($pagetitle='Rule Subgroup Maintenance')
+<p class="heading">Rule Subgroup maintenance- Project: ${project.name} - Rule Group ${rulegroup.name}</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+<div id="help">
+	<p>Edit the selected subgroup.</p>
+	<p>Enter the name and description of the subgroup.</p> 
+	<p>Specify the group operator indicating how the subgroup is connected to the previous subgroup.</p>
+	<p>Specify the rule operator indicating how the rules in the subgroup are connected.</p>
+</div>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulegroupid=${rulegroup.id}"> 
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}"> 
+#end
+<input type="hidden" name="id" value="${project.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{rulesubgroup.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{rulesubgroup.description}">
+		</td>
+	</tr>
+	<tr>
+		<td>Group Operator:</td>
+		<td>		
+			<select name="intergroupoperator" size="1">
+				#if(${rulesubgroup.intergroupOperator}=="and")
+					<option selected value="and">and</option>
+				#else
+					<option value="and">and</option>
+				#end
+				#if(${rulesubgroup.intergroupOperator}=="or")
+					<option selected value="or">or</option>
+				#else
+					<option value="or">or</option>
+				#end
+
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td>Rule Operator:</td>
+		<td>		
+			<select name="ruleoperator" size="1">
+				#if(${rulesubgroup.ruleOperator}=="and")
+					<option selected value="and">and</option>
+				#else
+					<option value="and">and</option>
+				#end
+				#if(${rulesubgroup.ruleOperator}=="or")
+					<option selected value="or">or</option>
+				#else
+					<option value="or">or</option>
+				#end
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+#if(${rulesubgroup.id}>0)
+	<p class="small">last edited by: ${rulesubgroup.user.name}, ${rulesubgroup.lastUpdate}</p>
+#end
+</div>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end

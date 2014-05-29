@@ -1,0 +1,2 @@
+
+context.put("datum", Calendar.getInstance(Locale.ENGLISH).time));

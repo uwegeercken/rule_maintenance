@@ -1,0 +1,31 @@
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	if(cancelled.equals("save file"))
+	{
+		code=request.getParameter("code");
+		filename=request.getParameter("name");
+		File f;
+		f= new File(menupath + "/" + filename);
+		FileOutputStream out = new FileOutputStream(f); 
+		PrintStream p = new PrintStream(out);
+		p.println (code);
+		p.close();
+		out.close();
+	}
+	f = new File(scriptspath);
+	context.put("filelist",f.list());
+	context.put("filepath",scriptspath);
+	
+	f2 = new File(templatespath);
+	context.put("templateslist",f2.list());
+	context.put("templatespath",templatespath);
+	
+	templatename="filelist.vm";
+}

@@ -1,0 +1,64 @@
+import java.io.*;
+import com.datamelt.db.DbFile;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	mode=request.getParameter("mode");
+	filename=request.getParameter("name");
+	filecode="";
+	filetype="";
+	buffer = new StringBuffer();
+	if(mode==null || !mode.equals("add"))
+	{
+		try
+		{
+			if(filelocation.equals("database"))
+			{
+				DbFile file = new DbFile();
+				file.setConnection(connection);
+				file.setFileName(filename);
+				file.loadByName();
+				filecode=file.getCode();
+				context.put("fileid",file.getId());
+			}
+			else
+			{
+				File f;
+				if(filename!=null && filename.endsWith(".vm"))
+				{
+					f= new File(templatespath + "/" + filename);
+					filetype="template";
+				}
+				else
+				{
+					f= new File(scriptspath + "/" + filename);
+					filetype="script";
+				}
+				FileReader fr = new FileReader(f); 
+				BufferedReader br = new BufferedReader(fr); 
+				while ( (line=br.readLine()) != null )
+				{ 
+					buffer.append(line + "\r\n");
+				} 
+				fr.close();
+				filecode=buffer.toString();
+			}
+		}
+		catch(Exception ex)
+		{
+			infomessage.type="error";
+			infomessage.text="an error has occurred when processing the file.";
+		}
+	}
+	context.put("mode",mode);
+	context.put("filename",filename);
+	context.put("filetype",filetype);
+	context.put("filecode",filecode);
+	
+	templatename="editfile.vm";
+}

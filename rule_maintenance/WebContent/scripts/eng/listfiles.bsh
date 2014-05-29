@@ -1,0 +1,33 @@
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	if(filelocation.equals("database"))
+	{
+		ArrayList list = DbCollections.getAllDatabaseFiles(connection, "bsh");
+		context.put("filelist",list);
+	
+		ArrayList templateslist = DbCollections.getAllDatabaseFiles(connection, "vm");
+		context.put("templateslist",templateslist);
+	}
+	else
+	{
+		f = new File(scriptspath);
+		File[] files = f.listFiles();
+		Arrays.sort(files);
+		context.put("filelist",files);
+		context.put("filepath",scriptspath);
+	
+		f2 = new File(templatespath);
+		File[] files2 = f2.listFiles();
+		Arrays.sort(files2);
+		context.put("templateslist",files2);
+		context.put("templatespath",templatespath);
+	}
+	templatename="filelist.vm";
+}

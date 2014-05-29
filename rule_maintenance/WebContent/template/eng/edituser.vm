@@ -1,0 +1,38 @@
+#set($pagetitle='User Maintenance')
+<p class="heading">User maintenance <b>$!{rssuser.name}</b></p>
+<p>This page allows you to edit the currently selected user.</p>
+<p>Back to: <a href="process?action=bsh&ro=1&scriptname=listusers">list of users</a></p>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=edituser"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=edituser&id=${rssuser.id}"> 
+#end
+<input type="hidden" name="id" value="${rssuser.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Userid:</td>
+		<td>
+			<input name="userid" type="text" size="15" maxlength="80" value="$!{rssuser.userid}">
+		</td>
+	</tr>
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{rssuser.name}">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end
+

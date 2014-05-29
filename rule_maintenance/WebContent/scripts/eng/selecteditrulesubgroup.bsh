@@ -1,0 +1,42 @@
+import java.io.*;
+import com.datamelt.db.RuleSubgroup;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	id=Long.parseLong(request.getParameter("id"));
+	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+	mode=request.getParameter("mode");
+	context.put("mode",mode);
+	if(mode!=null && !mode.equals("add"))
+	{
+		RuleSubgroup rulesubgroup = new RuleSubgroup();
+		rulesubgroup.connection = connection;
+		rulesubgroup.id=id;
+		rulesubgroup.load();
+		context.put("rulesubgroup",rulesubgroup);
+	}
+	else
+	{
+		RuleSubgroup rulesubgroup = new RuleSubgroup();
+		context.put("rulesubgroup",rulesubgroup);
+	}
+	
+	RuleGroup rulegroup = new RuleGroup();
+	rulegroup.connection = connection;
+	rulegroup.id = rulegroupid;
+	rulegroup.load();
+	context.put("rulegroup",rulegroup);
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = rulegroup.projectId;
+	project.load();
+	context.put("project",project);
+		
+	templatename="editrulesubgroup.vm";
+}
