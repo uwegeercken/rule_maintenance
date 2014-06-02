@@ -3,13 +3,23 @@
 @charset 'UTF-8';
 body
 {
-	background-color: white;
 	font: normal 9pt/1.4 verdana, sans-serif;
+	
 }
 
 * {
-	background-color: white;
 	font: normal 9pt/1.4 verdana, sans-serif;
+	
+}
+
+#title > p
+{
+	margin-left: 180px;
+	padding-top: 30px;
+	height: 50px;
+	font: normal 16pt/1.2 verdana, sans-serif;		
+	font-weight: bold;
+	
 }
 
 p
@@ -64,6 +74,7 @@ a
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
+
 }
 
 .unitclear 
@@ -386,6 +397,43 @@ div.horizontaldevider {
 			top: 0px;
 			opacity: 1;
 		}
+
+
+#flip {
+	float: left;
+	height: 70px;
+	margin-left: 30px;
+	z-index: 11;
+	
+	transform-style: preserve-3d;
+}
+#flip .front,
+#flip .back {
+	width: 90px;
+	height: 70px;
+	display: block;
+	position: absolute;
+
+	transition: transform 1s ease-in-out;
+}
+#flip .front {
+	transform: rotateY(0deg);
+	backface-visibility: hidden;
+	z-index: 13;
+}
+#flip:hover .front {
+	transform: rotateY(180deg);
+}
+#flip .back {
+	transform: rotateY(-180deg);
+	backface-visibility: hidden;
+	z-index: 12;
+	
+}
+#flip:hover .back {
+	transform: rotateY(0deg);
+	z-index: 14;
+}
 
 
 -->

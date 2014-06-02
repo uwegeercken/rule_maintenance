@@ -1,6 +1,11 @@
-<table width="100%" border="0" cellspacing="0" cellpadding="4">
-	<tr class="heading">
-		<td width="160px"><img heigth="70px" width="70px" src="img/rulemaintenance.png"></td>
-		<td class="title">Business Rules Maintenance Tool</td>
-	</tr>
-</table>
+<div id="flip">
+	<div class="front">
+		<img heigth="90px" width="90px" src="img/datamelt.png">
+	</div>
+	<div class="back">
+		<img heigth="90px" width="90px" src="img/datamelt_com.png">
+	</div>
+</div>
+<div id="title">
+	<p>Business Rules Maintenance Tool</p>
+</div>

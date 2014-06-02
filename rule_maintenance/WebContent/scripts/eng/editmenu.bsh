@@ -19,12 +19,17 @@ else
 		p.close();
 		out.close();
 	}
-	f = new File(scriptspath);
-	context.put("filelist",f.list());
-	context.put("filepath",scriptspath);
 	
+	f = new File(scriptspath);
+	File[] files = f.listFiles();
+	Arrays.sort(files);
+	context.put("filelist",files);
+	context.put("filepath",scriptspath);
+
 	f2 = new File(templatespath);
-	context.put("templateslist",f2.list());
+	File[] files2 = f2.listFiles();
+	Arrays.sort(files2);
+	context.put("templateslist",files2);
 	context.put("templatespath",templatespath);
 	
 	templatename="filelist.vm";
