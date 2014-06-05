@@ -10,7 +10,7 @@
 <div id="filter">
 	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
 </div>
-<div class="unitsmall" tag="$!{project.name}">
+<div class="unitsmall">
 	<div class="grouptop">
 		<p class="small">project</p>
 		<p class="big">$!{project.name}</a></p>
