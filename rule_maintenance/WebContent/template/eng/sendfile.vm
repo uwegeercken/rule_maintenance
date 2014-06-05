@@ -15,7 +15,7 @@
 			<select name="id" size="1">
 			<option value="0"></option>
 			#foreach($project in $projects)
-					<option value="$project.id">${project.name}, ${project.description}</option>
+					<option value="$project.id">${project.name} - ${project.description}</option>
 			#end
     		</select>
 		</td>

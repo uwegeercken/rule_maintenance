@@ -28,7 +28,7 @@
 			<p class="normal">$!{rulesubgroup.description}</p>
 			</div>
 			<div>
-				<p class="small">rules connector: $!{rulesubgroup.ruleOperator}</p>
+				<p class="small">rules connector: <b>$!{rulesubgroup.ruleOperator}</b></p>
 			</div>
 		</div>
 		
