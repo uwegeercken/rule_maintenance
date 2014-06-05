@@ -10,15 +10,20 @@
 <div id="filter">
 	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
 </div>
-<div class="unit" tag="$!{project.name}">
-		<div class="grouptop">
-			<p class="small">project</p>
-			<p class="big">$!{project.name}</a></p>
-			<p class="normal">$!{project.description}</p>
-		</div>
+<div class="unitsmall" tag="$!{project.name}">
+	<div class="grouptop">
+		<p class="small">project</p>
+		<p class="big">$!{project.name}</a></p>
+		<p class="normal">$!{project.description}</p>
 	</div>
+</div>
+#set($counter=0)
 #foreach($rulegroup in $rulegroups)
-	<div class="unit" tag="$!{rulegroup.name}">
+	#if($counter>0)
+		<div class="unit" tag="$!{rulegroup.name}">
+	#else
+		<div class="unitclear" tag="$!{rulegroup.name}">
+	#end
 		<a href="process?action=bsh&ro=1&scriptname=selectdeleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete rulegroup"></a>
 		<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit rulegroup"></a>
 		<div class="grouptop">
@@ -30,4 +35,5 @@
 			<p class="small">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
 		</div>
 	</div>
+	#set($counter=$counter+1)
 #end

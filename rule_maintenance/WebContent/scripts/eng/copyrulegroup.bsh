@@ -58,7 +58,7 @@ else
 				}
 			}
 			
-			for(int f=0;f<rulegroupCopy.ruleSubgroups.size();f++)
+			for(int f=0;f<rulegroupCopy.actions.size();f++)
 			{
 				RuleGroupAction action = rulegroupCopy.actions.get(f);
 				action.rulegroupId = rulegroupNew.id;

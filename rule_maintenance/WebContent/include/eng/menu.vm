@@ -11,7 +11,7 @@
 	</ul>
 #if($user)
 	<ul>	
-		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">list projects</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">generate file</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selecttestproject">test project</a></li>
 	</ul>

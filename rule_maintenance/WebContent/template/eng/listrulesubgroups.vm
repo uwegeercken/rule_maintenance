@@ -7,6 +7,23 @@
 	<p>Actions apply to the rule group.</p>
 	<p><img height="24" width="24" src="img/plus_blue.png">&nbsp;add subgroup&nbsp;<img height="24" width="24" src="img/plus_green.png">&nbsp;add action &nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add rule&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy/rule/action</p>
 </div>
+<div class="unitsmall">
+		<div class="grouptop">
+			<p class="small">project</p>
+			<p class="big">$!{project.name}</a></p>
+			<p class="normal">$!{project.description}</p>
+		</div>
+	</div>
+<div class="unitsmall">
+		<div class="grouptop">
+			<p class="small">rulegroup</p>
+			<p class="big">$!{rulegroup.name}</a></p>
+			<p class="normal">$!{rulegroup.description}</p>
+		</div>
+		<div>
+			<p class="small">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
+		</div>
+	</div>
 	#set($counter=0)
 	#foreach($rulesubgroup in $rulesubgroups)
 	#if($counter>0)

@@ -77,6 +77,19 @@ a
 
 }
 
+.unitsmall 
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	margin: 8px;
+	width: 280px;
+	height: 120px;
+	float: left;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+}
+
 .unitclear 
 {
 	border: 1px solid #3a3a3a;
@@ -191,7 +204,8 @@ a:active
 	border: 1px solid #3a3a3a;
 	border-radius: 4px;
 	margin: 10px;
-	margin-left: 20px;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 10px;
 	padding-top: 20px;
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
