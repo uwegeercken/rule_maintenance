@@ -13,16 +13,16 @@ else
 	context.put("mode",mode);
 	if(mode!=null && !mode.equals("add"))
 	{
-		User rssUser = new User();
-		rssUser.connection = connection;
-		rssUser.id=id;
-		rssUser.load();
-		context.put("rssuser",rssUser);
+		User dbUser = new User();
+		dbUser.connection = connection;
+		dbUser.id=id;
+		dbUser.load();
+		context.put("dbuser",dbUser);
 	}
 	else
 	{
-		User rssUser = new User();
-		context.put("rssuser",rssUser);
+		User dbUser = new User();
+		context.put("dbuser",dbUser);
 	}
 	
 	templatename="edituser.vm";

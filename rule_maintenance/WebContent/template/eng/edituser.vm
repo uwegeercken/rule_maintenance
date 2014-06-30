@@ -7,20 +7,20 @@
 	<form method="POST" action="process?action=bsh&scriptname=edituser"> 
 	
 #else
-	<form method="POST" action="process?action=bsh&scriptname=edituser&id=${rssuser.id}"> 
+	<form method="POST" action="process?action=bsh&scriptname=edituser&id=${dbuser.id}"> 
 #end
 <input type="hidden" name="id" value="${rssuser.id}">
 <table align="center" width="95%" border="0">
 	<tr> 
 		<td>Userid:</td>
 		<td>
-			<input name="userid" type="text" size="15" maxlength="80" value="$!{rssuser.userid}">
+			<input name="userid" type="text" size="15" maxlength="80" value="$!{dbuser.userid}">
 		</td>
 	</tr>
 	<tr> 
 		<td>Name:</td>
 		<td>
-			<input name="name" type="text" size="40" maxlength="80" value="$!{rssuser.name}">
+			<input name="name" type="text" size="40" maxlength="80" value="$!{dbuser.name}">
 		</td>
 	</tr>
 	<tr>

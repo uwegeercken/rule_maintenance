@@ -49,8 +49,6 @@ public class BeanshellAction extends Action
             Message message = new Message();
             interpreter.set("infomessage",message); 
             
-            //ProcessBuilder pb = new ProcessBuilder("/usr/local/apache-ant-1.8.4/bin/ant", "-f", "xmlFileName");
-            
             interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
 
             if(!checkWriteAccessOk(interpreter, user))

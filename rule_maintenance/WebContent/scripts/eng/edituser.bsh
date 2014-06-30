@@ -16,59 +16,59 @@ else
 		name=request.getParameter("name");
 		userid=request.getParameter("userid");
 	
-		User rssUser = new User();
-		rssUser.setConnection(connection);
+		User dbUser = new User();
+		dbUser.setConnection(connection);
 		if(id>0)
 		{
-			rssUser.setId(id);
-			rssUser.load();
-			if((rssUser.userid.equals(userid) ||(!rssUser.userid.equals(userid)&& !rssUser.exist(userid))) && userid.length()>0 && name.length()>0 )
+			dbUser.setId(id);
+			dbUser.load();
+			if((dbUser.userid.equals(userid) ||(!dbUser.userid.equals(userid)&& !dbUser.exist(userid))) && userid.length()>0 && name.length()>0 )
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
-				rssUser.update(connection.getPreparedStatement(User.UPDATE_SQL));
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
+				dbUser.update(connection.getPreparedStatement(User.UPDATE_SQL));
 				infomessage.text="User updated.";
 			}
-			else if(!rssUser.userid.equals(userid)&& rssUser.exist(userid) && userid.length()>0)
+			else if(!dbUser.userid.equals(userid)&& dbUser.exist(userid) && userid.length()>0)
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
 				infomessage.type="error";
 				infomessage.text="User already exists.";
 			}
 			else
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
 				infomessage.type="error";
 				infomessage.text="Userid and name must be specified.";
 			}
 		}
 		else
 		{
-			if(!rssUser.exist(userid) && userid.length()>0 && name.length()>0)
+			if(!dbUser.exist(userid) && userid.length()>0 && name.length()>0)
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
-				rssUser.insert(connection.getPreparedStatement(User.INSERT_SQL));
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
+				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL));
 				infomessage.text="User added.";
 			}
-			else if(rssUser.exist(userid)&& userid.length()>0)
+			else if(dbUser.exist(userid)&& userid.length()>0)
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
 				infomessage.type="error";
 				infomessage.text="User already exists.";
 			}
 			else
 			{
-				rssUser.setName(name);
-				rssUser.setUserid(userid);
+				dbUser.setName(name);
+				dbUser.setUserid(userid);
 				infomessage.type="error";
 				infomessage.text="Userid and name must be specified.";
 			}
 		}
-		context.put("rssuser",rssUser);
+		context.put("dbuser",dbUser);
 		templatename="edituser.vm";
 	}
 	else

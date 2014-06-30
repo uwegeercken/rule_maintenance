@@ -1,6 +1,6 @@
 #set($pagetitle='User List')
 <p class="heading">User List</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add project"></a></p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add project"></a></p>
 <div id="help">
 	<p>List of available Users with access to this application.</p>
 	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
@@ -10,7 +10,7 @@
 </div>
 #foreach($appuser in $users)
 	<div class="unit" tag="$!appuser.name">
-		<img class="delete" height="24px" width="24px" src="img/remove_disabled.png" title="delete disbaled">
+		<img class="delete" height="24px" width="24px" src="img/remove_disabled.png" title="delete disabled">
 		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit"></a>
 		<div class="grouptop">
 			<p class="small">user</p>
