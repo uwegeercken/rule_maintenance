@@ -138,18 +138,20 @@ public class Project extends DatabaseRecord implements Loadable
 		return p.executeQuery();
     }
 	
+//	name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id) values (?,?,?,?,?,?,?,?)";
+
 	public void update(PreparedStatement p) throws Exception
 	{
 		p.setString(1,name);
 		p.setString(2,description);
-		p.setLong(3,user.getId());
 		p.setString(3,databaseHostname);
 		p.setString(4,databaseName);
 		p.setString(5,databaseTableName);
 		p.setString(6,databaseUserid);
 		p.setString(7,databaseUserPassword);
+		p.setLong(8,user.getId());
 		
-		p.setLong(8,getId());
+		p.setLong(9,getId());
 
 		try
 		{

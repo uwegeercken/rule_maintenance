@@ -22,7 +22,7 @@ else
 		{
 			project.setId(id);
 			project.load();
-			if((project.name.equals(name) ||(!project.name.equals(name)&& !project.exist(name))) && name.length()>0)
+			if(project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0))
 			{
 				project.setName(name);
 				project.setDescription(description);
@@ -30,7 +30,7 @@ else
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL));
 				infomessage.text="Project updated.";
 			}
-			else if(!project.name.equals(name)&& project.exist(name) && name.length()>0)
+			else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
 			{
 				project.setName(name);
 				project.setDescription(description);
