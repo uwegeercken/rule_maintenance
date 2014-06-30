@@ -1,5 +1,5 @@
 #set($pagetitle='User Maintenance')
-<p class="heading">User maintenance <b>$!{rssuser.name}</b></p>
+<p class="heading">User maintenance <b>$!{dbuser.name}</b></p>
 <p>This page allows you to edit the currently selected user.</p>
 <p>Back to: <a href="process?action=bsh&ro=1&scriptname=listusers">list of users</a></p>
 <div class="formbox">
@@ -9,7 +9,7 @@
 #else
 	<form method="POST" action="process?action=bsh&scriptname=edituser&id=${dbuser.id}"> 
 #end
-<input type="hidden" name="id" value="${rssuser.id}">
+<input type="hidden" name="id" value="${dbuser.id}">
 <table align="center" width="95%" border="0">
 	<tr> 
 		<td>Userid:</td>

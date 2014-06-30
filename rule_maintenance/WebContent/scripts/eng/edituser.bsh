@@ -62,7 +62,7 @@ else
 			}
 			else
 			{
-				dbUser.setName(name);
+				dbUser.setName(name); 
 				dbUser.setUserid(userid);
 				infomessage.type="error";
 				infomessage.text="Userid and name must be specified.";
