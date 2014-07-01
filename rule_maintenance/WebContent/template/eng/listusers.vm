@@ -15,7 +15,8 @@
 		<div class="grouptop">
 			<p class="small">user</p>
 			<p class="big">$!appuser.name</a></p>
-			<p class="normal">$!appuser.userid</p>
+			<p class="normal">Userid: $!appuser.userid</p>
+			<p class="normal">Groups: $!{appuser.getGroupsAsString()}</p>
 		</div>
 		<div>
 			<p>last login: $!{appuser.lastLogin}</p>

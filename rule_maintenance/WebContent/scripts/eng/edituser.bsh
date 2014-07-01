@@ -1,5 +1,6 @@
 import com.datamelt.db.User;
 import com.datamelt.db.DbCollections;
+import com.datamelt.util.PasswordUtility;
 
 adminaction="true";
 if(user==null)
@@ -50,8 +51,10 @@ else
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
-				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL));
-				infomessage.text="User added.";
+				
+				String password=PasswordUtility.generateRandomPassword();
+				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password);
+				infomessage.text="User added. Password: " + password;
 			}
 			else if(dbUser.exist(userid)&& userid.length()>0)
 			{

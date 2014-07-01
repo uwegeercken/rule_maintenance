@@ -33,7 +33,7 @@ public class User extends DatabaseRecord implements Loadable
     public static final String UPDATE_SQL       		 = "update user set userid=?, name=? where id =?";
     public static final String ADD_GROUP_MEMBERSHIP  	 = "insert into groupuser (groups_id,user_id) values (?,?)";
     public static final String DELETE_GROUP_MEMBERSHIP	 = "delete from groupuser where groups_id=? and user_id=?";
-    public static final String INSERT_SQL       		 = "insert into user (userid, name) values (?,?)";
+    public static final String INSERT_SQL       		 = "insert into user (userid, name, password) values (?,?,password(?))";
     public static final String ADMINISTRATOR             = "admin";
     public static final String READ_WRITE_USER           = "user";
     public static final String READ_USER		         = "user_ro";
@@ -91,10 +91,27 @@ public class User extends DatabaseRecord implements Loadable
         rs.close();
     }
     
-    public void insert(PreparedStatement p) throws Exception
+    public String getGroupsAsString()
+    {
+    	StringBuffer buffer = new StringBuffer();
+    	for(int i=0;i<groups.size();i++)
+    	{
+    		Group group = groups.get(i);
+    		buffer.append(group.getDescription());
+    		if(i<groups.size()-1)
+    		{
+    			buffer.append(", ");
+    		}
+    		
+    	}
+    	return buffer.toString();
+    }
+    
+    public void insert(PreparedStatement p, String userPassword) throws Exception
     {
         p.setString(1,userid);
         p.setString(2,name);
+        p.setString(3, userPassword);
         p.execute();
         
         setId(getConnection().getLastInsertId());

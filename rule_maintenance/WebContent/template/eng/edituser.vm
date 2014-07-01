@@ -1,5 +1,5 @@
 #set($pagetitle='User Maintenance')
-<p class="heading">User maintenance <b>$!{dbuser.name}</b></p>
+<p class="heading">User maintenance: <b>$!{dbuser.name}</b></p>
 <p>This page allows you to edit the currently selected user.</p>
 <p>Back to: <a href="process?action=bsh&ro=1&scriptname=listusers">list of users</a></p>
 <div class="formbox">
