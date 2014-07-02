@@ -26,17 +26,18 @@ public class User extends DatabaseRecord implements Loadable
     private int deleted;
     private String deletedDate;
     private ArrayList<Group> groups=new ArrayList<Group>();
-    private boolean isLdapUser = false;
     
-    public static final String UPDATE_PASSWORD_SQL       = "update user set password=password(?) where id =?";
-    public static final String UPDATE_LASTLOGIN_SQL      = "update user set lastlogin=? where id =?";
-    public static final String UPDATE_SQL       		 = "update user set userid=?, name=? where id =?";
-    public static final String ADD_GROUP_MEMBERSHIP  	 = "insert into groupuser (groups_id,user_id) values (?,?)";
-    public static final String DELETE_GROUP_MEMBERSHIP	 = "delete from groupuser where groups_id=? and user_id=?";
-    public static final String INSERT_SQL       		 = "insert into user (userid, name, password) values (?,?,password(?))";
-    public static final String ADMINISTRATOR             = "admin";
-    public static final String READ_WRITE_USER           = "user";
-    public static final String READ_USER		         = "user_ro";
+    public static final String UPDATE_PASSWORD_SQL          = "update user set password=password(?) where id =?";
+    public static final String UPDATE_LASTLOGIN_SQL         = "update user set lastlogin=? where id =?";
+    public static final String UPDATE_SQL       		    = "update user set userid=?, name=? where id =?";
+    public static final String DELETE_SQL       		    = "update user set deleted=?, deleted_date=? where id =?";
+    public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into groupuser (groups_id,user_id) values (?,?)";
+    public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from groupuser where groups_id=? and user_id=?";
+    public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from groupuser where user_id=?";
+    public static final String INSERT_SQL       		    = "insert into user (userid, name, password) values (?,?,password(?))";
+    public static final String ADMINISTRATOR                = "admin";
+    public static final String READ_WRITE_USER              = "user";
+    public static final String READ_USER		            = "user_ro";
     
     public void load() throws Exception
     {
@@ -141,7 +142,7 @@ public class User extends DatabaseRecord implements Loadable
         p.execute();
     }
 
-    public void deleteAllUserGroups(PreparedStatement p) throws Exception
+    public void deleteAllGroupMemberships(PreparedStatement p) throws Exception
     {
         p.setLong(1,getId());
         p.execute();
@@ -373,11 +374,6 @@ public class User extends DatabaseRecord implements Loadable
     public void setDeletedDate(String deletedDate)
     {
         this.deletedDate = deletedDate;
-    }
-    
-    public boolean isLdapUser()
-    {
-        return isLdapUser;
     }
     
 }

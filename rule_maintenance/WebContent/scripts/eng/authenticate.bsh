@@ -13,7 +13,7 @@ user.setUserid(userid);
 user.setConnection(connection);
 user.loadByUserid();
 
-if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals(""))
+if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals("") || user.deleted==1)
 {
 	infomessage.type="error";
 	infomessage.text="Login invalid";

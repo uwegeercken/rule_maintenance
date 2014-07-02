@@ -16,6 +16,7 @@ else
 		id=Long.parseLong(request.getParameter("id"));
 		name=request.getParameter("name");
 		userid=request.getParameter("userid");
+		String[] groups = request.getParameterValues("groups");
 	
 		User dbUser = new User();
 		dbUser.setConnection(connection);
@@ -27,6 +28,16 @@ else
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
+				dbUser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS));
+				if(groups!=null)
+				{
+					for(int i=0;i<groups.length;i++)
+					{
+						long groupId = Long.parseLong(groups[i]);
+						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId);
+					}
+				}
+				dbUser.loadGroups();
 				dbUser.update(connection.getPreparedStatement(User.UPDATE_SQL));
 				infomessage.text="User updated.";
 			}
@@ -54,6 +65,15 @@ else
 				
 				String password=PasswordUtility.generateRandomPassword();
 				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password);
+				if(groups!=null)
+				{
+					for(int i=0;i<groups.length;i++)
+					{
+						long groupId = Long.parseLong(groups[i]);
+						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId);
+					}
+				}
+				dbUser.loadGroups();
 				infomessage.text="User added. Password: " + password;
 			}
 			else if(dbUser.exist(userid)&& userid.length()>0)
@@ -72,6 +92,10 @@ else
 			}
 		}
 		context.put("dbuser",dbUser);
+		
+		ArrayList allgroups = DbCollections.getAllGroups(connection);
+		context.put("groups",allgroups);
+		
 		templatename="edituser.vm";
 	}
 	else

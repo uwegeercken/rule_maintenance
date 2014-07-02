@@ -137,9 +137,26 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList<Group> getAllGroups(MySqlConnection connection) throws Exception
+    {
+        String sql="select id from groups order by id";	
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<Group> list = new ArrayList<Group>();
+        while(rs.next())
+        {
+        	Group group = new Group();
+        	group.setConnection(connection);
+        	group.setId(rs.getLong("id"));
+        	group.load();
+            list.add(group);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static ArrayList <User> getAllUsers(MySqlConnection connection) throws Exception
     {
-        String sql="select id from user" + 
+        String sql="select id from user where deleted=0" + 
         	" order by name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <User> list = new ArrayList<User>();

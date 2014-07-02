@@ -25,5 +25,8 @@ else
 		context.put("dbuser",dbUser);
 	}
 	
+	ArrayList groups = DbCollections.getAllGroups(connection);
+	context.put("groups",groups);
+	
 	templatename="edituser.vm";
 }
