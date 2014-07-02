@@ -188,13 +188,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
         }
         String readOnlyDbAccess = request.getParameter("ro");
 	    String command = request.getParameter(DEFAULT_ACTION_NAME); 
-	    String reqUrl = request.getRequestURL().toString();
-	    
-	    if(scriptName!=null && !scriptName.equals("authenticate") && !scriptName.equals("login") && !scriptName.equals("logout")&& !authenticated.equals(""))
-	    {
-	    	request.getSession().setAttribute("requestquery",request.getQueryString());
-	    }
-	    	
 		if (command!=null)
 		{
 		    className= actions.getProperty(command);
@@ -222,19 +215,9 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 		        }
 		        action.setConnection(con);
 			    actionTemplate = action.execute(request, response, context, interpreter, scriptName, pluginLoader.getPlugins());
-			    
-			    // redirecting to the originally requested page
-			    if(scriptName.equals("authenticate") && request.getSession().getAttribute("requestquery")!=null)
-			    {
-			    	String requestquery = (String) request.getSession().getAttribute("requestquery");
-			    	String urlWithSessionID = response.encodeRedirectURL(reqUrl + "?" + requestquery);
-			    	response.sendRedirect( urlWithSessionID );
-			    }
-			    
 			    con.close();
-			    
+   
 		    	template  = getTemplate(language + "/" + actionTemplate);
-
 			}
 		    
 			catch (ClassNotFoundException cnfe)
