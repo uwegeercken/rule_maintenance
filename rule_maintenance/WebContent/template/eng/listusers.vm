@@ -10,13 +10,13 @@
 </div>
 #foreach($appuser in $users)
 	<div class="unit" tag="$!appuser.name">
-		<a href="process?action=bsh&ro=1&scriptname=selectdeleteuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete user"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selectdeleteuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="deactivate user"></a>
 		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit"></a>
 		<div class="grouptop">
 			<p class="small">user</p>
 			<p class="big">$!appuser.name</a></p>
-			<p class="normal">Userid: $!appuser.userid</p>
-			<p class="normal">Groups: $!{appuser.getGroupsAsString()}</p>
+			<p class="normal">userid: $!appuser.userid</p>
+			<p class="normal">groups: $!{appuser.getGroupsAsString()}</p>
 		</div>
 		<div>
 			<p>last login: $!{appuser.lastLogin}</p>

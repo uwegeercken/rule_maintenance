@@ -6,7 +6,7 @@ cancelled= request.getParameter("submit");
 
 id=Long.parseLong(request.getParameter("id"));
 
-if(cancelled.equals("delete user"))
+if(cancelled.equals("deactivate user"))
 {
 	User dbuser = new User();
 	dbuser.connection = connection;
