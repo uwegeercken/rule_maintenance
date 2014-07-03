@@ -4,7 +4,7 @@
 <p>Enter your userid and password to login below.</p>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=authenticate"> 
-<table align="center" border="0" cellpadding="2" cellspacing="4">
+<table align="center" border="0" cellpadding="2" cellspacing="4" style="text-align:center;margin-left: auto;margin-right: auto;width:200px;">
 	<tr> 
 		<td>Userid:</td>
 		<td><input type="text" id="userid" name="userid" size="20" maxlength="20" value="$!{userid}"></td>
