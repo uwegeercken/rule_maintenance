@@ -1,6 +1,7 @@
 #set($pagetitle='Delete file')
 <p class="heading">Delete file</p>
 <p>This page allows you to delete the currently selected file.</p>
+<div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=deletefile&name=${filename}"> 
 	<div class="unitclear" tag="$!{filename}">
 		<div class="grouptop">
@@ -8,11 +9,9 @@
 			<p class="big">$!{filename}</p>
 		</div>
 	</div> 
-<div class="bottomtext">	
-<p>Are you sure you want to delete this file?</p>
-<p><input type="submit" value="delete file" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
-</div>
+	<div class="bottomtext">	
+		<p>Are you sure you want to delete this file?</p>
+		<p><input type="submit" value="delete file" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+	</div>
 </form>
-<br>
-<br>
-<br>
+</div>

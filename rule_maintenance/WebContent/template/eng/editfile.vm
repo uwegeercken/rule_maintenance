@@ -36,6 +36,6 @@
 </table>
 </form>
 #if (${infomessage})
-	<p class="errormessage" align="center">$infomessage.text</p>
+	<p align="center">#insert_message($infomessage)</p>
 #end
 

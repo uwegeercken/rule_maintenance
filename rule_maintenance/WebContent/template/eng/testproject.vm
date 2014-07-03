@@ -100,7 +100,7 @@
 </form>
 </div>
 #if (${infomessage})
-	<p align="center"><b>#insert_message($infomessage)</b></p>
+	<p align="center">#insert_message($infomessage)</p>
 #end
 
 #if(${records.size()}>0)

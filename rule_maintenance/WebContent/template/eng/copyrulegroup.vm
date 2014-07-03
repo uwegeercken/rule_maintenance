@@ -53,7 +53,6 @@
 </table>
 </form>
 <div>
-
 #if (${infomessage})
 	<p align="center">#insert_message($infomessage)</p>
 #end

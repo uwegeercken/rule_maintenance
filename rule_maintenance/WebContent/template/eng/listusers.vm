@@ -19,7 +19,7 @@
 			<p class="normal">groups: $!{appuser.getGroupsAsString()}</p>
 		</div>
 		<div>
-			<p>last login: $!{appuser.lastLogin}</p>
+			<p class="small">last login: $!{appuser.lastLogin}</p>
 		</div>
 	</div>
 #end

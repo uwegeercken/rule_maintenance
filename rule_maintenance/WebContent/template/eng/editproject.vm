@@ -35,11 +35,11 @@
 	</tr>
 </table>
 </form>
-</div>
-#if (${infomessage})
-	<p class="errormessage" align="center">$infomessage.text</p>
-#end
 #if(${project.id}>0)
-</br>
-<p class="small">last edited by: ${project.user.name}, ${project.lastUpdate}</p>
+	<p class="small">last edited by: ${project.user.name}, ${project.lastUpdate}</p>
+#end
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
 #end

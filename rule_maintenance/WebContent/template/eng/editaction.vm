@@ -154,11 +154,10 @@
 	</tr>
 </table>
 </form>
+#if(${action.id}>0)
+<p>last edited by: ${action.user.name}, ${action.lastUpdate}</p>
+#end
 </div>
 #if (${infomessage})
-	<p class="errormessage" align="center">$infomessage.text</p>
-#end
-#if(${action.id}>0)
-</br>
-<p>last edited by: ${action.user.name}, ${action.lastUpdate}</p>
+	<p align="center">#insert_message($infomessage)</p>
 #end
