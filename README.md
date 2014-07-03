@@ -8,3 +8,6 @@ On the highest level there are projects. A project contains one to many rule gro
 Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not.
 
 
+Note 1: make sure that you have imported the database schema.
+Note 2: adjust the web.xml file - containing database connection information - according to your local settings.
+
