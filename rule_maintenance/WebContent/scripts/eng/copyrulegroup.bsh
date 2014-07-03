@@ -30,6 +30,7 @@ else
 		rulegroupNew.validFrom=request.getParameter("valid_from");
 		rulegroupNew.validUntil=request.getParameter("valid_until");
 		rulegroupNew.projectId = Long.parseLong(request.getParameter("projectid"));
+		rulegroupNew.user.id = user.id;
 	
 		boolean validFromFormatOk = false;
 		boolean validUntilFormatOk = false;
@@ -69,12 +70,14 @@ else
 			{
 				RuleSubgroup subgroup = rulegroupCopy.ruleSubgroups.get(i);
 				subgroup.rulegroupId = rulegroupNew.id;
+				subgroup.user.id = user.id;
 				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
 				
 				for(int f=0;f<subgroup.rules.size();f++)
 				{
 					Rule rule = subgroup.rules.get(f);
 					rule.rulesubgroupId = subgroup.id;
+					rule.user.id = user.id;
 					rule.insert(connection.getPreparedStatement(Rule.INSERT_SQL));
 				}
 			}
@@ -83,6 +86,7 @@ else
 			{
 				RuleGroupAction action = rulegroupCopy.actions.get(f);
 				action.rulegroupId = rulegroupNew.id;
+				action.user.id = user.id;
 				action.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL));
 			}
 			

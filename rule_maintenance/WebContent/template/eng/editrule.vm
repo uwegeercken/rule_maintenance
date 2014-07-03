@@ -116,10 +116,10 @@
 	</tr>
 </table>
 </form>
+#if(${rule.id}>0)
+<p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
+#end
 </div>
 #if (${infomessage})
 	<p class="errormessage" align="center">$infomessage.text</p>
-#end
-#if(${rule.id}>0)
-<p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
 #end
