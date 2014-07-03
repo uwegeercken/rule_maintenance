@@ -10,7 +10,7 @@
 
 	</div>
 </div>
-<div class="bottomtext">
+<div class="bottomtext"> 
 <p>Are you sure you want to deactivate this user?</p>
 <p><input type="submit" value="deactivate user" name="submit"><input type="submit" value="cancel deactivation" name="submit"></p>
 </div>	
