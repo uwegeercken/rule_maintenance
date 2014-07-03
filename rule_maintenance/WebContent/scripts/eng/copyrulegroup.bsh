@@ -21,7 +21,7 @@ else
 	
 	if(cancelled.equals("copy"))
 	{
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		RuleGroup rulegroupNew = new RuleGroup();	
 		rulegroupNew.connection = connection;
@@ -31,10 +31,31 @@ else
 		rulegroupNew.validUntil=request.getParameter("valid_until");
 		rulegroupNew.projectId = Long.parseLong(request.getParameter("projectid"));
 	
+		boolean validFromFormatOk = false;
+		boolean validUntilFormatOk = false;
+		try
+		{
+        	sdf.parse(rulegroupNew.validFrom);
+        	validFromFormatOk = true;
+     	}
+     	catch(ParseException e)
+     	{
+         	validFromFormatOk = false;
+     	}
+     	try
+		{
+        	sdf.parse(rulegroupNew.validUntil);
+        	validUntilFormatOk = true;
+     	}
+     	catch(ParseException e)
+     	{
+          validUntilFormatOk = false;
+     	}
+	
 		RuleGroup rulegroup = new RuleGroup();
 		rulegroup.setConnection(connection);
 		
-		if(!rulegroupNew.exist(rulegroupNew.name) && rulegroupNew.name.length()>0)
+		if(!rulegroupNew.exist(rulegroupNew.name) && rulegroupNew.name.length()>0 && validFromFormatOk==true && validUntilFormatOk==true && rulegroupNew.validFrom!=null && !rulegroupNew.validFrom.equals("") && rulegroupNew.validUntil!=null && !rulegroupNew.validUntil.equals(""))
 		{
 			rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL));
 			
@@ -66,6 +87,21 @@ else
 			}
 			
 			infomessage.text="Rule Group added. Subgroups, rules and actions copied.";
+		}
+		else if(rulegroupNew.validFrom==null || rulegroupNew.validFrom.equals("") || rulegroupNew.validUntil==null || rulegroupNew.validUntil.equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Valid From and Valid Until can not be empty.";
+		}
+		else if(validFromFormatOk==false)
+		{
+			infomessage.type="error";
+			infomessage.text="Valid From format invalid.";
+		}
+		else if(validUntilFormatOk==false)
+		{
+			infomessage.type="error";
+			infomessage.text="Valid Until format invalid.";
 		}
 		else if(rulegroupNew.exist(rulegroupNew.name) && rulegroupNew.name.length()>0)
 		{
