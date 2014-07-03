@@ -6,7 +6,7 @@
 <br>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=copyrulegroup&projectid=${project.id}"> 
-<table align="center" width="95%" border="0">
+<table align="center" width="95%" border="0"> 
 	<tr>
 		<td>Name:</td>
 		<td>
