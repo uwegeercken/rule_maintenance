@@ -3,7 +3,7 @@ import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
 import com.datamelt.db.DbCollections;
 
-adminaction="true";
+writeaction="true";
 if(user==null)
 {
 	templatename="login.vm";
