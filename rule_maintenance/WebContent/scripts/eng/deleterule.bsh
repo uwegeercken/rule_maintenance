@@ -1,6 +1,6 @@
 import java.sql.PreparedStatement;
 
-writeaction="true";
+writeaction="true"; 
 cancelled= request.getParameter("submit");
 
 ruleid=Long.parseLong(request.getParameter("ruleid"));
