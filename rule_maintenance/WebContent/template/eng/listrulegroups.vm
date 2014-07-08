@@ -3,8 +3,8 @@
 <p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img height="24" width="24" src="img/go_back.png" title="go back: Project List"></a><a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=0&projectid=${project.id}&mode=change"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add rulegroup"></a><a href="process?action=bsh&ro=1&scriptname=selectcopyrulegroup&id=0&projectid=${project.id}"><img class="copy_external" height="24px" width="24px" src="img/copy.png" title="copy rulegroup"></a></p>
 <div id="help">
 	<p>List of available Rule Groups. A Rule Group is a collection of subgroups and rules that belong together to define certain checks and actions.</p>
-	<p>Rule groups have a from/to date when they are valid and may be copied - including subgroups, rules and actions.</p>
-	<p>Click on the name of the group to get a list of subgroups, rules and actions.</p>
+	<p>Rule groups have a from/to date when they are valid. Rule groups may be copied - including subgroups, rules and actions.</p>
+	<p>Click on the name of the rule group to get a list of subgroups, rules and actions.</p>
 	<p><img height="24" width="24" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new rule group&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy rule group</p>
 </div>
 <div id="filter">

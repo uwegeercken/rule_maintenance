@@ -1,7 +1,7 @@
 #set($pagetitle='About')
-<p class="heading">About Rule maintenance Application</p>
+<p class="heading">About Business Rules Maintenance Tool</p>
 <p>Version: ${version} (${lastupdate})</p>
-<p>This web-application uses modern, state-of-the-art technologies to present the content to the user. on the other hand the application can be rapidly updated and maintained. this is achieved by using a MVC (Model-View-Controller) paradigm and by implementing an advanced template engine (Velocity).</p>
+<p>This web application uses modern, state-of-the-art technologies to present the content to the user. on the other hand the application can be rapidly updated and maintained. this is achieved by using a MVC (Model-View-Controller) paradigm and by implementing an advanced template engine (Velocity).</p>
 <p>Given these advantages, paired with a high-speed quality database, RAD (Rapid Application Development) is indeed possible.</p>
 <p>The applied technologies of the application are:</p>
 <ul>
@@ -17,9 +17,11 @@
 	<li>HTML 4 conformal browser.</li>
 	<li>Some functionality requires Javascript.</li>
 </ul>
+<p>Check for new versions and other tools on <a href="http://github.com/uwegeercken">GitHub</a></p>
 <br>
 <br>
-<p>Copyright datamelt.com, 2014. All code by: Uwe Geercken</p>
+<p>Copyright datamelt.com, 2014. All code by: Uwe Geercken, uwe.geercken@web.de</p>
+
 <br />
 <table width="90%" border="0" align="center">
 <tr>

@@ -117,11 +117,7 @@
 </table>
 </form>
 #if(${rule.id}>0)
-<<<<<<< HEAD
-	<p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
-=======
 <p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
->>>>>>> refs/remotes/origin/master
 #end
 </div>
 #if (${infomessage})

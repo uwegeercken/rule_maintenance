@@ -4,7 +4,7 @@
 <div id="help">
 	<p>List of available subgroups, rules and actions for the selected rule group.</p>
 	<p>Subgroups are connected to the previous subgroup by [and] or [or]. Rules in a subgroup are connected by [and] or [or].</p>
-	<p>Actions apply to the rule group.</p>
+	<p>Actions apply to the whole rule group.</p>
 	<p><img height="24" width="24" src="img/plus_blue.png">&nbsp;add subgroup&nbsp;<img height="24" width="24" src="img/plus_green.png">&nbsp;add action &nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add rule&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy/rule/action</p>
 </div>
 <div class="unitsmall">
