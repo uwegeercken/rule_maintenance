@@ -80,8 +80,8 @@
 			<div class="unit" tag="$!rulesubgroup.name">
 			#end
 				<a href="process?action=bsh&ro=1&scriptname=selectdeleteaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete action"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit action"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy action"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit action"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy action"></a>
 				<div class="grouptopaction">
 					<p class="big">$action.name</p>
 					<p class="normal">$action.description</p>
