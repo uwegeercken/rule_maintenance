@@ -88,6 +88,7 @@ a
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
+  	
 }
 
 
@@ -263,8 +264,8 @@ div.horizontaldevider {
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
-  	clear: left;
   	display:none;
+  	width: 98%;
 }
 
 #help p, #help img
