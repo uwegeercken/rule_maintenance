@@ -1,4 +1,5 @@
 import com.datamelt.db.RuleGroup;
+import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
 

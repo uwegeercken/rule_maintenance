@@ -4,7 +4,6 @@
 body
 {
 	font: normal 9pt/1.4 verdana, sans-serif;
-	
 }
 
 * {
@@ -67,7 +66,7 @@ a
 {
 	border: 1px solid #3a3a3a;
 	border-radius: 4px;
-	margin: 8px;
+	margin: 6px;
 	width: 280px;
 	height: 180px;
 	float: left;
@@ -81,28 +80,20 @@ a
 {
 	border: 1px solid #3a3a3a;
 	border-radius: 4px;
-	margin: 8px;
+	margin: 6px;
 	width: 280px;
 	height: 120px;
 	float: left;
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
+  	
 }
 
 
 
 .unitclear 
 {
-	border: 1px solid #3a3a3a;
-	border-radius: 4px;
-	margin: 8px;
-	width: 280px;
-	height: 180px;
-	float: left;
-	-moz-box-shadow:    3px 3px 5px 6px #ccc;
-  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
-  	box-shadow:         3px 3px 5px 6px #ccc;
   	clear: both;
 }
 
@@ -124,7 +115,14 @@ a
 	border-top: 3px solid green;
 }
 
-.grouptop > p.big > a, .grouptop > p.big, .grouptop2 > p.big > a, .grouptop2 > p.big, .grouptopaction > p.big > a, .grouptopaction > p.big
+.grouptop > p.big, .grouptop2 > p.big, .grouptopaction > p.big
+{
+	font: normal 14pt/1.4 verdana, sans-serif;
+        float: left;
+	color: black;
+}
+
+.grouptop > p.big > a, .grouptop2 > p.big > a, .grouptopaction > p.big > a
 {
 	font: normal 14pt/1.4 verdana, sans-serif;
 	float: left;
@@ -205,11 +203,10 @@ a:active
 {
 	border: 1px solid #3a3a3a;
 	border-radius: 4px;
-	margin: 10px;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 8px;
+	width: 98%;
 	padding: 10px;
-	padding-top: 20px;
+	padding-top: 10px;
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
@@ -248,8 +245,8 @@ div.connector {
 }
 
 div.horizontaldevider {
-	margin: 10px;
-	padding: 10px;
+	margin: 6px;
+	padding: 6px;
 	clear: both;
 }
 
@@ -263,8 +260,8 @@ div.horizontaldevider {
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;
-  	clear: left;
   	display:none;
+  	width: 98%;
 }
 
 #help p, #help img
@@ -285,6 +282,7 @@ div.horizontaldevider {
 	vertical-align: baseline;
 	line-height: 1;
 	width: 120px;
+
 
 }
 

@@ -9,7 +9,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest; 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.Template;
 
@@ -26,8 +25,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
     private static final String ACTIONS_WEBINF_ATTRIBUTE           = "actions";
     private static final String DBUSER_WEBINF_ATTRIBUTE            = "dbuser";
     private static final String DBUSERPASSWORD_WEBINF_ATTRIBUTE    = "dbuserpassword";
-    private static final String LOGINUSER_WEBINF_ATTRIBUTE         = "loginuser";
-    private static final String LOGINPASSWORD_WEBINF_ATTRIBUTE     = "loginpassword";
 	private static final String DEFAULT_ACTION_NAME                = "action";
 	private static final String BSH_ACTION_NAME		               = "BeanshellAction";
 	private static final String ACTIONS_PACKAGE_NAME               = "com.datamelt.web.action.";
@@ -36,6 +33,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	private static final String DIRECTORY_MESSAGES                 = "message";
     private static final String HOSTNAME_WEBINF_ATTRIBUTE          = "hostname";
     private static final String HOSTNAME_READONLY_WEBINF_ATTRIBUTE = "hostname_readonly";
+    private static final long serialVersionUID=300000;
 
 	public static final String PLUGIN_PATH_WEBINF_ATTRIBUTE		  = "pluginpath";
 	
@@ -180,12 +178,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    String actionTemplate = null;
 	    String scriptName= request.getParameter("scriptname");
 	    String className=null;
-        HttpSession session = request.getSession();
-        String authenticated = "";
-        if(session.getAttribute("authenticated")!=null)
-        {
-        	authenticated= (String)session.getAttribute("authenticated");
-        }
         String readOnlyDbAccess = request.getParameter("ro");
 	    String command = request.getParameter(DEFAULT_ACTION_NAME); 
 		if (command!=null)
@@ -197,7 +189,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 		{
 		    try
 			{
-			    Class c = Class.forName(ACTIONS_PACKAGE_NAME + className);
+			    Class<?> c = Class.forName(ACTIONS_PACKAGE_NAME + className);
 		        action = (Action)c.newInstance();
 		        MySqlConnection con;
 		        if(readOnlyDbAccess!=null && readOnlyDbAccess.equals("1"))

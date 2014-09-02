@@ -90,7 +90,7 @@ public class VelocityDataWriter
 		{
 			throw new Exception("velocitydatawriter: no objects to process");
 		}
-		for (Enumeration e = objects.keys(); e.hasMoreElements() ;)
+		for (Enumeration<String> e = objects.keys(); e.hasMoreElements() ;)
 		{
 			String objectKey = (String)e.nextElement();
 			context.put(objectKey, objects.get(objectKey));

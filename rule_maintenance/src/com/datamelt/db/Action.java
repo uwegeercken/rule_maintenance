@@ -16,7 +16,6 @@ public class Action extends DatabaseRecord implements Loadable
 	
 	private static final String TABLENAME="action";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
-	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
 	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(classname, methodname, methoddisplayname) values (?,?,?)";
     public static final String UPDATE_SQL = "update " + TABLENAME + " + set classname=?, methodname=?, methoddisplayname=? where id =?";

@@ -1,14 +1,14 @@
-#set($pagetitle='Welcome')
+#set($pagetitle='Start Page')
 <p class="heading">Start Page</p>
 #if(${request.session.getAttribute("user")})
 	<p>Welcome back to the Rule Maintenance Application <b>$!{request.session.getAttribute("user").name}</b>!</p>
 #else
 	<p>Welcome to the Rule Maintenance Application.</p>
 #end
-
 </p>
 <p>This application is used for the maintenance of rules for the Java Rule Engine &quot;Jare&quot; Pentaho Data Integration (PDI) Step.</p>
 <p>On the highest level there are projects. A project contains one to many rule groups. A rule group again consists of one to many subgroups. Rules in a subgroup are connected with an &quot;and&quot; or &quot;or&quot; condition. Subgroups are connected to each other also using an &quot;and&quot; or &quot;or&quot; condition. This way the logic of a rule group can be defined in a very flexible way. So the rule group ultimately defines a set of logic and all rule groups in a project are excuted one after the other to check the data for validity and conformity.</p>
 <p>Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not.</p>
+<p>A project may be exported into a single zip file containing all rulegroups, subgroups, rules and actions. This zip file can be used together with the Java Rule Engine or the Pentaho PDI Plugin step to run all rules and conditions against a set of data.</p>
 
 

@@ -13,9 +13,9 @@
 	<ul>	
 		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">generate file</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selecttestproject">test project</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import file</a></li>
 	</ul>
-	#end
+#end
 #if($user.isInGroup("Admin"))
 	<ul>
 		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
@@ -26,6 +26,5 @@
 	<ul>
 		<li><a href="process?action=bsh&scriptname=about">about</a></li>
 	</ul>
-
 </div>
 

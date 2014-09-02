@@ -1,7 +1,11 @@
 #set($pagetitle='User Maintenance')
 <p class="heading">User maintenance: <b>$!{dbuser.name}</b></p>
-<p>This page allows you to edit the currently selected user.</p>
-<p>Back to: <a href="process?action=bsh&ro=1&scriptname=listusers">list of users</a></p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listusers"><img height="24" width="24" src="img/go_back.png" title="go back: List of users"></a></p>
+<div id="help">
+	<p>Edit the selected user.</p>
+	<p>Enter the userid and name of the user.</p> 
+	<p>Members of the admin group have full access to all parts of the application. Members of the user group have no administrative rights, but can add, update or delete projects, rule groups, subgroups, rules and actions. Members of the user group - read only - may view/inspect all parts of the application but are not allowed to do any updates and can not add or delete parts.</p>
+</div>
 <div class="formbox">
 #if($mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=edituser"> 

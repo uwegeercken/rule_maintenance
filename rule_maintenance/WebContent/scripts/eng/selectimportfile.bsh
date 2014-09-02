@@ -1,0 +1,10 @@
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	templatename="importfile.vm";
+}

@@ -4,7 +4,6 @@
 <head>
 <title>Business Rules Maintenance Tool | $!{pagetitle}</title>
 <link rel="stylesheet" type="text/css" href="css/style_new.css">
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type='text/javascript' src='css/menu_jquery.js'></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 

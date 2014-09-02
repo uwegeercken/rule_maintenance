@@ -57,8 +57,7 @@ public class MySqlConnection
 
 	public String getConfigFilePath()
 	{
-		Class cl = this.getClass();
-		return cl.getResource(Constants.DATABASE_PROPERTIES_FILE).getPath();
+		return this.getClass().getResource(Constants.DATABASE_PROPERTIES_FILE).getPath();
 	}
 
     public void connect() throws Exception

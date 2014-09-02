@@ -1,0 +1,41 @@
+#set($pagetitle='Import Rule Maintanance Zip file')
+<p class="heading">Import Rule Maintanance Zip file</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>Import data into a new project</p>
+	<p>Enter the name and description of the project to be created. Enter the path and filename of the Ruleengine Zip file to import into the project.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=importfile"> 
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Project Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{project.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Project Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{project.description}">
+		</td>
+	</tr>
+	<tr>
+		<td>Zip File to import:</td>
+		<td>
+			<input name="zipfile" type="text" size="40" maxlength="255" value="$!{zipfile}">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="import" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

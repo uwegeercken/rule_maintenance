@@ -4,7 +4,7 @@
 <div id="help">
 	<p>Generate zip file.</p>
 	<p>Generate a zip file containing all rules and actions of a selected project. Only rule groups that are valid on the selected Validity Date below will be included.</p>
-	<p>You will be promted to save the zip file in the location of your choice.</p>
+	<p>You will be prompted to save the zip file in the location of your choice.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=sendfile"> 
@@ -15,7 +15,7 @@
 			<select name="id" size="1">
 			<option value="0"></option>
 			#foreach($project in $projects)
-					<option value="$project.id">${project.description}</option>
+					<option value="$project.id">${project.name} - ${project.description}</option>
 			#end
     		</select>
 		</td>

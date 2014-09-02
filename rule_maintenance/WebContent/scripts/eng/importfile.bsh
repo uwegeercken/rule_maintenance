@@ -1,0 +1,83 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.User;
+import java.util.zip.ZipFile;
+
+cancelled= request.getParameter("submit");
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	if(cancelled!=null && cancelled.equals("import"))
+	{
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+		
+		name=request.getParameter("name");
+		description=request.getParameter("description");
+		zipfile=request.getParameter("zipfile");
+	
+		Project project = new Project();
+		project.setConnection(connection);
+		
+		if(!project.exist(name) && name.length()>0 && zipfile.length()>0)
+		{
+			User user = new User();
+			user.setConnection(connection);
+			user.setUserid("admin");
+			user.loadByUserid();
+			
+			project.setName(name);
+			project.setDescription(description);
+			project.user.id = user.id;
+			
+			ZipFile z=null;
+			try
+			{
+				z = new ZipFile(zipfile);
+				project.insert(connection.getPreparedStatement(Project.INSERT_SQL));
+				project.importProject(z);
+				infomessage.text="Project added - rulegroups, subgroups, rules and actions imported";
+				
+			}
+			catch(FileNotFoundException fnfe)
+			{
+				infomessage.type="error";
+				infomessage.text="File not found : " + zipfile;
+			
+			}
+			catch(Exception ex)
+			{
+				infomessage.type="error";
+				infomessage.text="File can not be accessed or read or is not a valid zip file: " + zipfile;
+			
+			}
+		}
+		else if(project.exist(name) && name.length()>0)
+		{
+			project.setName(name);
+			project.setDescription(description);
+			infomessage.type="error";
+			infomessage.text="Project already exists.";
+		}
+		else if(zipfile==null || zipfile.trim().length()==0)
+		{
+			project.setName(name);
+			project.setDescription(description);
+			infomessage.type="error";
+			infomessage.text="Zip file path and name must be specified.";
+		}
+		else if(name==null || name.trim().length()==0)
+		{
+			project.setName(name);
+			project.setDescription(description);
+			infomessage.type="error";
+			infomessage.text="Project name must be specified.";
+		}
+
+		context.put("project",project);
+		context.put("zipfile",zipfile);
+	}
+	templatename="importfile.vm";
+}

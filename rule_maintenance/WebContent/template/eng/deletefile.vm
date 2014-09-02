@@ -3,7 +3,7 @@
 <p>This page allows you to delete the currently selected file.</p>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=deletefile&name=${filename}"> 
-	<div class="unitclear" tag="$!{filename}">
+	<div class="unit">
 		<div class="grouptop">
 			<p class="small">file</p>
 			<p class="big">$!{filename}</p>

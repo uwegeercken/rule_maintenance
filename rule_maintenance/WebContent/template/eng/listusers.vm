@@ -1,8 +1,9 @@
 #set($pagetitle='User List')
-<p class="heading">User List</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add project"></a></p>
+<p class="heading">User List ($users.size())</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add user"></a></p>
 <div id="help">
-	<p>List of available Users with access to this application.</p>
+	<p>List of available Users with access to this application. Users may have one or more roles, giving them appropriate security access.</p>
+	<p>Users may be deactivated, so they can not access the application anymore.</p>
 	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
 </div>
 <div id="filter">

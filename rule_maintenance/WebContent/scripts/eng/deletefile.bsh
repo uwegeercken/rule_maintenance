@@ -1,0 +1,33 @@
+
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+filename=request.getParameter("name");
+
+if(cancelled.equals("delete file"))
+{
+	if(filename.endsWith(".bsh"))
+	{
+		fileToDelete = new File(scriptspath + "/" + filename);
+		fileToDelete.delete();
+	}
+	if(filename.endsWith(".vm"))
+	{
+		fileToDelete = new File(templatespath + "/" + filename);
+		fileToDelete.delete();
+	}
+}
+
+f = new File(scriptspath);
+File[] files = f.listFiles();
+Arrays.sort(files);
+context.put("filelist",files);
+context.put("filepath",scriptspath);
+
+f2 = new File(templatespath);
+File[] files2 = f2.listFiles();
+Arrays.sort(files2);
+context.put("templateslist",files2);
+context.put("templatespath",templatespath);
+
+templatename="filelist.vm";

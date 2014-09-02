@@ -18,7 +18,7 @@ body
 <body>
 
 <div class="top">
-	<p class="apptitle">Scheduling Data Maintenance &nbsp;
+	<p class="apptitle">Business Rules Maintenance Tool &nbsp;
 		<span class="small">#include("eng/version.vm")</span>
 	</p>
 </div>

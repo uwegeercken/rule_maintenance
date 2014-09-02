@@ -3,7 +3,7 @@
 <p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
 <div id="help">
 	<p>Edit the selected project.</p>
-	<p>Enter the name and description of the project.</p>
+	<p>Enter the name and description of the project. The name will be used for the zip file containing all rules, so it's better to not use special characters and spaces.</p>
 </div>
 <div class="formbox">
 #if($mode=="add")
