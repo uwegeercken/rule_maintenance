@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Business Rules Maintenance Tool | $!{pagetitle}</title>
+<link rel="stylesheet" type="text/css" href="css/style_new.css">
+<script type='text/javascript' src='css/menu_jquery.js'></script>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script type='text/javascript'>
+function openNewWindow(url) {
+	var myWindow = window.open(url,"","width=800,height=600");
+}
+</script>
+
+<script type='text/javascript'>
+function hideUnits() 
+{    
+  	var all = document.getElementsByClassName('unit');
+	var searchValue = document.getElementById("search").value;
+		
+  	for(var a=0;a<all.length;a++)
+  	{
+  		if(searchValue.length>0 && all[a].attributes['tag'])
+  		{
+   			var str = all[a].attributes['tag'].value;
+    		var re = new RegExp(searchValue.toLowerCase(), 'g');
+			var res= str.toLowerCase().match(re);
+	  		if(!res)
+  			{ 
+  	    	 	all[a].style.display="none";
+     		}
+     		else
+     		{
+     			all[a].style.display="";  
+     		}
+     	}
+     	else
+     	{
+     		all[a].style.display="";     	
+     	}
+	}
+};
+function switchHelp() 
+{    
+	var visible = document.getElementById("help").style.display;
+	if(visible == "inline")
+	{  
+		document.getElementById("help").style.display="none";
+	}
+	else
+	{
+		document.getElementById("help").style.display="inline";
+	}  
+};
+</script>
+</head>
+<body>
+<div>
+<div class="top">
+	#parse("logo.vm")
+</div>
+<div>
+	#parse("eng/menu.vm")
+	<div class="data">
+		$screen_content
+	</div>
+</div>
+</div>
+</body>
+</html>
