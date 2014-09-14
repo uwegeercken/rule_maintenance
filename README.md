@@ -27,4 +27,4 @@ Note 2: adjust the web.xml file - containing database connection information - a
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2014-08-06
+last update: 2014-09-05
