@@ -81,7 +81,7 @@
 		</td>		
 	</tr>
 	<tr>
-		<td>Field:</td>
+		<td>Field to retrieve data:</td>
 		<td>
 			<input name="object1_parameter" type="text" size="40" maxlength="255" value="$!{action.object1Parameter}">
 			Type: <select name="object1_type_id" size="1">

@@ -320,8 +320,23 @@ public class Project extends DatabaseRecord implements Loadable
 			dbRuleGroup.setProjectId(this.getId());
 			dbRuleGroup.setName(group.getId());
 			dbRuleGroup.setDescription(group.getDescription());
-			dbRuleGroup.setValidFrom(group.getValidFrom());
-			dbRuleGroup.setValidUntil(group.getValidUntil());
+			if(group.getValidFrom()==null)
+			{
+				dbRuleGroup.setValidFrom("2014-01-01");
+			}
+			else
+			{
+				dbRuleGroup.setValidFrom(group.getValidFrom());
+			}
+			if(group.getValidUntil()==null)
+			{
+				dbRuleGroup.setValidUntil("2014-12-31");
+				
+			}
+			else
+			{
+				dbRuleGroup.setValidUntil(group.getValidUntil());
+			}
 			dbRuleGroup.setUser(user);
 			dbRuleGroup.setConnection(getConnection());
 			dbRuleGroup.insert(getConnection().getPreparedStatement(RuleGroup.INSERT_SQL));
@@ -333,8 +348,22 @@ public class Project extends DatabaseRecord implements Loadable
 				com.datamelt.rules.core.XmlAction action = actions.get(k);
 				RuleGroupAction dbAction = new RuleGroupAction();
 				dbAction.setRulegroupId(dbRuleGroup.getId());
-				dbAction.setName(action.getId());
-				dbAction.setDescription(action.getDescription());
+				if(action.getId()==null || action.getId().trim().equals(""))
+				{
+					dbAction.setName("[undefined]");
+				}
+				else
+				{
+					dbAction.setName(action.getId());
+				}
+				if(action.getDescription()==null || action.getDescription().trim().equals(""))
+				{
+					dbAction.setDescription("[undefined]");
+				}
+				else
+				{
+					dbAction.setDescription(action.getDescription());
+				}
 				if(action.getExecuteIf()==0)
 				{
 					dbAction.setExecuteIf("passed");
