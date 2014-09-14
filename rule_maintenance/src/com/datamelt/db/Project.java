@@ -306,6 +306,9 @@ public class Project extends DatabaseRecord implements Loadable
 	 * import a set of rulegroups, subgroups, rules and actions
 	 * from a zipfile into the database
 	 * 
+	 * some adjustments might need to be required if importing old files that where hand written. but an import of a project file
+	 * that was previously exported using the wqeb interface should work correctly.
+	 * 
 	 * @param zipFile
 	 * @throws Exception
 	 */
