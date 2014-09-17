@@ -12,7 +12,7 @@
 #if($user)
 	<ul>	
 		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">generate file</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export file</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import file</a></li>
 	</ul>
 #end
