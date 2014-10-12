@@ -7,7 +7,7 @@
 <ul>
 	<li>Tomcat Web Server. Most used web-server worldwide. Dynamic reloading of code.</li>
 	<li>Java Servlets. The strength, performance and security of Java used for controlling the application and the business objects.</li>
-	<li>Beanshell scripts for on-the-fly code maintenance</li>
+	<li>Beanshell scripts for on-the-fly code maintenance.</li>
 	<li>Velocity Template Engine. Gives flexibility in design, splits development from web-design and is very fast.</li>
 	<li>MySql Database. Most used open-source database worldwide. Relational, transactional, fast and modern. Easy to deploy, manage and maintain.</li>
 </ul>
