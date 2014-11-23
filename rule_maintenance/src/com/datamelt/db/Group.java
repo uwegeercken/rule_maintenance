@@ -147,4 +147,9 @@ public class Group extends DatabaseRecord implements Loadable
     {
         this.description = description;
     }
+    
+    public boolean equals(Object group)
+    {
+    	return this.getId()== ((Group)group).getId();
+    }
 }

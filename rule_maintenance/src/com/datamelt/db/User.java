@@ -27,15 +27,19 @@ public class User extends DatabaseRecord implements Loadable
     private String deletedDate;
     private ArrayList<Group> groups=new ArrayList<Group>();
     
-    public static final String UPDATE_PASSWORD_SQL          = "update user set password=password(?) where id =?";
-    public static final String UPDATE_LASTLOGIN_SQL         = "update user set lastlogin=? where id =?";
-    public static final String UPDATE_SQL       		    = "update user set userid=?, name=? where id =?";
-    public static final String DELETE_SQL       		    = "update user set deleted=?, deleted_date=? where id =?";
-    public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into groupuser (groups_id,user_id) values (?,?)";
-    public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from groupuser where groups_id=? and user_id=?";
-    public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from groupuser where user_id=?";
-    public static final String INSERT_SQL       		    = "insert into user (userid, name, password) values (?,?,password(?))";
+    private static final String TABLENAME					= "user";
+    private static final String TABLENAME_GROUPUSER			= "groupuser";
+    
+    public static final String UPDATE_PASSWORD_SQL          = "update " + TABLENAME + " set password=password(?) where id =?";
+    public static final String UPDATE_LASTLOGIN_SQL         = "update " + TABLENAME + " set lastlogin=? where id =?";
+    public static final String UPDATE_SQL       		    = "update " + TABLENAME + " set userid=?, name=? where id =?";
+    public static final String DELETE_SQL       		    = "update " + TABLENAME + " set deleted=?, deleted_date=? where id =?";
+    public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into " + TABLENAME_GROUPUSER + " (groups_id,user_id) values (?,?)";
+    public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from " + TABLENAME_GROUPUSER + " where groups_id=? and user_id=?";
+    public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from " + TABLENAME_GROUPUSER + " where user_id=?";
+    public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, password) values (?,?,password(?))";
     public static final String ADMINISTRATOR                = "admin";
+
     public static final String READ_WRITE_USER              = "user";
     public static final String READ_USER		            = "user_ro";
     
@@ -98,7 +102,7 @@ public class User extends DatabaseRecord implements Loadable
     	for(int i=0;i<groups.size();i++)
     	{
     		Group group = groups.get(i);
-    		buffer.append(group.getDescription());
+    		buffer.append(group.getName());
     		if(i<groups.size()-1)
     		{
     			buffer.append(", ");
@@ -319,6 +323,20 @@ public class User extends DatabaseRecord implements Loadable
             }
         }
         return inGroup;
+    }
+    
+    public boolean isInProjectGroup(Group projectGroup)
+    {
+    	boolean isInProjectGroup=false;
+    	for(int i=0;i<groups.size();i++)
+    	{
+    		if(groups.contains(projectGroup))
+    		{
+    			isInProjectGroup = true;
+    			break;
+    		}
+    	}
+    	return isInProjectGroup;
     }
     
     public String getName()

@@ -1,4 +1,4 @@
-#set($user=${req.getAttribute("user")})	
+
 <div id='cssmenu'>
 	<ul>
 		<li><a href="process?action=bsh&scriptname=welcome">start page</a></li>
@@ -20,6 +20,7 @@
 	<ul>
 		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
 		<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=listgroups">groups</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
 	</ul>
 #end

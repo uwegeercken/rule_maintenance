@@ -6,9 +6,17 @@ if(user==null)
 }
 else
 {
-		ArrayList list = DbCollections.getAllProjects(connection);
+		ArrayList list;
+		if(user.isInGroup(1))
+		{
+		
+		 	list = DbCollections.getAllProjects(connection);
+		}
+		else
+		{
+			list = DbCollections.getAllProjects(connection, user);
+		}
+		
 		context.put("projects",list);
-
-	
 		templatename="listprojects.vm";
 }

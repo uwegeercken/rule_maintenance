@@ -28,6 +28,22 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Group owner:</td>
+		<td>		
+			<select name="projectgroupid" size="1">
+				<option selected value="0"></option>
+				#foreach($group in $groups)
+					#if(${project.group.id}==$group.id)
+						<option selected value="$group.id">$group.name</option>
+					#else
+						<option value="$group.id">$group.name</option>
+					#end
+				#end
+
+    		</select>
+		</td>		
+	</tr>
+	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">

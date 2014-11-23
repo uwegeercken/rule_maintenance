@@ -15,6 +15,9 @@ else
 		id=Long.parseLong(request.getParameter("id"));
 		name=request.getParameter("name");
 		description=request.getParameter("description");
+		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
+	
+		System.out.println("projectgroupid=" + (projectgroupid >0));
 	
 		Project project = new Project();
 		project.setConnection(connection);
@@ -22,12 +25,14 @@ else
 		{
 			project.setId(id);
 			project.load();
-			if(project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0))
+			if((project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0)) && projectgroupid>0)
 			{
 				project.setName(name);
 				project.setDescription(description);
 				project.user.id = user.id;
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL));
+				project.deleteAllGroupMemberships(connection.getPreparedStatement(Project.DELETE_ALL_GROUP_MEMBERSHIPS));
+				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
 				infomessage.text="Project updated.";
 			}
 			else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
@@ -42,17 +47,18 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				infomessage.type="error";
-				infomessage.text="Project name must be specified.";
+				infomessage.text="Project name and group must be specified.";
 			}
 		}
 		else
 		{
-			if(!project.exist(name) && name.length()>0)
+			if(!project.exist(name) && name.length()>0 && projectgroupid>0)
 			{
 				project.setName(name);
 				project.setDescription(description);
 				project.user.id = user.id;
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL));
+				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
 				infomessage.text="Project added.";
 			}
 			else if(project.exist(name) && name.length()>0)
@@ -67,17 +73,30 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				infomessage.type="error";
-				infomessage.text="Project name must be specified.";
+				infomessage.text="Project name and group must be specified.";
 			}
 		}
 		
 		project.load();
 		context.put("project",project);
+		
+		ArrayList list = DbCollections.getAllGroups(connection);
+		context.put("groups",list);
+		
 		templatename="editproject.vm";
 	}
 	else
 	{
-		ArrayList list = DbCollections.getAllProjects(connection);
+		ArrayList list;
+		if(user.isInGroup(1))
+		{
+		
+		 	list = DbCollections.getAllProjects(connection);
+		}
+		else
+		{
+			list = DbCollections.getAllProjects(connection, user);
+		}
 		context.put("projects",list);
 		templatename="listprojects.vm";
 	}

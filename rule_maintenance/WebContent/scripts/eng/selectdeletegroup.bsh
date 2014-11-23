@@ -1,0 +1,23 @@
+import com.datamelt.db.Group;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	Group group = new Group();
+	group.connection = connection;
+	group.id = Long.parseLong(request.getParameter("id"));
+	group.load();
+	context.put("group",group);
+
+	Group project = new Group();
+	group.setConnection(connection);
+	group.setId(Long.parseLong(request.getParameter("id")));
+	group.load();
+	context.put("group",group);
+
+	templatename="deletegroup.vm";
+}

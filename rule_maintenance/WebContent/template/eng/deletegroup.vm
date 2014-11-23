@@ -1,0 +1,19 @@
+#set($pagetitle='Delete Group')
+<p class="heading">Delete Group</p>
+<form method="POST" action="process?action=bsh&scriptname=deletegroup&id=${group.id}"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">group</p>
+		<p class="big">$!{group.name}</p>
+		<p class="normal">$!{group.description}</p>
+	</div>
+	
+</div>
+<div class="bottomtext">
+<p>Are you sure you want to delete this group?</p>
+<p><input type="submit" value="delete group" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+</div>
+</form>
+<br>
+<br>
+<br>

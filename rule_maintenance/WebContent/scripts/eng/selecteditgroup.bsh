@@ -1,0 +1,30 @@
+import java.io.*;
+import com.datamelt.db.Group;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	id=Long.parseLong(request.getParameter("id"));
+	groupid=Long.parseLong(request.getParameter("id"));
+	mode=request.getParameter("mode");
+	context.put("mode",mode);
+	if(mode!=null && !mode.equals("add"))
+	{
+		Group group = new Group();
+		group.connection = connection;
+		group.id=id;
+		group.load();
+		context.put("group",group);
+	}
+	else
+	{
+		Group group = new Group();
+		context.put("group",group);
+	}
+	
+	templatename="editgroup.vm";
+}

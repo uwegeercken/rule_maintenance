@@ -1,7 +1,7 @@
-#set($pagetitle='Rule Group Maintenance')
-<p class="heading">Rule Group maintenance $!{group.name}</p>
-<p>This page allows you to edit the currently selected rule group.</p>
-<p>Back to: <a href="process?action=bsh&ro=1&scriptname=listgroups">list of rule groups</a></p>
+#set($pagetitle='Group Maintenance')
+<p class="heading">Group maintenance $!{group.name}</p>
+<p>This page allows you to edit the currently selected group.</p>
+<p>Back to: <a href="process?action=bsh&ro=1&scriptname=listgroups">list of groups</a></p>
 <div class="formbox">
 #if($mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editgroup"> 

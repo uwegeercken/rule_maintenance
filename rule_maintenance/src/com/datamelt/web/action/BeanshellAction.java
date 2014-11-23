@@ -51,10 +51,6 @@ public class BeanshellAction extends Action
             
             interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
 
-            if(!checkWriteAccessOk(interpreter, user))
-            {
-            	throw new Exception("error: the requested action may only be executed by a person who is in the User group.");
-            }
             if(checkAdminAccessOk(interpreter,user))
             {
                 template = (String)interpreter.get("templatename");

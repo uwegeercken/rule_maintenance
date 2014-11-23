@@ -1,0 +1,25 @@
+import com.datamelt.db.Group;
+
+import java.sql.PreparedStatement;
+
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+groupid=Long.parseLong(request.getParameter("id"));
+
+
+if(cancelled.equals("delete group"))
+{
+	Group group = new Group();
+	group.connection = connection;
+	group.id= groupid;
+
+
+	PreparedStatement ps = connection.getPreparedStatement(Group.DELETE_SQL);
+	group.delete(ps);
+}
+
+ArrayList list = DbCollections.getAllGroups(connection);
+context.put("groups",list);
+
+templatename="listgroups.vm";

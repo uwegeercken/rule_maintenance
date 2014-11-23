@@ -25,5 +25,8 @@ else
 		context.put("project",project);
 	}
 	
+	ArrayList list = DbCollections.getAllGroups(connection);
+	context.put("groups",list);
+	
 	templatename="editproject.vm";
 }

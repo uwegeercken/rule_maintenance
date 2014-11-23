@@ -16,6 +16,7 @@
 			<p class="small">project</p>
 			<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">$!{project.name}</a></p>
 			<p class="normal">$!{project.description}</p>
+			<p class="normal">group owner: $!{project.group.name}</p>
 		</div>
 		<div>
 			<p class="small">last update: $project.lastUpdate</p>

@@ -23,17 +23,21 @@ public class Project extends DatabaseRecord implements Loadable
 	private long numberOfRuleGroups;
 
 	private ArrayList<RuleGroup> rulegroups;
+	private Group group = new Group();
 	private User user = new User();
 	
-	private static final String TABLENAME="project";
-	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
-	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
+	private static final String TABLENAME						= "project";
+	private static final String TABLENAME_PROJECTGROUP			= "projectgroup";
+	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
+	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id) values (?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=? where id=?";
-    public static final String EXIST_SQL  = "select id from  " + TABLENAME + "  where name =?";
-    public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
-
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id) values (?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=? where id=?";
+    public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
+    public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
+    public static final String ADD_GROUP_MEMBERSHIP  	    	= "insert into " + TABLENAME_PROJECTGROUP + " (group_id,project_id) values (?,?)";
+    public static final String DELETE_GROUP_MEMBERSHIP	    	= "delete from " + TABLENAME_PROJECTGROUP + " where group_id=? and project_id=?";
+    public static final String DELETE_ALL_GROUP_MEMBERSHIPS 	= "delete from " + TABLENAME_PROJECTGROUP + " where project_id=?";
 	
 	public Project()
 	{
@@ -65,6 +69,15 @@ public class Project extends DatabaseRecord implements Loadable
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
+	        try
+	        {
+	            loadGroup();
+	        }
+	        catch(Exception ex)
+	        {
+	            ex.printStackTrace();
+	        }
+	        
 		}
         rs.close();
 	}
@@ -87,6 +100,16 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.user.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
+	        
+	        try
+	        {
+	            loadGroup();
+	        }
+	        catch(Exception ex)
+	        {
+	        	ex.printStackTrace();
+	        }
+	        
 		}
         rs.close();
 	}
@@ -107,6 +130,43 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		numberOfRuleGroups = DbCollections.getAllRuleGroupsCount(getConnection(), this.getId());
 	}
+	
+	public void loadGroup() throws Exception
+    {
+        String sql="select group_id" +
+        		" from projectgroup" +
+        		" where project_id=" + getId(); 
+        ResultSet rs = getConnection().getResultSet(sql);
+		if(rs.next())
+		{
+	        group.setConnection(getConnection());
+	        group.setId(rs.getLong("group_id"));
+	        group.load();
+		}
+        rs.close();
+    }
+	
+	public void deleteGroupMembership(PreparedStatement p,long groupId) throws Exception
+	{
+		p.setLong(1,groupId);
+		p.setLong(2,getId());
+
+		try
+		{
+			p.executeUpdate();
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public void deleteAllGroupMemberships(PreparedStatement p) throws Exception
+    {
+        p.setLong(1,getId());
+        p.execute();
+    }
 	
 	public String mergeWithTemplate(RuleGroup rulegroup,String templatePath, String templateName) throws Exception
 	{
@@ -576,7 +636,28 @@ public class Project extends DatabaseRecord implements Loadable
 			}
 		}
 	}
+	
+	public Group getGroup()
+    {
+        return group;
+    }
+	
+	public void addGroupMembership(PreparedStatement p,long groupId) throws Exception
+	{
+		p.setLong(1,groupId);
+		p.setLong(2,getId());
 
+		try
+		{
+			p.executeUpdate();
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		Project p = new Project();
