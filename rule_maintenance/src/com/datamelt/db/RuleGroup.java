@@ -17,7 +17,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private String validFrom;
 	private String validUntil;
 	private long projectId;
-	private User user = new User();
+	private User lastUpdateUser = new User();
 	
 	private ArrayList<RuleSubgroup> ruleSubgroups;
 	private ArrayList<RuleGroupAction> actions;
@@ -54,9 +54,9 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -75,9 +75,9 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
 
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 		}
@@ -126,20 +126,27 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		return today.getTime() >= dateFrom.getTime() && today.getTime() <= dateUntil.getTime(); 
 	}
 	
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setString(1,name);
 		p.setString(2,description);
 		p.setString(3,validFrom);
 		p.setString(4,validUntil);
 		p.setLong(5,projectId);
-		p.setLong(6,user.getId());
+		p.setLong(6,lastUpdateUser.getId());
 		
 		p.setLong(7,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to update the rulegroup");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -148,26 +155,48 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void insert(PreparedStatement p) throws Exception
+	public void insert(PreparedStatement p, Project project, User user) throws Exception
     {
         p.setString(1,name);
 		p.setString(2,description);
 		p.setString(3,validFrom);
 		p.setString(4,validUntil);
 		p.setLong(5,projectId);
-		p.setLong(6,user.getId());
+		p.setLong(6,lastUpdateUser.getId());
 		
-        p.execute();
+		try
+		{
+			if(user.canWriteProject(project))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to insert the rulegroup");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
         
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p) throws Exception
+	public void delete(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setLong(1,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to delete the rulegroup");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -258,14 +287,14 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		this.actions = actions;
 	}
 
-	public User getUser()
+	public User getLastUpdateUser()
 	{
-		return user;
+		return lastUpdateUser;
 	}
 
-	public void setUser(User user) 
+	public void setLastUpdateUser(User user) 
 	{
-		this.user = user;
+		this.lastUpdateUser = user;
 	}
 
 }

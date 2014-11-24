@@ -16,7 +16,7 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 	private String intergroupOperator;
 	private String ruleOperator;
 	private ArrayList<Rule> rules = new ArrayList<Rule>();
-	private User user = new User();
+	private User lastUpdateUser = new User();
 	
 	private static final String TABLENAME="rulesubgroup";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
@@ -51,9 +51,9 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 	        this.intergroupOperator = rs.getString("intergroupoperator");
 	        this.ruleOperator = rs.getString("ruleoperator");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -74,9 +74,9 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 	        this.intergroupOperator = rs.getString("intergroupoperator");
 	        this.ruleOperator = rs.getString("ruleoperator");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -133,20 +133,27 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 		return p.executeQuery();
 	}
 	
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setString(1,name);
 		p.setString(2,description);
 		p.setLong(3,rulegroupId);
 		p.setString(4,intergroupOperator);
 		p.setString(5,ruleOperator);
-		p.setLong(6,user.getId());
+		p.setLong(6,lastUpdateUser.getId());
 		
 		p.setLong(7,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to update the subgroup");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -155,26 +162,49 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void insert(PreparedStatement p) throws Exception
+	public void insert(PreparedStatement p, Project project, User user) throws Exception
     {
         p.setString(1,name);
 		p.setString(2,description);
 		p.setLong(3,rulegroupId);
 		p.setString(4,intergroupOperator);
 		p.setString(5,ruleOperator);
-		p.setLong(6,user.getId());
+		p.setLong(6,lastUpdateUser.getId());
 		
-        p.execute();
+		try
+		{
+			if(user.canWriteProject(project))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to insert the subgroup");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
         
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p) throws Exception
+	public void delete(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setLong(1,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the subgroup");	
+			}
+			
 			
 		}
 		catch (Exception ex)
@@ -250,14 +280,14 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 		return rules;
 	}
 
-	public User getUser()
+	public User getLastUpdateUser()
 	{
-		return user;
+		return lastUpdateUser;
 	}
 
-	public void setUser(User user) 
+	public void setLastUpdateUser(User user) 
 	{
-		this.user = user;
+		this.lastUpdateUser = user;
 	}
 
 }

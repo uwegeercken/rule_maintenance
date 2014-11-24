@@ -43,15 +43,13 @@ public class DbCollections
         	project.setConnection(connection);
         	project.setId(rs.getLong("id"));
         	project.load();
-        	if(user.isInProjectGroup(project.getGroup()))
-        	{
-        		project.loadRuleGroupsCount(); 
-        		list.add(project);
-        	}
+        	project.loadRuleGroupsCount();
+        	list.add(project);
         }
         rs.close();
         return list;
     }
+    
     
     public static ArrayList<RuleGroup> getAllRuleGroups(MySqlConnection connection, long projectId) throws Exception
     {
@@ -161,7 +159,7 @@ public class DbCollections
     
     public static ArrayList<Group> getAllGroups(MySqlConnection connection) throws Exception
     {
-        String sql="select id from groups order by name";	
+        String sql="select id from groups where id >1 order by name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<Group> list = new ArrayList<Group>();
         while(rs.next())

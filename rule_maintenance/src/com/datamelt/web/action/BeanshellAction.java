@@ -39,7 +39,6 @@ public class BeanshellAction extends Action
             interpreter.set("response",response);
             interpreter.set("language",Controller.getLanguage());
             
-            interpreter.set("filelocation",Controller.getProperty(Controller.FILE_LOCATION_WEBINF_ATTRIBUTE));
             interpreter.set("connection",getConnection());
             interpreter.set("scriptspath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("templatespath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.TEMPLATES_PATH) + "/" +  Controller.getLanguage());
@@ -106,28 +105,6 @@ public class BeanshellAction extends Action
         }
     }
     
-    private boolean checkWriteAccessOk(Interpreter interpreter, User user) throws Exception
-    {
-        String writeAction = (String)interpreter.get("writeaction");
-        boolean isWriteAction = writeAction!=null && writeAction.equals("true");
-        if(isWriteAction)
-        {
-            if(user!=null && user.isInGroup(User.READ_WRITE_USER))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-        }
-        else
-        {
-            return true;
-        }
-    }
-
     private void addPlugins(HttpServletRequest request, HttpServletResponse response, Context context,Interpreter interpreter, ArrayList<BeanshellPlugin> plugins)throws Exception
     {
         String toBeUsedPlugins = (String)interpreter.get("plugins");

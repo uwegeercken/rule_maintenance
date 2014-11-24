@@ -44,10 +44,6 @@
 	      <param-value>eng</param-value>
 	    </init-param>
 	    <init-param>
-	      <param-name>filelocation</param-name>
-	      <param-value>filesystem</param-value>
-	    </init-param>
-	    <init-param>
 	      <param-name>dbname</param-name>
 	      <param-value>ruleengine_rules</param-value>
 	    </init-param>

@@ -13,6 +13,18 @@ else
 	rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
 	if(cancelled.equals("save"))
 	{
+		RuleGroup rulegroup = new RuleGroup();
+        rulegroup.setConnection(connection);
+        rulegroup.setId(rulegroupId);
+        rulegroup.load();
+		context.put("rulegroup",rulegroup);
+		
+		Project project = new Project();
+        project.setConnection(connection);
+        project.setId(rulegroup.projectId);
+        project.load();
+        context.put("project",project);
+        
 		RuleSubgroup rulesubgroupNew = new RuleSubgroup();	
 		rulesubgroupNew.connection = connection;
 		rulesubgroupNew.name=request.getParameter("name");
@@ -31,8 +43,8 @@ else
 			
 			if((rulesubgroupNew.name.equals(rulesubgroup.name) ||(!rulesubgroupNew.name.equals(rulesubgroup.name)&& !rulesubgroupNew.exist(rulesubgroupNew.name))) && rulesubgroupNew.name.length()>0 )
 			{
-				rulesubgroupNew.user.id = user.id;
-				rulesubgroupNew.update(connection.getPreparedStatement(RuleSubgroup.UPDATE_SQL));
+				rulesubgroupNew.lastUpdateUser.id = user.id;
+				rulesubgroupNew.update(connection.getPreparedStatement(RuleSubgroup.UPDATE_SQL),project,user);
 				infomessage.text="Rule Subgroup updated.";
 			}
 			else if(!rulesubgroupNew.name.equals(rulesubgroup.name) && rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
@@ -50,8 +62,8 @@ else
 		{
 			if(!rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
 			{
-				rulesubgroupNew.user.id = user.id;
-				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				rulesubgroupNew.lastUpdateUser.id = user.id;
+				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
 				infomessage.text="Rule Subgroup added.";
 			}
 			else if(rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
@@ -68,18 +80,6 @@ else
 		
 		rulesubgroupNew.load();
 		context.put("rulesubgroup",rulesubgroupNew);
-		
-		RuleGroup rulegroup = new RuleGroup();
-        rulegroup.setConnection(connection);
-        rulegroup.setId(rulegroupId);
-        rulegroup.load();
-		context.put("rulegroup",rulegroup);
-		
-		Project project = new Project();
-        project.setConnection(connection);
-        project.setId(rulegroup.projectId);
-        project.load();
-        context.put("project",project);
 		
 		templatename="editrulesubgroup.vm";
 

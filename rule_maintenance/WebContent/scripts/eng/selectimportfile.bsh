@@ -6,5 +6,8 @@ if(user==null)
 }
 else
 {
+	ArrayList list = DbCollections.getAllGroups(connection);
+	context.put("groups",list);
+	
 	templatename="importfile.vm";
 }

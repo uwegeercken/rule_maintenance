@@ -1,5 +1,4 @@
 import java.io.*;
-import com.datamelt.db.DbFile;
 
 adminaction="true";
 if(user==null)
@@ -17,37 +16,25 @@ else
 	{
 		try
 		{
-			if(filelocation.equals("database"))
+			File f;
+			if(filename!=null && filename.endsWith(".vm"))
 			{
-				DbFile file = new DbFile();
-				file.setConnection(connection);
-				file.setFileName(filename);
-				file.loadByName();
-				filecode=file.getCode();
-				context.put("fileid",file.getId());
+				f= new File(templatespath + "/" + filename);
+				filetype="template";
 			}
 			else
 			{
-				File f;
-				if(filename!=null && filename.endsWith(".vm"))
-				{
-					f= new File(templatespath + "/" + filename);
-					filetype="template";
-				}
-				else
-				{
-					f= new File(scriptspath + "/" + filename);
-					filetype="script";
-				}
-				FileReader fr = new FileReader(f); 
-				BufferedReader br = new BufferedReader(fr); 
-				while ( (line=br.readLine()) != null )
-				{ 
-					buffer.append(line + "\r\n");
-				} 
-				fr.close();
-				filecode=buffer.toString();
+				f= new File(scriptspath + "/" + filename);
+				filetype="script";
 			}
+			FileReader fr = new FileReader(f); 
+			BufferedReader br = new BufferedReader(fr); 
+			while ( (line=br.readLine()) != null )
+			{ 
+				buffer.append(line + "\r\n");
+			} 
+			fr.close();
+			filecode=buffer.toString();
 		}
 		catch(Exception ex)
 		{

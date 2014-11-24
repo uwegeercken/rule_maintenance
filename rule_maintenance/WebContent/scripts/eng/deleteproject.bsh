@@ -14,7 +14,7 @@ if(cancelled.equals("delete project"))
 	project.delete(ps);
 }
 		
-ArrayList list = DbCollections.getAllProjects(connection);
+ArrayList list = DbCollections.getAllProjects(connection,user);
 context.put("projects",list);
 
 templatename="listprojects.vm";

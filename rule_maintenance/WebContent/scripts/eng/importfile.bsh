@@ -17,11 +17,12 @@ else
 		name=request.getParameter("name");
 		description=request.getParameter("description");
 		zipfile=request.getParameter("zipfile");
+		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
 	
 		Project project = new Project();
 		project.setConnection(connection);
 		
-		if(!project.exist(name) && name.length()>0 && zipfile.length()>0)
+		if(!project.exist(name) && name.length()>0 && zipfile.length()>0 && projectgroupid>0)
 		{
 			User user = new User();
 			user.setConnection(connection);
@@ -30,14 +31,16 @@ else
 			
 			project.setName(name);
 			project.setDescription(description);
-			project.user.id = user.id;
+			project.lastUpdateUser.id = user.id;
+			project.ownerUser.id = user.id;
 			
 			ZipFile z=null;
 			try
 			{
 				z = new ZipFile(zipfile);
-				project.insert(connection.getPreparedStatement(Project.INSERT_SQL));
-				project.importProject(z);
+				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
+				project.importProject(z, user);
+				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
 				infomessage.text="Project added - rulegroups, subgroups, rules and actions imported";
 				
 			}
@@ -75,9 +78,20 @@ else
 			infomessage.type="error";
 			infomessage.text="Project name must be specified.";
 		}
+		else if(projectgroupid==0)
+		{
+			project.setName(name);
+			project.setDescription(description);
+			infomessage.type="error";
+			infomessage.text="Owner group must be specified.";
+		}
 
 		context.put("project",project);
 		context.put("zipfile",zipfile);
 	}
+	
+	ArrayList list = DbCollections.getAllGroups(connection);
+	context.put("groups",list);
+	
 	templatename="importfile.vm";
 }

@@ -24,15 +24,16 @@ public class Project extends DatabaseRecord implements Loadable
 
 	private ArrayList<RuleGroup> rulegroups;
 	private Group group = new Group();
-	private User user = new User();
+	private User lastUpdateUser = new User();
+	private User ownerUser = new User();
 	
 	private static final String TABLENAME						= "project";
 	private static final String TABLENAME_PROJECTGROUP			= "projectgroup";
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id) values (?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id) values (?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
     public static final String ADD_GROUP_MEMBERSHIP  	    	= "insert into " + TABLENAME_PROJECTGROUP + " (group_id,project_id) values (?,?)";
@@ -63,9 +64,13 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.databaseUserid = rs.getString("database_userid");
 	        this.databaseUserPassword = rs.getString("database_user_password");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
+	        
+	        this.ownerUser.setId(rs.getLong("owner_user_id"));
+	        this.ownerUser.setConnection(getConnection());
+	        this.ownerUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -95,9 +100,13 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.databaseUserid = rs.getString("database_userid");
 	        this.databaseUserPassword = rs.getString("database_user_password");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
+	        
+	        this.ownerUser.setId(rs.getLong("owner_user_id"));
+	        this.ownerUser.setConnection(getConnection());
+	        this.ownerUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -201,7 +210,7 @@ public class Project extends DatabaseRecord implements Loadable
 	
 //	name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id) values (?,?,?,?,?,?,?,?)";
 
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, User user) throws Exception
 	{
 		p.setString(1,name);
 		p.setString(2,description);
@@ -210,13 +219,21 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(5,databaseTableName);
 		p.setString(6,databaseUserid);
 		p.setString(7,databaseUserPassword);
-		p.setLong(8,user.getId());
+		p.setLong(8,lastUpdateUser.getId());
+		p.setLong(9,ownerUser.getId());
 		
-		p.setLong(9,getId());
+		p.setLong(10,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(this))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to update the project");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -225,7 +242,7 @@ public class Project extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void insert(PreparedStatement p) throws Exception
+	public void insert(PreparedStatement p, User user) throws Exception
     {
         p.setString(1,name);
 		p.setString(2,description);
@@ -234,19 +251,41 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(5,databaseTableName);
 		p.setString(6,databaseUserid);
 		p.setString(7,databaseUserPassword);
-		p.setLong(8,user.getId());
+		p.setLong(8,lastUpdateUser.getId());
+		p.setLong(9,ownerUser.getId());
 		
-        p.execute();
+		try
+		{
+			if(user.canWriteProject(this))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to insert the project");	
+			}
+		}
+        catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
         
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p) throws Exception
+	public void delete(PreparedStatement p, User user) throws Exception
 	{
 		p.setLong(1,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(this))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the project");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -302,14 +341,24 @@ public class Project extends DatabaseRecord implements Loadable
 		return numberOfRuleGroups;
 	}
 
-	public User getUser()
+	public User getLastUpdateUser()
 	{
-		return user;
+		return lastUpdateUser;
 	}
 
-	public void setUser(User user) 
+	public void setLastUpdateUser(User user) 
 	{
-		this.user = user;
+		this.lastUpdateUser = user;
+	}
+	
+	public User getOwnerUser()
+	{
+		return ownerUser;
+	}
+
+	public void setOwnerUser(User user) 
+	{
+		this.ownerUser = user;
 	}
 
 	public String getDatabaseHostname()
@@ -372,7 +421,7 @@ public class Project extends DatabaseRecord implements Loadable
 	 * @param zipFile
 	 * @throws Exception
 	 */
-	public void importProject(ZipFile zipFile) throws Exception
+	public void importProject(ZipFile zipFile,User user) throws Exception
 	{
 		BusinessRulesEngine ruleEngine = new BusinessRulesEngine(zipFile);
 		ArrayList <com.datamelt.rules.core.RuleGroup>groups = ruleEngine.getGroups();
@@ -400,9 +449,9 @@ public class Project extends DatabaseRecord implements Loadable
 			{
 				dbRuleGroup.setValidUntil(group.getValidUntil());
 			}
-			dbRuleGroup.setUser(user);
+			dbRuleGroup.setLastUpdateUser(lastUpdateUser);
 			dbRuleGroup.setConnection(getConnection());
-			dbRuleGroup.insert(getConnection().getPreparedStatement(RuleGroup.INSERT_SQL));
+			dbRuleGroup.insert(getConnection().getPreparedStatement(RuleGroup.INSERT_SQL),this,user);
 			
 			ArrayList <Type>dbTypes = DbCollections.getAllTypes(getConnection());
 			ArrayList <com.datamelt.rules.core.XmlAction>actions =group.getActions();
@@ -527,9 +576,9 @@ public class Project extends DatabaseRecord implements Loadable
 						}
 					}
 				}
-				dbAction.setUser(user);
+				dbAction.setLastUpdateUser(lastUpdateUser);
 				dbAction.setConnection(getConnection());
-				dbAction.insert(getConnection().getPreparedStatement(RuleGroupAction.INSERT_SQL));
+				dbAction.insert(getConnection().getPreparedStatement(RuleGroupAction.INSERT_SQL),this,user);
 			}
 			
 			ArrayList <com.datamelt.rules.core.RuleSubGroup> subgroups = group.getSubGroups();
@@ -542,9 +591,9 @@ public class Project extends DatabaseRecord implements Loadable
 				dbRuleSubGroup.setIntergroupOperator(subgroup.getLogicalOperatorSubGroupAsString());
 				dbRuleSubGroup.setRuleOperator(subgroup.getLogicalOperatorRulesAsString());
 				dbRuleSubGroup.setRulegroupId(dbRuleGroup.getId());
-				dbRuleSubGroup.setUser(user);
+				dbRuleSubGroup.setLastUpdateUser(lastUpdateUser);
 				dbRuleSubGroup.setConnection(getConnection());
-				dbRuleSubGroup.insert(getConnection().getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				dbRuleSubGroup.insert(getConnection().getPreparedStatement(RuleSubgroup.INSERT_SQL),this,user);
 				
 				ArrayList <Check>dbChecks = DbCollections.getAllChecks(getConnection());
 				for(int m=0;m<subgroup.getRulesCollection().size();m++)
@@ -629,9 +678,9 @@ public class Project extends DatabaseRecord implements Loadable
 						}
 					}
 					
-					dbRule.setUser(user);
+					dbRule.setLastUpdateUser(lastUpdateUser);
 					dbRule.setConnection(getConnection());
-					dbRule.insert(getConnection().getPreparedStatement(Rule.INSERT_SQL));
+					dbRule.insert(getConnection().getPreparedStatement(Rule.INSERT_SQL),this,user);
 				}
 			}
 		}
@@ -657,20 +706,9 @@ public class Project extends DatabaseRecord implements Loadable
 			ex.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) throws Exception
+
+	public void setGroup(Group group)
 	{
-		Project p = new Project();
-		MySqlConnection connection = new MySqlConnection("localhost", "ruleengine_rules", "root", "fasthans");
-		p.setConnection(connection);
-		p.setId(6);
-		User user = new User();
-		user.setConnection(connection);
-		user.setUserid("admin");
-		user.loadByUserid();
-		p.setUser(user);
-		p.load();
-		ZipFile z = new ZipFile("/ruleengine/airport_update_01.zip");
-		p.importProject(z);
+		this.group = group;
 	}
 }

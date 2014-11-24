@@ -27,9 +27,11 @@
 			<input name="name" type="text" size="40" maxlength="80" value="$!{dbuser.name}">
 		</td>
 	</tr>
+	<tr><td colspan="2"></br><hr></td></tr>
+	<tr><td colspan="2">Group Membership:</td></tr>
 	#foreach($group in $groups)
 	<tr>
-		<td>$group.name</td>
+		<td style="padding-left:20px;">$group.name</td>
 		<td>
 			<input type="checkbox" name="groups" value="${group.id}" #if(${dbuser.isInGroup(${group.name})})checked#end>
 		</td>

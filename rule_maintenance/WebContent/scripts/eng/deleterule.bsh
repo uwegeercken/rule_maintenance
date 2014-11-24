@@ -6,6 +6,18 @@ cancelled= request.getParameter("submit");
 ruleid=Long.parseLong(request.getParameter("ruleid"));
 rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 
+RuleGroup rulegroup = new RuleGroup();
+rulegroup.setConnection(connection);
+rulegroup.setId(rulegroupid);
+rulegroup.load();
+context.put("rulegroup",rulegroup);
+		
+Project project = new Project();
+project.setConnection(connection);
+project.setId(rulegroup.projectId);
+project.load();
+context.put("project",project);
+
 if(cancelled.equals("delete rule"))
 {
 	Rule rule = new Rule();
@@ -22,16 +34,4 @@ context.put("rulesubgroups",list);
 ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupId);
 context.put("rulegroupactions",actions);
 	
-RuleGroup rulegroup = new RuleGroup();
-rulegroup.setConnection(connection);
-rulegroup.setId(rulegroupid);
-rulegroup.load();
-context.put("rulegroup",rulegroup);
-		
-Project project = new Project();
-project.setConnection(connection);
-project.setId(rulegroup.projectId);
-project.load();
-context.put("project",project);
-
 templatename="listrulesubgroups.vm";

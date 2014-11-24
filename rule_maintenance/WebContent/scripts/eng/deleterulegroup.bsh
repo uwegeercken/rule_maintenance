@@ -11,6 +11,12 @@ cancelled= request.getParameter("submit");
 rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 projectid=Long.parseLong(request.getParameter("projectid"));
 
+Project project = new Project();
+project.setConnection(connection);
+project.setId(projectId);
+project.load();
+context.put("project",project);
+
 if(cancelled.equals("delete rule group"))
 {
 	RuleGroup rulegroup = new RuleGroup();
@@ -42,12 +48,6 @@ if(cancelled.equals("delete rule group"))
 	PreparedStatement ps = connection.getPreparedStatement(RuleGroup.DELETE_SQL);
 	rulegroup.delete(ps);
 }
-
-Project project = new Project();
-project.setConnection(connection);
-project.setId(projectId);
-project.load();
-context.put("project",project);
 
 ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
 context.put("rulegroups",list);

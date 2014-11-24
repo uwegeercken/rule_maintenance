@@ -1,5 +1,6 @@
 import com.datamelt.db.Project;
 import com.datamelt.db.DbCollections;
+import com.datamelt.db.Group;
 
 writeaction="true"; 
 if(user==null)
@@ -17,8 +18,6 @@ else
 		description=request.getParameter("description");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
 	
-		System.out.println("projectgroupid=" + (projectgroupid >0));
-	
 		Project project = new Project();
 		project.setConnection(connection);
 		if(id>0)
@@ -29,10 +28,12 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
-				project.user.id = user.id;
-				project.update(connection.getPreparedStatement(Project.UPDATE_SQL));
+				project.lastUpdateUser.id = user.id;
+				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+				project.group.id = projectgroupid;
 				project.deleteAllGroupMemberships(connection.getPreparedStatement(Project.DELETE_ALL_GROUP_MEMBERSHIPS));
 				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
+				project.load();
 				infomessage.text="Project updated.";
 			}
 			else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
@@ -46,6 +47,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";
 			}
@@ -56,9 +58,12 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
-				project.user.id = user.id;
-				project.insert(connection.getPreparedStatement(Project.INSERT_SQL));
+				project.lastUpdateUser.id = user.id;
+				project.ownerUser.id = user.id;
+				project.group.id = projectgroupid;
+				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
+				project.load();
 				infomessage.text="Project added.";
 			}
 			else if(project.exist(name) && name.length()>0)
@@ -72,12 +77,12 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";
 			}
 		}
 		
-		project.load();
 		context.put("project",project);
 		
 		ArrayList list = DbCollections.getAllGroups(connection);
@@ -88,15 +93,7 @@ else
 	else
 	{
 		ArrayList list;
-		if(user.isInGroup(1))
-		{
-		
-		 	list = DbCollections.getAllProjects(connection);
-		}
-		else
-		{
-			list = DbCollections.getAllProjects(connection, user);
-		}
+		list = DbCollections.getAllProjects(connection, user);
 		context.put("projects",list);
 		templatename="listprojects.vm";
 	}

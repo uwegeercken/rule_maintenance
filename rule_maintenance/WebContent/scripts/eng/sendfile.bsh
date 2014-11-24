@@ -71,7 +71,7 @@ else
 			infomessage.type="error";
 			infomessage.text="Select a Project and specify a valid Validity Date";
 			
-			ArrayList list = DbCollections.getAllProjects(connection);
+			ArrayList list = DbCollections.getAllProjects(connection,user);
 			context.put("projects",list);
 		
 			if(validselecteddate)

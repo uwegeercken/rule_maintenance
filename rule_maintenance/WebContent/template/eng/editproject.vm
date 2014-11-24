@@ -28,7 +28,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Group owner:</td>
+		<td>Owner group:</td>
 		<td>		
 			<select name="projectgroupid" size="1">
 				<option selected value="0"></option>
@@ -52,7 +52,7 @@
 </table>
 </form>
 #if(${project.id}>0)
-	<p class="small">last edited by: ${project.user.name}, ${project.lastUpdate}</p>
+	<p class="small">last edited by: ${project.lastUpdateUser.name}, ${project.lastUpdate}</p>
 #end
 </div>
 

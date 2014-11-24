@@ -10,13 +10,15 @@
 </div>
 #foreach($project in $projects)
 	<div class="unit" tag="$!{project.name}">
-		#if(${project.getNumberOfRuleGroups()}==0)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete project"></a>#end
-		<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>
+		#if($user.canWriteProject($project)==true)
+			#if(${project.getNumberOfRuleGroups()}==0)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete project"></a>#end
+			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>
+		#end
 		<div class="grouptop">
 			<p class="small">project</p>
 			<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">$!{project.name}</a></p>
 			<p class="normal">$!{project.description}</p>
-			<p class="normal">group owner: $!{project.group.name}</p>
+			<p class="normal">owner group: $!{project.group.name}</p>
 		</div>
 		<div>
 			<p class="small">last update: $project.lastUpdate</p>

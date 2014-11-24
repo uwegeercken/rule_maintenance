@@ -72,7 +72,7 @@
 </table>
 </form>
 #if(${rulesubgroup.id}>0)
-	<p class="small">last edited by: ${rulesubgroup.user.name}, ${rulesubgroup.lastUpdate}</p>
+	<p class="small">last edited by: ${rulesubgroup.lastUpdateUser.name}, ${rulesubgroup.lastUpdate}</p>
 #end
 </div>
 #if (${infomessage})

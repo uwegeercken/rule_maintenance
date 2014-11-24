@@ -143,8 +143,8 @@ else
 			}
 			else
 			{
-				ruleNew.user.id = user.id;
-				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL));
+				ruleNew.lastUpdateUser.id = user.id;
+				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL),project,user);
 				infomessage.text="Rule updated.";
 			}
 		}
@@ -207,8 +207,8 @@ else
 			}
 			else
 			{
-				ruleNew.user.id = user.id;
-				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL));
+				ruleNew.lastUpdateUser.id = user.id;
+				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
 				infomessage.text="Rule added.";
 			}
 		}

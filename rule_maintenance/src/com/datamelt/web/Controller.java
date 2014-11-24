@@ -40,7 +40,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	// if set to <true> then each template will automatically get all plugins
 	// otherwise the required template needs to be explicitely named in the script
 	public static final String AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE  = "autoaddplugins";
-	public static final String FILE_LOCATION_WEBINF_ATTRIBUTE     = "filelocation";
 	
 	public static final String CONTEXT_PATH				          = "contextpath";
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
@@ -151,12 +150,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    if (autoAddPlugins!=null)
 	    {
 	        properties.put(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE, autoAddPlugins); 
-	    }
-	    
-	    String fileLocation = config.getInitParameter(FILE_LOCATION_WEBINF_ATTRIBUTE);
-	    if (fileLocation!=null)
-	    {
-	        properties.put(FILE_LOCATION_WEBINF_ATTRIBUTE, fileLocation); 
 	    }
 	    
 	    loadMessages();

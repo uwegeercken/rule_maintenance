@@ -1,4 +1,3 @@
-import com.datamelt.db.DbFile;
 import com.datamelt.db.DbCollections;
 
 adminaction="true";
@@ -33,55 +32,27 @@ if(cancelled!=null && cancelled.equals("save file"))
 	{
 		f= new File(scriptspath + "/" + fullfilename);
 	}
-	if(filelocation.equals("database"))
-	{
-		DbFile file = new DbFile();
-		file.setConnection(connection);
-		file.setFileName(fullfilename);
-		file.setCode(code);
-		fileid = request.getParameter("fileid");
-		if(fileid!=null)
-		{
-			file.setId(Integer.parseInt(fileid));
-			file.update();
-		}
-		else
-		{
-			file.insert();
-		}
-		
-	}
-	else
-	{
-		FileOutputStream out = new FileOutputStream(f); 
-		PrintStream p = new PrintStream(out);
-		p.println (code);
-		p.close();
-		out.close();
-	}
+	
+	FileOutputStream out = new FileOutputStream(f); 
+	PrintStream p = new PrintStream(out);
+	p.println (code);
+	p.close();
+	out.close();
+
 }
 
-if(filelocation.equals("database"))
-{
-	ArrayList list = DbCollections.getAllDatabaseFiles(connection, "bsh");
-	context.put("filelist",list);
 
-	ArrayList templateslist = DbCollections.getAllDatabaseFiles(connection, "vm");
-	context.put("templateslist",templateslist);
-}
-else
-{
-	f = new File(scriptspath);
-	File[] files = f.listFiles();
-	Arrays.sort(files);
-	context.put("filelist",files);
-	context.put("filepath",scriptspath);
+f = new File(scriptspath);
+File[] files = f.listFiles();
+Arrays.sort(files);
+context.put("filelist",files);
+context.put("filepath",scriptspath);
 
-	f2 = new File(templatespath);
-	File[] files2 = f2.listFiles();
-	Arrays.sort(files2);
-	context.put("templateslist",files2);
-	context.put("templatespath",templatespath);
-}
+f2 = new File(templatespath);
+File[] files2 = f2.listFiles();
+Arrays.sort(files2);
+context.put("templateslist",files2);
+context.put("templatespath",templatespath);
+
 
 templatename="filelist.vm";

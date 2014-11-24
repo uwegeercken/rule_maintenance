@@ -87,8 +87,8 @@ else
 			}
 			else 
 			{
-				rulegroupNew.user.id = user.id;
-				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL));
+				rulegroupNew.lastUpdateUser.id = user.id;
+				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL),project,user);
 				infomessage.text="Rule Group updated.";
 			}
 		}
@@ -131,7 +131,7 @@ else
 				subgroup.intergroupOperator="and";
 				subgroup.ruleOperator="and";
 				subgroup.connection = connection;
-				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL));
+				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
 				
 				infomessage.text="Rule Group added.";
 			}

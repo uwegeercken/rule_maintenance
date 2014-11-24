@@ -7,7 +7,7 @@ if(user==null)
 }
 else
 {
-		ArrayList list = DbCollections.getAllProjects(connection);
+		ArrayList list = DbCollections.getAllProjects(connection,user);
 		context.put("projects",list);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -149,7 +149,7 @@ else
 			
 			else
 			{
-				actionNew.user.id = user.id;
+				actionNew.lastUpdateUser.id = user.id;
 				actionNew.user.connection = connection;
 				actionNew.user.load();
 				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL));
@@ -220,9 +220,9 @@ else
 			}
 			else
 			{
-				actionNew.user.id = user.id;
-				actionNew.user.connection = connection;
-				actionNew.user.load();
+				actionNew.lastUpdateUser.id = user.id;
+				actionNew.lastUpdateUser.connection = connection;
+				actionNew.lastUpdateUser.load();
 				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL));
 				infomessage.text="Action added.";
 			}

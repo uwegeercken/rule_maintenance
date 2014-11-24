@@ -117,7 +117,7 @@
 </table>
 </form>
 #if(${rule.id}>0)
-<p class="small">last edited by: ${rule.user.name}, ${rule.lastUpdate}</p>
+<p class="small">last edited by: ${rule.lastUpdateUser.name}, ${rule.lastUpdate}</p>
 #end
 </div>
 #if (${infomessage})

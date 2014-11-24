@@ -155,7 +155,7 @@
 </table>
 </form>
 #if(${action.id}>0)
-<p>last edited by: ${action.user.name}, ${action.lastUpdate}</p>
+<p>last edited by: ${action.lastUpdateUser.name}, ${action.lastUpdate}</p>
 #end
 </div>
 #if (${infomessage})

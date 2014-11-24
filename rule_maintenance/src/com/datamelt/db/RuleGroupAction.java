@@ -31,7 +31,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	private String executeIf;
 	
 	private Action action = new Action();
-	private User user = new User();
+	private User lastUpdateUser = new User();
 	
 	public static final String TABLENAME="rulegroupaction";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
@@ -110,9 +110,9 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        
 	        this.executeIf = rs.getString("execute_if");
 	        	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -177,9 +177,9 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        
 	        this.executeIf = rs.getString("execute_if");
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 		}
@@ -205,7 +205,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		return p.executeQuery();
 	}
 	
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setLong(1, rulegroupId);
 		p.setLong(2, action.getId());
@@ -228,13 +228,20 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		p.setString(19,parameter3);
 		p.setLong(20, parameter3Type.getId());
 		p.setString(21,executeIf);
-		p.setLong(22, user.getId());
+		p.setLong(22, lastUpdateUser.getId());
 		
 		p.setLong(23,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to update the action");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -243,7 +250,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void insert(PreparedStatement p) throws Exception
+	public void insert(PreparedStatement p, Project project, User user) throws Exception
     {
 		p.setLong(1, rulegroupId);
 		p.setLong(2, action.getId());
@@ -266,19 +273,42 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		p.setString(19,parameter3);
 		p.setLong(20, parameter3Type.getId());
 		p.setString(21,executeIf);
-		p.setLong(22, user.getId());
+		p.setLong(22, lastUpdateUser.getId());
 		
-        p.execute();
+		try
+		{
+			if(user.canWriteProject(project))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to insert the action");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+			
         
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p) throws Exception
+	public void delete(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setLong(1,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the action");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -546,14 +576,14 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		this.executeIf = executeIf;
 	}
 
-	public User getUser()
+	public User getLastUpdateUser()
 	{
-		return user;
+		return lastUpdateUser;
 	}
 
-	public void setUser(User user) 
+	public void setLastUpdateUser(User user) 
 	{
-		this.user = user;
+		this.lastUpdateUser = user;
 	}
 	
 }

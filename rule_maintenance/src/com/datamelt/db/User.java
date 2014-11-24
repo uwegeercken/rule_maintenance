@@ -40,9 +40,6 @@ public class User extends DatabaseRecord implements Loadable
     public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, password) values (?,?,password(?))";
     public static final String ADMINISTRATOR                = "admin";
 
-    public static final String READ_WRITE_USER              = "user";
-    public static final String READ_USER		            = "user_ro";
-    
     public void load() throws Exception
     {
         String sql="select * from user where id=" + getId();
@@ -338,6 +335,15 @@ public class User extends DatabaseRecord implements Loadable
     	}
     	return isInProjectGroup;
     }
+    
+    public boolean canWriteProject(Project project)
+	{
+		if(this.isInProjectGroup(project.getGroup()) ||this.isInGroup(User.ADMINISTRATOR) || project.getOwnerUser().getId()==this.getId())
+    	{
+    		return true;
+    	}
+		return false;
+	}
     
     public String getName()
     {

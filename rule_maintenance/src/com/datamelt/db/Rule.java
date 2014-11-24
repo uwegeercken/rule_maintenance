@@ -3,7 +3,6 @@ package com.datamelt.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 
@@ -28,7 +27,7 @@ public class Rule extends DatabaseRecord implements Loadable
 	private String messagePassed;
 	private String messageFailed;
 	private Check check = new Check();
-	private User user = new User();
+	private User lastUpdateUser = new User();
 
 	
 	public static final String TABLENAME="rule";
@@ -101,9 +100,9 @@ public class Rule extends DatabaseRecord implements Loadable
 	        this.check.setConnection(getConnection());
 	        this.check.load();
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -162,9 +161,9 @@ public class Rule extends DatabaseRecord implements Loadable
 	        this.check.setConnection(getConnection());
 	        this.check.load();
 	        
-	        this.user.setId(rs.getLong("last_update_user_id"));
-	        this.user.setConnection(getConnection());
-	        this.user.load();
+	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
+	        this.lastUpdateUser.setConnection(getConnection());
+	        this.lastUpdateUser.load();
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -191,7 +190,7 @@ public class Rule extends DatabaseRecord implements Loadable
 		return p.executeQuery();
 	}
 	
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, Project project, User user) throws Exception
 	{
 		p.setLong(1, rulesubgroupId);
 		p.setString(2,name);
@@ -211,14 +210,21 @@ public class Rule extends DatabaseRecord implements Loadable
 		p.setLong(16, expectedValueType.getId());
 		p.setString(17, messagePassed);
 		p.setString(18, messageFailed);
-		p.setLong(19, user.getId());
+		p.setLong(19, lastUpdateUser.getId());
 		
 		
 		p.setLong(20,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to update the rule");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -227,7 +233,7 @@ public class Rule extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void insert(PreparedStatement p) throws Exception
+	public void insert(PreparedStatement p, Project project, User user) throws Exception
     {
 		p.setLong(1, rulesubgroupId);
 		p.setString(2,name);
@@ -247,18 +253,41 @@ public class Rule extends DatabaseRecord implements Loadable
 		p.setLong(16, expectedValueType.getId());
 		p.setString(17, messagePassed);
 		p.setString(18, messageFailed);
-		p.setLong(19, user.getId());
-        p.execute();
+		p.setLong(19, lastUpdateUser.getId());
+		
+		try
+		{
+			if(user.canWriteProject(project))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to insert the rule");	
+			}
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
         
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p) throws Exception
+	public void delete(PreparedStatement p,Project project, User user) throws Exception
 	{
 		p.setLong(1,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.canWriteProject(project))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the rule");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -489,14 +518,14 @@ public class Rule extends DatabaseRecord implements Loadable
 		this.rulesubgroupId = rulesubgroupId;
 	}
 
-	public User getUser()
+	public User getLastUpdateUser()
 	{
-		return user;
+		return lastUpdateUser;
 	}
 
-	public void setUser(User user) 
+	public void setLastUpdateUser(User user) 
 	{
-		this.user = user;
+		this.lastUpdateUser = user;
 	}
 
 
