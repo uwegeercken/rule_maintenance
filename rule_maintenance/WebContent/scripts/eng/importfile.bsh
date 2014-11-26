@@ -18,6 +18,14 @@ else
 		description=request.getParameter("description");
 		zipfile=request.getParameter("zipfile");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
+		if(request.getParameter("isprivate")!=null)
+		{
+			isprivate=1;
+		}
+		else
+		{
+			isprivate=0;
+		}
 	
 		Project project = new Project();
 		project.setConnection(connection);
@@ -31,6 +39,7 @@ else
 			
 			project.setName(name);
 			project.setDescription(description);
+			project.setPrivateProject(isprivate);
 			project.lastUpdateUser.id = user.id;
 			project.ownerUser.id = user.id;
 			
@@ -61,6 +70,7 @@ else
 		{
 			project.setName(name);
 			project.setDescription(description);
+			project.setPrivateProject(isprivate);
 			infomessage.type="error";
 			infomessage.text="Project already exists.";
 		}
@@ -68,6 +78,7 @@ else
 		{
 			project.setName(name);
 			project.setDescription(description);
+			project.setPrivateProject(isprivate);
 			infomessage.type="error";
 			infomessage.text="Zip file path and name must be specified.";
 		}
@@ -75,6 +86,7 @@ else
 		{
 			project.setName(name);
 			project.setDescription(description);
+			project.setPrivateProject(isprivate);
 			infomessage.type="error";
 			infomessage.text="Project name must be specified.";
 		}
@@ -82,6 +94,7 @@ else
 		{
 			project.setName(name);
 			project.setDescription(description);
+			project.setPrivateProject(isprivate);
 			infomessage.type="error";
 			infomessage.text="Owner group must be specified.";
 		}

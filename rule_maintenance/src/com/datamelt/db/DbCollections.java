@@ -44,7 +44,17 @@ public class DbCollections
         	project.setId(rs.getLong("id"));
         	project.load();
         	project.loadRuleGroupsCount();
-        	list.add(project);
+        	if(project.getPrivateProject()==1) 
+        	{
+        		if(user.canWriteProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())
+        		{
+        			list.add(project);
+        		}
+        	}
+        	else
+        	{
+        		list.add(project);
+        	}
         }
         rs.close();
         return list;

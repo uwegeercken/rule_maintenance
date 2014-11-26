@@ -15,7 +15,7 @@
 			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>
 		#end
 		<div class="grouptop">
-			<p class="small">project</p>
+			<p class="small">project #if(${project.privateProject}==1)(private)#end</p>
 			<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">$!{project.name}</a></p>
 			<p class="normal">$!{project.description}</p>
 			<p class="normal">owner group: $!{project.group.name}</p>

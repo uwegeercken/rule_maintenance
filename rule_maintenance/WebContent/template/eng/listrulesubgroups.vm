@@ -1,6 +1,12 @@
 #set($pagetitle='Rules List')
 <p class="heading">Rules List - Project: ${project.name} - Rule Group: ${rulegroup.name}</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Rule Groups List"></a>&nbsp;<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=0&rulegroupid=${rulegroup.id}&mode=change"><img height="24" width="24" src="img/plus_blue.png" title="add subgroup"></a>&nbsp;<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=0&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img height="24" width="24" src="img/plus_green.png" title="add action"></a></p>
+<p>
+	<img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Rule Groups List"></a>
+	#if($user.canWriteProject($project)==true)
+		<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=0&rulegroupid=${rulegroup.id}&mode=change"><img height="24" width="24" src="img/plus_blue.png" title="add subgroup"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=0&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img height="24" width="24" src="img/plus_green.png" title="add action"></a>
+	#end
+</p>
 <div id="help">
 	<p>List of available subgroups, rules and actions for the selected rule group.</p>
 	<p>Subgroups are connected to the previous subgroup by [and] or [or]. Rules in a subgroup are connected by [and] or [or].</p>
@@ -33,9 +39,11 @@
 			</div>
 		#end
 		<div class="unit" tag="$!rulesubgroup.name">
-			<a href="process?action=bsh&ro=1&scriptname=selectdeleterulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete subgroup"></a>
-			<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit subgroup"></a>
-			<a href="process?action=bsh&ro=1&scriptname=selecteditrule&mode=add&id=0&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="add" height="24px" width="24px" src="img/plus_red.png" title="add rule"></a>
+			#if($user.canWriteProject($project)==true)
+				<a href="process?action=bsh&ro=1&scriptname=selectdeleterulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete subgroup"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit subgroup"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&mode=add&id=0&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="add" height="24px" width="24px" src="img/plus_red.png" title="add rule"></a>
+			#end
 			#if($counter %2==0)
 				<div class="grouptop">
 			#else
@@ -52,9 +60,11 @@
 		
 		#foreach($rule in $rulesubgroup.rules)
 			<div class="unit" tag="$!rulesubgroup.name">
-				<a href="process?action=bsh&ro=1&scriptname=selectdeleterule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete rule"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit rule"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=add&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy rule"></a>
+				#if($user.canWriteProject($project)==true)
+					<a href="process?action=bsh&ro=1&scriptname=selectdeleterule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete rule"></a>
+					<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=change&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit rule"></a>
+					<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${rule.id}&mode=add&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy rule"></a>
+				#end
 				#if($counter %2==0)
 					<div class="grouptop">
 				#else
@@ -78,9 +88,11 @@
 	<div class="unitclear">
 		#foreach($action in $rulegroupactions)
 			<div class="unit" tag="$!rulesubgroup.name">
-				<a href="process?action=bsh&ro=1&scriptname=selectdeleteaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete action"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit action"></a>
-				<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy action"></a>
+				#if($user.canWriteProject($project)==true)
+					<a href="process?action=bsh&ro=1&scriptname=selectdeleteaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete action"></a>
+					<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=change&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit action"></a>
+					<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${action.id}&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="copy" height="24px" width="24px" src="img/copy.png" title="copy action"></a>
+				#end
 				<div class="grouptopaction">
 					<p class="small">action</p>
 					<p class="big">$action.name</p>

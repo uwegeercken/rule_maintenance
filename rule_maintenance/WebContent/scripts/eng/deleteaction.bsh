@@ -25,7 +25,7 @@ if(cancelled.equals("delete action"))
 	action.id= actionid;
 
 	PreparedStatement ps = connection.getPreparedStatement(RuleGroupAction.DELETE_SQL);
-	action.delete(ps);
+	action.delete(ps,project,user);
 }
 
 ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);

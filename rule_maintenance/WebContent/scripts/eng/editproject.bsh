@@ -17,6 +17,14 @@ else
 		name=request.getParameter("name");
 		description=request.getParameter("description");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
+		if(request.getParameter("isprivate")!=null)
+		{
+			isprivate=1;
+		}
+		else
+		{
+			isprivate=0;
+		}
 	
 		Project project = new Project();
 		project.setConnection(connection);
@@ -28,6 +36,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				project.lastUpdateUser.id = user.id;
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
 				project.group.id = projectgroupid;
@@ -40,6 +49,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				infomessage.type="error";
 				infomessage.text="Project already exists.";
 			}
@@ -47,6 +57,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";
@@ -58,6 +69,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				project.lastUpdateUser.id = user.id;
 				project.ownerUser.id = user.id;
 				project.group.id = projectgroupid;
@@ -70,6 +82,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				infomessage.type="error";
 				infomessage.text="Project already exists.";
 			}
@@ -77,6 +90,7 @@ else
 			{
 				project.setName(name);
 				project.setDescription(description);
+				project.setPrivateProject(isprivate);
 				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";

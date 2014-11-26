@@ -31,11 +31,11 @@ if(cancelled.equals("delete rule subgroup"))
 	{
 		Rule rule = rulesubgroup.rules.get(i);
 		PreparedStatement psRule = connection.getPreparedStatement(Rule.DELETE_SQL);
-		rule.delete(psRule);
+		rule.delete(psRule,project,user);
 	}
 
 	PreparedStatement ps = connection.getPreparedStatement(RuleSubgroup.DELETE_SQL);
-	rulesubgroup.delete(ps);
+	rulesubgroup.delete(ps,project,user);
 }
 
 ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);

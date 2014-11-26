@@ -21,6 +21,7 @@ public class Project extends DatabaseRecord implements Loadable
 	private String databaseUserid;
 	private String databaseUserPassword;
 	private long numberOfRuleGroups;
+	private int privateProject;
 
 	private ArrayList<RuleGroup> rulegroups;
 	private Group group = new Group();
@@ -32,8 +33,8 @@ public class Project extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id) values (?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, is_private) values (?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, is_private=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
     public static final String ADD_GROUP_MEMBERSHIP  	    	= "insert into " + TABLENAME_PROJECTGROUP + " (group_id,project_id) values (?,?)";
@@ -58,6 +59,7 @@ public class Project extends DatabaseRecord implements Loadable
 		{
 	        this.name = rs.getString("name");
 	        this.description = rs.getString("description");
+	        this.privateProject = rs.getInt("is_private");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -94,6 +96,7 @@ public class Project extends DatabaseRecord implements Loadable
 		{
 	        this.setId(rs.getLong("id"));
 	        this.description = rs.getString("description");
+	        this.privateProject = rs.getInt("is_private");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -221,8 +224,9 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(7,databaseUserPassword);
 		p.setLong(8,lastUpdateUser.getId());
 		p.setLong(9,ownerUser.getId());
+		p.setLong(10,privateProject);
 		
-		p.setLong(10,getId());
+		p.setLong(11,getId());
 
 		try
 		{
@@ -253,6 +257,7 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(7,databaseUserPassword);
 		p.setLong(8,lastUpdateUser.getId());
 		p.setLong(9,ownerUser.getId());
+		p.setLong(10,privateProject);
 		
 		try
 		{
@@ -711,4 +716,15 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		this.group = group;
 	}
+
+	public int getPrivateProject()
+	{
+		return privateProject;
+	}
+
+	public void setPrivateProject(int privateProject)
+	{
+		this.privateProject = privateProject;
+	}
+	
 }
