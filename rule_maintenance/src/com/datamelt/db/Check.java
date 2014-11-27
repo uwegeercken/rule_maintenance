@@ -13,6 +13,7 @@ public class Check extends DatabaseRecord implements Loadable
 	private String name;
 	private String description;
 	private String packageName;
+	private String className;
 	private String nameDescriptive;
 	private int checkSingleField;
 	
@@ -20,8 +21,8 @@ public class Check extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(name, description, name_descriptive, package, check_single_field) values (?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set name=?, description=?, name_descriptive=?, package=?, check_single_field=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(name, description, name_descriptive, package, class, check_single_field) values (?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " + set name=?, description=?, name_descriptive=?, package=?, class=?, check_single_field=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
@@ -46,6 +47,7 @@ public class Check extends DatabaseRecord implements Loadable
 	        this.description = rs.getString("description");
 	        this.nameDescriptive = rs.getString("name_descriptive");
 	        this.packageName = rs.getString("package");
+	        this.className = rs.getString("class");
 	        this.checkSingleField = rs.getInt("check_single_field");
 	        
 	        setLastUpdate(rs.getString("last_update"));
@@ -63,6 +65,7 @@ public class Check extends DatabaseRecord implements Loadable
 	        this.description = rs.getString("description");
 	        this.nameDescriptive = rs.getString("name_descriptive");
 	        this.packageName = rs.getString("package");
+	        this.className = rs.getString("class");
 	        this.checkSingleField = rs.getInt("check_single_field");
 		}
         rs.close();
@@ -92,9 +95,10 @@ public class Check extends DatabaseRecord implements Loadable
 		p.setString(2,description);
 		p.setString(3,nameDescriptive);
 		p.setString(4,packageName);
-		p.setInt(5,checkSingleField);
+		p.setString(5,className);
+		p.setInt(6,checkSingleField);
 		
-		p.setLong(6,getId());
+		p.setLong(7,getId());
 
 		try
 		{
@@ -113,7 +117,8 @@ public class Check extends DatabaseRecord implements Loadable
 		p.setString(2,description);
 		p.setString(3,nameDescriptive);
 		p.setString(4,packageName);
-		p.setInt(5,checkSingleField);
+		p.setString(5,className);
+		p.setInt(6,checkSingleField);
 		
         p.execute();
         
@@ -193,6 +198,16 @@ public class Check extends DatabaseRecord implements Loadable
 	public void setPackageName(String packageName) 
 	{
 		this.packageName = packageName;
+	}
+
+	public String getClassName()
+	{
+		return className;
+	}
+
+	public void setClassName(String className) 
+	{
+		this.className = className;
 	}
 
 
