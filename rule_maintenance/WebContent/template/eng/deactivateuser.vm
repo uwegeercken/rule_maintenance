@@ -1,0 +1,20 @@
+#set($pagetitle='Deactivate User')
+<p class="heading">Deactivate User</p>
+<form method="POST" action="process?action=bsh&scriptname=deactivateuser&id=${dbuser.id}"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">user</p>
+		<p class="big">$!{dbuser.name}</p>
+		<p class="normal">userid: $!dbuser.userid</p>
+		<p class="normal">groups: $!{dbuser.getGroupsAsString()}</p>
+
+	</div>
+</div>
+<div class="bottomtext"> 
+<p>Are you sure you want to deactivate this user?</p>
+<p><input type="submit" value="deactivate user" name="submit"><input type="submit" value="cancel deactivation" name="submit"></p>
+</div>
+</form>
+<br>
+<br>
+<br>

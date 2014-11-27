@@ -24,6 +24,8 @@ public class Rule extends DatabaseRecord implements Loadable
 	private Type object2Type = new Type();
 	private String expectedValue;
 	private Type expectedValueType = new Type();
+	private String additionalParameter;
+	private Type additionalParameterType = new Type();
 	private String messagePassed;
 	private String messageFailed;
 	private Check check = new Check();
@@ -34,8 +36,8 @@ public class Rule extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " (rulesubgroup_id, name, description, check_id, object1_classname, object1_methodname,object1_parametertype_id,object1_parameter,object1_type_id, object2_classname, object2_methodname,object2_parametertype_id,object2_parameter,object2_type_id,expectedvalue,expectedvalue_type_id,message_passed,message_failed, last_update_user_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " set rulesubgroup_id=?, name=?, description=?, check_id=?, object1_classname=?,object1_methodname=?,object1_parametertype_id=?,object1_parameter=?,object1_type_id=?, object2_classname=?,object2_methodname=?,object2_parametertype_id=?,object2_parameter=?,object2_type_id=?,expectedvalue=?,expectedvalue_type_id=?,message_passed=?,message_failed=?, last_update_user_id=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (rulesubgroup_id, name, description, check_id, object1_classname, object1_methodname,object1_parametertype_id,object1_parameter,object1_type_id, object2_classname, object2_methodname,object2_parametertype_id,object2_parameter,object2_type_id,expectedvalue,expectedvalue_type_id,additional_parameter,additional_parameter_type_id,message_passed,message_failed, last_update_user_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set rulesubgroup_id=?, name=?, description=?, check_id=?, object1_classname=?,object1_methodname=?,object1_parametertype_id=?,object1_parameter=?,object1_type_id=?, object2_classname=?,object2_methodname=?,object2_parametertype_id=?,object2_parameter=?,object2_type_id=?,expectedvalue=?,expectedvalue_type_id=?,additional_parameter=?,additional_parameter_type_id=?, message_passed=?,message_failed=?, last_update_user_id=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =? and rulesubgroup_id=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
@@ -88,11 +90,16 @@ public class Rule extends DatabaseRecord implements Loadable
 
 	        this.expectedValue = rs.getString("expectedvalue");
 
-	        
 	        this.expectedValueType.setId(rs.getLong("expectedvalue_type_id"));
 	        this.expectedValueType.setConnection(getConnection());
 	        this.expectedValueType.load();
 
+	        this.additionalParameter = rs.getString("additional_parameter");
+	        
+	        this.additionalParameterType.setId(rs.getLong("additional_parameter_type_id"));
+	        this.additionalParameterType.setConnection(getConnection());
+	        this.additionalParameterType.load();
+	        
 	        this.messageFailed = rs.getString("message_failed");
 	        this.messagePassed = rs.getString("message_passed");
 
@@ -148,11 +155,16 @@ public class Rule extends DatabaseRecord implements Loadable
 
 	        this.expectedValue = rs.getString("expectedvalue");
 
-	        
 	        this.expectedValueType.setId(rs.getLong("expectedvalue_type"));
 	        this.expectedValueType.setConnection(getConnection());
 	        this.expectedValueType.load();
 
+	        this.additionalParameter = rs.getString("additional_parameter");
+	        
+	        this.additionalParameterType.setId(rs.getLong("additional_parameter_type_id"));
+	        this.additionalParameterType.setConnection(getConnection());
+	        this.additionalParameterType.load();
+	        
 	        this.messageFailed = rs.getString("message_failed");
 	        this.messagePassed = rs.getString("message_passed");
 
@@ -208,16 +220,18 @@ public class Rule extends DatabaseRecord implements Loadable
 		p.setLong(14, object2Type.getId());
 		p.setString(15,expectedValue);
 		p.setLong(16, expectedValueType.getId());
-		p.setString(17, messagePassed);
-		p.setString(18, messageFailed);
-		p.setLong(19, lastUpdateUser.getId());
+		p.setString(17,additionalParameter);
+		p.setLong(18, additionalParameterType.getId());
+		p.setString(19, messagePassed);
+		p.setString(20, messageFailed);
+		p.setLong(21, lastUpdateUser.getId());
 		
 		
-		p.setLong(20,getId());
+		p.setLong(22,getId());
 
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.executeUpdate();
 			}
@@ -251,13 +265,15 @@ public class Rule extends DatabaseRecord implements Loadable
 		p.setLong(14, object2Type.getId());
 		p.setString(15,expectedValue);
 		p.setLong(16, expectedValueType.getId());
-		p.setString(17, messagePassed);
-		p.setString(18, messageFailed);
-		p.setLong(19, lastUpdateUser.getId());
+		p.setString(17,additionalParameter);
+		p.setLong(18, additionalParameterType.getId());
+		p.setString(19, messagePassed);
+		p.setString(20, messageFailed);
+		p.setLong(21, lastUpdateUser.getId());
 		
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.execute();
 			}
@@ -280,7 +296,7 @@ public class Rule extends DatabaseRecord implements Loadable
 		p.setLong(1,getId());
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.executeUpdate();
 			}
@@ -526,6 +542,26 @@ public class Rule extends DatabaseRecord implements Loadable
 	public void setLastUpdateUser(User user) 
 	{
 		this.lastUpdateUser = user;
+	}
+
+	public String getAdditionalParameter()
+	{
+		return additionalParameter;
+	}
+
+	public void setAdditionalParameter(String additionalParameter)
+	{
+		this.additionalParameter = additionalParameter;
+	}
+
+	public Type getAdditionalParameterType() 
+	{
+		return additionalParameterType;
+	}
+
+	public void setAdditionalParameterType(Type additionalParameterType) 
+	{
+		this.additionalParameterType = additionalParameterType;
 	}
 
 

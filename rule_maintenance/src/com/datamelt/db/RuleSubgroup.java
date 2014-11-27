@@ -146,7 +146,7 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.executeUpdate();
 			}
@@ -173,7 +173,7 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 		
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.execute();
 			}
@@ -196,7 +196,7 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 		p.setLong(1,getId());
 		try
 		{
-			if(user.canWriteProject(project))
+			if(user.canUpdateProject(project))
 			{
 				p.executeUpdate();
 			}

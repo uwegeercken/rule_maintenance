@@ -1,0 +1,30 @@
+import java.sql.PreparedStatement;
+
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+id=Long.parseLong(request.getParameter("id"));
+
+if(cancelled.equals("activate user"))
+{
+	User dbuser = new User();
+	dbuser.connection = connection;
+	dbuser.id= id;
+	dbuser.deactivated=0;
+	dbuser.deactivatedDate = null; 
+
+	PreparedStatement ps = connection.getPreparedStatement(User.ACTIVATE_DEACTIVATE_SQL);
+	dbuser.activate(ps, user);
+	
+	ArrayList list = DbCollections.getAllUsers(connection);
+	context.put("users",list);
+	templatename="listusers.vm";
+}
+else
+{
+	ArrayList list = DbCollections.getAllDeactivatedUsers(connection);
+	context.put("users",list);
+	templatename="listdeactivatedusers.vm";
+}
+
+

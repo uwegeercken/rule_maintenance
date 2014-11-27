@@ -13,11 +13,17 @@ user.setUserid(userid);
 user.setConnection(connection);
 user.loadByUserid();
 
-if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals("") || user.deleted==1)
+if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals("") || user.deactivated==1)
 {
 	infomessage.type="error";
-	infomessage.text="Login invalid";
-	
+	if(!user.exist(userid)&& userid!=null && !userid.equals(""))
+	{
+		infomessage.text="Unknown user or user deactivated";
+	}
+	else
+	{
+		infomessage.text="Login invalid";
+	}
 	templatename="login.vm";
 }
 else

@@ -4,6 +4,7 @@
 <div id="help">
 	<p>Import data into a new project</p>
 	<p>Enter the name and description of the project to be created. Enter the path and filename of the Ruleengine Zip file to import into the project.</p>
+	<p>Define the group that the project belongs to. Members of this group have write access to the project. Mark the project as private, so that users outside the group do not see the project.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=importfile"> 

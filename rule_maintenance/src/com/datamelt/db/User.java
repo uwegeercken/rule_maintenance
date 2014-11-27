@@ -23,8 +23,8 @@ public class User extends DatabaseRecord implements Loadable
     private String name;
     private String password;
     private String lastLogin;
-    private int deleted;
-    private String deletedDate;
+    private int deactivated;
+    private String deactivatedDate;
     private ArrayList<Group> groups=new ArrayList<Group>();
     
     private static final String TABLENAME					= "user";
@@ -33,7 +33,8 @@ public class User extends DatabaseRecord implements Loadable
     public static final String UPDATE_PASSWORD_SQL          = "update " + TABLENAME + " set password=password(?) where id =?";
     public static final String UPDATE_LASTLOGIN_SQL         = "update " + TABLENAME + " set lastlogin=? where id =?";
     public static final String UPDATE_SQL       		    = "update " + TABLENAME + " set userid=?, name=? where id =?";
-    public static final String DELETE_SQL       		    = "update " + TABLENAME + " set deleted=?, deleted_date=? where id =?";
+    public static final String ACTIVATE_DEACTIVATE_SQL	    = "update " + TABLENAME + " set deactivated=?, deactivated_date=? where id =?";
+    public static final String DELETE_SQL	    			= "delete from " + TABLENAME + " where id =?";
     public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into " + TABLENAME_GROUPUSER + " (groups_id,user_id) values (?,?)";
     public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from " + TABLENAME_GROUPUSER + " where groups_id=? and user_id=?";
     public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from " + TABLENAME_GROUPUSER + " where user_id=?";
@@ -51,10 +52,10 @@ public class User extends DatabaseRecord implements Loadable
 	        this.password = rs.getString("password");
 	        this.lastLogin = rs.getString("lastlogin");
 	        
-	        this.deleted = rs.getInt("deleted");
-	        if(deleted==1)
+	        this.deactivated = rs.getInt("deactivated");
+	        if(deactivated==1)
 	        {
-	            this.deletedDate = rs.getString("deleted_date");
+	            this.deactivatedDate = rs.getString("deactivated_date");
 	        }
 	        
 	        setLastUpdate(rs.getString("last_update"));
@@ -109,49 +110,122 @@ public class User extends DatabaseRecord implements Loadable
     	return buffer.toString();
     }
     
-    public void insert(PreparedStatement p, String userPassword) throws Exception
+    public void insert(PreparedStatement p, String userPassword, User user) throws Exception
     {
         p.setString(1,userid);
         p.setString(2,name);
         p.setString(3, userPassword);
-        p.execute();
-        
-        setId(getConnection().getLastInsertId());
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.executeUpdate();
+				setId(getConnection().getLastInsertId());
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to insert the user");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
 
-    public void insertUserGroup(PreparedStatement p,long groupId) throws Exception
+    public void delete(PreparedStatement p, User user) throws Exception
     {
-        p.setLong(1,getId());
-        p.setLong(2,groupId);
-        p.execute();
+    	p.setLong(1,getId());
+		try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the user");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
-
-    public void delete(PreparedStatement p) throws Exception
+    
+    public void deactivate(PreparedStatement p, User user) throws Exception
     {
-        p.setInt(1,deleted);
-        p.setString(2,deletedDate);
+        p.setInt(1,deactivated);
+        p.setString(2,deactivatedDate);
         p.setLong(3,getId());
-        p.execute();
-        
-        setId(getConnection().getLastInsertId());
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to deactivate the user");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+			
     }
-
-    public void deleteUserGroup(PreparedStatement p,long groupsId) throws Exception
+    
+    public void activate(PreparedStatement p, User user) throws Exception
     {
-        p.setLong(1,groupsId);
-        p.setLong(2,getId());
-        p.execute();
+        p.setInt(1,0);
+        p.setString(2,null);
+        p.setLong(3,getId());
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to activate the user");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
-
-    public void deleteAllGroupMemberships(PreparedStatement p) throws Exception
+    
+    public void deleteAllGroupMemberships(PreparedStatement p, User user) throws Exception
     {
         p.setLong(1,getId());
-        p.execute();
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the users group memberships");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
 
     public void loadByUserid() throws Exception
     {
-        String sql="select * from user where userid='" + getUserid() +"' and deleted=0";
+        String sql="select * from user where userid='" + getUserid() +"' and deactivated=0";
         ResultSet rs = getConnection().getResultSet(sql);
 		if(rs.next())
 		{
@@ -191,7 +265,7 @@ public class User extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, User user) throws Exception
 	{
 		p.setString(1,userid);
 		p.setString(2,name);
@@ -199,7 +273,14 @@ public class User extends DatabaseRecord implements Loadable
 		p.setLong(3,getId());
 		try
 		{
-			p.executeUpdate();
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to update the user");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -211,7 +292,6 @@ public class User extends DatabaseRecord implements Loadable
 	public void updatePassword(PreparedStatement p,String password) throws Exception
 	{
 		p.setString(1,password);
-
 		p.setLong(2,getId());
 		try
 		{
@@ -224,14 +304,21 @@ public class User extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public void addGroupMembership(PreparedStatement p,long groupId) throws Exception
+	public void addGroupMembership(PreparedStatement p,long groupId, User user) throws Exception
 	{
 		p.setLong(1,groupId);
 		p.setLong(2,getId());
 
 		try
 		{
-			p.executeUpdate();
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to add group membership for the user");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -281,7 +368,7 @@ public class User extends DatabaseRecord implements Loadable
     
     public boolean exist(String uid) throws Exception
     {
-        String sql="select id from user where userid ='" + uid + "' and deleted=0";
+        String sql="select id from user where userid ='" + uid + "' and deactivated=0";
         ResultSet rs = getConnection().getResultSet(sql);
 		boolean exists=false;
         if(rs.next())
@@ -327,7 +414,7 @@ public class User extends DatabaseRecord implements Loadable
     	boolean isInProjectGroup=false;
     	for(int i=0;i<groups.size();i++)
     	{
-    		if(groups.contains(projectGroup))
+    		if(groups.get(i).getId()==projectGroup.getId())
     		{
     			isInProjectGroup = true;
     			break;
@@ -336,7 +423,7 @@ public class User extends DatabaseRecord implements Loadable
     	return isInProjectGroup;
     }
     
-    public boolean canWriteProject(Project project)
+    public boolean canUpdateProject(Project project)
 	{
 		if(this.isInProjectGroup(project.getGroup()) ||this.isInGroup(User.ADMINISTRATOR) || project.getOwnerUser().getId()==this.getId())
     	{
@@ -380,24 +467,24 @@ public class User extends DatabaseRecord implements Loadable
         return groups;
     }
     
-    public int getDeleted()
+    public int getDeactivated()
     {
-        return deleted;
+        return deactivated;
     }
     
-    public void setDeleted(int deleted)
+    public void setDeactivated(int deactivated)
     {
-        this.deleted = deleted;
+        this.deactivated = deactivated;
     }
     
-    public String getDeletedDate()
+    public String getDeactivatedDate()
     {
-        return deletedDate;
+        return deactivatedDate;
     }
     
-    public void setDeletedDate(String deletedDate)
+    public void setDeactivatedDate(String deactivatedDate)
     {
-        this.deletedDate = deletedDate;
+        this.deactivatedDate = deactivatedDate;
     }
     
 }

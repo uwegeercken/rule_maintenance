@@ -1,0 +1,27 @@
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+
+adminaction="true";
+cancelled= request.getParameter("submit");
+
+id=Long.parseLong(request.getParameter("id"));
+
+if(cancelled.equals("deactivate user"))
+{
+	User dbuser = new User();
+	dbuser.connection = connection;
+	dbuser.id= id;
+	dbuser.deactivated=1;
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	dbuser.deactivatedDate = sdf.format(new Date()); 
+
+	PreparedStatement ps = connection.getPreparedStatement(User.ACTIVATE_DEACTIVATE_SQL);
+	dbuser.deactivate(ps, user);
+	dbuser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS),user);
+}
+
+ArrayList list = DbCollections.getAllUsers(connection);
+context.put("users",list);
+
+templatename="listusers.vm";

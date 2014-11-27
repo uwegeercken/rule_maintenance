@@ -1,5 +1,5 @@
-#set($pagetitle='Deactivate User')
-<p class="heading">Deactivate User</p>
+#set($pagetitle='Delete User')
+<p class="heading">Delete User</p>
 <form method="POST" action="process?action=bsh&scriptname=deleteuser&id=${dbuser.id}"> 
 <div class="unit">
 	<div class="grouptop">
@@ -11,8 +11,8 @@
 	</div>
 </div>
 <div class="bottomtext"> 
-<p>Are you sure you want to deactivate this user?</p>
-<p><input type="submit" value="deactivate user" name="submit"><input type="submit" value="cancel deactivation" name="submit"></p>
+<p>Are you sure you want to delete this user? This will completely remove the user from the database and can not be undone!</p>
+<p><input type="submit" value="delete user" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
 </div>	
 </form>
 <br>

@@ -28,17 +28,17 @@ else
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
-				dbUser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS));
+				dbUser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS), user);
 				if(groups!=null)
 				{
 					for(int i=0;i<groups.length;i++)
 					{
 						long groupId = Long.parseLong(groups[i]);
-						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId);
+						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId, user);
 					}
 				}
 				dbUser.loadGroups();
-				dbUser.update(connection.getPreparedStatement(User.UPDATE_SQL));
+				dbUser.update(connection.getPreparedStatement(User.UPDATE_SQL), user);
 				infomessage.text="User updated.";
 			}
 			else if(!dbUser.userid.equals(userid)&& dbUser.exist(userid) && userid.length()>0)
@@ -64,13 +64,13 @@ else
 				dbUser.setUserid(userid);
 				
 				String password=PasswordUtility.generateRandomPassword();
-				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password);
+				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password, user);
 				if(groups!=null)
 				{
 					for(int i=0;i<groups.length;i++)
 					{
 						long groupId = Long.parseLong(groups[i]);
-						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId);
+						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId, user);
 					}
 				}
 				dbUser.loadGroups();
@@ -93,7 +93,7 @@ else
 		}
 		context.put("dbuser",dbUser);
 		
-		ArrayList allgroups = DbCollections.getAllGroups(connection);
+		ArrayList allgroups = DbCollections.getAllGroups(connection,user);
 		context.put("groups",allgroups);
 		
 		templatename="edituser.vm";

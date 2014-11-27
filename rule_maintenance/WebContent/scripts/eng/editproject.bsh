@@ -38,10 +38,8 @@ else
 				project.setDescription(description);
 				project.setPrivateProject(isprivate);
 				project.lastUpdateUser.id = user.id;
-				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
 				project.group.id = projectgroupid;
-				project.deleteAllGroupMemberships(connection.getPreparedStatement(Project.DELETE_ALL_GROUP_MEMBERSHIPS));
-				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
+				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
 				project.load();
 				infomessage.text="Project updated.";
 			}
@@ -74,7 +72,6 @@ else
 				project.ownerUser.id = user.id;
 				project.group.id = projectgroupid;
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
-				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
 				project.load();
 				infomessage.text="Project added.";
 			}
@@ -99,7 +96,7 @@ else
 		
 		context.put("project",project);
 		
-		ArrayList list = DbCollections.getAllGroups(connection);
+		ArrayList list = DbCollections.getAllGroups(connection, user);
 		context.put("groups",list);
 		
 		templatename="editproject.vm";

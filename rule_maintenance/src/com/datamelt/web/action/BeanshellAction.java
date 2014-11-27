@@ -50,7 +50,11 @@ public class BeanshellAction extends Action
             
             interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
 
-            if(checkAdminAccessOk(interpreter,user))
+            if(request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid())
+            {
+            	template = "login.vm";
+            }
+            else if(checkAdminAccessOk(interpreter,user))
             {
                 template = (String)interpreter.get("templatename");
                 
@@ -59,7 +63,7 @@ public class BeanshellAction extends Action
                     throw new Exception("template is undefined in: "+scriptName + Controller.SCRIPT_EXTENSION);
                 }
             }
-            else
+            else if(!checkAdminAccessOk(interpreter,user))
             {
                 throw new Exception("error: the requested action may only be executed by a person who is in the Admin group.");
             }

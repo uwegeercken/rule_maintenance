@@ -19,7 +19,7 @@ if(cancelled.equals("delete group"))
 	group.delete(ps);
 }
 
-ArrayList list = DbCollections.getAllGroups(connection);
+ArrayList list = DbCollections.getAllGroups(connection,user);
 context.put("groups",list);
 
 templatename="listgroups.vm";

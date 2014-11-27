@@ -1,0 +1,18 @@
+import com.datamelt.db.User;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	User dbuser = new User();
+	dbuser.connection = connection;
+	dbuser.id = Long.parseLong(request.getParameter("id"));;
+	dbuser.load();
+	context.put("dbuser",dbuser);
+		
+
+	templatename="activateuser.vm";
+}

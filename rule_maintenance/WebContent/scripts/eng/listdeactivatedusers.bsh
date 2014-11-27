@@ -1,0 +1,16 @@
+import com.datamelt.db.DbCollections;
+
+adminaction="true";
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		ArrayList list = DbCollections.getAllDeactivatedUsers(connection);
+		context.put("users",list);
+
+	
+		templatename="listdeactivatedusers.vm";
+}

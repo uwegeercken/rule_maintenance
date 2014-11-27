@@ -29,17 +29,13 @@ public class Project extends DatabaseRecord implements Loadable
 	private User ownerUser = new User();
 	
 	private static final String TABLENAME						= "project";
-	private static final String TABLENAME_PROJECTGROUP			= "projectgroup";
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, is_private) values (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, is_private=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private) values (?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
-    public static final String ADD_GROUP_MEMBERSHIP  	    	= "insert into " + TABLENAME_PROJECTGROUP + " (group_id,project_id) values (?,?)";
-    public static final String DELETE_GROUP_MEMBERSHIP	    	= "delete from " + TABLENAME_PROJECTGROUP + " where group_id=? and project_id=?";
-    public static final String DELETE_ALL_GROUP_MEMBERSHIPS 	= "delete from " + TABLENAME_PROJECTGROUP + " where project_id=?";
 	
 	public Project()
 	{
@@ -74,17 +70,11 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.ownerUser.setConnection(getConnection());
 	        this.ownerUser.load();
 	        
+	        this.group.setId(rs.getLong("group_id"));
+	        this.group.setConnection(getConnection());
+	        this.group.load();
+	        
 	        setLastUpdate(rs.getString("last_update"));
-	        
-	        try
-	        {
-	            loadGroup();
-	        }
-	        catch(Exception ex)
-	        {
-	            ex.printStackTrace();
-	        }
-	        
 		}
         rs.close();
 	}
@@ -111,17 +101,11 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.ownerUser.setConnection(getConnection());
 	        this.ownerUser.load();
 	        
+	        this.group.setId(rs.getLong("group_id"));
+	        this.group.setConnection(getConnection());
+	        this.group.load();
+	        
 	        setLastUpdate(rs.getString("last_update"));
-	        
-	        try
-	        {
-	            loadGroup();
-	        }
-	        catch(Exception ex)
-	        {
-	        	ex.printStackTrace();
-	        }
-	        
 		}
         rs.close();
 	}
@@ -142,43 +126,6 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		numberOfRuleGroups = DbCollections.getAllRuleGroupsCount(getConnection(), this.getId());
 	}
-	
-	public void loadGroup() throws Exception
-    {
-        String sql="select group_id" +
-        		" from projectgroup" +
-        		" where project_id=" + getId(); 
-        ResultSet rs = getConnection().getResultSet(sql);
-		if(rs.next())
-		{
-	        group.setConnection(getConnection());
-	        group.setId(rs.getLong("group_id"));
-	        group.load();
-		}
-        rs.close();
-    }
-	
-	public void deleteGroupMembership(PreparedStatement p,long groupId) throws Exception
-	{
-		p.setLong(1,groupId);
-		p.setLong(2,getId());
-
-		try
-		{
-			p.executeUpdate();
-			
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public void deleteAllGroupMemberships(PreparedStatement p) throws Exception
-    {
-        p.setLong(1,getId());
-        p.execute();
-    }
 	
 	public String mergeWithTemplate(RuleGroup rulegroup,String templatePath, String templateName) throws Exception
 	{
@@ -224,13 +171,14 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(7,databaseUserPassword);
 		p.setLong(8,lastUpdateUser.getId());
 		p.setLong(9,ownerUser.getId());
-		p.setLong(10,privateProject);
+		p.setLong(10,group.getId());
+		p.setLong(11,privateProject);
 		
-		p.setLong(11,getId());
+		p.setLong(12,getId());
 
 		try
 		{
-			if(user.canWriteProject(this))
+			if(user.canUpdateProject(this))
 			{
 				p.executeUpdate();
 			}
@@ -257,11 +205,12 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setString(7,databaseUserPassword);
 		p.setLong(8,lastUpdateUser.getId());
 		p.setLong(9,ownerUser.getId());
-		p.setLong(10,privateProject);
+		p.setLong(10,group.getId());
+		p.setLong(11,privateProject);
 		
 		try
 		{
-			if(user.canWriteProject(this))
+			if(user.canUpdateProject(this))
 			{
 				p.execute();
 			}
@@ -283,7 +232,7 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(1,getId());
 		try
 		{
-			if(user.canWriteProject(this))
+			if(user.canUpdateProject(this))
 			{
 				p.executeUpdate();
 			}
@@ -696,22 +645,6 @@ public class Project extends DatabaseRecord implements Loadable
         return group;
     }
 	
-	public void addGroupMembership(PreparedStatement p,long groupId) throws Exception
-	{
-		p.setLong(1,groupId);
-		p.setLong(2,getId());
-
-		try
-		{
-			p.executeUpdate();
-			
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-
 	public void setGroup(Group group)
 	{
 		this.group = group;

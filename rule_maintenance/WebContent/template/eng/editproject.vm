@@ -3,7 +3,8 @@
 <p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
 <div id="help">
 	<p>Edit the selected project.</p>
-	<p>Enter the name and description of the project. The name will be used for the zip file containing all rules, so it's better to not use special characters and spaces.</p>
+	<p>Enter the name and description of the project. The name will be used as the zip file name containing all rules, so it's better to not use special characters and spaces.</p>
+	<p>The group field defines to which group the project belongs. Only members of the group have write access to the project. Mark the group as private so that users outside the group do not see the project.</p>
 </div>
 <div class="formbox">
 #if($mode=="add")
@@ -28,7 +29,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Owner group:</td>
+		<td>Group:</td>
 		<td>		
 			<select name="projectgroupid" size="1">
 				<option selected value="0"></option>
@@ -58,7 +59,7 @@
 </table>
 </form>
 #if(${project.id}>0)
-	<p class="small">last edited by: ${project.lastUpdateUser.name}, ${project.lastUpdate}</p>
+	<p class="small">owner: ${project.ownerUser.name}, last edited by: ${project.lastUpdateUser.name}, ${project.lastUpdate}</p>
 #end
 </div>
 

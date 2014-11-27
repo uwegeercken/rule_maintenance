@@ -5,9 +5,12 @@ last update: Uwe Geercken, November 2014
 version 1.4
 ===========
 - Added code to handle groups (roles). Groups can be defined and users can be added/removed from (multiple) groups.
-  A project belongs to one group. If a user belongs to the projects group or if he/she is in the admin group, he/she
-  can modify the project; otherwise the user has read-only access to the project, rules, actions, etc. A project that
-  is private can only be seen and modified by the users in the group that the project belongs to or users being in
-  the admin group or the user that created the project.
+  A project belongs to one group. If a user belongs to the projects group or if he/she is in the admin group, or is
+  the owner/creator of the project he/she can modify the project; otherwise the user has read-only access to the
+  project, rules, rulegroups, subgroups and actions.
+- A project that is private can only be seen and modified by the users in the group that the project belongs to or
+  users being in the admin group or the user that is the owner/created the project.
+- Added functionality to deactivate and (re-)activate user.
+- Added functionality to delete user.
 
 

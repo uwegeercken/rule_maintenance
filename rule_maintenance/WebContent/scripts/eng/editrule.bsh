@@ -76,6 +76,8 @@ else
 		
 		ruleNew.expectedValue = request.getParameter("expectedvalue");
 		ruleNew.expectedValueType.id = Long.parseLong(request.getParameter("expectedvalue_type_id"));
+		ruleNew.additionalParameter = request.getParameter("additionalparameter");
+		ruleNew.additionalParameterType.id = Long.parseLong(request.getParameter("additionalparameter_type_id"));
 		ruleNew.messagePassed = request.getParameter("messagepassed");
 		ruleNew.messageFailed = request.getParameter("messagefailed");
 	
@@ -135,6 +137,11 @@ else
 			{
 				infomessage.type="error";
 				infomessage.text="Type must be selected when Expected Value is specified";
+			}
+			else if(ruleNew.additionalParameter!=null && ruleNew.additionalParameter.length()>0 && ruleNew.additionalParameterType.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Additional Parameter is specified";
 			}
 			else if(ruleNew.messagePassed.trim().equals("") || ruleNew.messageFailed.trim().equals(""))
 			{
@@ -199,6 +206,11 @@ else
 			{
 				infomessage.type="error";
 				infomessage.text="Type must be selected when Expected Value is specified";
+			}
+			else if(ruleNew.additionalParameter!=null && ruleNew.additionalParameter.length()>0 && ruleNew.additionalParameterType.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Type must be selected when Additional Parameter is specified";
 			}
 			else if(ruleNew.messagePassed.trim().equals("") || ruleNew.messageFailed.trim().equals(""))
 			{

@@ -46,7 +46,7 @@ public class DbCollections
         	project.loadRuleGroupsCount();
         	if(project.getPrivateProject()==1) 
         	{
-        		if(user.canWriteProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())
+        		if(user.canUpdateProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())
         		{
         			list.add(project);
         		}
@@ -167,9 +167,9 @@ public class DbCollections
         return list;
     }
     
-    public static ArrayList<Group> getAllGroups(MySqlConnection connection) throws Exception
+    public static ArrayList<Group> getAllGroups(MySqlConnection connection, User user) throws Exception
     {
-        String sql="select id from groups where id >1 order by name";	
+        String sql="select id from groups order by name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<Group> list = new ArrayList<Group>();
         while(rs.next())
@@ -178,7 +178,14 @@ public class DbCollections
         	group.setConnection(connection);
         	group.setId(rs.getLong("id"));
         	group.load();
-            list.add(group);
+        	if(group.getId()==1 && user.isInGroup(User.ADMINISTRATOR))
+        	{
+        		list.add(group);
+        	}
+        	else if(group.getId()>1)
+        	{
+        		list.add(group);
+        	}
         }
         rs.close();
         return list;
@@ -186,7 +193,25 @@ public class DbCollections
     
     public static ArrayList <User> getAllUsers(MySqlConnection connection) throws Exception
     {
-        String sql="select id from user where deleted=0" + 
+        String sql="select id from user where deactivated=0" + 
+        	" order by name";	
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <User> list = new ArrayList<User>();
+        while(rs.next())
+        {
+            User user = new User();
+            user.setConnection(connection);
+            user.setId(rs.getLong("id"));
+            user.load();
+            list.add(user);
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static ArrayList <User> getAllDeactivatedUsers(MySqlConnection connection) throws Exception
+    {
+        String sql="select id from user where deactivated=1" + 
         	" order by name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <User> list = new ArrayList<User>();

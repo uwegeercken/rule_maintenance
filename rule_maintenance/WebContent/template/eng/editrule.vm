@@ -96,6 +96,22 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Additional Parameter:</td>
+		<td>
+			<input name="additionalparameter" type="text" size="40" maxlength="255" value="$!{rule.additionalParameter}">
+			Type: <select name="additionalparameter_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${rule.additionalParameterType.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
 		<td>Message Passed:</td>
 		<td>
 			<input name="messagepassed" type="text" size="40" maxlength="255" value="$!{rule.messagePassed}">

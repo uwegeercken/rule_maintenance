@@ -1,0 +1,20 @@
+#set($pagetitle='Activate User')
+<p class="heading">Activate User</p>
+<form method="POST" action="process?action=bsh&scriptname=activateuser&id=${dbuser.id}"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">user</p>
+		<p class="big">$!{dbuser.name}</p>
+		<p class="normal">userid: $!dbuser.userid</p>
+		<p class="normal">groups: $!{dbuser.getGroupsAsString()}</p>
+
+	</div>
+</div>
+<div class="bottomtext"> 
+<p>Are you sure you want to activate this user?</p>
+<p><input type="submit" value="activate user" name="submit"><input type="submit" value="cancel activation" name="submit"></p>
+</div>	
+</form>
+<br>
+<br>
+<br>

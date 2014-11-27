@@ -32,16 +32,12 @@ else
 		
 		if(!project.exist(name) && name.length()>0 && zipfile.length()>0 && projectgroupid>0)
 		{
-			User user = new User();
-			user.setConnection(connection);
-			user.setUserid("admin");
-			user.loadByUserid();
-			
 			project.setName(name);
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
 			project.lastUpdateUser.id = user.id;
 			project.ownerUser.id = user.id;
+			project.group.id = projectgroupid;
 			
 			ZipFile z=null;
 			try
@@ -49,7 +45,6 @@ else
 				z = new ZipFile(zipfile);
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.importProject(z, user);
-				project.addGroupMembership(connection.getPreparedStatement(Project.ADD_GROUP_MEMBERSHIP),projectgroupid);
 				infomessage.text="Project added - rulegroups, subgroups, rules and actions imported";
 				
 			}
@@ -103,7 +98,7 @@ else
 		context.put("zipfile",zipfile);
 	}
 	
-	ArrayList list = DbCollections.getAllGroups(connection);
+	ArrayList list = DbCollections.getAllGroups(connection, user);
 	context.put("groups",list);
 	
 	templatename="importfile.vm";
