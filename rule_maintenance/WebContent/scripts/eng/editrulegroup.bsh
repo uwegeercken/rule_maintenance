@@ -121,8 +121,8 @@ else
 			}
 			else
 			{
-				rulegroupNew.user.id = user.id;
-				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL));
+				rulegroupNew.lastUpdateUser.id = user.id;
+				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),project,user);
 				
 				RuleSubgroup subgroup = new RuleSubgroup();
 				subgroup.rulegroupId = rulegroupNew.id;
