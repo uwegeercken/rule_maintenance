@@ -37,7 +37,7 @@
 			<p class="normal">$!{rulegroup.description}</p>
 		</div>
 		<div>
-			<p class="small">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
+			#if(${rulegroup.isValid()}==true)<p class="small">#else<p class="smallred">#end valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
 		</div>
 	</div>
 	#set($counter=$counter+1)

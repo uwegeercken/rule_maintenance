@@ -36,6 +36,16 @@ p.small
 	font-style: italic;
 }
 
+p.smallred
+{
+	margin: 3px;
+	padding: 3px;
+	font: normal 8pt/1.0 verdana, sans-serif;
+	font-style: italic;
+	color: red;
+}
+
+
 p.heading, b
 {
 	background: #282828;

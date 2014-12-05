@@ -101,7 +101,7 @@ else
 			else if(ruleNew.object1Parameter==null || ruleNew.object1Type.id==0 || ruleNew.object1Parameter.length()==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 1 and Type must be specified";
+				infomessage.text="Field to check and Type must be specified";
 			}
 			else if(ruleNew.check.id==0)
 			{
@@ -111,32 +111,32 @@ else
 			else if(ruleNew.check.checkSingleField==1 && (ruleNew.object2Parameter!=null || ruleNew.object2Parametertype.id>0))
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2, Type not allowed for the selected Check";
+				infomessage.text="Field to check against, Type not allowed for the selected Check";
 			}
 			else if(ruleNew.check.checkSingleField==1 && ruleNew.expectedValue.length()>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Expected Value not allowed for the selected Check";
+				infomessage.text="Value to check against not allowed for the selected Check";
 			}
 			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter!=null && ruleNew.expectedValue.length()>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2, Type and Expected Value can not be specified both";
+				infomessage.text="Field to check against and Value to check against can not be specified both";
 			}
 			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter==null && ruleNew.expectedValue.length()==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2, Type or Expected Value must be specified";
+				infomessage.text="Field to check against or Value to check against must be specified";
 			}
 			else if(ruleNew.object2Parameter!=null && ruleNew.object2Parameter.length()>0 && ruleNew.object2Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Type must be selected when Field 2 is specified";
+				infomessage.text="Type must be selected when Field to check against is specified";
 			}
 			else if(ruleNew.expectedValue!=null && ruleNew.expectedValue.length()>0 && ruleNew.expectedValueType.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Type must be selected when Expected Value is specified";
+				infomessage.text="Type must be selected when Value to check against is specified";
 			}
 			else if(ruleNew.additionalParameter!=null && ruleNew.additionalParameter.length()>0 && ruleNew.additionalParameterType.id==0)
 			{
@@ -170,7 +170,7 @@ else
 			else if(ruleNew.object1Parameter==null || ruleNew.object1Type.id==0 || ruleNew.object1Parameter.length()==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 1 and Type must be specified";
+				infomessage.text="Field to check and Type must be specified";
 			}
 			else if(ruleNew.check.id==0)
 			{
@@ -180,32 +180,32 @@ else
 			else if(ruleNew.check.checkSingleField==1 && (ruleNew.object2Parameter!=null || ruleNew.object2Parametertype.id>0))
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2 and Type not allowed for the selected Check";
+				infomessage.text="Field to check against and Type not allowed for the selected Check";
 			}
 			else if(ruleNew.check.checkSingleField==1 && ruleNew.expectedValue.length()>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Expected Value not allowed for the selected Check";
+				infomessage.text="Value to check against not allowed for the selected Check";
 			}
 			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter!=null && ruleNew.expectedValue.length()>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2, Type and Expected Value can not be specified both";
+				infomessage.text="Field to check against and Value to check against can not be specified both";
 			}
 			else if(ruleNew.check.checkSingleField==0 && ruleNew.object2Parameter==null && ruleNew.expectedValue.length()==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field 2, Type or Expected Value must be specified";
+				infomessage.text="Field to check against or Value to check against must be specified";
 			}
 			else if(ruleNew.object2Parameter!=null && ruleNew.object2Parameter.length()>0  && ruleNew.object2Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Type must be selected when Field 2 is specified";
+				infomessage.text="Type must be selected when Field to check against is specified";
 			}
 			else if(ruleNew.expectedValue!=null && ruleNew.expectedValue.length()>0 && ruleNew.expectedValueType.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Type must be selected when Expected Value is specified";
+				infomessage.text="Type must be selected when Value to check against is specified";
 			}
 			else if(ruleNew.additionalParameter!=null && ruleNew.additionalParameter.length()>0 && ruleNew.additionalParameterType.id==0)
 			{

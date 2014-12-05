@@ -15,6 +15,7 @@ import org.apache.velocity.context.Context;
 import bsh.Interpreter;
 
 import com.datamelt.db.MySqlConnection;
+import com.datamelt.web.ConstantsWeb;
 import com.datamelt.web.Controller;
 
 public class PluginLoader
@@ -30,7 +31,7 @@ public class PluginLoader
         
         for(int i=0;i<files.length;i++) 
         {
-            if(files[i].getName().endsWith(".bsh"))
+            if(files[i].getName().endsWith(ConstantsWeb.SCRIPTS_EXTENSION))
             {
                 BeanshellPlugin plugin = new BeanshellPlugin(files[i].getName());
                 addPlugin(plugin);

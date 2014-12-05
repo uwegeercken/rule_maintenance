@@ -291,25 +291,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    
 	}
 	
-	public static boolean existUser(String userid)
-    {
-        boolean contains=false;
-        try
-        {
-            contains= users.containsKey(userid);
-        }
-        catch (Exception ex)
-        {
-            
-        }
-        return contains;
-    }
-    
-    public static String getUserDetails(String userid)
-    {
-        return users.getProperty(userid);
-    }
-    
 	public static String getProperty(String key)
 	{
 	    return properties.getProperty(key);

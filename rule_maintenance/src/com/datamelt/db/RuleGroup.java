@@ -122,8 +122,8 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		Date dateUntil = formatter.parse(getValidUntil());
 		
 		Date today = new Date();
-		
-		return today.getTime() >= dateFrom.getTime() && today.getTime() <= dateUntil.getTime(); 
+		boolean valid = today.getTime() >= dateFrom.getTime() && today.getTime() <= dateUntil.getTime();
+		return valid;  
 	}
 	
 	public void update(PreparedStatement p, Project project, User user) throws Exception
