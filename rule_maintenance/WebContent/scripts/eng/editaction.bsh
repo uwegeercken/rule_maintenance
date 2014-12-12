@@ -150,9 +150,9 @@ else
 			else
 			{
 				actionNew.lastUpdateUser.id = user.id;
-				actionNew.user.connection = connection;
-				actionNew.user.load();
-				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL));
+				actionNew.lastUpdateUser.connection = connection;
+				actionNew.lastUpdateUser.load();
+				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL), project, user);
 				infomessage.text="Action updated.";
 			}
 		}
@@ -223,7 +223,7 @@ else
 				actionNew.lastUpdateUser.id = user.id;
 				actionNew.lastUpdateUser.connection = connection;
 				actionNew.lastUpdateUser.load();
-				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL));
+				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL), project, user);
 				infomessage.text="Action added.";
 			}
 		}

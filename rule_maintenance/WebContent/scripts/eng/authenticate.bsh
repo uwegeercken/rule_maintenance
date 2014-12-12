@@ -28,7 +28,7 @@ if(!user.exist(userid) || userid==null || password==null || userid.equals("") ||
 }
 else
 {
-   	if(user.isPasswordOk(password))
+   	if(user.isPasswordOk(password, ldap))
    	{
 	   	
 	   	request.getSession().setAttribute("authenticated","true");

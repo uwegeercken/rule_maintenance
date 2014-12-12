@@ -17,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.datamelt.util.Ldap;
+
 public class User extends DatabaseRecord implements Loadable
 {
     private String userid;
@@ -25,6 +27,7 @@ public class User extends DatabaseRecord implements Loadable
     private String lastLogin;
     private int deactivated;
     private String deactivatedDate;
+    private boolean ldapUser=false;
     private ArrayList<Group> groups=new ArrayList<Group>();
     
     private static final String TABLENAME					= "user";
@@ -343,14 +346,17 @@ public class User extends DatabaseRecord implements Loadable
 		}
 	}
 	
-    public boolean isPasswordOk(String password) throws Exception
+    public boolean isPasswordOk(String password, Ldap ldap) throws Exception
     {
-        return checkDbLoginOk(password);
-    }
-    
-    public boolean isLocalPasswordOk(String password) throws Exception
-    {
-        return checkDbLoginOk(password);
+    	if(ldap!=null && checkLdapLoginOk(password, ldap))
+    	{
+    		ldapUser=true;
+    		return true;
+    	}
+    	else
+    	{
+    		return checkDbLoginOk(password);
+    	}
     }
     
     private boolean checkDbLoginOk(String password) throws Exception
@@ -366,6 +372,11 @@ public class User extends DatabaseRecord implements Loadable
         return passwordOk==1;
     }
     
+    private boolean checkLdapLoginOk(String password, Ldap ldap) throws Exception
+    {
+        return ldap.authenticate(this.userid, password);
+    }
+
     public boolean exist(String uid) throws Exception
     {
         String sql="select id from user where userid ='" + uid + "' and deactivated=0";
@@ -486,5 +497,9 @@ public class User extends DatabaseRecord implements Loadable
     {
         this.deactivatedDate = deactivatedDate;
     }
-    
+
+	public boolean isLdapUser() {
+		return ldapUser;
+	}
+
 }

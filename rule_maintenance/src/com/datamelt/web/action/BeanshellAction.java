@@ -38,6 +38,10 @@ public class BeanshellAction extends Action
             interpreter.set("request",request);
             interpreter.set("response",response);
             interpreter.set("language",Controller.getLanguage());
+            if(Controller.getLdap()!=null)
+            {
+            	interpreter.set("ldap",Controller.getLdap());
+            }
             
             interpreter.set("connection",getConnection());
             interpreter.set("scriptspath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage());

@@ -17,6 +17,7 @@ import bsh.Interpreter;
 import com.datamelt.db.MySqlConnection;
 import com.datamelt.plugin.BeanshellPlugin;
 import com.datamelt.plugin.PluginLoader;
+import com.datamelt.util.Ldap;
 import com.datamelt.web.action.Action;
 
 public class Controller extends org.apache.velocity.tools.view.servlet.VelocityLayoutServlet 
@@ -33,12 +34,17 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	private static final String DIRECTORY_MESSAGES                 = "message";
     private static final String HOSTNAME_WEBINF_ATTRIBUTE          = "hostname";
     private static final String HOSTNAME_READONLY_WEBINF_ATTRIBUTE = "hostname_readonly";
+    
+    private static final String LDAP_HOSTNAME_WEBINF_ATTRIBUTE	   = "ldap_hostname";
+    private static final String LDAP_DOMAIN_WEBINF_ATTRIBUTE	   = "ldap_domain";
+    private static final String LDAP_PORT_WEBINF_ATTRIBUTE		   = "ldap_port";
+    
     private static final long serialVersionUID=300000;
 
 	public static final String PLUGIN_PATH_WEBINF_ATTRIBUTE		  = "pluginpath";
 	
 	// if set to <true> then each template will automatically get all plugins
-	// otherwise the required template needs to be explicitely named in the script
+	// otherwise the required template needs to be explicitly named in the script
 	public static final String AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE  = "autoaddplugins";
 	
 	public static final String CONTEXT_PATH				          = "contextpath";
@@ -51,16 +57,19 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	private static final String MESSAGE_UNDEFINED                 = "[error: message undefined]";
 	private static final String MESSAGES                          = "messages";
 	private static final String HOSTNAME_LOCALHOST				  = "localhost";
+	
+	private static final int LDAP_DEFAULT_PORT					  = 389;
 	private static String language                                = "eng";
 	
+	
 	private static Properties actions = new Properties();
-    private static Properties users = new Properties();
     private static Properties properties = new Properties();
     private static Properties messages = new Properties();
     private static String dbUser;
     private static String dbUserPassword;
     private static String hostnameReadWrite;
     private static String hostnameReadonly;
+    private static Ldap ldap;
     
     private static Interpreter interpreter=null;
     private static PluginLoader pluginLoader= null;
@@ -151,6 +160,22 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    {
 	        properties.put(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE, autoAddPlugins); 
 	    }
+	    
+	    if (config.getInitParameter(LDAP_HOSTNAME_WEBINF_ATTRIBUTE)!=null && config.getInitParameter(LDAP_DOMAIN_WEBINF_ATTRIBUTE)!=null)
+	    {
+	    	ldap = new Ldap();
+	        ldap.setHost(config.getInitParameter(LDAP_HOSTNAME_WEBINF_ATTRIBUTE));
+	        ldap.setDomain(config.getInitParameter(LDAP_DOMAIN_WEBINF_ATTRIBUTE));
+	        if(config.getInitParameter(LDAP_PORT_WEBINF_ATTRIBUTE)!=null)
+	        {
+	        	ldap.setPort(Integer.parseInt(config.getInitParameter(LDAP_PORT_WEBINF_ATTRIBUTE)));
+	        }
+	        else
+	        {
+	        	ldap.setPort(LDAP_DEFAULT_PORT);
+	        }
+	    }
+	    
 	    
 	    loadMessages();
 	    
@@ -306,5 +331,8 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    return pluginLoader.getPlugins();
 	}
 	
-
+	public static Ldap getLdap()
+	{
+		return ldap;
+	}
 }

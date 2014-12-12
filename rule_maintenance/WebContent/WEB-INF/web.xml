@@ -67,6 +67,15 @@
 	      <param-name>hostname_readonly</param-name>
 	      <param-value>localhost:3306</param-value>
 	    </init-param>
+	    <init-param>
+	      <param-name>ldap_hostname</param-name>
+	      <param-value>CHZRH0SPSV0201</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>ldap_domain</param-name>
+	      <param-value>swissport.aero</param-value>
+	    </init-param>
+
     	<load-on-startup>1</load-on-startup>
 	</servlet>
 

@@ -5,7 +5,9 @@
 		#if(!$user)
 			<li><a href="process?action=bsh&scriptname=login">login</a></li>
 		#else
-			<li><a href="process?action=bsh&scriptname=selectupdatepassword">password</a></li>
+			#if(!${user.ldapUser})
+				<li><a href="process?action=bsh&scriptname=selectupdatepassword">password</a></li>
+			#end
 			<li><a href="process?action=bsh&scriptname=logout">logout</a></li>
 		#end
 	</ul>
