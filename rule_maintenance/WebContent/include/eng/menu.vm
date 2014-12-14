@@ -24,6 +24,7 @@
 		<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listgroups">groups</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectconfigure">configuration</a></li>
 	</ul>
 #end
 	<ul>

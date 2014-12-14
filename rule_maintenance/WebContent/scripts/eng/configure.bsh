@@ -1,0 +1,76 @@
+import java.io.FileOutputStream;
+import java.util.Properties;
+import com.datamelt.db.MySqlConnection;
+
+cancelled= request.getParameter("submit");
+
+Properties p = new Properties();
+p.put("db_hostname",request.getParameter("db_hostname"));
+p.put("db_name",request.getParameter("db_name"));
+p.put("db_port",request.getParameter("db_port"));
+p.put("db_user",request.getParameter("db_user"));
+p.put("db_userpassword",request.getParameter("db_userpassword"));
+
+p.put("ldap_hostname",request.getParameter("ldap_hostname"));
+p.put("ldap_port",request.getParameter("ldap_port"));
+p.put("ldap_domain",request.getParameter("ldap_domain"));
+context.put("configuration",p);
+
+if(cancelled.equals("save"))
+{
+	if(request.getParameter("db_hostname")==null || request.getParameter("db_hostname").equals(""))
+	{
+		infomessage.type="error";
+		infomessage.text="Database Server Hostname must be entered.";
+	}
+	else if(request.getParameter("db_port")==null || request.getParameter("db_port").equals(""))
+	{
+		infomessage.type="error";
+		infomessage.text="Database Server Port must be entered.";
+	}
+	else if(request.getParameter("db_name")==null || request.getParameter("db_name").equals(""))
+	{
+		infomessage.type="error";
+		infomessage.text="Database Name must be entered.";
+	}
+	else if(request.getParameter("db_user")==null || request.getParameter("db_user").equals(""))
+	{
+		infomessage.type="error";
+		infomessage.text="Database User must be entered.";
+	}
+	else if(request.getParameter("db_userpassword")==null || request.getParameter("db_userpassword").equals(""))
+	{
+		infomessage.type="error";
+		infomessage.text="Database User Password must be entered.";
+	}
+	else
+	{
+		try
+		{
+			FileOutputStream fileOut = new FileOutputStream(contextpath + "/" + configfile);
+			p.store(fileOut, "configuration updated using Business Rule Maintenance Tool.");
+			fileOut.close();
+			infomessage.text="configuration saved to file: " + configfile + ".";
+		}
+		catch(Exception ex)
+		{
+			infomessage.text="error saving configuration to file: " + configfile + ".";
+		}
+		
+		try
+		{
+			MySqlConnection con = new MySqlConnection(request.getParameter("db_hostname"),Integer.parseInt(request.getParameter("db_port")),request.getParameter("db_name"),request.getParameter("db_user"),request.getParameter("db_userpassword"));
+			con.close();
+			infomessage.text = infomessage.text + " Connection to database tested OK.";
+			
+		}
+		catch(Exception ex)
+		{
+			infomessage.text = infomessage.text + " There was an error testing the connection to the database.";
+			infomessage.text = infomessage.text + " Error message: " + ex.getMessage();
+			
+		}
+	}
+}	
+	
+templatename="configure.vm";

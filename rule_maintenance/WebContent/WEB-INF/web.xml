@@ -43,39 +43,6 @@
 	      <param-name>language</param-name>
 	      <param-value>eng</param-value>
 	    </init-param>
-	    <init-param>
-	      <param-name>dbname</param-name>
-	      <param-value>ruleengine_rules</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>dbuser</param-name>
-	      <param-value>root</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>dbuserpassword</param-name>
-	      <param-value>fasthans</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>logindatabase</param-name>
-	      <param-value>ruleengine_rules</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>hostname</param-name>
-	      <param-value>localhost:3306</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>hostname_readonly</param-name>
-	      <param-value>localhost:3306</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>ldap_hostname</param-name>
-	      <param-value>CHZRH0SPSV0201</param-value>
-	    </init-param>
-	    <init-param>
-	      <param-name>ldap_domain</param-name>
-	      <param-value>swissport.aero</param-value>
-	    </init-param>
-
     	<load-on-startup>1</load-on-startup>
 	</servlet>
 

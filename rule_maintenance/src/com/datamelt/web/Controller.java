@@ -24,20 +24,20 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 {
     
     private static final String ACTIONS_WEBINF_ATTRIBUTE           = "actions";
-    private static final String DBUSER_WEBINF_ATTRIBUTE            = "dbuser";
-    private static final String DBUSERPASSWORD_WEBINF_ATTRIBUTE    = "dbuserpassword";
+    private static final String DB_USER					           = "db_user";
+    private static final String DB_USERPASSWORD					   = "db_userpassword";
 	private static final String DEFAULT_ACTION_NAME                = "action";
 	private static final String BSH_ACTION_NAME		               = "BeanshellAction";
 	private static final String ACTIONS_PACKAGE_NAME               = "com.datamelt.web.action.";
 	private static final String LANGUAGE_WEBINF_ATTRIBUTE          = "language";
 	private static final String DEFAULT_LANGUAGE 				   = "eng";
 	private static final String DIRECTORY_MESSAGES                 = "message";
-    private static final String HOSTNAME_WEBINF_ATTRIBUTE          = "hostname";
-    private static final String HOSTNAME_READONLY_WEBINF_ATTRIBUTE = "hostname_readonly";
+    private static final String DB_HOSTNAME					       = "db_hostname";
+    private static final String DB_PORT					       	   = "db_port";
     
-    private static final String LDAP_HOSTNAME_WEBINF_ATTRIBUTE	   = "ldap_hostname";
-    private static final String LDAP_DOMAIN_WEBINF_ATTRIBUTE	   = "ldap_domain";
-    private static final String LDAP_PORT_WEBINF_ATTRIBUTE		   = "ldap_port";
+    private static final String LDAP_HOSTNAME					   = "ldap_hostname";
+    private static final String LDAP_DOMAIN						   = "ldap_domain";
+    private static final String LDAP_PORT						   = "ldap_port";
     
     private static final long serialVersionUID=300000;
 
@@ -49,26 +49,24 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	
 	public static final String CONTEXT_PATH				          = "contextpath";
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
-	public static final String LOGIN_DATABASE                     = "logindatabase";
 	public static final String SCRIPTS_PATH		                  = "scriptspath";
 	public static final String TEMPLATES_PATH	                  = "templatespath";
 	public static final String MENU_PATH    	                  = "menupath";
-	public static final String DATABASENAME                       = "dbname";
+	public static final String DB_NAME                       	  = "db_name";
 	private static final String MESSAGE_UNDEFINED                 = "[error: message undefined]";
 	private static final String MESSAGES                          = "messages";
-	private static final String HOSTNAME_LOCALHOST				  = "localhost";
 	
-	private static final int LDAP_DEFAULT_PORT					  = 389;
 	private static String language                                = "eng";
-	
 	
 	private static Properties actions = new Properties();
     private static Properties properties = new Properties();
     private static Properties messages = new Properties();
     private static String dbUser;
     private static String dbUserPassword;
-    private static String hostnameReadWrite;
-    private static String hostnameReadonly;
+    private static String dbHostname;
+    private static int dbPort;
+    private static String dbName;
+    private boolean dbConnectionOk;
     private static Ldap ldap;
     
     private static Interpreter interpreter=null;
@@ -77,11 +75,14 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	public void init(ServletConfig config) throws ServletException
     {
 		super.init(config);
-	    
-		interpreter = new Interpreter();
 		
 		String realPath = getServletContext().getRealPath("/");
         properties.put(CONTEXT_PATH, realPath);
+		
+		readConfigFile(realPath);
+		dbConnectionOk = databaseConnectionOk();
+		
+		interpreter = new Interpreter();
 		
 		String startupLanguage = config.getInitParameter(LANGUAGE_WEBINF_ATTRIBUTE);
 	    if(startupLanguage!=null)
@@ -89,23 +90,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	        language = startupLanguage;
 	    }
 	    String actionsFile = config.getInitParameter(ACTIONS_WEBINF_ATTRIBUTE);
-
-	    dbUser = config.getInitParameter(DBUSER_WEBINF_ATTRIBUTE);
-	    dbUserPassword = config.getInitParameter(DBUSERPASSWORD_WEBINF_ATTRIBUTE);
-	    
-	    hostnameReadWrite = config.getInitParameter(HOSTNAME_WEBINF_ATTRIBUTE);
-	    hostnameReadonly = config.getInitParameter(HOSTNAME_READONLY_WEBINF_ATTRIBUTE);
-
-	    if(hostnameReadWrite==null || hostnameReadWrite.trim().equals(""))
-	    {
-	    	hostnameReadWrite = HOSTNAME_LOCALHOST;
-	    }
-	    if(hostnameReadonly== null || hostnameReadonly.trim().equals(""))
-	    {
-	    	hostnameReadonly = hostnameReadWrite;
-	    }
-	    
-	    properties.put(DATABASENAME,config.getInitParameter(DATABASENAME));
 
 	    if ( actionsFile != null )
 		{
@@ -125,12 +109,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
             ex.printStackTrace();
         }
         
-        String loginDatabase = config.getInitParameter(LOGIN_DATABASE);
-	    if (loginDatabase!=null)
-	    {
-	        properties.put(LOGIN_DATABASE, loginDatabase); 
-	    }
-	    
 	    String scriptsPath = config.getInitParameter(SCRIPTS_PATH);
 	    if (scriptsPath!=null)
 	    {
@@ -161,22 +139,6 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	        properties.put(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE, autoAddPlugins); 
 	    }
 	    
-	    if (config.getInitParameter(LDAP_HOSTNAME_WEBINF_ATTRIBUTE)!=null && config.getInitParameter(LDAP_DOMAIN_WEBINF_ATTRIBUTE)!=null)
-	    {
-	    	ldap = new Ldap();
-	        ldap.setHost(config.getInitParameter(LDAP_HOSTNAME_WEBINF_ATTRIBUTE));
-	        ldap.setDomain(config.getInitParameter(LDAP_DOMAIN_WEBINF_ATTRIBUTE));
-	        if(config.getInitParameter(LDAP_PORT_WEBINF_ATTRIBUTE)!=null)
-	        {
-	        	ldap.setPort(Integer.parseInt(config.getInitParameter(LDAP_PORT_WEBINF_ATTRIBUTE)));
-	        }
-	        else
-	        {
-	        	ldap.setPort(LDAP_DEFAULT_PORT);
-	        }
-	    }
-	    
-	    
 	    loadMessages();
 	    
 	    try
@@ -190,13 +152,59 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    }
     }	
 	
+	public void readConfigFile(String realPath)
+	{
+		try
+		{
+			FileInputStream fis = new FileInputStream(realPath + "/" + ConstantsWeb.CONFIG_FILE);
+			Properties p = new Properties();
+			p.load(fis);
+			fis.close();
+			dbHostname = p.getProperty(DB_HOSTNAME);
+			dbPort = Integer.parseInt(p.getProperty(DB_PORT));
+			dbName = p.getProperty(DB_NAME);
+			dbUser=p.getProperty(DB_USER);
+			dbUserPassword=p.getProperty(DB_USERPASSWORD);
+			
+			ldap = new Ldap();
+	        ldap.setHost(p.getProperty(LDAP_HOSTNAME));
+	        ldap.setDomain(p.getProperty(LDAP_DOMAIN));
+	        if(p.getProperty(LDAP_PORT)!=null && !p.getProperty(LDAP_PORT).trim().equals(""))
+	        {
+	        	ldap.setPort(Integer.parseInt(p.getProperty(LDAP_PORT)));
+	        }
+	        else
+	        {
+	        	ldap.setPort(ConstantsWeb.LDAP_DEFAULT_PORT);
+	        }
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public boolean databaseConnectionOk()
+	{
+		try
+		{
+			MySqlConnection con = getConnection(dbHostname,dbPort,dbName,dbUser,dbUserPassword);
+			con.close();
+			return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+        
+	}
+	
 	public Template handleRequest(HttpServletRequest request,HttpServletResponse response, org.apache.velocity.context.Context context ) 
     {
 	    Template template= null; 
 	    String actionTemplate = null;
 	    String scriptName= request.getParameter("scriptname");
 	    String className=null;
-        String readOnlyDbAccess = request.getParameter("ro");
 	    String command = request.getParameter(DEFAULT_ACTION_NAME); 
 		if (command!=null)
 		{
@@ -209,23 +217,32 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 			{
 			    Class<?> c = Class.forName(ACTIONS_PACKAGE_NAME + className);
 		        action = (Action)c.newInstance();
-		        MySqlConnection con;
-		        if(readOnlyDbAccess!=null && readOnlyDbAccess.equals("1"))
+		        MySqlConnection con=null;
+		        
+		        if(!dbConnectionOk && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
 		        {
-		        	con = getConnection(hostnameReadonly,getProperty(DATABASENAME),dbUser, dbUserPassword); 
+		        	scriptName = ConstantsWeb.SELECTCONFIG_SCRIPT;
 		        }
-		        else
+		        else if(dbConnectionOk && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
 		        {
-		        	con = getConnection(hostnameReadWrite,getProperty(DATABASENAME),dbUser,dbUserPassword);
+		        	con = getConnection(dbHostname,dbPort,dbName,dbUser,dbUserPassword);
+			        if(getProperty(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE).equals("true"))
+			        {
+			            // executed if all plugins should be loaded:
+			            pluginLoader.processPlugins(context,interpreter,con, request, response);
+			        }
+			        action.setConnection(con);
 		        }
-		        if(getProperty(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE).equals("true"))
-		        {
-		            // executed if all plugins should be loaded:
-		            pluginLoader.processPlugins(context,interpreter,con, request, response);
-		        }
-		        action.setConnection(con);
 			    actionTemplate = action.execute(request, response, context, interpreter, scriptName, pluginLoader.getPlugins());
-			    con.close();
+			    if(scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
+		        {
+		        	readConfigFile((String)properties.get(CONTEXT_PATH));
+		        	dbConnectionOk = databaseConnectionOk();
+		        }
+			    if(con!=null)
+			    {
+			    	con.close();
+			    }
    
 		    	template  = getTemplate(language + "/" + actionTemplate);
 			}
@@ -259,9 +276,9 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 		return template;
     }
 	
-	public static MySqlConnection getConnection(String hostname, String databasename,String dbUser, String dbPassword) throws Exception
+	public static MySqlConnection getConnection(String hostname, int port, String databasename,String dbUser, String dbPassword) throws Exception
 	{
-	    return new MySqlConnection(hostname,databasename,dbUser,dbUserPassword);
+	    return new MySqlConnection(hostname,port,databasename,dbUser,dbUserPassword);
 	}
 	
 	public static String getMessage(String message)

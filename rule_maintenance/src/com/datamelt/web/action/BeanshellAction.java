@@ -48,13 +48,14 @@ public class BeanshellAction extends Action
             interpreter.set("templatespath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.TEMPLATES_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("menupath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.MENU_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("contextpath",Controller.getProperty(Controller.CONTEXT_PATH));
+            interpreter.set("configfile",ConstantsWeb.CONFIG_FILE);
             
             Message message = new Message();
             interpreter.set("infomessage",message); 
             
             interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
-
-            if(request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid())
+            
+            if(request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid() && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
             {
             	template = "login.vm";
             }

@@ -1,0 +1,78 @@
+#set($pagetitle='Configure')
+<p class="heading">Configuration of the Rules Maintenance Tool</p>
+<p>The Business Rule Maintenance tool uses a MySQL database for data storage. Specify the database hostname/IP adress and port, database name and a user who has read and write access privileges to the database.</p>
+<p>Optionally you can specify the LDAP server details below, to authenticate a user login against the LDAP server. Provide the LDAP server hostname or IP adress and the port and the domain name of the server (e.g. mydomain.com).</p>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=configure"> 
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Database Server Hostname or IP Adress:</td>
+		<td>
+			<input name="db_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_hostname")}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Database Server Port:</td>
+		<td>
+			<input name="db_port" type="text" size="40" maxlength="5" value="$!{configuration.getProperty("db_port")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>Database Name:</td>
+		<td>
+			<input name="db_name" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_name")}">
+		</td>
+		
+	</tr>
+	<tr> 
+		<td>Database User:</td>
+		<td>
+			<input name="db_user" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_user")}">
+		</td>
+		
+	</tr>
+	<tr> 
+		<td>Database User Password:</td>
+		<td>
+			<input name="db_userpassword" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("db_userpassword")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>LDAP Server Hostname or IP Adress:</td>
+		<td>
+			<input name="ldap_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_hostname")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>LDAP Server Port:</td>
+		<td>
+			<input name="ldap_port" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_port")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>LDAP Server Domain Name:</td>
+		<td>
+			<input name="ldap_domain" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_domain")}">
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end
+
+
+
+
+
+

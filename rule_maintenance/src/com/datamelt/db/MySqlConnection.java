@@ -13,6 +13,7 @@ public class MySqlConnection
 	private Connection connection;
 	private String username;
     private String password;
+    private int port = 3306;
     
 	private static final String EXCEPTION_CONNECTION_UNDEFINED = "connection object undefined";
 	
@@ -27,6 +28,16 @@ public class MySqlConnection
 		this.password = password;
 		this.hostname = hostname;
 		this.databaseName = databaseName;
+		connect();
+	}
+	
+	public MySqlConnection(String hostname, int port,String databaseName, String username, String password) throws Exception
+	{
+		this.username = username;
+		this.password = password;
+		this.hostname = hostname;
+		this.databaseName = databaseName;
+		this.port = port;
 		connect();
 	}
 	
@@ -140,7 +151,7 @@ public class MySqlConnection
     private Connection getConnection() throws Exception
     {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        return DriverManager.getConnection(connect + hostname + "/" + databaseName + "?useUnicode=false&characterEncoding=UTF-8", username,password);
+        return DriverManager.getConnection(connect + hostname + ":" + port + "/" + databaseName + "?useUnicode=false&characterEncoding=UTF-8", username,password);
         //return DriverManager.getConnection(connect + hostname + "/" + databaseName, username,password);
     }
     
@@ -194,6 +205,11 @@ public class MySqlConnection
 	public void setPassword(String password) 
 	{
 		this.password = password;
+	}
+
+	public int getPort()
+	{
+		return port;
 	}
 
 }

@@ -10,8 +10,6 @@ public abstract class DatabaseRecord
 	private String lastUpdate;
 	private MySqlConnection connection;
 	
-	public static final String DATABASENAME       = "ruleengine_rules";
-	public static final String DATABASENAME_LOGIN = "ruleengine_rules";
 	/**
 	 * returns the database id of the database record
 	 */
