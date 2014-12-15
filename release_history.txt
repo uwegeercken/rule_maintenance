@@ -1,6 +1,6 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, November 2014
+last update: Uwe Geercken, December 2014
 
 version 1.4
 ===========
