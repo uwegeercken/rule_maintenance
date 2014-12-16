@@ -30,7 +30,11 @@ else
 {
    	if(user.isPasswordOk(password, ldap))
    	{
-	   	
+	   	File avatar = new File(contextpath + "/img/users/" + user.userid + ".png");
+	   	if(avatar.exists())
+	   	{
+	   		user.setHasAvatar(true);
+	   	}
 	   	request.getSession().setAttribute("authenticated","true");
 	    request.getSession().setAttribute("user",user);
 		context.put("user",user);

@@ -27,6 +27,7 @@ public class User extends DatabaseRecord implements Loadable
     private String lastLogin;
     private int deactivated;
     private String deactivatedDate;
+    private boolean hasAvatar;
     private boolean ldapUser=false;
     private ArrayList<Group> groups=new ArrayList<Group>();
     
@@ -498,8 +499,18 @@ public class User extends DatabaseRecord implements Loadable
         this.deactivatedDate = deactivatedDate;
     }
 
-	public boolean isLdapUser() {
+	public boolean isLdapUser() 
+	{
 		return ldapUser;
 	}
 
+	public boolean hasAvatar()
+	{
+		return hasAvatar;
+	}
+	
+	public void setHasAvatar(boolean hasAvatar)
+	{
+		this.hasAvatar = hasAvatar;
+	}
 }

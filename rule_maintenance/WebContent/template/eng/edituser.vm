@@ -4,7 +4,7 @@
 <div id="help">
 	<p>Edit the selected user.</p>
 	<p>Enter the userid and name of the user.</p> 
-	<p>Members of the admin group have full access to all parts of the application. Members of the user group have no administrative rights, but can add, update or delete projects, rule groups, subgroups, rules and actions. Members of the user group - read only - may view/inspect all parts of the application but are not allowed to do any updates and can not add or delete parts.</p>
+	<p>Members of the admin group have full access to all parts of the application. Members of a group will have read and write access to projects, that belong to this group. Projects which belong to a group that the user is not a member of will be visible but the user can not change the project, groups, rules or actions. If a project is marked as private, users who are not a member of the group that the project belongs to, can not see the project.</p>
 </div>
 <div class="formbox">
 #if($mode=="add")

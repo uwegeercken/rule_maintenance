@@ -57,7 +57,20 @@ function switchHelp()
 <body>
 <div>
 <div class="top">
-	#parse("logo.vm")
+		<table width="100%">
+		<tr>
+			<td width="88%">#parse("logo.vm")</td>
+			<td>#if($user)
+					#if(${user.hasAvatar()})
+						<img width="60" height="60" src="img/users/${user.userid}.png" title="$!{user.userid}" alt="$!{user.userid}">
+					#else
+						<img width="60" height="60" src="img/users/dummy.png" title="$!{user.userid}" alt="$!{user.userid}">
+					#end
+				#end
+			</td>
+		</tr>
+	</table>
+	
 </div>
 <div>
 	#parse("eng/menu.vm")
