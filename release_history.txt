@@ -1,6 +1,6 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, November 2014
+last update: Uwe Geercken, December 2014
 
 version 1.4
 ===========
@@ -12,5 +12,5 @@ version 1.4
   users being in the admin group or the user that is the owner/created the project.
 - Added functionality to deactivate and (re-)activate user.
 - Added functionality to delete user.
-
+- Added code to handle configuration through the web ui.
 
