@@ -56,7 +56,7 @@ else
 			File f = new File(zipfile);
 			try
 			{
-				filePart.write(uploadspath + "/" + fileName);
+				filePart.write(zipfile);
 				z = new ZipFile(zipfile);
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.importProject(z, user);

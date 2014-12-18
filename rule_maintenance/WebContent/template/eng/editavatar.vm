@@ -1,0 +1,33 @@
+#set($pagetitle='Change User Avatar')
+<p class="heading">Change User Avatar</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>Change the avatar/picture of the user. The user can upload a picture, that is displayed to identify the user.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=editavatar&userid=${user.userid}" enctype="multipart/form-data"> 
+<table align="center" width="95%" border="0">
+	<tr>
+		<td>User:</td>
+		<td>
+			${user.userid}, ${user.name}
+		</td>
+	</tr>
+	<tr>
+		<td>Picture to import:</td>
+		<td>
+			<input name="avatar" type="file" size="40" maxlength="255" value="$!{avatar}">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="import" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

@@ -1,0 +1,8 @@
+if(user==null || user.isLdapUser())
+{
+	templatename="login.vm";
+}
+else
+{
+    templatename = "editavatar.vm";
+}

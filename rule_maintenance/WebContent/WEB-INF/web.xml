@@ -39,6 +39,10 @@
 	      <param-name>uploadspath</param-name>
 	      <param-value>uploads</param-value>
 	    </init-param>
+	    <init-param>
+	      <param-name>imagespath</param-name>
+	      <param-value>img</param-value>
+	    </init-param>
 		<init-param>
 	      <param-name>autoaddplugins</param-name>
 	      <param-value>false</param-value>

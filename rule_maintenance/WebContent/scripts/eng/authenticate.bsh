@@ -30,7 +30,7 @@ else
 {
    	if(user.isPasswordOk(password, ldap))
    	{
-	   	File avatar = new File(contextpath + "/img/users/" + user.userid + ".png");
+	   	File avatar = new File(contextpath + "/img/users/" + user.userid);
 	   	if(avatar.exists())
 	   	{
 	   		user.setHasAvatar(true);

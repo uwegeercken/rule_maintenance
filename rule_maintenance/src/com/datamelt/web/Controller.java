@@ -53,6 +53,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
 	public static final String SCRIPTS_PATH		                  = "scriptspath";
 	public static final String UPLOADS_PATH		                  = "uploadspath";
+	public static final String IMAGES_PATH		                  = "imagespath";
 	public static final String TEMPLATES_PATH	                  = "templatespath";
 	public static final String MENU_PATH    	                  = "menupath";
 	public static final String DB_NAME                       	  = "db_name";
@@ -122,6 +123,12 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    if (uploadsPath!=null)
 	    {
 	        properties.put(UPLOADS_PATH, uploadsPath); 
+	    }
+	    
+	    String imagesPath = config.getInitParameter(IMAGES_PATH);
+	    if (imagesPath!=null)
+	    {
+	        properties.put(IMAGES_PATH, imagesPath); 
 	    }
 	    
 	    String templatesPath = config.getInitParameter(TEMPLATES_PATH);

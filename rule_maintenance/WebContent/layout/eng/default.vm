@@ -62,9 +62,9 @@ function switchHelp()
 			<td width="88%">#parse("logo.vm")</td>
 			<td>#if($user)
 					#if(${user.hasAvatar()})
-						<img width="60" height="60" src="img/users/${user.userid}.png" title="$!{user.userid}" alt="$!{user.userid}">
+						<a href="process?action=bsh&scriptname=selecteditavatar&userid=${user.userid}"><img width="60" height="60" src="img/users/${user.userid}" title="$!{user.userid}" alt="$!{user.userid}"></a>
 					#else
-						<img width="60" height="60" src="img/users/dummy.png" title="$!{user.userid}" alt="$!{user.userid}">
+						<a href="process?action=bsh&scriptname=selecteditavatar&userid=${user.userid}"><img width="60" height="60" src="img/users/dummy.png" title="$!{user.userid}" alt="$!{user.userid}"></a>
 					#end
 				#end
 			</td>
