@@ -1,6 +1,8 @@
 import com.datamelt.db.Project;
 import com.datamelt.db.User;
 import java.util.zip.ZipFile;
+import javax.servlet.http.Part;
+import java.io.File;
 
 cancelled= request.getParameter("submit");
 
@@ -12,11 +14,8 @@ else
 {
 	if(cancelled!=null && cancelled.equals("import"))
 	{
-		String realPath = request.getSession().getServletContext().getRealPath("/");
-		
 		name=request.getParameter("name");
 		description=request.getParameter("description");
-		zipfile=request.getParameter("zipfile");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
 		if(request.getParameter("isprivate")!=null)
 		{
@@ -26,11 +25,25 @@ else
 		{
 			isprivate=0;
 		}
-	
+		Part filePart;
+		filePart = request.getPart("zipfile");
+		String fileName;
+		String contentDisp = filePart.getHeader("content-disposition");
+    	String[] items = contentDisp.split(";");
+    	for (int i=0;i<items.length;i++) 
+    	{	
+    		String s = items[i];
+        	if (s.trim().startsWith("filename")) 
+        	{
+            	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
+        	}
+    	}
+		String zipfile= uploadspath + "/" + fileName;
+
 		Project project = new Project();
 		project.setConnection(connection);
 		
-		if(!project.exist(name) && name.length()>0 && zipfile.length()>0 && projectgroupid>0)
+		if(!project.exist(name) && name.length()>0 && fileName!=null && !fileName.equals("") && projectgroupid>0)
 		{
 			project.setName(name);
 			project.setDescription(description);
@@ -40,12 +53,16 @@ else
 			project.group.id = projectgroupid;
 			
 			ZipFile z=null;
+			File f = new File(zipfile);
 			try
 			{
+				filePart.write(uploadspath + "/" + fileName);
 				z = new ZipFile(zipfile);
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.importProject(z, user);
 				infomessage.text="Project added - rulegroups, subgroups, rules and actions imported";
+				
+				f.delete();
 				
 			}
 			catch(FileNotFoundException fnfe)
@@ -58,7 +75,21 @@ else
 			{
 				infomessage.type="error";
 				infomessage.text="File can not be accessed or read or is not a valid zip file: " + zipfile;
-			
+				try
+				{
+					f.delete();
+				}
+				catch (Exception ex)
+				{}
+			}
+			finally
+			{
+				try
+				{	
+					f.delete();
+				}
+				catch (Exception ex)
+				{}
 			}
 		}
 		else if(project.exist(name) && name.length()>0)
@@ -66,22 +97,25 @@ else
 			project.setName(name);
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
+			project.group.id = projectgroupid;
 			infomessage.type="error";
 			infomessage.text="Project already exists.";
 		}
-		else if(zipfile==null || zipfile.trim().length()==0)
+		else if(fileName==null || fileName.equals(""))
 		{
 			project.setName(name);
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
+			project.group.id = projectgroupid;
 			infomessage.type="error";
-			infomessage.text="Zip file path and name must be specified.";
+			infomessage.text="Project Zip file must be specified.";
 		}
 		else if(name==null || name.trim().length()==0)
 		{
 			project.setName(name);
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
+			project.group.id = projectgroupid;
 			infomessage.type="error";
 			infomessage.text="Project name must be specified.";
 		}
@@ -95,7 +129,6 @@ else
 		}
 
 		context.put("project",project);
-		context.put("zipfile",zipfile);
 	}
 	
 	ArrayList list = DbCollections.getAllGroups(connection, user);

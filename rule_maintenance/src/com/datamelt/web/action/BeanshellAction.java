@@ -46,6 +46,7 @@ public class BeanshellAction extends Action
             interpreter.set("connection",getConnection());
             interpreter.set("scriptspath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("templatespath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.TEMPLATES_PATH) + "/" +  Controller.getLanguage());
+            interpreter.set("uploadspath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.UPLOADS_PATH));
             interpreter.set("menupath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.MENU_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("contextpath",Controller.getProperty(Controller.CONTEXT_PATH));
             interpreter.set("configfile",ConstantsWeb.CONFIG_FILE);

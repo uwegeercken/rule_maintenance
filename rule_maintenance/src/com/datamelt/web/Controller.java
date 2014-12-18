@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest; 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +21,7 @@ import com.datamelt.plugin.PluginLoader;
 import com.datamelt.util.Ldap;
 import com.datamelt.web.action.Action;
 
+@MultipartConfig
 public class Controller extends org.apache.velocity.tools.view.servlet.VelocityLayoutServlet 
 {
     
@@ -50,6 +52,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	public static final String CONTEXT_PATH				          = "contextpath";
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
 	public static final String SCRIPTS_PATH		                  = "scriptspath";
+	public static final String UPLOADS_PATH		                  = "uploadspath";
 	public static final String TEMPLATES_PATH	                  = "templatespath";
 	public static final String MENU_PATH    	                  = "menupath";
 	public static final String DB_NAME                       	  = "db_name";
@@ -113,6 +116,12 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    if (scriptsPath!=null)
 	    {
 	        properties.put(SCRIPTS_PATH, scriptsPath); 
+	    }
+	    
+	    String uploadsPath = config.getInitParameter(UPLOADS_PATH);
+	    if (uploadsPath!=null)
+	    {
+	        properties.put(UPLOADS_PATH, uploadsPath); 
 	    }
 	    
 	    String templatesPath = config.getInitParameter(TEMPLATES_PATH);
