@@ -13,4 +13,5 @@ version 1.4
 - Added functionality to deactivate and (re-)activate user.
 - Added functionality to delete user.
 - Added code to handle configuration through the web ui.
-
+- Added functionality to upload the project zip file to a server
+- Added functionality to let the user upload an avatar/image throught he UI
