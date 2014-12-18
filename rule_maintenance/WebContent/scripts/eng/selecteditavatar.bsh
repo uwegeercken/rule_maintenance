@@ -1,4 +1,4 @@
-if(user==null || user.isLdapUser())
+if(user==null)
 {
 	templatename="login.vm";
 }
