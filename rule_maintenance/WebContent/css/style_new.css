@@ -19,6 +19,11 @@ body
 	
 }
 
+img
+{
+	border: none;
+}
+
 p
 {
 	margin:3px;
