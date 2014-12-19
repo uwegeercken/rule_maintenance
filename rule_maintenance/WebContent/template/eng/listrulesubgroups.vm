@@ -1,10 +1,10 @@
 #set($pagetitle='Rules List')
 <p class="heading">Rules List - Project: ${project.name} - Rule Group: ${rulegroup.name}</p>
 <p>
-	<img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Rule Groups List"></a>
+	<img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Rule Groups List"></a>
 	#if($user.canUpdateProject($project)==true)
-		<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=0&rulegroupid=${rulegroup.id}&mode=change"><img height="24" width="24" src="img/plus_blue.png" title="add subgroup"></a>
-		<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=0&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img height="24" width="24" src="img/plus_green.png" title="add action"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=0&rulegroupid=${rulegroup.id}&mode=change"><img class="add_external" height="24" width="24" src="img/plus_blue.png" title="add subgroup"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=0&mode=add&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="add_external" height="24" width="24" src="img/plus_green.png" title="add action"></a>
 	#end
 </p>
 <div id="help">

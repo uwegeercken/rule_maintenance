@@ -1,6 +1,6 @@
 #set($pagetitle='Rule Group Maintenance')
 <p class="heading">Rule Group maintenance - Project: ${project.name}</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img height="24" width="24" src="img/go_back.png" title="go back: Rule Group List"></a></p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Rule Group List"></a></p>
 <div id="help">
 	<p>Edit the selected rule group.</p>
 	<p>Enter the name and description of the rule group. Specify from and until date for the validity of the group.</p>

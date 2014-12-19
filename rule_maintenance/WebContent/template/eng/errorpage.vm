@@ -1,6 +1,6 @@
 #set($pagetitle='Error Page')
 <p class="heading">Error Page</p>
-<p>A logical error occurred. Please read the message below to find out about the details of the problem and inform the administrator accordingly.</p>
+<p>A logical error occurred. Please read the message below to find out about the details of the problem and inform the administrator of this application accordingly.</p>
 <br>
 #if (${infomessage})
 	<p><b>#insert_message($infomessage)</b></p><br />

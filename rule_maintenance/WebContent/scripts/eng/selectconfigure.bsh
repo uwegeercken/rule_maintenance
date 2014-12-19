@@ -1,6 +1,9 @@
 import java.io.FileInputStream;
 import java.util.Properties;
 
+if(user!=null)
+	adminaction="true";
+}
 try
 {
 	FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);

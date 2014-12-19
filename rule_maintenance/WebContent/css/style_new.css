@@ -153,6 +153,7 @@ img.delete
 	position:absolute;
 	margin-top: 6px;
 	margin-left: 250px;
+	border: none;
 }
 
 img.edit 
@@ -160,6 +161,7 @@ img.edit
 	position:absolute;
 	margin-top: 150px;
 	margin-left: 250px;
+	border: none;
 }
 
 img.copy 
@@ -167,6 +169,7 @@ img.copy
 	position:absolute;
 	margin-top: 150px;
 	margin-left: 220px;
+	border: none;
 }
 
 img.add 
@@ -174,6 +177,7 @@ img.add
 	position:absolute;
 	margin-top: 150px;
 	margin-left: 190px;
+	border: none;
 }
 
 .bottomtext 
@@ -183,9 +187,10 @@ img.add
 	clear:both;
 }
 
-img.copy_external, img.add_external 
+img.copy_external, img.add_external, img.go_back
 {
 	margin-left: 10px;
+	border: none;
 }
 
 a:link
