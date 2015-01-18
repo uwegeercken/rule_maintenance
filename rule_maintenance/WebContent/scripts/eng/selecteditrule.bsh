@@ -1,6 +1,7 @@
 import java.io.*;
 import com.datamelt.db.Rule;
 import com.datamelt.db.RuleSubgroup;
+import com.datamelt.util.PDITransformation;
 
 writeaction="true";
 if(user==null)
@@ -55,11 +56,25 @@ else
 		context.put("rule",rule);
 	}
 	
+	if(project.transformationFilename!=null && project.transformationStepname!=null)
+	{
+		String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
+		
+		PDITransformation trans = new PDITransformation(filename);
+		List fields = trans.getRuleEngineStepFields(project.transformationStepname);
+		context.put("fields",fields);
+		templatename="edittransformationrule.vm";
+	}
+	else
+	{
+		templatename="editrule.vm";
+	
+	}
+	
 	ArrayList checks = DbCollections.getAllChecks(connection);
 	context.put("checks",checks);
 	
 	ArrayList types = DbCollections.getAllTypes(connection);
 	context.put("types",types);
-	
-	templatename="editrule.vm";
+
 }

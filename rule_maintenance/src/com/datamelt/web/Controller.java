@@ -53,6 +53,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
 	public static final String SCRIPTS_PATH		                  = "scriptspath";
 	public static final String UPLOADS_PATH		                  = "uploadspath";
+	public static final String UPLOADS_TRANSFORMATIONS_PATH       = "uploadstransformationsspath";
 	public static final String IMAGES_PATH		                  = "imagespath";
 	public static final String TEMPLATES_PATH	                  = "templatespath";
 	public static final String MENU_PATH    	                  = "menupath";
@@ -125,6 +126,12 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	        properties.put(UPLOADS_PATH, uploadsPath); 
 	    }
 	    
+	    String uploadsTransformationsPath = config.getInitParameter(UPLOADS_TRANSFORMATIONS_PATH);
+	    if (uploadsTransformationsPath!=null)
+	    {
+	        properties.put(UPLOADS_TRANSFORMATIONS_PATH, uploadsTransformationsPath); 
+	    }
+
 	    String imagesPath = config.getInitParameter(IMAGES_PATH);
 	    if (imagesPath!=null)
 	    {

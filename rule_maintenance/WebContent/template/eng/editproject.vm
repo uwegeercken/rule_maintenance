@@ -8,10 +8,10 @@
 </div>
 <div class="formbox">
 #if($mode=="add")
-	<form method="POST" action="process?action=bsh&scriptname=editproject"> 
+	<form method="POST" action="process?action=bsh&scriptname=editproject" enctype="multipart/form-data"> 
 	
 #else
-	<form method="POST" action="process?action=bsh&scriptname=editproject&id=${project.id}"> 
+	<form method="POST" action="process?action=bsh&scriptname=editproject&id=${project.id}" enctype="multipart/form-data"> 
 #end
 <input type="hidden" name="id" value="${project.id}">
 <table align="center" width="95%" border="0">

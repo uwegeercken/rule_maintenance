@@ -40,6 +40,10 @@
 	      <param-value>uploads</param-value>
 	    </init-param>
 	    <init-param>
+	      <param-name>uploadstransformationsspath</param-name>
+	      <param-value>uploadstransformations</param-value>
+	    </init-param>
+	    <init-param>
 	      <param-name>imagespath</param-name>
 	      <param-value>img</param-value>
 	    </init-param>

@@ -10,11 +10,19 @@ if(user==null)
 else
 {
 	cancelled= request.getParameter("submit");
-	
+	stepsOk=true;
 	if(cancelled.equals("save"))
 	{
 		id=Long.parseLong(request.getParameter("id"));
 		name=request.getParameter("name");
+		if(request.getParameter("stepname")!=null && !request.getParameter("stepname").equals(""))
+		{
+			stepname=request.getParameter("stepname");
+		}
+		else
+		{
+			stepname=null;
+		}
 		description=request.getParameter("description");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
 		if(request.getParameter("isprivate")!=null)
@@ -25,9 +33,9 @@ else
 		{
 			isprivate=0;
 		}
-	
+
 		Project project = new Project();
-		project.setConnection(connection);
+		project.connection = connection;
 		if(id>0)
 		{
 			project.setId(id);

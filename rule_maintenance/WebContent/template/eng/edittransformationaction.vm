@@ -1,0 +1,161 @@
+#set($pagetitle='Rule Group Action Maintenance')
+<p class="heading">Rule Group Action maintenance - Project: ${project.name} - Rule Group: ${rulegroup.name}</p>
+<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+<div id="help">
+	<p>Add or update the selected action.</p>
+	<p>Enter the name and description of the action. Specify under which condition the action shall be executed.</p> 
+	<p>Define the field which shall be updated and an action that shall be execued.</p>
+	<p>Specify a field from which data is used for the selected action.</p>
+	<p>If required for the selected action, specify additional parameters and their types.</p>
+</div>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editaction&rulegroupid=${rulegroup.id}&projectid=${project.id}&transformationaction=1"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editaction&id=${action.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&transformationaction=1"> 
+#end
+<input type="hidden" name="id" value="${action.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{action.name}">
+		</td>
+		
+	</tr>
+	<tr>
+		<td>Description:</td>
+		<td>
+			<input name="description" type="text" size="40" maxlength="255" value="$!{action.description}">
+		</td>
+	</tr>
+	<tr>
+		<td>Execute if:</td>
+		<td>
+			<select name="executeif" size="1">
+			<option value=""></option>
+			#if(${action.executeIf}=="passed")
+				<option selected value="passed">Rule Group passed</option>
+			#else
+				<option value="passed">Rule Group passed</option>
+			#end
+			#if(${action.executeIf}=="failed")
+				<option selected value="failed">Rule Group failed</option>
+			#else
+				<option value="failed">Rule Group failed</option>
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Field to update:</td>
+		<td>
+			<select name="object2_parameter" size="1">
+			<option value=""></option>
+			#foreach($field in $fields)
+				#if(${action.object2Parameter}==${field.name})
+					<option selected value="${field.name}||${field.type}">${field.name} (${field.typeDesc})</option>
+				#else
+					<option value="${field.name}||${field.type}">${field.name} (${field.typeDesc})</option>
+				#end
+			#end
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td>Action:</td>
+		<td>		
+			<select name="action_id" size="1">
+			<option value="0"></option>
+			#foreach($actiontype in $actions)
+				#if(${action.action.id}==${actiontype.id})
+					<option selected value="$actiontype.id">${actiontype.methoddisplayname}</option>
+				#else
+					<option value="$actiontype.id">${actiontype.methoddisplayname}</option>
+				#end
+			#end
+    		</select>
+		</td>		
+	</tr>
+	<tr>
+		<td>Field to retrieve data:</td>
+		<td>
+			<select name="object1_parameter" size="1">
+			<option value=""></option>
+			#foreach($field in $fields)
+				#if(${action.object1Parameter}==${field.name})
+					<option selected value="${field.name}||${field.type}">${field.name} (${field.typeDesc})</option>
+				#else
+					<option value="${field.name}||${field.type}">${field.name} (${field.typeDesc})</option>
+				#end
+			#end
+    		</select>
+		</td>
+		
+		
+	</tr>
+	<tr>
+		<td>Parameter 1:</td>
+		<td>
+			<input name="parameter1" type="text" size="40" maxlength="255" value="$!{action.parameter1}">
+			Type: <select name="parameter1_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${action.parameter1Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Parameter 2:</td>
+		<td>
+			<input name="parameter2" type="text" size="40" maxlength="255" value="$!{action.parameter2}">
+			Type: <select name="parameter2_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${action.parameter2Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Parameter 3:</td>
+		<td>
+			<input name="parameter3" type="text" size="40" maxlength="255" value="$!{action.parameter3}">
+			Type: <select name="parameter3_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${action.parameter3Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+#if(${action.id}>0)
+<p>last edited by: ${action.lastUpdateUser.name}, ${action.lastUpdate}</p>
+#end
+</div>
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

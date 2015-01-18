@@ -22,6 +22,8 @@ public class Project extends DatabaseRecord implements Loadable
 	private String databaseUserPassword;
 	private long numberOfRuleGroups;
 	private int privateProject;
+	private String transformationFilename;
+	private String transformationStepname;
 
 	private ArrayList<RuleGroup> rulegroups;
 	private Group group = new Group();
@@ -32,8 +34,8 @@ public class Project extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private) values (?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, transformation_filename, transformation_stepname) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, transformation_filename=?,transformation_stepname=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
 	
@@ -56,6 +58,8 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.name = rs.getString("name");
 	        this.description = rs.getString("description");
 	        this.privateProject = rs.getInt("is_private");
+	        this.transformationFilename = rs.getString("transformation_filename");
+	        this.transformationStepname = rs.getString("transformation_stepname");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -87,6 +91,8 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.setId(rs.getLong("id"));
 	        this.description = rs.getString("description");
 	        this.privateProject = rs.getInt("is_private");
+	        this.transformationFilename = rs.getString("transformation_filename");
+	        this.transformationStepname = rs.getString("transformation_stepname");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -173,8 +179,10 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(9,ownerUser.getId());
 		p.setLong(10,group.getId());
 		p.setLong(11,privateProject);
+		p.setString(12,transformationFilename);
+		p.setString(13,transformationStepname);
 		
-		p.setLong(12,getId());
+		p.setLong(14,getId());
 
 		try
 		{
@@ -207,6 +215,8 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(9,ownerUser.getId());
 		p.setLong(10,group.getId());
 		p.setLong(11,privateProject);
+		p.setString(12,transformationFilename);
+		p.setString(13,transformationStepname);
 		
 		try
 		{
@@ -659,5 +669,26 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		this.privateProject = privateProject;
 	}
+
+	public String getTransformationFilename() 
+	{
+		return transformationFilename;
+	}
+
+	public void setTransformationFilename(String transformationFilename) 
+	{
+		this.transformationFilename = transformationFilename;
+	}
+
+	public String getTransformationStepname()
+	{
+		return transformationStepname;
+	}
+
+	public void setTransformationStepname(String transformationStepname)
+	{
+		this.transformationStepname = transformationStepname;
+	}
+	
 	
 }

@@ -28,7 +28,7 @@ else
 	String fullfilename= imagespath + "/users/" + fileName;
 	String newfilename= imagespath + "/users/" + userid;
 
-	if(fileName==null || fileName.equals("") || (!fileName.endsWith(".png")&&!fileName.endsWith(".jpg")))
+	if(fileName==null || fileName.equals("") || (!fileName.toLowerCase().endsWith(".png")&&!fileName.toLowerCase().endsWith(".jpg")))
 	{
 		infomessage.type="error";
 		infomessage.text="Picture to import must be selected and must be a JPG or PNG file.";

@@ -172,6 +172,15 @@ img.copy
 	border: none;
 }
 
+img.attach 
+{
+	position:absolute;
+	margin-top: 150px;
+	margin-left: 220px;
+	border: none;
+}
+
+
 img.add 
 {
 	position:absolute;

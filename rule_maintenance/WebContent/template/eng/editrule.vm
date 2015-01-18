@@ -1,11 +1,11 @@
 #set($pagetitle='Rule Maintenance')
-<p class="heading">Rule maintenance - Project ${project.name} - Rule Group: ${rulegroup.name} - Rule Subgroup: ${rulesubgroup.name}</p>
+<p class="heading">Rule maintenance: #if($mode=="add")add rule #else edit rule#end - Project ${project.name} - Rule Group: ${rulegroup.name} - Rule Subgroup: ${rulesubgroup.name}</p>
 <p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Add or update the selected rule.</p>
 	<p>Enter a name and description for the rule and specify the field to check and its type. The rule engine will retrieve the data from this field.</p>
 	<p>Specify which type of check should be applied by the rule engine.</p>
-	<p>Specify either the field to check against and its type or a value value to check against and its type. The rule engine will compare the data to what was retrieved from the field to check. An additional parameter to the check may optionally be specified.</p>
+	<p>Specify either the field to check against and its type or a value to check against and its type. The rule engine will compare the data to what was retrieved from the field to check. An additional parameter to the check may optionally be specified.</p>
 	<p>Define the messages to be used in case the rule passes or fails. You can use the variable $1 which contains the data from the field to check and $0 which contains the value or field to check against.</p> 
 </div>
 <div class="formbox">

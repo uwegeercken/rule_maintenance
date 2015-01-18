@@ -19,7 +19,7 @@
 			<p class="big">$!{project.name}</a></p>
 			<p class="normal">$!{project.description}</p>
 		</div>
-	</div>
+</div>
 <div class="unitsmall">
 		<div class="grouptop">
 			<p class="small">rulegroup</p>
@@ -29,7 +29,7 @@
 		<div>
 			<p class="small">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
 		</div>
-	</div>
+</div>
 	#set($counter=0)
 	#foreach($rulesubgroup in $rulesubgroups)
 	<div class="unitclear">

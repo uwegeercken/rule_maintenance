@@ -1,5 +1,6 @@
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.DbCollections;
+import com.datamelt.util.TypeMapper;
 
 writeaction="true"; 
 if(user==null)
@@ -9,6 +10,7 @@ if(user==null)
 else
 {
 	cancelled = request.getParameter("submit");
+	transformationaction=request.getParameter("transformationaction");
 	
 	RuleGroup rulegroup = new RuleGroup();
     rulegroup.setConnection(connection);
@@ -45,9 +47,22 @@ else
 		{
 			actionNew.object1Classname = "com.datamelt.util.RowFieldCollection";
 			actionNew.object1Methodname = "getFieldValue";
-			actionNew.object1Parameter = request.getParameter("object1_parameter");
-			actionNew.object1Parametertype.id = 1;
-			actionNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id")); 
+			if(transformationaction==null)
+			{
+				actionNew.object1Parameter = request.getParameter("object1_parameter");
+				actionNew.object1Parametertype.id = 1;
+				actionNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id"));
+			}
+			else
+			{
+				if(!request.getParameter("object1_parameter").equals(""))
+				{
+					actionNew.object1Parameter = request.getParameter("object1_parameter").split("\\|\\|")[0];
+					actionNew.object1Parametertype.id = 1;
+					String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
+					actionNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+				}
+			} 
 		}
 		else
 		{
@@ -61,9 +76,22 @@ else
 		{
 			actionNew.object2Classname = "com.datamelt.util.RowFieldCollection";
 			actionNew.object2Methodname = "setFieldValue";
-			actionNew.object2Parameter = request.getParameter("object2_parameter");
-			actionNew.object2Parametertype.id = 1;
-			actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
+			if(transformationaction==null)
+			{
+				actionNew.object2Parameter = request.getParameter("object2_parameter");
+				actionNew.object2Parametertype.id = 1;
+				actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
+			}
+			else
+			{
+				if(!request.getParameter("object2_parameter").equals(""))
+				{
+					actionNew.object2Parameter = request.getParameter("object2_parameter").split("\\|\\|")[0];
+					actionNew.object2Parametertype.id = 1;
+					String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
+					actionNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+				}
+			}
 		}
 		else
 		{
@@ -78,9 +106,11 @@ else
 		action.setConnection(connection);
 		if(id>0)
 		{
-			actionNew.setId(id);
 			action.setId(id);
 			action.load();
+			actionNew.setId(id);			
+			actionNew.lastUpdate=action.lastUpdate;
+			actionNew.lastUpdateUser=action.lastUpdateUser;
 			if(actionNew.name.length()==0 )
 			{
 				infomessage.type="error";
@@ -146,7 +176,6 @@ else
 				infomessage.type="error";
 				infomessage.text="Parameter 3 Type must be specified when Parameter 3 is specified";
 			}
-			
 			else
 			{
 				actionNew.lastUpdateUser.id = user.id;
@@ -230,7 +259,18 @@ else
 		
 		actionNew .load();
 		context.put("action",actionNew);
-		templatename="editaction.vm";
+		if(transformationaction==null)
+		{
+			templatename="editaction.vm";
+		}
+		else
+		{
+			String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
+			PDITransformation trans = new PDITransformation(filename);
+			List fields = trans.getRuleEngineStepFields(project.transformationStepname);
+			context.put("fields",fields);
+			templatename="edittransformationaction.vm";
+		}
 		
 		ArrayList actions = DbCollections.getAllActions(connection);
 		context.put("actions",actions);
