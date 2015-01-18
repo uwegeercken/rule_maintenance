@@ -1,6 +1,11 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, December 2014
+last update: Uwe Geercken, January 2015
+
+version 1.6
+===========
+- Added functionality to import a Pentaho PDI transformation containing one or more Rule Engine steps. This allows the user
+  to select the fields from the transformation instead of typing them in.
 
 version 1.4
 ===========
