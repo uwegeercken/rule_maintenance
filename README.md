@@ -7,9 +7,11 @@ On the highest level there are projects. A project contains one to many rule gro
 
 Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not.
 
+A transformation from Pentaho PDI containing Rule Engine steps may be imported. As a consequence the user does not need to type in field names and types - when writing rules or actions - but may select the fields from a dropdown.
+
 Note 1: make sure that you have imported the database schema before you run the web application.
 
-   Copyright (C) 2008-2014  Uwe Geercken
+   Copyright (C) 2008-2015  Uwe Geercken
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
