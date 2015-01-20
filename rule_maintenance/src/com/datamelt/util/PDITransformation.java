@@ -10,6 +10,8 @@ import org.pentaho.di.core.row.ValueMetaInterface;
 import org.pentaho.di.trans.TransMeta;
 import org.pentaho.di.trans.step.StepMeta;
 
+import com.datamelt.web.ConstantsWeb;
+
 public class PDITransformation 
 {
 	public static final String RULE_ENGINE_PLUGIN_ID = "Jare_Rule_Engine_Plugin";
@@ -18,6 +20,7 @@ public class PDITransformation
 	
 	public PDITransformation(String filename) throws KettleException
 	{
+		System.out.println("init of KettleEnvironment - value of: " + ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS + "=" + System.getProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS));
 		this.filename = filename;
 		KettleEnvironment.init();
 	}
@@ -47,6 +50,7 @@ public class PDITransformation
 		}
 		catch(Exception ex)
 		{
+			ex.printStackTrace();
 			return null;
 		}
 	}
@@ -88,11 +92,12 @@ public class PDITransformation
 		}
 		catch(Exception ex)
 		{
+			ex.printStackTrace();
 			return null;
 		}
 	}
 	
-	public ValueMetaInterface getField(List <ValueMetaInterface> fields,String fieldname)
+	public ValueMetaInterface getField(List <ValueMetaInterface> fields,String fieldname) throws Exception
 	{
 		int found=-1;
 		for(int i=0;i<fields.size();i++)

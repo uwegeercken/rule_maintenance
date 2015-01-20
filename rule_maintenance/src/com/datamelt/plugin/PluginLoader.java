@@ -28,15 +28,17 @@ public class PluginLoader
         
         File dir = new File(base +  path);
         File files[] = dir.listFiles();
-        
-        for(int i=0;i<files.length;i++) 
+        if(files!=null)
         {
-            if(files[i].getName().endsWith(ConstantsWeb.SCRIPTS_EXTENSION))
-            {
-                BeanshellPlugin plugin = new BeanshellPlugin(files[i].getName());
-                addPlugin(plugin);
-            }
-            
+	        for(int i=0;i<files.length;i++) 
+	        {
+	            if(files[i].getName().endsWith(ConstantsWeb.SCRIPTS_EXTENSION))
+	            {
+	                BeanshellPlugin plugin = new BeanshellPlugin(files[i].getName());
+	                addPlugin(plugin);
+	            }
+	            
+	        }
         }
         
     }

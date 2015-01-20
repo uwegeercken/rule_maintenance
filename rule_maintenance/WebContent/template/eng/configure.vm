@@ -39,9 +39,9 @@
 		</td>
 	</tr>
 	<tr> 
-		<td>Pentaho PDI Base Folder:</td>
+		<td>Pentaho PDI Plugins Folder:</td>
 		<td>
-			<input name="pdi_basefolder" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("pdi_basefolder")}">
+			<input name="pdi_plugins_folder" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("pdi_plugins_folder")}">
 		</td>
 	</tr>
 	<tr> 

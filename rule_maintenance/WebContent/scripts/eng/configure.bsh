@@ -16,7 +16,7 @@ p.put("db_port",request.getParameter("db_port"));
 p.put("db_user",request.getParameter("db_user"));
 p.put("db_userpassword",request.getParameter("db_userpassword"));
 
-p.put("pdi_basefolder",request.getParameter("pdi_basefolder"));
+p.put("pdi_plugins_folder",request.getParameter("pdi_plugins_folder"));
 
 p.put("ldap_hostname",request.getParameter("ldap_hostname"));
 p.put("ldap_port",request.getParameter("ldap_port"));

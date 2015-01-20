@@ -102,7 +102,6 @@ else
 			}
 		}
 		project.lastUpdateUser.id = user.id;
-		System.out.println("stepsOk variable: " + stepsOk);
 		if(stepsOk)
 		{
 			project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);

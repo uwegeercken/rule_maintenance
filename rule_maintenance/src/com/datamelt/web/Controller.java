@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
+import org.pentaho.di.core.Const;
 
 import bsh.Interpreter;
 
@@ -36,6 +37,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	private static final String DIRECTORY_MESSAGES                 = "message";
     private static final String DB_HOSTNAME					       = "db_hostname";
     private static final String DB_PORT					       	   = "db_port";
+    private static final String PDI_PLUGINS_FOLDER		       	   = "pdi_plugins_folder";
     
     private static final String LDAP_HOSTNAME					   = "ldap_hostname";
     private static final String LDAP_DOMAIN						   = "ldap_domain";
@@ -71,6 +73,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
     private static String dbHostname;
     private static int dbPort;
     private static String dbName;
+    private static String pdiPluginsFolder;
     private boolean dbConnectionOk;
     private static Ldap ldap;
     
@@ -98,11 +101,11 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 
 	    if ( actionsFile != null )
 		{
-			realPath = getServletContext().getRealPath(actionsFile);
+			String actionsFilePath = getServletContext().getRealPath(actionsFile);
 
-			if ( realPath != null )
+			if ( actionsFilePath != null )
 			{
-				actionsFile = realPath;
+				actionsFile = actionsFilePath;
 			}
 		}
         try
@@ -153,7 +156,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    String pluginPath = config.getInitParameter(PLUGIN_PATH_WEBINF_ATTRIBUTE);
 	    if (pluginPath!=null)
 	    {
-	        properties.put(PLUGIN_PATH_WEBINF_ATTRIBUTE, pluginPath); 
+	    	properties.put(PLUGIN_PATH_WEBINF_ATTRIBUTE, pluginPath);
 	    }
 	    
 	    String autoAddPlugins = config.getInitParameter(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE);
@@ -161,6 +164,8 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    {
 	        properties.put(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE, autoAddPlugins); 
 	    }
+	    
+	    setPdiPluginsFolder();
 	    
 	    loadMessages();
 	    
@@ -175,7 +180,28 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 	    }
     }	
 	
-	public void readConfigFile(String realPath)
+	private void setPdiPluginsFolder()
+	{
+		// folder where the Pentaho PDI Plugins are located
+	    String pentahoFolder= Const.DEFAULT_PLUGIN_BASE_FOLDERS;
+	    
+	    if(pdiPluginsFolder!=null && !pdiPluginsFolder.trim().equals(""))
+        {
+	    	pentahoFolder = pentahoFolder	+ "," + pdiPluginsFolder;
+        }
+	    
+        String pluginPath = properties.getProperty(PLUGIN_PATH_WEBINF_ATTRIBUTE);
+        if(pluginPath!=null && !pluginPath.equals(""))
+        {
+        	pentahoFolder = pentahoFolder	+ "," + properties.getProperty(CONTEXT_PATH) + pluginPath;
+        }
+	    // set the system property so that Pentaho PDI will pick it up when initializing
+	    // a transformation
+	    System.setProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS, pentahoFolder);
+        System.out.println("pentaho pdi plugin folders: " + pentahoFolder);
+	}
+	
+	private void readConfigFile(String realPath)
 	{
 		try
 		{
@@ -188,6 +214,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 			dbName = p.getProperty(DB_NAME);
 			dbUser=p.getProperty(DB_USER);
 			dbUserPassword=p.getProperty(DB_USERPASSWORD);
+			pdiPluginsFolder=p.getProperty(PDI_PLUGINS_FOLDER);
 			
 			ldap = new Ldap();
 	        ldap.setHost(p.getProperty(LDAP_HOSTNAME));
@@ -260,6 +287,7 @@ public class Controller extends org.apache.velocity.tools.view.servlet.VelocityL
 			    if(scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
 		        {
 		        	readConfigFile((String)properties.get(CONTEXT_PATH));
+		        	setPdiPluginsFolder();
 		        	dbConnectionOk = databaseConnectionOk();
 		        }
 			    if(con!=null)
