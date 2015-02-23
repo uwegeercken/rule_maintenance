@@ -1,16 +1,3 @@
-/*
- * 
- * Use of this software and code is only allowed after
- * prior permission by GeeNic Software Solutions Ltd. Copying,
- * redistribution or re-selling of this software is prohibited
- * and protected by national and international laws and/or patents.
- * 
- * All intellectual property rights remain with GeeNic Software SolutonsLtd.
- *
- * Created on 04.11.2004
- * Author uwe
- */
-
 package com.datamelt.db;
 
 import java.sql.PreparedStatement;
@@ -18,7 +5,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import com.datamelt.util.Ldap;
-
+ 
 public class User extends DatabaseRecord implements Loadable
 {
     private String userid;

@@ -23,7 +23,7 @@ import com.datamelt.util.Ldap;
 import com.datamelt.web.action.Action;
 
 @MultipartConfig
-public class Controller extends org.apache.velocity.tools.view.servlet.VelocityLayoutServlet 
+public class Controller extends org.apache.velocity.tools.view.VelocityLayoutServlet 
 {
     
     private static final String ACTIONS_WEBINF_ATTRIBUTE           = "actions";
