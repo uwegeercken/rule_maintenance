@@ -1,6 +1,6 @@
 #set($pagetitle='Project Transformation Maintenance')
 <p class="heading">Project Transformation Maintenance - Project: ${project.name}</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
 <div id="help">
 	<p>Edit the selected project transformation.</p>
 	<p>You may import a Pentaho PDI Transformation file which contains one or more Rule Engine steps. Click on &quot;save&quot; to upload the transformation file. Afterwards you may select a transformation step, if there are multiple ones. When writing rules or actions for the selected Rule Engine step, the fields of the step can be selected via a dropdown and the type does not need to be specified.</p>

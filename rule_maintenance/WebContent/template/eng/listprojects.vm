@@ -1,17 +1,17 @@
 #set($pagetitle='Projects List')
 <p class="heading">Projects List ($projects.size())</p>
 <p>
-	<img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add project"></a>
+	<img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add project"></a>
 </p>
 <div id="help">
 	<p>List of available Projects. Projects bundle rule groups, rules and actions for a certain topic together. Users that are in the group that the project belongs to have write access to the project. Projects marked as private are invisible to users outside the group.</p>
 	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
+	<p>Filter: <input id="search" type="text"></p>
 </div>
 #foreach($project in $projects)
-	<div class="unit" tag="$!{project.name}">
+	<div class="unit" tag="$!{project.name.toLowerCase()}">
 		#if($user.canUpdateProject($project)==true)
 			#if(${project.getNumberOfRuleGroups()}==0)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete project"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>

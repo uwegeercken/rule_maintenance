@@ -1,15 +1,15 @@
 #set($pagetitle='Deactivated User List')
 <p class="heading">Deactivated User List ($users.size())</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
 	<p>List of users that have been deactivated.</p>
 	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
+	<p>Filter: <input id="search" type="text"></p>
 </div>
 #foreach($appuser in $users)
-	<div class="unit" tag="$!appuser.name">
+	<div class="unit" tag="$!appuser.name.toLowerCase()">
 		<a href="process?action=bsh&ro=1&scriptname=selectdeleteuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete user"></a>
 		<a href="process?action=bsh&ro=1&scriptname=selectactivateuser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="activate user"></a>
 		<div class="grouptop">

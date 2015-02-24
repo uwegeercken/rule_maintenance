@@ -1,16 +1,16 @@
 #set($pagetitle='User List')
 <p class="heading">User List ($users.size())</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add user"></a></p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add user"></a></p>
 <div id="help">
 	<p>List of available Users with access to this application. Users may be in one or more groups, giving them appropriate security access to the projects.</p>
 	<p>Users may be deactivated, so they can not access the application anymore.</p>
 	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text" onKeyUp="hideUnits();"></p>
+	<p>Filter: <input id="search" type="text"></p>
 </div>
  #foreach($appuser in $users)
-	<div class="unit" tag="$!appuser.name">
+	<div class="unit" tag="$!appuser.name.toLowerCase()">
 		<a href="process?action=bsh&ro=1&scriptname=selectdeactivateuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="deactivate user"></a>
 		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit"></a>
 		<div class="grouptop">

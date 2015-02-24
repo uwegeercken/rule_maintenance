@@ -1,6 +1,6 @@
 #set($pagetitle='Export Project Zip File')
 <p class="heading">Export Project Zip File</p>
-<p><img height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
 	<p>Export Project Zip file.</p>
 	<p>Export a zip file containing all rules, rulegroups, subgroups and actions of a selected project. Only rule groups that are valid on the selected Validity Date below will be included.</p>
@@ -23,7 +23,7 @@
 	<tr>
 		<td>Validity Date:</td>
 		<td>
-			<input name="selecteddate" type="text" size="40" maxlength="10" value="$!{today}"> (format: YYYY-MM-DD)
+			<input id="datepicker1" name="selecteddate" type="text" size="40" maxlength="10" value="$!{today}"> (format: YYYY-MM-DD)
 		</td>
 	</tr>
 	<tr>
