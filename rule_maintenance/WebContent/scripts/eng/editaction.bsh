@@ -1,4 +1,5 @@
 import com.datamelt.db.RuleGroupAction;
+import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import com.datamelt.util.TypeMapper;
 
@@ -182,6 +183,16 @@ else
 				actionNew.lastUpdateUser.connection = connection;
 				actionNew.lastUpdateUser.load();
 				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL), project, user);
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "action";
+				history.typeId = actionNew.id;
+				history.parent1 = rulegroup.id;
+				history.parent2 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Action updated.";
 			}
 		}
@@ -253,6 +264,16 @@ else
 				actionNew.lastUpdateUser.connection = connection;
 				actionNew.lastUpdateUser.load();
 				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL), project, user);
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "action";
+				history.typeId = actionNew.id;
+				history.parent1 = rulegroup.id;
+				history.parent2 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Action added.";
 			}
 		}

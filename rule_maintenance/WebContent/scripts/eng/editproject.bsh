@@ -1,4 +1,5 @@
 import com.datamelt.db.Project;
+import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.Group;
 
@@ -49,6 +50,14 @@ else
 				project.group.id = projectgroupid;
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
 				project.load();
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "project";
+				history.typeId = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Project updated.";
 			}
 			else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
@@ -81,6 +90,14 @@ else
 				project.group.id = projectgroupid;
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.load();
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "project";
+				history.typeId = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Project added.";
 			}
 			else if(project.exist(name) && name.length()>0)

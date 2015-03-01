@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import com.datamelt.db.Project;
 
-
 public class DbCollections
 {
     
@@ -276,6 +275,106 @@ public class DbCollections
         	type.setId(rs.getLong("id"));
         	type.load();
             list.add(type);
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static ArrayList <Object> getUserHistory(MySqlConnection connection, User user) throws Exception
+    {
+        String sql="select max(id) as id from history where user_id=" + user.getId() + " group by type,type_id order by max(last_update) desc limit 20";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <Object> list = new ArrayList<Object>();
+        while(rs.next())
+        {
+        	History history = new History();
+        	history.setConnection(connection);
+        	history.setId(rs.getLong("id"));
+        	history.load();
+        	
+        	if(history.getType().equals("project"))
+        	{
+        		Project project = new Project();
+        		project.setConnection(connection);
+        		project.setId(history.getTypeId());
+        		project.load();
+        		
+        		history.setProject(project);
+        		history.setHistoryEntry(project);
+        	}
+        	else if(history.getType().equals("rulegroup"))
+        	{
+        		RuleGroup rulegroup = new RuleGroup();
+        		rulegroup.setConnection(connection);
+        		rulegroup.setId(history.getTypeId());
+        		rulegroup.load();
+        		
+        		Project project = new Project();
+        		project.setConnection(connection);
+        		project.setId(history.getParent1());
+        		project.load();
+        		
+        		history.setProject(project);
+        		history.setHistoryEntry(rulegroup);
+        		
+        	}
+        	else if(history.getType().equals("rulesubgroup"))
+        	{
+        		RuleSubgroup rulesubgroup = new RuleSubgroup();
+        		rulesubgroup.setConnection(connection);
+        		rulesubgroup.setId(history.getTypeId());
+        		rulesubgroup.load();
+        		
+        		Project project = new Project();
+        		project.setConnection(connection);
+        		project.setId(history.getParent2());
+        		project.load();
+        		
+        		history.setProject(project);
+        		history.setHistoryEntry(rulesubgroup);
+        	}
+        	else if(history.getType().equals("rule"))
+        	{
+        		Rule rule = new Rule();
+        		rule.setConnection(connection);
+        		rule.setId(history.getTypeId());
+        		rule.load();
+        		
+        		Project project = new Project();
+        		project.setConnection(connection);
+        		project.setId(history.getParent3());
+        		project.load();
+        		
+        		history.setProject(project);
+        		history.setHistoryEntry(rule);
+        	}
+        	else if(history.getType().equals("action"))
+        	{
+        		RuleGroupAction action = new RuleGroupAction();
+        		action.setConnection(connection);
+        		action.setId(history.getTypeId());
+        		action.load();
+        		
+        		Project project = new Project();
+        		project.setConnection(connection);
+        		project.setId(history.getParent2());
+        		project.load();
+        		
+        		history.setProject(project);
+        		history.setHistoryEntry(action);
+        	}
+        
+        	if(history.getProject().getPrivateProject()==1) 
+        	{
+        		if(user.canUpdateProject(history.getProject())|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==history.getProject().getOwnerUser().getId())
+        		{
+        			list.add(history);
+        		}
+        	}
+        	else
+        	{
+        		list.add(history);
+        	}
         }
         rs.close();
         return list;

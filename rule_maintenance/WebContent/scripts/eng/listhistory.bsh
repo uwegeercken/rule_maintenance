@@ -1,0 +1,14 @@
+import com.datamelt.db.DbCollections;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		ArrayList list;
+		list = DbCollections.getUserHistory(connection, user);
+		context.put("history",list);
+		templatename="listhistory.vm";
+		
+}

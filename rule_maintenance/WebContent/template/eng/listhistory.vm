@@ -1,0 +1,99 @@
+#set($pagetitle='History')
+<p class="heading">History</p>
+<p>
+	<img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()">
+</p>
+<div id="help">
+	<p>History. List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated. Click on the link to update the item again.</p>
+</div>
+<div id="filter">
+	<p>Filter: <input id="search" type="text"></p>
+</div>
+#foreach($item in $history)
+	#if($item.historyEntry.class.simpleName=="Project")
+		<div class="unit" tag="${item.historyEntry.name.toLowerCase()}">
+			<div class="grouptop">
+				<p class="small">project #if(${item.historyEntry.privateProject}==1)(private)#end</p>
+				<p class="big">
+				#if($user.canUpdateProject($item.project)==true)
+					<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${item.project.id}&mode=change">$!{item.historyEntry.name}</a></p>
+				#else
+					$!{item.historyEntry.name}
+				#end
+				<p class="normal">$!{item.historyEntry.description}</p>
+				<p class="normal">group: $!{item.historyEntry.group.name}, owner: $!{item.historyEntry.ownerUser.name}</p>
+			</div>
+			<div>
+				<p class="small">last update: $item.historyEntry.lastUpdate</p>
+			</div>
+		</div>
+	#elseif($item.historyEntry.class.simpleName=="RuleGroup")
+		<div class="unit" tag="${item.historyEntry.name.toLowerCase()}">
+			<div class="grouptop">
+				<p class="small">rulegroup</p>
+				<p class="big">
+				#if($user.canUpdateProject($item.project)==true)
+					<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${item.historyEntry.id}&projectid=${item.project.id}&mode=change">$!{item.historyEntry.name}</a>
+				#else
+					$!{item.historyEntry.name}
+				#end					
+				<p class="normal">$!{item.historyEntry.description}</p>
+			</div>
+			<div>
+				<p class="small">last update: $item.historyEntry.lastUpdate</p>
+			</div>
+		</div>
+	#elseif($item.historyEntry.class.simpleName=="RuleSubgroup")
+		<div class="unit" tag="$item.historyEntry.name">
+			<div class="grouptop">
+			<p class="small">subgroup</p>
+			<p class="big">
+			#if($user.canUpdateProject($item.project)==true)
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=${item.historyEntry.id}&rulegroupid=${item.parent1}&projectid=${item.project.id}&mode=change">$!{item.historyEntry.name}</a>
+			#else
+				$!{item.historyEntry.name}
+			#end
+			<p class="normal">$!{item.historyEntry.description}</p>
+			</div>
+			<div>
+				<p class="small">last update: $item.historyEntry.lastUpdate</p>
+			</div>
+		</div>
+	#elseif($item.historyEntry.class.simpleName=="Rule")	
+		<div class="unit" tag="$item.historyEntry.name">
+			<div class="grouptop">
+				<p class="small">rule</p>
+				<p class="big">
+				#if($user.canUpdateProject($item.project)==true)
+					<a href="process?action=bsh&ro=1&scriptname=selecteditrule&id=${item.historyEntry.id}&mode=change&rulegroupid=${item.parent2}&rulesubgroupid=${item.parent1}&projectid=${item.project.id}">$!{item.historyEntry.name}</a>
+				#else
+					$!{item.historyEntry.name}
+				#end
+				<p class="normal">${item.historyEntry.description}</p>
+				<p class="normal">$!{item.historyEntry.ruleLogic}</p>
+			</div>
+			<div>
+				<p class="small">last update: $item.historyEntry.lastUpdate</p>
+			</div>
+		</div>
+	#elseif($item.historyEntry.class.simpleName=="RuleGroupAction")			
+		<div class="unit" tag="$item.historyEntry.name">
+				<div class="grouptop">
+					<p class="small">action</p>
+					<p class="big">
+					#if($user.canUpdateProject($item.project)==true)
+						<a href="process?action=bsh&ro=1&scriptname=selecteditaction&id=${item.historyEntry.id}&mode=change&rulegroupid=${item.parent1}&projectid=${item.project.id}">$!{item.historyEntry.name}</a>
+					#else
+						$!{item.historyEntry.name}
+					#end
+					<p class="normal">$item.historyEntry.description</p>
+					<p class="normal">$item.historyEntry.actionLogic</p>
+				</div>
+				<div>
+					<p class="small">last update: $item.historyEntry.lastUpdate</p>
+				</div>
+			</div>		
+		
+		
+	#end
+#end

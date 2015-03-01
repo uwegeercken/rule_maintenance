@@ -1,4 +1,5 @@
 import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 
 writeaction="true";
@@ -15,7 +16,7 @@ else
 	{
 		RuleGroup rulegroup = new RuleGroup();
         rulegroup.setConnection(connection);
-        rulegroup.setId(rulegroupId);
+        rulegroup.setId(rulegroupid);
         rulegroup.load();
 		context.put("rulegroup",rulegroup);
 		
@@ -45,6 +46,16 @@ else
 			{
 				rulesubgroupNew.lastUpdateUser.id = user.id;
 				rulesubgroupNew.update(connection.getPreparedStatement(RuleSubgroup.UPDATE_SQL),project,user);
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rulesubgroup";
+				history.typeId = rulesubgroupNew.id;
+				history.parent1 = rulegroup.id;
+				history.parent2 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Rule Subgroup updated.";
 			}
 			else if(!rulesubgroupNew.name.equals(rulesubgroup.name) && rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
@@ -64,6 +75,16 @@ else
 			{
 				rulesubgroupNew.lastUpdateUser.id = user.id;
 				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rulesubgroup";
+				history.typeId = rulesubgroupNew.id;
+				history.parent1 = rulegroup.id;
+				history.parent2 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Rule Subgroup added.";
 			}
 			else if(rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)

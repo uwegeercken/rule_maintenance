@@ -1,5 +1,6 @@
 import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import java.text.ParseException;
 
@@ -89,6 +90,15 @@ else
 			{
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL),project,user);
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rulegroup";
+				history.typeId = rulegroupNew.id;
+				history.parent1 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Rule Group updated.";
 			}
 		}
@@ -124,6 +134,14 @@ else
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),project,user);
 				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rulegroup";
+				history.typeId = rulegroupNew.id;
+				history.parent1 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				RuleSubgroup subgroup = new RuleSubgroup();
 				subgroup.rulegroupId = rulegroupNew.id;
 				subgroup.name= "subgroup_1";
@@ -131,6 +149,7 @@ else
 				subgroup.intergroupOperator="and";
 				subgroup.ruleOperator="and";
 				subgroup.connection = connection;
+				subgroup.lastUpdateUser.id = user.id;
 				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
 				
 				infomessage.text="Rule Group added.";

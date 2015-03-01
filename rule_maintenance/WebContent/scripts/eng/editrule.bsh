@@ -1,4 +1,5 @@
 import com.datamelt.db.Rule;
+import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import com.datamelt.util.TypeMapper;
 
@@ -183,6 +184,17 @@ else
 				ruleNew.lastUpdateUser.id = user.id;
 				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL),project,user);
 				ruleNew.load();
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rule";
+				history.typeId = ruleNew.id;
+				history.parent1 = ruleSubgroup.id;
+				history.parent2 = rulegroup.id;
+				history.parent3 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Rule updated.";
 			}
 		}
@@ -253,6 +265,17 @@ else
 				ruleNew.lastUpdateUser.id = user.id;
 				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
 				ruleNew.load();
+				
+				History history = new History();
+				history.connection = connection;
+				history.user = user;
+				history.type = "rule";
+				history.typeId = ruleNew.id;
+				history.parent1 = ruleSubgroup.id;
+				history.parent2 = rulegroup.id;
+				history.parent3 = project.id;
+				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
 				infomessage.text="Rule added.";
 			}
 		}
