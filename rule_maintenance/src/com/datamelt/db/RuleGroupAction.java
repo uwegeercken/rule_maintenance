@@ -12,13 +12,9 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	private String name;
 	private String description;
 	private long rulegroupId;
-	private String object1Classname;
-	private String object1Methodname;
 	private Type object1Parametertype = new Type();
 	private String object1Parameter;
 	private Type object1Type = new Type();
-	private String object2Classname;
-	private String object2Methodname;
 	private Type object2Parametertype = new Type();
 	private String object2Parameter;
 	private Type object2Type = new Type();
@@ -37,8 +33,8 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " (rulegroup_id, action_id, name, description, object1_classname, object1_methodname,object1_parametertype_id,object1_parameter,object1_type_id, object2_classname, object2_methodname,object2_parametertype_id,object2_parameter,object2_type_id,parameter1,parameter1_type_id,parameter2,parameter2_type_id,parameter3,parameter3_type_id,execute_if, last_update_user_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " set rulegroup_id=?, action_id=?, name=?, description=?, object1_classname=?,object1_methodname=?,object1_parametertype_id=?,object1_parameter=?,object1_type_id=?, object2_classname=?,object2_methodname=?,object2_parametertype_id=?,object2_parameter=?,object2_type_id=?,parameter1=?,parameter1_type_id=?,parameter2=?,parameter2_type_id=?,parameter3=?,parameter3_type_id=?, execute_if=?, last_update_user_id=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (rulegroup_id, action_id, name, description, object1_parametertype_id,object1_parameter,object1_type_id, object2_parametertype_id,object2_parameter,object2_type_id,parameter1,parameter1_type_id,parameter2,parameter2_type_id,parameter3,parameter3_type_id,execute_if, last_update_user_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set rulegroup_id=?, action_id=?, name=?, description=?, object1_parametertype_id=?,object1_parameter=?,object1_type_id=?, object2_parametertype_id=?,object2_parameter=?,object2_type_id=?,parameter1=?,parameter1_type_id=?,parameter2=?,parameter2_type_id=?,parameter3=?,parameter3_type_id=?, execute_if=?, last_update_user_id=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =? and rulegroup_id=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
@@ -67,9 +63,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        this.action.setConnection(getConnection());
 	        this.action.load();
 	        
-	        this.object1Classname = rs.getString("object1_classname");
-	        this.object1Methodname = rs.getString("object1_methodname");
-	        
 	        this.object1Parametertype.setId(rs.getLong("object1_parametertype_id"));
 	        this.object1Parametertype.setConnection(getConnection());
 	        this.object1Parametertype.load();
@@ -79,9 +72,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        this.object1Type.setId(rs.getLong("object1_type_id"));
 	        this.object1Type.setConnection(getConnection());
 	        this.object1Type.load();
-
-	        this.object2Classname = rs.getString("object2_classname");
-	        this.object2Methodname = rs.getString("object2_methodname");
 
 	        this.object2Parametertype.setId(rs.getLong("object2_parametertype_id"));
 	        this.object2Parametertype.setConnection(getConnection());
@@ -134,9 +124,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        this.action.setConnection(getConnection());
 	        this.action.load();
 	        
-	        this.object1Classname = rs.getString("object1_classname");
-	        this.object1Methodname = rs.getString("object1_methodname");
-	        
 	        this.object1Parametertype.setId(rs.getLong("object1_parametertype_id"));
 	        this.object1Parametertype.setConnection(getConnection());
 	        this.object1Parametertype.load();
@@ -146,9 +133,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	        this.object1Type.setId(rs.getLong("object1_type_id"));
 	        this.object1Type.setConnection(getConnection());
 	        this.object1Type.load();
-
-	        this.object2Classname = rs.getString("object2_classname");
-	        this.object2Methodname = rs.getString("object2_methodname");
 
 	        this.object2Parametertype.setId(rs.getLong("object2_parametertype_id"));
 	        this.object2Parametertype.setConnection(getConnection());
@@ -211,26 +195,22 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		p.setLong(2, action.getId());
 		p.setString(3,name);
 		p.setString(4,description);
-		p.setString(5, object1Classname);
-		p.setString(6, object1Methodname);
-		p.setLong(7, object1Parametertype.getId());
-		p.setString(8,object1Parameter);
-		p.setLong(9, object1Type.getId());
-		p.setString(10, object2Classname);
-		p.setString(11, object2Methodname);
-		p.setLong(12, object2Parametertype.getId());
-		p.setString(13,object2Parameter);
-		p.setLong(14, object2Type.getId());
-		p.setString(15,parameter1);
-		p.setLong(16, parameter1Type.getId());
-		p.setString(17,parameter2);
-		p.setLong(18, parameter2Type.getId());
-		p.setString(19,parameter3);
-		p.setLong(20, parameter3Type.getId());
-		p.setString(21,executeIf);
-		p.setLong(22, lastUpdateUser.getId());
+		p.setLong(5, object1Parametertype.getId());
+		p.setString(6,object1Parameter);
+		p.setLong(7, object1Type.getId());
+		p.setLong(8, object2Parametertype.getId());
+		p.setString(9,object2Parameter);
+		p.setLong(10, object2Type.getId());
+		p.setString(11,parameter1);
+		p.setLong(12, parameter1Type.getId());
+		p.setString(13,parameter2);
+		p.setLong(14, parameter2Type.getId());
+		p.setString(15,parameter3);
+		p.setLong(16, parameter3Type.getId());
+		p.setString(17,executeIf);
+		p.setLong(18, lastUpdateUser.getId());
 		
-		p.setLong(23,getId());
+		p.setLong(19,getId());
 
 		try
 		{
@@ -256,24 +236,20 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		p.setLong(2, action.getId());
 		p.setString(3,name);
 		p.setString(4,description);
-		p.setString(5, object1Classname);
-		p.setString(6, object1Methodname);
-		p.setLong(7, object1Parametertype.getId());
-		p.setString(8,object1Parameter);
-		p.setLong(9, object1Type.getId());
-		p.setString(10, object2Classname);
-		p.setString(11, object2Methodname);
-		p.setLong(12, object2Parametertype.getId());
-		p.setString(13,object2Parameter);
-		p.setLong(14, object2Type.getId());
-		p.setString(15,parameter1);
-		p.setLong(16, parameter1Type.getId());
-		p.setString(17,parameter2);
-		p.setLong(18, parameter2Type.getId());
-		p.setString(19,parameter3);
-		p.setLong(20, parameter3Type.getId());
-		p.setString(21,executeIf);
-		p.setLong(22, lastUpdateUser.getId());
+		p.setLong(5, object1Parametertype.getId());
+		p.setString(6,object1Parameter);
+		p.setLong(7, object1Type.getId());
+		p.setLong(8, object2Parametertype.getId());
+		p.setString(9,object2Parameter);
+		p.setLong(10, object2Type.getId());
+		p.setString(11,parameter1);
+		p.setLong(12, parameter1Type.getId());
+		p.setString(13,parameter2);
+		p.setLong(14, parameter2Type.getId());
+		p.setString(15,parameter3);
+		p.setLong(16, parameter3Type.getId());
+		p.setString(17,executeIf);
+		p.setLong(18, lastUpdateUser.getId());
 		
 		try
 		{
@@ -334,7 +310,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("update field [" + object2Parameter + "] from: ");
 		buffer.append(action.getMethoddisplayname() + " ");
-		if(object1Classname!=null && !object1Classname.trim().equals(""))
+		if(object1Parameter!=null && !object1Parameter.trim().equals(""))
 		{
 			buffer.append("field [" + object1Parameter + "] ");
 		}
@@ -386,26 +362,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		this.rulegroupId = rulegroupId;
 	}
 
-	public String getObject1Classname()
-	{
-		return object1Classname;
-	}
-
-	public void setObject1Classname(String object1Classname) 
-	{
-		this.object1Classname = object1Classname;
-	}
-
-	public String getObject1Methodname() 
-	{
-		return object1Methodname;
-	}
-
-	public void setObject1Methodname(String object1Methodname) 
-	{
-		this.object1Methodname = object1Methodname;
-	}
-
 	public Type getObject1Parametertype() 
 	{
 		return object1Parametertype;
@@ -434,26 +390,6 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	public void setObject1Type(Type object1Type) 
 	{
 		this.object1Type = object1Type;
-	}
-
-	public String getObject2Classname() 
-	{
-		return object2Classname;
-	}
-
-	public void setObject2Classname(String object2Classname) 
-	{
-		this.object2Classname = object2Classname;
-	}
-
-	public String getObject2Methodname() 
-	{
-		return object2Methodname;
-	}
-
-	public void setObject2Methodname(String object2Methodname) 
-	{
-		this.object2Methodname = object2Methodname;
 	}
 
 	public Type getObject2Parametertype() 

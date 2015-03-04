@@ -24,6 +24,9 @@ public class Project extends DatabaseRecord implements Loadable
 	private int privateProject;
 	private String transformationFilename;
 	private String transformationStepname;
+	private String objectClassname;
+	private String objectMethodGetter;
+	private String objectMethodSetter;
 
 	private ArrayList<RuleGroup> rulegroups;
 	private Group group = new Group();
@@ -34,11 +37,15 @@ public class Project extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, transformation_filename, transformation_stepname) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, transformation_filename=?,transformation_stepname=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, transformation_filename, transformation_stepname,object_classname,object_method_getter,object_method_setter) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, transformation_filename=?,transformation_stepname=?, object_classname=?, object_method_getter=?, object_method_setter=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
 	
+    public static final String OBJECT_CLASSNAME					= "com.datamelt.util.RowFieldCollection";
+    public static final String OBJECT_METHOD_GETTER				= "getFieldValue";
+    public static final String OBJECT_METHOD_SETTER				= "setFieldValue";
+    
 	public Project()
 	{
 		
@@ -60,6 +67,9 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.privateProject = rs.getInt("is_private");
 	        this.transformationFilename = rs.getString("transformation_filename");
 	        this.transformationStepname = rs.getString("transformation_stepname");
+	        this.objectClassname = rs.getString("object_classname");
+	        this.objectMethodGetter = rs.getString("object_method_getter");
+	        this.objectMethodSetter = rs.getString("object_method_setter");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -93,6 +103,9 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.privateProject = rs.getInt("is_private");
 	        this.transformationFilename = rs.getString("transformation_filename");
 	        this.transformationStepname = rs.getString("transformation_stepname");
+	        this.objectClassname = rs.getString("object_classname");
+	        this.objectMethodGetter = rs.getString("object_method_getter");
+	        this.objectMethodSetter = rs.getString("object_method_setter");
 	        this.databaseHostname = rs.getString("database_hostname");
 	        this.databaseName = rs.getString("database_name");
 	        this.databaseTableName = rs.getString("database_tablename");
@@ -136,6 +149,7 @@ public class Project extends DatabaseRecord implements Loadable
 	public String mergeWithTemplate(RuleGroup rulegroup,String templatePath, String templateName) throws Exception
 	{
 		VelocityDataWriter dataWriter = new VelocityDataWriter(templatePath, templateName);
+		dataWriter.addObject("project", this);
 		dataWriter.addObject("rulegroup", rulegroup);
 		return dataWriter.merge();
 	}
@@ -181,8 +195,11 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(11,privateProject);
 		p.setString(12,transformationFilename);
 		p.setString(13,transformationStepname);
+		p.setString(14,objectClassname);
+		p.setString(15,objectMethodGetter);
+		p.setString(16,objectMethodSetter);
 		
-		p.setLong(14,getId());
+		p.setLong(17,getId());
 
 		try
 		{
@@ -217,6 +234,9 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(11,privateProject);
 		p.setString(12,transformationFilename);
 		p.setString(13,transformationStepname);
+		p.setString(14,objectClassname);
+		p.setString(15,objectMethodGetter);
+		p.setString(16,objectMethodSetter);
 		
 		try
 		{
@@ -380,7 +400,7 @@ public class Project extends DatabaseRecord implements Loadable
 	 * from a zipfile into the database
 	 * 
 	 * some adjustments might need to be required if importing old files that where hand written. but an import of a project file
-	 * that was previously exported using the wqeb interface should work correctly.
+	 * that was previously exported using the web interface should work correctly.
 	 * 
 	 * @param zipFile
 	 * @throws Exception
@@ -500,8 +520,6 @@ public class Project extends DatabaseRecord implements Loadable
 				}
 				if(action.getActionSetterObject()!=null)
 				{
-					dbAction.setObject2Classname(action.getActionSetterObject().getClassName());
-					dbAction.setObject2Methodname(action.getActionSetterObject().getMethodName());
 					for(int h=0;h< dbTypes.size();h++)
 					{
 						Type type = dbTypes.get(h);
@@ -526,8 +544,6 @@ public class Project extends DatabaseRecord implements Loadable
 				// supports one getter object
 				if(action.getActionGetterObjects().size()>0)
 				{
-					dbAction.setObject1Classname(action.getActionGetterObjects().get(0).getClassName());
-					dbAction.setObject1Methodname(action.getActionGetterObjects().get(0).getMethodName());
 					for(int h=0;h< dbTypes.size();h++)
 					{
 						Type type = dbTypes.get(h);
@@ -595,8 +611,6 @@ public class Project extends DatabaseRecord implements Loadable
 					}
 					if(rule.getRuleObjects().size()>0)
 					{
-						dbRule.setObject1Classname(rule.getRuleObjects().get(0).getClassName());
-						dbRule.setObject1Methodname(rule.getRuleObjects().get(0).getMethodName());
 						for(int h=0;h< dbTypes.size();h++)
 						{
 							Type type = dbTypes.get(h);
@@ -619,8 +633,6 @@ public class Project extends DatabaseRecord implements Loadable
 					}
 					if(rule.getRuleObjects().size()>1)
 					{
-						dbRule.setObject2Classname(rule.getRuleObjects().get(1).getClassName());
-						dbRule.setObject2Methodname(rule.getRuleObjects().get(1).getMethodName());
 						for(int h=0;h< dbTypes.size();h++)
 						{
 							Type type = dbTypes.get(h);
@@ -688,6 +700,36 @@ public class Project extends DatabaseRecord implements Loadable
 	public void setTransformationStepname(String transformationStepname)
 	{
 		this.transformationStepname = transformationStepname;
+	}
+
+	public String getObjectClassname()
+	{
+		return objectClassname;
+	}
+
+	public void setObjectClassname(String objectClassname) 
+	{
+		this.objectClassname = objectClassname;
+	}
+
+	public String getObjectMethodGetter() 
+	{
+		return objectMethodGetter;
+	}
+
+	public void setObjectMethodGetter(String objectMethodGetter) 
+	{
+		this.objectMethodGetter = objectMethodGetter;
+	}
+	
+	public String getObjectMethodSetter() 
+	{
+		return objectMethodSetter;
+	}
+
+	public void setObjectMethodSetter(String objectMethodSetter) 
+	{
+		this.objectMethodSetter = objectMethodSetter;
 	}
 	
 	

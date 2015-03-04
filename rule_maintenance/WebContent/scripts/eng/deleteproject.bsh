@@ -12,6 +12,8 @@ if(cancelled.equals("delete project"))
 	project.setId(projectid);
 	PreparedStatement ps = connection.getPreparedStatement(Project.DELETE_SQL);
 	project.delete(ps, user);
+	
+	DbCollections.deleteUserHistory(connection, "project", project.id, user);
 }
 		
 ArrayList list = DbCollections.getAllProjects(connection,user);

@@ -48,6 +48,10 @@ p.smallred
 	color: red;
 }
 
+.hiddenrow
+{
+	display: none;
+}
 
 p.heading, b
 {

@@ -24,7 +24,6 @@ public class History extends DatabaseRecord implements Loadable
 	
 	public static final String INSERT_SQL = "insert into " + TABLENAME + " (type, type_id, user_id, parent_1,parent_2,parent_3) values (?,?,?,?,?,?)";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
-
 	
 	public History()
 	{

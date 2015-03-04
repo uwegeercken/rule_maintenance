@@ -1,0 +1,15 @@
+#set($pagetitle='Error')
+<p class="heading">Error</p>
+<p><b>Following error occurred:</b><p>
+<p>$error_cause</p>
+
+#if( $invocation_exception )
+    <p>MethodInvocationException!<p>
+    <p>
+    Message: $invocation_exception.message<br>
+    Reference name: $invocation_exception.referenceName<br>
+    Method name: $invocation_exception.methodName
+    </p>
+#end
+<br />
+<br />

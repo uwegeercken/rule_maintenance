@@ -24,6 +24,9 @@ else
 	else
 	{
 		Project project = new Project();
+		project.objectClassname= Project.OBJECT_CLASSNAME;
+		project.objectMethodGetter= Project.OBJECT_METHOD_GETTER;
+		project.objectMethodSetter= Project.OBJECT_METHOD_SETTER;
 		context.put("project",project);
 	}
 	

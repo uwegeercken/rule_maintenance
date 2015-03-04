@@ -46,8 +46,6 @@ else
 		ruleNew.check.load();
 		if(request.getParameter("object1_parameter")!=null && !request.getParameter("object1_parameter").trim().equals(""))
 		{
-			ruleNew.object1Classname = "RowFieldCollection";
-			ruleNew.object1Methodname = "getFieldValue";
 			if(transformationrule==null)
 			{
 				ruleNew.object1Parameter = request.getParameter("object1_parameter");
@@ -67,16 +65,12 @@ else
 		}
 		else
 		{
-			ruleNew.object1Classname = null;
-			ruleNew.object1Methodname = null;
 			ruleNew.object1Parameter = null;
 			ruleNew.object1Parametertype.id = 0;
 			ruleNew.object1Type.id = 0;
 		}
 		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
 		{
-			ruleNew.object2Classname = "RowFieldCollection";
-			ruleNew.object2Methodname = "getFieldValue";
 			if(transformationrule==null)
 			{
 				ruleNew.object2Parameter = request.getParameter("object2_parameter");
@@ -96,8 +90,6 @@ else
 		}
 		else
 		{
-			ruleNew.object2Classname = null;
-			ruleNew.object2Methodname = null;
 			ruleNew.object2Parameter = null;
 			ruleNew.object2Parametertype.id = 0;
 			ruleNew.object2Type.id = 0;

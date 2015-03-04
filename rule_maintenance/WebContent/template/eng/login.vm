@@ -1,9 +1,10 @@
 #set($pagetitle='Login Page')
 <p class="heading">Login Page</p>
 <p>To be able to use the Business Rules Maintenance Tool, you need to first login. Please use your personal userid and password.</p>
+<br/>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=authenticate"> 
-<table align="center" border="0" cellpadding="2" cellspacing="4">
+<table style="width:30%;margin-left:auto;margin-right:auto;" align="center" border="0" cellpadding="2" cellspacing="4">
 	<tr> 
 		<td>Userid:</td>
 		<td><input type="text" id="userid" name="userid" size="20" maxlength="20" value="$!{userid}"></td>

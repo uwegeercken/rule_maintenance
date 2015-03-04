@@ -46,8 +46,6 @@ else
 		actionNew.executeIf=request.getParameter("executeif");
 		if(request.getParameter("object1_parameter")!=null && !request.getParameter("object1_parameter").trim().equals(""))
 		{
-			actionNew.object1Classname = "com.datamelt.util.RowFieldCollection";
-			actionNew.object1Methodname = "getFieldValue";
 			if(transformationaction==null)
 			{
 				actionNew.object1Parameter = request.getParameter("object1_parameter");
@@ -67,16 +65,12 @@ else
 		}
 		else
 		{
-			actionNew.object1Classname = null;
-			actionNew.object1Methodname = null;
 			actionNew.object1Parameter = null;
 			actionNew.object1Parametertype.id = 0;
 			actionNew.object1Type.id = 0;
 		}
 		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
 		{
-			actionNew.object2Classname = "com.datamelt.util.RowFieldCollection";
-			actionNew.object2Methodname = "setFieldValue";
 			if(transformationaction==null)
 			{
 				actionNew.object2Parameter = request.getParameter("object2_parameter");
@@ -96,8 +90,6 @@ else
 		}
 		else
 		{
-			actionNew.object2Classname = null;
-			actionNew.object2Methodname = null;
 			actionNew.object2Parameter = null;
 			actionNew.object2Parametertype.id = 0;
 			actionNew.object2Type.id = 0;

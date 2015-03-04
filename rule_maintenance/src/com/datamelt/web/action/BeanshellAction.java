@@ -56,7 +56,7 @@ public class BeanshellAction extends Action
             Message message = new Message();
             interpreter.set("infomessage",message); 
             
-            interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
+            interpreter.source(Controller.getProperty(Controller.CONTEXT_PATH)+ "/"+ Controller.getProperty(Controller.SCRIPTS_PATH) + "/" +  Controller.getLanguage() + "/" + scriptName + Controller.SCRIPT_EXTENSION);
             
             if(request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid() && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
             {

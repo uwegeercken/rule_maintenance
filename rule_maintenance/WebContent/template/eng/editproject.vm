@@ -16,7 +16,7 @@
 <input type="hidden" name="id" value="${project.id}">
 <table align="center" width="95%" border="0">
 	<tr> 
-		<td>Name:</td>
+		<td width="20%">Name:</td>
 		<td>
 			<input name="name" type="text" size="40" maxlength="80" value="$!{project.name}">
 		</td>
@@ -26,6 +26,24 @@
 		<td>Description:</td>
 		<td>
 			<input name="description" type="text" size="40" maxlength="255" value="$!{project.description}">
+		</td>
+	</tr>
+	<tr class="hiddenrow">
+		<td>Field Getter/Setter Classname:</td>
+		<td>
+			<input name="objectclassname" type="text" size="40" maxlength="80" value="$!{project.objectClassname}">
+		</td>
+	</tr>
+	<tr class="hiddenrow">
+		<td>Field Getter Method:</td>
+		<td>
+			<input name="objectmethodgetter" type="text" size="40" maxlength="80" value="$!{project.objectMethodGetter}">
+		</td>
+	</tr>
+	<tr class="hiddenrow">
+		<td>Field Setter Method:</td>
+		<td>
+			<input name="objectmethodsetter" type="text" size="40" maxlength="80" value="$!{project.objectMethodSetter}">
 		</td>
 	</tr>
 	<tr>
@@ -55,6 +73,10 @@
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><br />
+			<img id="moretoshow" height="24" width="24" src="img/more.png" title="more/less options">
 	</tr>
 </table>
 </form>

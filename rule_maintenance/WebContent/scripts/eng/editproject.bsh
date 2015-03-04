@@ -34,7 +34,10 @@ else
 		{
 			isprivate=0;
 		}
-
+		objectClassname = request.getParameter("objectclassname");
+		objectMethodGetter = request.getParameter("objectmethodgetter");
+		objectMethodSetter = request.getParameter("objectmethodsetter");
+		
 		Project project = new Project();
 		project.connection = connection;
 		if(id>0)
@@ -48,6 +51,9 @@ else
 				project.setPrivateProject(isprivate);
 				project.lastUpdateUser.id = user.id;
 				project.group.id = projectgroupid;
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
 				project.load();
 				
@@ -65,6 +71,9 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				project.setPrivateProject(isprivate);
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				infomessage.type="error";
 				infomessage.text="Project already exists.";
 			}
@@ -73,6 +82,9 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				project.setPrivateProject(isprivate);
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";
@@ -87,6 +99,9 @@ else
 				project.setPrivateProject(isprivate);
 				project.lastUpdateUser.id = user.id;
 				project.ownerUser.id = user.id;
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				project.group.id = projectgroupid;
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.load();
@@ -105,6 +120,9 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				project.setPrivateProject(isprivate);
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				infomessage.type="error";
 				infomessage.text="Project already exists.";
 			}
@@ -113,6 +131,9 @@ else
 				project.setName(name);
 				project.setDescription(description);
 				project.setPrivateProject(isprivate);
+				project.objectClassname = objectClassname;
+				project.objectMethodGetter = objectMethodGetter;
+				project.objectMethodSetter = objectMethodSetter;
 				project.setGroup(new Group());
 				infomessage.type="error";
 				infomessage.text="Project name and group must be specified.";

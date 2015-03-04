@@ -2,6 +2,7 @@ import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
+import com.datamelt.db.History;
 
 import java.sql.PreparedStatement;
 
@@ -32,9 +33,13 @@ if(cancelled.equals("delete rule group"))
 			Rule rule = subgroup.rules.get(f);
 			PreparedStatement psRule = connection.getPreparedStatement(Rule.DELETE_SQL);
 			rule.delete(psRule,project,user);
+			
+			DbCollections.deleteUserHistory(connection, "rule", rule.id, user);
 		}
 		PreparedStatement psRuleSubgroup = connection.getPreparedStatement(RuleSubgroup.DELETE_SQL);
 		subgroup.delete(psRuleSubgroup,project,user);
+		
+		DbCollections.deleteUserHistory(connection, "rulesubgroup", subgroup.id, user);
 	}
 	
 	ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupid);
@@ -43,10 +48,14 @@ if(cancelled.equals("delete rule group"))
 		RuleGroupAction action = actions.get(f);
 		PreparedStatement psAction = connection.getPreparedStatement(RuleGroupAction.DELETE_SQL);
 		action.delete(psAction,project,user);
+		
+		DbCollections.deleteUserHistory(connection, "action", action.id, user);
 	}
 
 	PreparedStatement ps = connection.getPreparedStatement(RuleGroup.DELETE_SQL);
 	rulegroup.delete(ps,project,user);
+	
+	DbCollections.deleteUserHistory(connection, "rulegroup", rulegroup.id, user);
 }
 
 ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);

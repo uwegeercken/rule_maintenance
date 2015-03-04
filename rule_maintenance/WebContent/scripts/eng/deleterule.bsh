@@ -26,6 +26,8 @@ if(cancelled.equals("delete rule"))
 
 	PreparedStatement ps = connection.getPreparedStatement(Rule.DELETE_SQL);
 	rule.delete(ps,project,user);
+	
+	DbCollections.deleteUserHistory(connection, "rule", rule.id, user);
 }
 
 ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);

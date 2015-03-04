@@ -4,8 +4,10 @@
  */
 package com.datamelt.db;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
 import com.datamelt.db.Project;
 
 public class DbCollections
@@ -278,6 +280,17 @@ public class DbCollections
         }
         rs.close();
         return list;
+    }
+    
+    public static void deleteUserHistory(MySqlConnection connection, String type, long typeId, User user) throws Exception
+    {
+    	String deleteSql = "delete from history where type=? and type_id=? and user_id=?";
+    	PreparedStatement psHistory = connection.getPreparedStatement(deleteSql);
+    	
+    	psHistory.setString(1,type);
+    	psHistory.setLong(2, typeId);
+    	psHistory.setLong(3, user.getId());
+    	psHistory.executeUpdate();    			
     }
     
     public static ArrayList <Object> getUserHistory(MySqlConnection connection, User user) throws Exception

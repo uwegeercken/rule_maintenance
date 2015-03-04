@@ -301,7 +301,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			catch (ClassNotFoundException cnfe)
 	        {
 	            context.put("error_cause",cnfe);
-			    template = getTemplate(language + "/" + ConstantsWeb.PAGE_ERROR);
+			    template = getTemplate( ConstantsWeb.PAGE_ERROR);
 	        }
 	        catch (InstantiationException ie)
 	        {
@@ -316,13 +316,13 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		    catch (Exception ex)
 		    {
 		    	context.put("error_cause",ex);
-	            template = getTemplate(language + "/" + ConstantsWeb.PAGE_ERROR);
+		    	template = getTemplate(language + "/" +  ConstantsWeb.PAGE_ERROR);
 		    }
 		}
 		else
 		{
 		    context.put("error_cause",new Exception("Unknown action command in query string"));
-		    template = getTemplate(language + "/" + ConstantsWeb.PAGE_ERROR);
+		    template = getTemplate( language + "/" + ConstantsWeb.PAGE_ERROR);
 		}
 		return template;
     }

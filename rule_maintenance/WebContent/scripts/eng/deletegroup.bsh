@@ -14,7 +14,6 @@ if(cancelled.equals("delete group"))
 	group.connection = connection;
 	group.id= groupid;
 
-
 	PreparedStatement ps = connection.getPreparedStatement(Group.DELETE_SQL);
 	group.delete(ps);
 }

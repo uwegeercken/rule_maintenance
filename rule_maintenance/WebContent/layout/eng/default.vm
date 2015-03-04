@@ -25,8 +25,12 @@ $(document).ready(function() {
 	  	$(".unit").show();
 	  }
   });
+    
   $( "#helpimg" ).click(function() {
 		$("#help").toggle();
+  });
+  $( "#moretoshow" ).click(function() {
+  	$(".hiddenrow").toggle();
   });
 });
 
@@ -49,7 +53,6 @@ $(document).ready(function() {
 		});
 	});
 </script>
-
 </head>
 <body>
 <div>
