@@ -62,8 +62,15 @@ else
 		
 		PDITransformation trans = new PDITransformation(filename);
 		List fields = trans.getRuleEngineStepFields(project.transformationStepname);
-		context.put("fields",fields);
-		templatename="edittransformationrule.vm";
+		if(fields!=null && fields.size()>0)
+		{
+			context.put("fields",fields);
+			templatename="edittransformationrule.vm";
+		}
+		else
+		{
+			templatename="editrule.vm";
+		}
 	}
 	else
 	{

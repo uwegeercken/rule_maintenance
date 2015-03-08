@@ -7,7 +7,7 @@
 	<p>History. List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated. Click on the link to update the item again.</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text"></p>
+	<p>Filter: <input id="search" searchtype="history" type="text"></p>
 </div>
 #foreach($item in $history)
 	#if($item.historyEntry.class.simpleName=="Project")

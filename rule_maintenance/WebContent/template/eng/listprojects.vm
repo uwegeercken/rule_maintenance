@@ -8,7 +8,7 @@
 	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text"></p>
+	<p>Filter: <input id="search" searchtype="project" type="text"></p>
 </div>
 #foreach($project in $projects)
 	<div class="unit" tag="$!{project.name.toLowerCase()}">

@@ -7,7 +7,7 @@
 </div>
 
 <div id="filter">
-	<p>Filter: <input id="search" type="text"></p>
+	<p>Filter: <input id="search" searchtype="files" type="text"></p>
 </div>
 <div class="unitclear">
 	#foreach($filename in $filelist)

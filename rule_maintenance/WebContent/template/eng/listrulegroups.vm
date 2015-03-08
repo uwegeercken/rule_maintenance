@@ -14,7 +14,7 @@
 	<p><img height="24" width="24" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new rule group&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy rule group</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text"></p>
+	<p>Filter: <input id="search" searchtype="rulegroups" type="text"></p>
 </div>
 <div class="unitsmall">
 	<div class="grouptop">

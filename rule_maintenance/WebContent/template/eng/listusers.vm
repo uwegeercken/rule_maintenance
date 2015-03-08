@@ -7,7 +7,7 @@
 	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
 </div>
 <div id="filter">
-	<p>Filter: <input id="search" type="text"></p>
+	<p>Filter: <input id="search" searchtype="users" type="text"></p>
 </div>
  #foreach($appuser in $users)
 	<div class="unit" tag="$!appuser.name.toLowerCase()">

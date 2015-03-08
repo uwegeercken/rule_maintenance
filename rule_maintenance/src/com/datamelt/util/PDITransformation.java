@@ -2,6 +2,8 @@ package com.datamelt.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.exception.KettleException;
@@ -20,7 +22,10 @@ public class PDITransformation
 	
 	public PDITransformation(String filename) throws KettleException
 	{
-		System.out.println("init of KettleEnvironment - value of: " + ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS + "=" + System.getProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS));
+		//System.out.println("init of KettleEnvironment - value of: " + ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS + "=" + System.getProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS));
+		
+		//Properties p = System.getProperties();
+		
 		this.filename = filename;
 		KettleEnvironment.init();
 	}
@@ -34,6 +39,8 @@ public class PDITransformation
 		try
 		{
 			transMeta = new TransMeta(filename);
+			
+			
 
 			String [] steps = transMeta.getStepNames();
 			List <StepMeta> ruleEngineSteps = new ArrayList<StepMeta>();
@@ -50,6 +57,7 @@ public class PDITransformation
 		}
 		catch(Exception ex)
 		{
+			System.out.println("error reading transformation executing: getRuleEngineSteps");
 			ex.printStackTrace();
 			return null;
 		}
@@ -78,20 +86,27 @@ public class PDITransformation
 		}
 	}
 	
-	private List <ValueMetaInterface> getStepPreviousFields(StepMeta sm)
+	private List <ValueMetaInterface> getStepPreviousFields(StepMeta sm) throws KettleException
 	{
 		TransMeta transMeta;
 		try
 		{
 			transMeta = new TransMeta(filename);
-	
+
+			String [] parameters = transMeta.listParameters();
+			for(int i=0;i<parameters.length;i++)
+			{
+				transMeta.setVariable(parameters[i], transMeta.getParameterDefault(parameters[i]));
+			}
+			transMeta.environmentSubstitute(parameters);
+			
 			RowMetaInterface row = transMeta.getPrevStepFields(sm);
 			List <ValueMetaInterface> fields = row.getValueMetaList();
 			return fields;
-			
 		}
 		catch(Exception ex)
 		{
+			System.out.println("error reading transformation executing: getPreviousStepFields");
 			ex.printStackTrace();
 			return null;
 		}
