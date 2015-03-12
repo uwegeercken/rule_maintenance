@@ -8,7 +8,7 @@
 </div>
 <div class="formbox">
 #if($mode=="add")
-	<form method="POST" action="process?action=bsh&scriptname=editproject" enctype="multipart/form-data"> 
+	<form method="POST" action="process?action=bsh&scriptname=editproject"> 
 	
 #else
 	<form method="POST" action="process?action=bsh&scriptname=editproject&id=${project.id}" enctype="multipart/form-data"> 

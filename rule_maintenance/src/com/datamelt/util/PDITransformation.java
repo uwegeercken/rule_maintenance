@@ -22,7 +22,7 @@ public class PDITransformation
 	
 	public PDITransformation(String filename) throws KettleException
 	{
-		//System.out.println("init of KettleEnvironment - value of: " + ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS + "=" + System.getProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS));
+		System.out.println("init of KettleEnvironment - value of: " + ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS + "=" + System.getProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS));
 		
 		//Properties p = System.getProperties();
 		

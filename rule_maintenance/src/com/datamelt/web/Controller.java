@@ -198,7 +198,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	    // set the system property so that Pentaho PDI will pick it up when initializing
 	    // a transformation
 	    System.setProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS, pentahoFolder);
-        //System.out.println("pentaho pdi plugin folders: " + pentahoFolder);
+        System.out.println("pentaho pdi plugin folders: " + pentahoFolder);
 	}
 	
 	private void readConfigFile(String realPath)
