@@ -9,6 +9,10 @@ Rule groups also have a validity date, defining from which date until which othe
 
 A transformation from Pentaho PDI containing Rule Engine steps may be imported. As a consequence the user does not need to type in field names and types - when writing rules or actions - but may select the fields from a dropdown.
 
+The application allows to use LDAP for authentication. Projects can be private or read-only. Roles can be setup that define access to projects and the other components.
+
+The latest version has enhanced user support: filtering on pages, storing filters and a calendar widget.
+
 Note 1: make sure that you have imported the database schema before you run the web application.
 
    Copyright (C) 2008-2015  Uwe Geercken
@@ -27,4 +31,4 @@ Note 1: make sure that you have imported the database schema before you run the 
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2015-02-23
+last update: 2015-03-12
