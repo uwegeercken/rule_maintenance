@@ -22,6 +22,25 @@
 			<input name="description" type="text" size="40" maxlength="255" value="$!{project.description}">
 		</td>
 	</tr>
+		<tr class="hiddenrow">
+		<td>Field Getter/Setter Classname:</td>
+		<td>
+			<input name="objectclassname" type="text" size="40" maxlength="80" value="$!{project.objectClassname}">
+		</td>
+	</tr>
+	<tr class="hiddenrow">
+		<td>Field Getter Method:</td>
+		<td>
+			<input name="objectmethodgetter" type="text" size="40" maxlength="80" value="$!{project.objectMethodGetter}">
+		</td>
+	</tr>
+	<tr class="hiddenrow">
+		<td>Field Setter Method:</td>
+		<td>
+			<input name="objectmethodsetter" type="text" size="40" maxlength="80" value="$!{project.objectMethodSetter}">
+		</td>
+	</tr>
+	
 	<tr>
 		<td>Zip File to import:</td>
 		<td>
@@ -55,6 +74,12 @@
 			<input type="submit" value="import" name="submit">
 		</td>
 	</tr>
+	<tr>
+		<td colspan="2"><br />
+			<img id="moretoshow" height="24" width="24" src="img/more.png" title="more/less options">
+		</td>
+	</tr>
+	
 </table>
 </form>
 </div>

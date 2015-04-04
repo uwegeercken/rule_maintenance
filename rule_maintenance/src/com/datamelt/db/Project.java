@@ -589,7 +589,7 @@ public class Project extends DatabaseRecord implements Loadable
 					for(int h=0;h< dbChecks.size();h++)
 					{
 						Check check = dbChecks.get(h);
-						String checkFullName =check.getPackageName() +"." + check.getName();
+						String checkFullName =check.getPackageName() + "." + check.getClassName();
 						if(checkFullName.equals(rule.getCheckToExecute()))
 						{
 							dbRule.setCheck(check);

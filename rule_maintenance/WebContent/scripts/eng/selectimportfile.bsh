@@ -1,3 +1,4 @@
+import com.datamelt.db.Project;
 
 writeaction="true";
 if(user==null)
@@ -8,6 +9,13 @@ else
 {
 	ArrayList list = DbCollections.getAllGroups(connection, user);
 	context.put("groups",list);
+	
+	Project project = new Project();
+	project.objectClassname = "com.datamelt.util.RowFieldCollection";
+	project.objectMethodGetter = "getFieldValue";
+	project.objectMethodSetter = "setFieldValue";
+	
+	context.put("project",project);
 	
 	templatename="importfile.vm";
 }

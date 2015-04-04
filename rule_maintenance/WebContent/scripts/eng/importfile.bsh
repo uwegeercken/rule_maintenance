@@ -16,6 +16,9 @@ else
 	{
 		name=request.getParameter("name");
 		description=request.getParameter("description");
+		objectclassname=request.getParameter("objectclassname");
+		objectmethodgetter = request.getParameter("objectmethodgetter");
+		objectmethodsetter = request.getParameter("objectmethodsetter");
 		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
 		if(request.getParameter("isprivate")!=null)
 		{
@@ -51,6 +54,9 @@ else
 			project.lastUpdateUser.id = user.id;
 			project.ownerUser.id = user.id;
 			project.group.id = projectgroupid;
+			project.objectClassname = objectclassname;
+			project.objectMethodGetter = objectmethodgetter;
+			project.objectMethodSetter = objectmethodsetter;
 			
 			ZipFile z=null;
 			File f = new File(zipfile);
@@ -98,6 +104,9 @@ else
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
 			project.group.id = projectgroupid;
+			project.objectClassname = objectclassname;
+			project.objectMethodGetter = objectmethodgetter;
+			project.objectMethodSetter = objectmethodsetter;
 			infomessage.type="error";
 			infomessage.text="Project already exists.";
 		}
@@ -107,6 +116,9 @@ else
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
 			project.group.id = projectgroupid;
+			project.objectClassname = objectclassname;
+			project.objectMethodGetter = objectmethodgetter;
+			project.objectMethodSetter = objectmethodsetter;
 			infomessage.type="error";
 			infomessage.text="Project Zip file must be specified.";
 		}
@@ -116,6 +128,9 @@ else
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
 			project.group.id = projectgroupid;
+			project.objectClassname = objectclassname;
+			project.objectMethodGetter = objectmethodgetter;
+			project.objectMethodSetter = objectmethodsetter;
 			infomessage.type="error";
 			infomessage.text="Project name must be specified.";
 		}
@@ -124,6 +139,9 @@ else
 			project.setName(name);
 			project.setDescription(description);
 			project.setPrivateProject(isprivate);
+			project.objectClassname = objectclassname;
+			project.objectMethodGetter = objectmethodgetter;
+			project.objectMethodSetter = objectmethodsetter;
 			infomessage.type="error";
 			infomessage.text="Owner group must be specified.";
 		}
