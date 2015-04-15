@@ -5,6 +5,9 @@
 	<p>Edit the selected project.</p>
 	<p>Enter the name and description of the project. The name will be used as the zip file name containing all rules, so it's better to not use special characters and spaces.</p>
 	<p>The group field defines to which group the project belongs. Only members of the group have write access to the project. Mark the group as private so that users outside the group do not see the project.</p>
+	<p>Field Getter/Setter Classname: The name of the Java class that will be used, to handle the data retrieval.</p>
+	<p>Field Getter Method: The name of the method that will be used to get/retrieve data.</p>
+	<p>Field Setter Method: The name of the method that will be used to set/update data.</p>
 </div>
 <div class="formbox">
 #if($mode=="add")

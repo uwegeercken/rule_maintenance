@@ -1,5 +1,5 @@
 #set($pagetitle='Copy Rule Group')
-<p class="heading">Copy Rule Group - Project: <b>${project.name}</b></p>
+<p class="heading">Copy Rule Group - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a></p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Rule Group List"></a></p>
 <div id="help">
 	<p>This page allows you to copy a rule group for the selected project.</p>
