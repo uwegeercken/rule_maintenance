@@ -27,6 +27,60 @@ $(document).ready(function() {
 	  	$.jStorage.deleteKey("searchtext" + $('#search').attr("searchtype"));
 	  }
   });
+
+  $( "#proposepassed" ).click(function() {
+  		var field=$("#object1_parameter").val();
+  		var field2=$("#object2_parameter").val();
+  		var expectedvalue=$("#expectedvalue").val();
+		var check=$("#check option:selected").text();
+		var checktype=$("#check option:selected").data("type");
+		
+		var partialmessage = "Field " + field + " $1 correctly " + check;
+		
+		if(checktype==1)
+		{
+			$("#messagepassed").val(partialmessage);
+		}
+		else
+		{
+			if(expectedvalue)
+			{
+				$("#messagepassed").val(partialmessage + " $0");
+			}
+			else if(field2)
+			{
+				$("#messagepassed").val(partialmessage + " field " + field2 + " $0");
+			}
+		
+		}
+  });
+  
+  $( "#proposefailed" ).click(function() {
+  		var field=$("#object1_parameter").val();
+  		var field2=$("#object2_parameter").val();
+  		var expectedvalue=$("#expectedvalue").val();
+		var check=$("#check option:selected").text();
+		var checktype=$("#check option:selected").data("type");
+		
+		var partialmessage = "Field " + field + " $1 not " + check;
+		
+		if(checktype==1)
+		{
+			$("#messagefailed").val(partialmessage);
+		}
+		else
+		{
+			if(expectedvalue)
+			{
+				$("#messagefailed").val(partialmessage + " $0");
+			}
+			else if(field2)
+			{
+				$("#messagefailed").val(partialmessage + " field " + field2 + " $0");
+			}
+		
+		}
+  });
     
   $( "#helpimg" ).click(function() {
 		$("#help").toggle();

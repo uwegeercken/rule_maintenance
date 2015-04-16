@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Maintenance')
-<p class="heading">Rule maintenance: #if($mode=="add")add rule #else edit rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
+<p class="heading">#if($mode=="add")Add Rule #else Edit Rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Add or update the selected rule.</p>
@@ -33,7 +33,7 @@
 	<tr>
 		<td>Field to check:</td>
 		<td>
-			<input name="object1_parameter" type="text" size="40" maxlength="255" value="$!{rule.object1Parameter}">
+			<input id="object1_parameter" name="object1_parameter" type="text" size="40" maxlength="255" value="$!{rule.object1Parameter}">
 			Type: <select name="object1_type_id" size="1">
 			<option value="0"></option>
 			#foreach($type in $types)
@@ -50,13 +50,13 @@
 	<tr>
 		<td>Check:</td>
 		<td>		
-			<select name="check_id" size="1">
+			<select id="check" name="check_id" size="1">
 			<option value="0"></option>
 			#foreach($check in $checks)
 				#if(${rule.check.id}==${check.id})
-					<option selected value="$check.id">${check.name}</option>
+					<option selected value="$check.id" data-type="${check.checkSingleField}">${check.nameDescriptive}</option>
 				#else
-					<option value="$check.id">${check.name}</option>
+					<option value="$check.id" data-type="${check.checkSingleField}">${check.nameDescriptive}</option>
 				#end
 			#end
     		</select>
@@ -65,7 +65,7 @@
 	<tr>
 		<td>Field to check against:</td>
 		<td>
-			<input name="object2_parameter" type="text" size="40" maxlength="255" value="$!{rule.object2Parameter}">
+			<input id="object2_parameter" name="object2_parameter" type="text" size="40" maxlength="255" value="$!{rule.object2Parameter}">
 			Type: <select name="object2_type_id" size="1">
 			<option value="0"></option>
 			#foreach($type in $types)
@@ -82,7 +82,7 @@
 	<tr>
 		<td>Value to check against:</td>
 		<td>
-			<input name="expectedvalue" type="text" size="40" maxlength="255" value="$!{rule.expectedValue}">
+			<input id="expectedvalue" name="expectedvalue" type="text" size="40" maxlength="255" value="$!{rule.expectedValue}">
 			Type: <select name="expectedvalue_type_id" size="1">
 			<option value="0"></option>
 			#foreach($type in $types)
@@ -114,13 +114,15 @@
 	<tr>
 		<td>Message Passed:</td>
 		<td>
-			<input name="messagepassed" type="text" size="40" maxlength="255" value="$!{rule.messagePassed}">
+			<input id="messagepassed" name="messagepassed" type="text" size="40" maxlength="255" value="$!{rule.messagePassed}">
+			<input id="proposepassed" type="button" value="<<" name="proposepassed">
 		</td>
 	</tr>
 	<tr>
 		<td>Message Failed:</td>
 		<td>
-			<input name="messagefailed" type="text" size="40" maxlength="255" value="$!{rule.messageFailed}">
+			<input id="messagefailed" name="messagefailed" type="text" size="40" maxlength="255" value="$!{rule.messageFailed}">
+			<input id="proposefailed" type="button" value="<<" name="proposepassed">
 		</td>
 	</tr>
 	

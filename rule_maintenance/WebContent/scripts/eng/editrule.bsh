@@ -134,7 +134,7 @@ else
 			else if(ruleNew.check.checkSingleField==1 && (ruleNew.object2Parameter!=null || ruleNew.object2Parametertype.id>0))
 			{
 				infomessage.type="error";
-				infomessage.text="Field to check against, Type not allowed for the selected Check";
+				infomessage.text="Field to check against not allowed for the selected Check";
 			}
 			else if(ruleNew.check.checkSingleField==1 && ruleNew.expectedValue.length()>0)
 			{

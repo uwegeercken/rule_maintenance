@@ -46,9 +46,19 @@ else
 	if(project.transformationFilename!=null && project.transformationStepname!=null)
 	{
 		String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
-		
-		PDITransformation trans = new PDITransformation(filename);
-		List fields = trans.getRuleEngineStepFields(project.transformationStepname);
+		List fields;
+		try
+		{
+			PDITransformation trans = new PDITransformation(filename);
+			fields = trans.getRuleEngineStepFields(project.transformationStepname);
+		}
+		catch(Exception ex)
+		{
+			// the transformation does not exist anymore
+			// or it could not be loaded
+			infomessage.type="error";
+			infomessage.text="the transformation: " + filename + " does not exit or can not be loaded";
+		}
 		if(fields!=null && fields.size()>0)
 		{
 			context.put("fields",fields);

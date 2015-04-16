@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Group Action Maintenance')
-<p class="heading">Rule Group Action maintenance: #if($mode=="add")add action #else edit action#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
+<p class="heading">#if($mode=="add")Add action #else Edit action#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Add or update the selected action.</p>

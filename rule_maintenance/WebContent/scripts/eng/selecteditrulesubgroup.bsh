@@ -10,7 +10,7 @@ if(user==null)
 }
 else
 {
-	id=Long.parseLong(request.getParameter("id"));
+	id=Long.parseLong(request.getParameter("rulesubgroupid"));
 	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 	mode=request.getParameter("mode");
 	context.put("mode",mode);

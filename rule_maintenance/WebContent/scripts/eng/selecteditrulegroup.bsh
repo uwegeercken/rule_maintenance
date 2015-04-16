@@ -11,7 +11,7 @@ else
 	id=Long.parseLong(request.getParameter("id"));
 	mode=request.getParameter("mode");
 	context.put("mode",mode);
-	if(mode!=null && !mode.equals("add"))
+	if(mode!=null && !mode.equals("add")&& !mode.equals("copy"))
 	{
 		RuleGroup rulegroup = new RuleGroup();
 		rulegroup.connection = connection;
@@ -22,7 +22,18 @@ else
 	else
 	{
 		RuleGroup rulegroup = new RuleGroup();
-		context.put("rulegroup",rulegroup);
+		if(id>0)
+		{
+			rulegroup.connection = connection;
+			rulegroup.id=id;
+			rulegroup.load();
+			rulegroup.id=0;
+		}
+		if(mode.equals("copy"))
+		{
+			context.put("copyid",id);
+		}
+		context.put("rulegroup",rulegroup); 
 	}
 	
 	Project project = new Project();

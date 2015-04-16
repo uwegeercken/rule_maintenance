@@ -231,7 +231,7 @@ public class DbCollections
     public static ArrayList <Check> getAllChecks(MySqlConnection connection) throws Exception
     {
         String sql="select id from `check`" + 
-        	" order by name";
+        	" order by name_descriptive";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <Check> list = new ArrayList<Check>();
         while(rs.next())

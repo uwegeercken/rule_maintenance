@@ -13,6 +13,13 @@ else
 {
 	cancelled = request.getParameter("submit");
 	id=Long.parseLong(request.getParameter("id"));
+	mode = request.getParameter("mode");
+	context.put("mode", mode);
+	if(mode!=null && mode.equals("copy"))
+	{
+		copyFromId=Long.parseLong(request.getParameter("copyid"));
+	}
+	context.put("copyid", copyFromId);
 	
 	Project project = new Project();
 	project.connection = connection;
@@ -134,6 +141,54 @@ else
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),project,user);
 				
+				if(mode.equals("copy"))
+				{
+					RuleGroup rulegroupCopy = new RuleGroup();
+					rulegroupCopy.connection = connection;
+					rulegroupCopy.id = copyFromId;
+					rulegroupCopy.load();
+					rulegroupCopy.loadRuleSubgroups();
+					rulegroupCopy.loadRuleGroupActions();
+					for(int i=0;i<rulegroupCopy.ruleSubgroups.size();i++)
+					{
+						RuleSubgroup subgroup = rulegroupCopy.ruleSubgroups.get(i);
+						subgroup.rulegroupId = rulegroupNew.id;
+						subgroup.lastUpdateUser.id = user.id;
+						subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
+						
+						for(int f=0;f<subgroup.rules.size();f++)
+						{
+							Rule rule = subgroup.rules.get(f);
+							rule.rulesubgroupId = subgroup.id;
+							rule.lastUpdateUser.id = user.id;
+							rule.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
+						}
+					}
+					
+					for(int f=0;f<rulegroupCopy.actions.size();f++)
+					{
+						RuleGroupAction action = rulegroupCopy.actions.get(f);
+						action.rulegroupId = rulegroupNew.id;
+						action.lastUpdateUser.id = user.id;
+						action.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL),project,user);
+					}
+					infomessage.text="Rule Group added. Subgroups, rules and actions copied.";
+				}
+				else
+				{
+					RuleSubgroup subgroup = new RuleSubgroup();
+					subgroup.rulegroupId = rulegroupNew.id;
+					subgroup.name= "subgroup_1";
+					subgroup.description= "subgroup 1";
+					subgroup.intergroupOperator="and";
+					subgroup.ruleOperator="and";
+					subgroup.connection = connection;
+					subgroup.lastUpdateUser.id = user.id;
+					subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
+					
+					infomessage.text="Rule Group and one Subgroup added.";
+				}
+				
 				History history = new History();
 				history.connection = connection;
 				history.user = user;
@@ -141,18 +196,6 @@ else
 				history.typeId = rulegroupNew.id;
 				history.parent1 = project.id;
 				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
-				
-				RuleSubgroup subgroup = new RuleSubgroup();
-				subgroup.rulegroupId = rulegroupNew.id;
-				subgroup.name= "subgroup_1";
-				subgroup.description= "subgroup 1";
-				subgroup.intergroupOperator="and";
-				subgroup.ruleOperator="and";
-				subgroup.connection = connection;
-				subgroup.lastUpdateUser.id = user.id;
-				subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
-				
-				infomessage.text="Rule Group added.";
 			}
 		}
 		
