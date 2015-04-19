@@ -246,6 +246,23 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList <CheckMethod> getAllCheckMethods(MySqlConnection connection, long checkId) throws Exception
+    {
+        String sql="select id from check_method where check_id=" + checkId ;
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <CheckMethod> list = new ArrayList<CheckMethod>();
+        while(rs.next())
+        {
+        	CheckMethod method = new CheckMethod();
+        	method.setConnection(connection);
+        	method.setId(rs.getLong("id"));
+        	method.load();
+            list.add(method);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static ArrayList <Action> getAllActions(MySqlConnection connection) throws Exception
     {
         String sql="select id from action" + 

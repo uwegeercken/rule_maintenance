@@ -115,14 +115,14 @@
 		<td>Message Passed:</td>
 		<td>
 			<input id="messagepassed" name="messagepassed" type="text" size="40" maxlength="255" value="$!{rule.messagePassed}">
-			<input id="proposepassed" type="button" value="<<" name="proposepassed">
+			<input id="proposepassed" type="button" value="<" name="proposepassed">
 		</td>
 	</tr>
 	<tr>
 		<td>Message Failed:</td>
 		<td>
 			<input id="messagefailed" name="messagefailed" type="text" size="40" maxlength="255" value="$!{rule.messageFailed}">
-			<input id="proposefailed" type="button" value="<<" name="proposepassed">
+			<input id="proposefailed" type="button" value="<" name="proposepassed">
 		</td>
 	</tr>
 	

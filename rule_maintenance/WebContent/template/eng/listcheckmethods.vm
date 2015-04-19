@@ -1,0 +1,28 @@
+#set($pagetitle='List of Methods')
+<p class="heading">List of Methods ($methods.size()) for: ${check.name}</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listchecks"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Checks"></a></p>
+<div id="help">
+	<p>List of available methods for the selected Check. The Check usually compares one field against another one or one field against a given value. Some checks only check the state of a given field, like e.g. CheckIsNull.</p>
+	<p>The listed methods can be invoked using the rule engine and show which data types can be used. Additionally some methods allow the user to specify additional (optional) parameters.</p>
+</div>
+<p>Filter: <input id="search" searchtype="methods" type="text"></p>
+#foreach($method in $methods)
+	<div class="unit" tag="${method.compare.toLowerCase()}">
+		<div class="grouptop">
+			<p class="small">compare</p>
+			<p class="big">${method.compare} to ${method.compareTo}</a></p>
+			#if($!{method.parameter1})
+			<p class="normal">Parameter 1: $!{method.parameter1} - $!{method.parameter1Explanation}</p>
+			#end
+			#if($!{method.parameter2})
+			<p class="normal">Parameter 2: $!{method.parameter2} - $!{method.parameter2Explanation}</p>
+			#end
+			#if($!{method.parameter3})
+			<p class="normal">Parameter 3: $!{method.parameter3} - $!{method.parameter3Explanation}</p>
+			#end
+		</div>
+		<div>
+			<p class="small">$!method.note</p>
+		</div>
+	</div>
+#end
