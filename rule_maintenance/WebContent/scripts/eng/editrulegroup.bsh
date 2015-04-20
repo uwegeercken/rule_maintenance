@@ -18,8 +18,9 @@ else
 	if(mode!=null && mode.equals("copy"))
 	{
 		copyFromId=Long.parseLong(request.getParameter("copyid"));
+		context.put("copyid", copyFromId);
 	}
-	context.put("copyid", copyFromId);
+	
 	
 	Project project = new Project();
 	project.connection = connection;
