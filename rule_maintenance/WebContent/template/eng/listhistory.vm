@@ -49,7 +49,7 @@
 			<p class="small">subgroup</p>
 			<p class="big">
 			#if($user.canUpdateProject($item.project)==true)
-				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&id=${item.historyEntry.id}&rulegroupid=${item.parent1}&projectid=${item.project.id}&mode=change">$!{item.historyEntry.name}</a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&rulesubgroupid=${item.historyEntry.id}&rulegroupid=${item.parent1}&projectid=${item.project.id}&mode=change">$!{item.historyEntry.name}</a>
 			#else
 				$!{item.historyEntry.name}
 			#end
