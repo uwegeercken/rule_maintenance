@@ -15,7 +15,7 @@ The latest version has enhanced user support: filtering on pages, storing filter
 
 Note 1: make sure that you have imported the database schema before you run the web application.
 
-   Copyright (C) 2008-2015  Uwe Geercken
+   Copyright (C) 2008-2016  Uwe Geercken
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,4 +31,4 @@ Note 1: make sure that you have imported the database schema before you run the 
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2015-03-12
+last update: 2016-03-24
