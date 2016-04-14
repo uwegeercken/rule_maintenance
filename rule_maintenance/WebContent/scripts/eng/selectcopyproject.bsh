@@ -1,0 +1,31 @@
+import com.datamelt.db.Project;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	ArrayList list = DbCollections.getAllGroups(connection, user);
+	context.put("groups",list);
+	
+	
+	id=Long.parseLong(request.getParameter("projectid"));
+	Project copyProject = new Project();
+	copyProject.connection = connection;
+	copyProject.setId(id);
+	copyProject.load();
+	
+	context.put("copyproject",copyProject);
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.objectClassname = "com.datamelt.util.RowFieldCollection";
+	project.objectMethodGetter = "getFieldValue";
+	project.objectMethodSetter = "setFieldValue";
+	
+	context.put("project",project);
+	
+	templatename="copyproject.vm";
+}

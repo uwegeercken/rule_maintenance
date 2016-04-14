@@ -10,7 +10,11 @@ if(user==null)
 else
 {
 		rulegroupId=Long.parseLong(request.getParameter("rulegroupid"));
-		
+		searchid=request.getParameter("searchid");
+		if(searchid!=null)
+		{
+			context.put("searchid",searchid);
+		}
 		ArrayList groups = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
 		context.put("rulesubgroups",groups);
 

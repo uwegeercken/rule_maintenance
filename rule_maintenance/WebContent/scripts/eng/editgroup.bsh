@@ -27,6 +27,7 @@ else
 				group.setName(name);
 				group.setDescription(description);
 				group.update(connection.getPreparedStatement(Group.UPDATE_SQL));
+				context.put("mode","updated");
 				group.load();
 				infomessage.text="Group updated.";
 			}
@@ -52,6 +53,7 @@ else
 				group.setName(name);
 				group.setDescription(description);
 				group.insert(connection.getPreparedStatement(Group.INSERT_SQL));
+				context.put("mode","inserted");
 				group.load();
 				infomessage.text="Group added.";
 			}
@@ -77,6 +79,11 @@ else
 	else
 	{
 		ArrayList list = DbCollections.getAllGroups(connection, user);
+		for(int i=0;i<list.size();i++)
+		{
+			Group group = list.get(i);
+			group.loadUsers();
+		}
 		context.put("groups",list);
 		templatename="listgroups.vm";
 	}

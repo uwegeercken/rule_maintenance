@@ -491,7 +491,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	{
 		this.rulegroupId = rulegroupId;
 	}
-
+	
 	public Action getAction() 
 	{
 		return action;

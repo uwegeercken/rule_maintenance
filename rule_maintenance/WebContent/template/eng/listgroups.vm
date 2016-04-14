@@ -16,6 +16,7 @@
 			<p class="small">group</p>
 			<p class="big">$!group.name</a></p>
 			<p class="normal">$!group.description</p>
+			<p class="normal">users: $!{group.getUsersAsString()}</p>
 		</div>
 		
 	</div>

@@ -114,6 +114,7 @@ $(document).ready(function() {
 				firstDay: 1
 		});
 	});
+	
 </script>
 </head>
 <body>

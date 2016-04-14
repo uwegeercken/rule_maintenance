@@ -168,6 +168,25 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList<User> getAllGroupUsers(MySqlConnection connection, long groupId) throws Exception
+    {
+        String sql="select user_id from groups, groupuser" + 
+        	" where groupuser.groups_id=groups.id "+
+        	" and groupuser.id = " + groupId ;	
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<User> list = new ArrayList<User>();
+        while(rs.next())
+        {
+            User user = new User();
+            user.setConnection(connection);
+            user.setId(rs.getLong("user_id"));
+            user.load();
+            list.add(user);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static ArrayList<Group> getAllGroups(MySqlConnection connection, User user) throws Exception
     {
         String sql="select id from groups order by name";	
@@ -187,6 +206,55 @@ public class DbCollections
         	{
         		list.add(group);
         	}
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static ArrayList<Rule> getSearchRules(MySqlConnection connection, User user, String searchTerm) throws Exception
+    {
+        String sql="select id from rule"
+        		+ " where name like " + "'%" + searchTerm + "%'"
+        		+ " or description like "+ "'%" + searchTerm + "%'"
+        		+ "order by name";	
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<Rule> list = new ArrayList<Rule>();
+        while(rs.next())
+        {
+        	Rule rule = new Rule();
+        	rule.setConnection(connection);
+        	rule.setId(rs.getLong("id"));
+        	rule.load();
+        	
+        	RuleSubgroup subgroup= new RuleSubgroup();
+        	subgroup.setConnection(connection);
+        	subgroup.setId(rule.getRuleSubgroupId());
+        	subgroup.load();
+        	
+        	rule.setRuleGroupId(subgroup.getRulegroupId());
+        	
+       		list.add(rule);
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static ArrayList<RuleGroupAction> getSearchActions(MySqlConnection connection, User user, String searchTerm) throws Exception
+    {
+        String sql="select id from rulegroupaction"
+        		+ " where name like " + "'%" + searchTerm + "%'"
+        		+ " or description like "+ "'%" + searchTerm + "%'"
+        		+ "order by name";	
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<RuleGroupAction> list = new ArrayList<RuleGroupAction>();
+        while(rs.next())
+        {
+        	RuleGroupAction action = new RuleGroupAction();
+        	action.setConnection(connection);
+        	action.setId(rs.getLong("id"));
+        	action.load();
+        	
+       		list.add(action);
         }
         rs.close();
         return list;
@@ -299,6 +367,32 @@ public class DbCollections
         return list;
     }
     
+    public static long getRulesCount(MySqlConnection connection) throws Exception
+    {
+        String sql="select count(1) as numberofrules from rule";
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfRules=0;
+        if(rs.next())
+        {
+        	numberOfRules= rs.getLong("numberofrules");
+        }
+        rs.close();
+        return numberOfRules;
+    }
+
+    public static long getUsersCount(MySqlConnection connection) throws Exception
+    {
+        String sql="select count(1) as numberofusers from user where deactivated=0";
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfRules=0;
+        if(rs.next())
+        {
+        	numberOfRules= rs.getLong("numberofusers");
+        }
+        rs.close();
+        return numberOfRules;
+    }
+
     public static void deleteUserHistory(MySqlConnection connection, String type, long typeId, User user) throws Exception
     {
     	String deleteSql = "delete from history where type=? and type_id=? and user_id=?";

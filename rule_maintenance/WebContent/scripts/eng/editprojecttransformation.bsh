@@ -105,6 +105,7 @@ else
 		if(stepsOk)
 		{
 			project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+			context.put("mode","updated");
 			project.load();
 			infomessage.text="Project updated.";
 		}
@@ -137,6 +138,7 @@ else
 			project.transformationStepname = null;
 			project.transformationFilename=null;
 			project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+			context.put("mode","updated");
 		}
 		
 		ArrayList list;

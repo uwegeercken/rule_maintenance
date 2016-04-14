@@ -38,7 +38,7 @@ else
 	
 		Rule ruleNew = new Rule();
 		ruleNew.connection = connection;
-		ruleNew.rulesubgroupId = rulesubgroupid;
+		ruleNew.ruleSubgroupId = rulesubgroupid;
 		ruleNew.name=request.getParameter("name");
 		ruleNew.description=request.getParameter("description");
 		ruleNew.check.id = Long.parseLong(request.getParameter("check_id"));
@@ -176,6 +176,7 @@ else
 				ruleNew.lastUpdateUser.id = user.id;
 				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL),project,user);
 				ruleNew.load();
+				context.put("mode","updated");
 				
 				History history = new History();
 				history.connection = connection;
@@ -257,6 +258,7 @@ else
 				ruleNew.lastUpdateUser.id = user.id;
 				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
 				ruleNew.load();
+				context.put("mode","inserted");
 				
 				History history = new History();
 				history.connection = connection;

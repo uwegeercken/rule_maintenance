@@ -1,5 +1,7 @@
 import java.io.*;
+import com.datamelt.db.Project;
 import com.datamelt.db.Rule;
+import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.util.PDITransformation;

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.datamelt.db.DatabaseRecord;
@@ -117,12 +118,32 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	
 	public boolean isValid() throws Exception
 	{
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateFrom = formatter.parse(getValidFrom());
-		Date dateUntil = formatter.parse(getValidUntil());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateFrom = sdf.parse(validFrom);
+		Date dateUntil = sdf.parse(validUntil);
 		
-		Date today = new Date();
-		boolean valid = today.getTime() >= dateFrom.getTime() && today.getTime() <= dateUntil.getTime();
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+
+		Calendar from = Calendar.getInstance();
+		from.setTime(dateFrom);
+		from.set(Calendar.HOUR_OF_DAY, 0);
+		from.set(Calendar.MINUTE, 0);
+		from.set(Calendar.SECOND, 0);
+		from.set(Calendar.MILLISECOND, 0);
+		
+		Calendar until = Calendar.getInstance();
+		until.setTime(dateUntil);
+		until.set(Calendar.HOUR_OF_DAY, 0);
+		until.set(Calendar.MINUTE, 0);
+		until.set(Calendar.SECOND, 0);
+		until.set(Calendar.MILLISECOND, 0);
+
+		
+		boolean valid = today.compareTo(from)>=0 && today.compareTo(until)<=0;
 		return valid;  
 	}
 	

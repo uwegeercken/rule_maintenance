@@ -46,6 +46,7 @@ else
 			{
 				rulesubgroupNew.lastUpdateUser.id = user.id;
 				rulesubgroupNew.update(connection.getPreparedStatement(RuleSubgroup.UPDATE_SQL),project,user);
+				context.put("mode","updated");
 				
 				History history = new History();
 				history.connection = connection;
@@ -75,6 +76,7 @@ else
 			{
 				rulesubgroupNew.lastUpdateUser.id = user.id;
 				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
+				context.put("mode","inserted");
 				
 				History history = new History();
 				history.connection = connection;

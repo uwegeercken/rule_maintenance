@@ -108,7 +108,7 @@ else
 			project.objectMethodGetter = objectmethodgetter;
 			project.objectMethodSetter = objectmethodsetter;
 			infomessage.type="error";
-			infomessage.text="Project already exists.";
+			infomessage.text="Project with the same name already exists.";
 		}
 		else if(fileName==null || fileName.equals(""))
 		{

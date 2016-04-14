@@ -4,13 +4,14 @@
 <div id="help">
 	<p>List of available methods for the selected Check. The Check usually compares one field against another one or one field against a given value. Some checks only check the state of a given field, like e.g. CheckIsNull.</p>
 	<p>The listed methods can be invoked using the rule engine and show which data types can be used. Additionally some methods allow the user to specify additional (optional) parameters.</p>
+	<p>Important: The first parameter of the methods is always the value that shall be evaluated (from a file, database or other data).</p>
 </div>
 <p>Filter: <input id="search" searchtype="methods" type="text"></p>
 #foreach($method in $methods)
 	<div class="unit" tag="${method.compare.toLowerCase()}">
 		<div class="grouptop">
 			<p class="small">compare</p>
-			<p class="big">${method.compare} to ${method.compareTo}</a></p>
+			<p class="big">${method.compare} #if(${method.compareTo}) to ${method.compareTo}#end</a></p>
 			#if($!{method.parameter1})
 			<p class="normal">Parameter 1: $!{method.parameter1} - $!{method.parameter1Explanation}</p>
 			#end

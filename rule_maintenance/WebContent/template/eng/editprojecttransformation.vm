@@ -51,11 +51,17 @@
 		</td>		
 	</tr>
 	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="remove" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	#end
 	</tr>
 </table>
 </form>

@@ -20,12 +20,25 @@
 		</td>
 	</tr>
 	<tr>
+		<td>#if($user)
+					#if(${user.hasAvatar()})
+						<a href="process?action=bsh&scriptname=selecteditavatar&userid=${user.userid}"><img width="60" height="60" src="img/users/${user.userid}" title="$!{user.name} ($!{user.userid})" alt="$!{user.name} ($!{user.userid})"></a>
+					#else
+						<a href="process?action=bsh&scriptname=selecteditavatar&userid=${user.userid}"><img width="60" height="60" src="img/users/dummy.png" title="$!{user.name} ($!{user.userid})" alt="$!{user.name} ($!{user.userid})"></a>
+					#end
+				#end
+			</td>
+	</tr>
+
+	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="import" name="submit">
 		</td>
 	</tr>
 </table>
+
 </form>
+			
 </div>
 
 #if (${infomessage})

@@ -32,13 +32,17 @@ else
          	validselecteddate = false;
      	}
      	
-     	if(validselecteddate && id >0)
+     	Project project = new Project();
+     	if(id >0)
      	{
-			Project project = new Project();
 		    project.setConnection(connection);
 		    project.setId(id);
 		    project.load();
-			
+		}
+     	context.put("selectedproject",project);
+     	
+     	if(validselecteddate && id >0)
+     	{
 			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
 		
 			fileCreator.projectName = project.name;
@@ -49,6 +53,9 @@ else
 			
 			project.loadRuleGroups(fileCreator.selectedDate);
 			
+			int numberOfRuleGroups = project.getRulegroups().size();
+			
+
 			fileCreator.writeFiles(project);
 			String fileName = fileCreator.zipFiles(project);
 
@@ -64,7 +71,15 @@ else
 		    op.write(arBytes);  
 		    op.flush();
 		    //op.close();  
-		    
+
+			ArrayList list = DbCollections.getAllProjects(connection,user);
+			context.put("projects",list);
+		
+			if(validselecteddate)
+			{
+				context.put("today",selecteddate);
+			}
+			templatename="sendfile.vm";
 		}
 		else
 		{

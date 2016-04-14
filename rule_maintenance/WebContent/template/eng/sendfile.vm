@@ -15,7 +15,11 @@
 			<select name="id" size="1">
 			<option value="0"></option>
 			#foreach($project in $projects)
-					<option value="$project.id">${project.name} - ${project.description}</option>
+					#if($selectedproject.id == $project.id)
+						<option selected value="$project.id">${project.name} - ${project.description}</option>
+					#else
+						<option value="$project.id">${project.name} - ${project.description}</option>
+					#end
 			#end
     		</select>
 		</td>

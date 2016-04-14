@@ -2,11 +2,11 @@
 body
 {
 	font: normal 9pt/1.4 verdana, sans-serif;
+	background-color: white;
 }
 
 * {
 	font: normal 9pt/1.4 verdana, sans-serif;
-	
 }
 
 #title > p
@@ -83,6 +83,21 @@ a
 {
 	border: 1px solid #3a3a3a;
 	border-radius: 4px;
+	margin: 6px;
+	width: 280px;
+	height: 180px;
+	float: left;
+	-moz-box-shadow:    3px 3px 5px 6px #ccc;
+  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;
+
+}
+
+.unithighlighted 
+{
+	border: 1px solid #3a3a3a;
+	border-radius: 4px;
+	background-color: #f2edd5;
 	margin: 6px;
 	width: 280px;
 	height: 180px;
@@ -173,6 +188,14 @@ img.copy
 	position:absolute;
 	margin-top: 150px;
 	margin-left: 220px;
+	border: none;
+}
+
+img.copyproject 
+{
+	position:absolute;
+	margin-top: 150px;
+	margin-left: 190px;
 	border: none;
 }
 

@@ -18,6 +18,7 @@ if(cancelled.equals("deactivate user"))
 
 	PreparedStatement ps = connection.getPreparedStatement(User.ACTIVATE_DEACTIVATE_SQL);
 	dbuser.deactivate(ps, user);
+	
 	dbuser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS),user);
 }
 

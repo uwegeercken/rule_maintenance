@@ -1,14 +1,14 @@
 #set($pagetitle='Rule Group Maintenance')
-<p class="heading">#if($mode=="add")Add Rule Group #elseif($mode=="copy")Copy Rule Group #else Edit Rule Group#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a></p>
+<p class="heading">#if($mode && $mode=="add")Add Rule Group #elseif($mode && $mode=="copy")Copy Rule Group #else Edit Rule Group#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a></p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" itle="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Rule Group List"></a></p>
 <div id="help">
 	<p>Edit the selected rule group.</p>
 	<p>Enter the name and description of the rule group. Specify from and until date for the validity of the group.</p>
 </div>
 <div class="formbox">
-#if($mode=="add")
+#if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editrulegroup&id=0&projectid=${project.id}&mode=${mode}"> 
-#elseif($mode=="copy")
+#elseif($mode && $mode=="copy")
 	<form method="POST" action="process?action=bsh&scriptname=editrulegroup&id=0&projectid=${project.id}&mode=${mode}&copyid=${copyid}"> 
 #else
 	<form method="POST" action="process?action=bsh&scriptname=editrulegroup&id=${rulegroup.id}&projectid=${project.id}"> 
@@ -41,10 +41,16 @@
 		</td>
 	</tr>
 	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	#end
 	</tr>
 </table>
 </form>

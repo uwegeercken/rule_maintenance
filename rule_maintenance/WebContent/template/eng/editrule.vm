@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Maintenance')
-<p class="heading">#if($mode=="add")Add Rule #else Edit Rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
+<p class="heading">#if($mode && $mode=="add")Add Rule #else Edit Rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Add or update the selected rule.</p>
@@ -9,7 +9,7 @@
 	<p>Define the messages to be used in case the rule passes or fails. You can use the variable $1 which contains the data from the field to check and $0 which contains the value or field to check against.</p> 
 </div>
 <div class="formbox">
-#if($mode=="add")
+#if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editrule&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"> 
 	
 #else
@@ -127,10 +127,16 @@
 	</tr>
 	
 	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	#end
 	</tr>
 </table>
 </form>

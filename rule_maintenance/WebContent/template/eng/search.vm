@@ -1,0 +1,64 @@
+#set($pagetitle='Search Rules')
+<p class="heading">Search Rules</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>Search for rules which match the search term in either the name or description.</p>
+	<p>When you click on the name of the rule you will be forwarded to the project and rulegroup where the rule is defined.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=searchrules&userid=${user.userid}"> 
+<table align="center" width="95%" border="0">
+	<tr>
+		<td>Text to search:</td>
+		<td>
+			<input name="searchterm" type="text" size="40" maxlength="255" value="$!{searchterm}">
+		</td>
+	</tr>
+	<tr>
+		<td>search rules</td>
+		<td>
+			<input type="checkbox" name="options" value="searchrules" #if(${searchrules})checked#end>
+		</td>
+	</tr>
+	<tr>
+		<td>search actions</td>
+		<td>
+			<input type="checkbox" name="options" value="searchactions" #if(${searchactions})checked#end>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="search" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+<p>number of rules: #if($rules)${rules.size()}#else 0 #end - number of actions: #if($actions)${actions.size()} #else 0 #end</p>
+#if($rules)
+	#foreach($rule in $rules)
+		<div class="unit" tag="$!rule.name">
+			<div class="grouptop">
+				<p class="small">rule</p>
+				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rule.ruleGroupId}&searchid=${rule.id}">${rule.name}</a></p>
+				<p class="normal">${rule.description}</p>
+				<p class="normal">$!{rule.ruleLogic}</p>
+			</div>
+		</div>
+	#end
+#end
+#if($actions)
+	#foreach($action in $actions)
+		<div class="unit" tag="$!action.name">
+			<div class="grouptopaction">
+				<p class="small">action</p>
+				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${action.ruleGroupId}&searchid=${action.id}">${action.name}</a></p>
+				<p class="normal">$action.description</p>
+				<p class="normal">$action.actionLogic</p>
+			</div>
+		</div>
+	#end
+#end
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

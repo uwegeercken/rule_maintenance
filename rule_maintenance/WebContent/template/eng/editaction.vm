@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Group Action Maintenance')
-<p class="heading">#if($mode=="add")Add action #else Edit action#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
+<p class="heading">#if($mode && $mode=="add")Add action #else Edit action#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Add or update the selected action.</p>
@@ -9,7 +9,7 @@
 	<p>If required for the selected action, specify additional parameters and their types.</p>
 </div>
 <div class="formbox">
-#if($mode=="add")
+#if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editaction&rulegroupid=${rulegroup.id}&projectid=${project.id}"> 
 	
 #else
@@ -147,10 +147,16 @@
 	</tr>
 	
 	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	#end
 	</tr>
 </table>
 </form>

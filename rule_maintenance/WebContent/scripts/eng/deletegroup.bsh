@@ -14,11 +14,22 @@ if(cancelled.equals("delete group"))
 	group.connection = connection;
 	group.id= groupid;
 
+	PreparedStatement ps2 = connection.getPreparedStatement(Group.REMOVE_ALL_ASSIGNED_USERS_SQL);
+	group.removeAllAssignedUsers(ps2);
+	
 	PreparedStatement ps = connection.getPreparedStatement(Group.DELETE_SQL);
 	group.delete(ps);
+	
+	
+	
 }
 
 ArrayList list = DbCollections.getAllGroups(connection,user);
+for(int i=0;i<list.size();i++)
+{
+	Group group = list.get(i);
+	group.loadUsers();
+}
 context.put("groups",list);
 
 templatename="listgroups.vm";

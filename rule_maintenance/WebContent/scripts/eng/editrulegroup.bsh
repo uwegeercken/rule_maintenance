@@ -21,7 +21,6 @@ else
 		context.put("copyid", copyFromId);
 	}
 	
-	
 	Project project = new Project();
 	project.connection = connection;
 	project.id = Long.parseLong(request.getParameter("projectid"));
@@ -98,6 +97,7 @@ else
 			{
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL),project,user);
+				context.put("mode","updated");
 				
 				History history = new History();
 				history.connection = connection;
@@ -141,6 +141,7 @@ else
 			{
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),project,user);
+				context.put("mode","inserted");
 				
 				if(mode.equals("copy"))
 				{
@@ -160,7 +161,7 @@ else
 						for(int f=0;f<subgroup.rules.size();f++)
 						{
 							Rule rule = subgroup.rules.get(f);
-							rule.rulesubgroupId = subgroup.id;
+							rule.ruleSubgroupId = subgroup.id;
 							rule.lastUpdateUser.id = user.id;
 							rule.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
 						}
@@ -186,6 +187,7 @@ else
 					subgroup.connection = connection;
 					subgroup.lastUpdateUser.id = user.id;
 					subgroup.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
+					context.put("mode","inserted");
 					
 					infomessage.text="Rule Group and one Subgroup added.";
 				}

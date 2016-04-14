@@ -1,0 +1,38 @@
+import java.io.*;
+import com.datamelt.db.Project;
+import com.datamelt.util.PDITransformation;
+
+writeaction="false";
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	searchterm=request.getParameter("searchterm");
+	String[] options = request.getParameterValues("options");
+	if(options.length >0)
+	{
+		for(int i=0;i<options.length;i++)
+		{
+			String option = options[i];
+			if(option.equals("searchrules"))
+			{
+				ArrayList list = DbCollections.getSearchRules(connection, user, searchterm);
+				context.put("rules",list);
+				context.put("searchrules","searchrules");
+			}
+			if(option.equals("searchactions"))
+			{
+				ArrayList list = DbCollections.getSearchActions(connection, user, searchterm);
+				context.put("actions",list);
+				context.put("searchactions","searchactions");
+			}
+			
+		}
+	}
+	context.put("searchterm",searchterm);
+	
+	templatename="search.vm";
+}

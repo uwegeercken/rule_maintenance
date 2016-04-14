@@ -175,6 +175,7 @@ else
 				actionNew.lastUpdateUser.connection = connection;
 				actionNew.lastUpdateUser.load();
 				actionNew.update(connection.getPreparedStatement(RuleGroupAction.UPDATE_SQL), project, user);
+				context.put("mode","updated");
 				
 				History history = new History();
 				history.connection = connection;
@@ -256,6 +257,7 @@ else
 				actionNew.lastUpdateUser.connection = connection;
 				actionNew.lastUpdateUser.load();
 				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL), project, user);
+				context.put("mode","inserted");
 				
 				History history = new History();
 				history.connection = connection;

@@ -15,11 +15,14 @@ package com.datamelt.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class Group extends DatabaseRecord implements Loadable
 {
     private String name;
     private String description;
+    
+    private ArrayList<User> users = new ArrayList<User>();
     
     public static final String ALL_USERS                      = "All Users";
 
@@ -59,6 +62,22 @@ public class Group extends DatabaseRecord implements Loadable
         rs.close();
     }
 
+    public void loadUsers() throws Exception
+    {
+        String sql="select user_id from groupuser where groups_id=" + getId();
+        ResultSet rs = getConnection().getResultSet(sql);
+		while(rs.next())
+		{
+			User user = new User();
+			user.setConnection(getConnection());
+			user.setId(rs.getLong("user_id"));
+			user.load();
+			
+			users.add(user);
+		}
+        rs.close();
+    }
+    
     public boolean exist(String gname) throws Exception
     {
         String sql="select id from groups where name ='" + gname + "'";
@@ -86,7 +105,6 @@ public class Group extends DatabaseRecord implements Loadable
         p.setLong(1,getId());
         p.execute();
         
-        setId(getConnection().getLastInsertId());
     }
 
     public void removeAllAssignedUsers(PreparedStatement p) throws Exception
@@ -152,4 +170,31 @@ public class Group extends DatabaseRecord implements Loadable
     {
     	return this.getId()== ((Group)group).getId();
     }
+
+	public ArrayList<User> getUsers() 
+	{
+		return users;
+	}
+
+	public void setUsers(ArrayList<User> users) 
+	{
+		this.users = users;
+	}
+    
+	public String getUsersAsString()
+    {
+    	StringBuffer buffer = new StringBuffer();
+    	for(int i=0;i<users.size();i++)
+    	{
+    		User user = users.get(i);
+    		buffer.append(user.getName());
+    		if(i<users.size()-1)
+    		{
+    			buffer.append(", ");
+    		}
+    		
+    	}
+    	return buffer.toString();
+    }
+    
 }

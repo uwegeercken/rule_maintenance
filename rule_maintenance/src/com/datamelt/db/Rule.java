@@ -12,6 +12,7 @@ public class Rule extends DatabaseRecord implements Loadable
 	private String name;
 	private String description;
 	private long rulesubgroupId;
+	private long rulegroupId;
 	private Type object1Parametertype = new Type();
 	private String object1Parameter;
 	private Type object1Type = new Type();
@@ -344,10 +345,20 @@ public class Rule extends DatabaseRecord implements Loadable
 	{
 		return rulesubgroupId;
 	}
+	
+	public long getRuleGroupId()
+	{
+		return rulegroupId;
+	}
 
 	public void setRuleSubgroupId(long rulesubgroupId)
 	{
 		this.rulesubgroupId = rulesubgroupId;
+	}
+	
+	public void setRuleGroupId(long rulegroupId)
+	{
+		this.rulegroupId = rulegroupId;
 	}
 
 	public Type getObject1Parametertype() 
@@ -458,16 +469,6 @@ public class Rule extends DatabaseRecord implements Loadable
 	public void setCheck(Check check) 
 	{
 		this.check = check;
-	}
-
-	public long getRulesubgroupId()
-	{
-		return rulesubgroupId;
-	}
-
-	public void setRulesubgroupId(long rulesubgroupId) 
-	{
-		this.rulesubgroupId = rulesubgroupId;
 	}
 
 	public User getLastUpdateUser()

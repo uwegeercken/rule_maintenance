@@ -8,6 +8,8 @@ import java.util.zip.ZipFile;
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 import com.datamelt.rules.engine.BusinessRulesEngine;
+import com.datamelt.util.ProjectCopyUtility;
+import com.datamelt.util.ProjectMappingUtility;
 import com.datamelt.util.VelocityDataWriter;
 
 
@@ -262,13 +264,13 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(1,getId());
 		try
 		{
-			if(user.canUpdateProject(this))
+			if(user.canDeleteProject(this))
 			{
 				p.executeUpdate();
 			}
 			else
 			{
-				throw new Exception("user " + user.getUserid() + " is not allowed to delete the project");	
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the project. only an administrator or user " + this.getOwnerUser().getUserid() + "can delete it.");	
 			}
 			
 		}
@@ -289,6 +291,11 @@ public class Project extends DatabaseRecord implements Loadable
         rs.close();
         return exists;
     }
+	
+	public void copy(Project newProject, User user) throws Exception
+	{
+		ProjectCopyUtility.copy(this, newProject, user, getConnection());
+	}
 	
 	public String getName()
 	{
@@ -656,6 +663,40 @@ public class Project extends DatabaseRecord implements Loadable
 					
 					dbRule.setLastUpdateUser(lastUpdateUser);
 					dbRule.setConnection(getConnection());
+					dbRule.insert(getConnection().getPreparedStatement(Rule.INSERT_SQL),this,user);
+				}
+			}
+		}
+	}
+	
+	public void mapProject(ZipFile zipFile,User user) throws Exception
+	{
+		BusinessRulesEngine ruleEngine = new BusinessRulesEngine(zipFile);
+		ArrayList <com.datamelt.rules.core.RuleGroup>groups = ruleEngine.getGroups();
+		for (int i=0;i<groups.size();i++)
+		{
+			com.datamelt.rules.core.RuleGroup group = groups.get(i);
+			RuleGroup dbRuleGroup = ProjectMappingUtility.mapRuleGroup(this, group);
+			
+			ArrayList <com.datamelt.rules.core.XmlAction>actions = group.getActions();
+			for (int k=0;k<actions.size();k++)
+			{
+				com.datamelt.rules.core.XmlAction action = actions.get(k);
+				RuleGroupAction dbAction = ProjectMappingUtility.mapAction(dbRuleGroup, action, getConnection());
+				dbAction.insert(getConnection().getPreparedStatement(RuleGroupAction.INSERT_SQL),this,user);
+			}
+			
+			ArrayList <com.datamelt.rules.core.RuleSubGroup> subgroups = group.getSubGroups();
+			for (int f=0;f<subgroups.size();f++)
+			{
+				com.datamelt.rules.core.RuleSubGroup subgroup = subgroups.get(f);
+				RuleSubgroup dbRuleSubGroup = ProjectMappingUtility.mapRuleSubgroup(dbRuleGroup, subgroup, getConnection());
+				dbRuleSubGroup.insert(getConnection().getPreparedStatement(RuleSubgroup.INSERT_SQL),this,user);
+				
+				for(int m=0;m<subgroup.getRulesCollection().size();m++)
+				{
+					com.datamelt.rules.core.XmlRule rule = subgroup.getRulesCollection().get(m);
+					Rule dbRule = ProjectMappingUtility.mapRules(dbRuleSubGroup, rule, getConnection());
 					dbRule.insert(getConnection().getPreparedStatement(Rule.INSERT_SQL),this,user);
 				}
 			}

@@ -10,38 +10,44 @@ if(user==null)
 }
 else
 {
-	userid=request.getParameter("userid");
-
-	Part filePart;
-	filePart = request.getPart("avatar");
-	String fileName;
-	String contentDisp = filePart.getHeader("content-disposition");
-	String[] items = contentDisp.split(";");
-	for (int i=0;i<items.length;i++) 
-	{	
-		String s = items[i];
-    	if (s.trim().startsWith("filename")) 
-    	{
-        	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
-    	}
-	}
-	String fullfilename= imagespath + "/users/" + fileName;
-	String newfilename= imagespath + "/users/" + userid;
-
-	if(fileName==null || fileName.equals("") || (!fileName.toLowerCase().endsWith(".png")&&!fileName.toLowerCase().endsWith(".jpg")))
+	button = request.getParameter("submit");
+	
+	if(button.equals("import"))
 	{
-		infomessage.type="error";
-		infomessage.text="Picture to import must be selected and must be a JPG or PNG file.";
-	}
-	else
-	{
-		filePart.write(fullfilename);
-		File file = new File(fullfilename);
-		File fileNew = new File(newfilename);
-		file.renameTo(fileNew);
-		user.setHasAvatar(true);
-		infomessage.text="Picture imported." ;
-		
+		userid=request.getParameter("userid");
+	
+		Part filePart;
+		filePart = request.getPart("avatar");
+		String fileName;
+		String contentDisp = filePart.getHeader("content-disposition");
+		String[] items = contentDisp.split(";");
+		for (int i=0;i<items.length;i++) 
+		{	
+			String s = items[i];
+	    	if (s.trim().startsWith("filename")) 
+	    	{
+	        	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
+	    	}
+		}
+		String fullfilename= imagespath + "/users/" + fileName;
+		String newfilename= imagespath + "/users/" + userid;
+	
+		if(fileName==null || fileName.equals("") || (!fileName.toLowerCase().endsWith(".png")&&!fileName.toLowerCase().endsWith(".jpg")))
+		{
+			infomessage.type="error";
+			infomessage.text="Picture to import must be selected and must be a JPG or PNG file.";
+		}
+		else
+		{
+			filePart.write(fullfilename);
+			File file = new File(fullfilename);
+			File fileNew = new File(newfilename);
+			file.renameTo(fileNew);
+			user.setHasAvatar(true);
+			context.put("mode","inserted");
+			infomessage.text="Picture imported." ;
+			
+		}
 	}
 	
 	templatename="editavatar.vm";

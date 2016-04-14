@@ -1,0 +1,9 @@
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+    context.put("searchrules","searchrules");
+    templatename = "search.vm";
+}

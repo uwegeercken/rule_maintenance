@@ -15,17 +15,16 @@
 <p>Requirements for this application:</p>
 <ul>
 	<li>HTML 4 conformal browser.</li>
-	<li>Some functionality requires Javascript.</li>
+	<li>Some functionality requires JavaScript.</li>
 </ul>
 <p>Check for new versions and other tools on <a href="http://github.com/uwegeercken">GitHub</a></p>
 <br>
 <br>
-<p>Copyright datamelt.com, 2014-2015. All code by: Uwe Geercken, uwe.geercken@web.de</p>
-
+<p>Copyright Uwe Geercken, 2014-2016. All code by: Uwe Geercken, uwe.geercken@web.de</p>
 <br />
 <table width="90%" border="0" align="center">
 <tr>
-	<td align="center" width="50%"><a href="http://velocity.apache.org/"><img src="img/velocity-logo.gif" border="0" alt="Jakarta Velocity"></a></td>
+	<td align="center" width="50%"><a href="http://velocity.apache.org/"><img src="img/velocity-logo.gif" border="0" alt="Apache Velocity"></a></td>
 	<td align="center" width="50%"><a href="http://www.mysql.com"><img src="img/poweredbymysql_logo.gif" border="0" width="125" height="42" alt="MySql Website"></a></td>
 </tr>
 </table>

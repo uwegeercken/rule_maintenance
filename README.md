@@ -11,7 +11,7 @@ A transformation from Pentaho PDI containing Rule Engine steps may be imported. 
 
 The application allows to use LDAP for authentication. Projects can be private or read-only. Roles can be setup that define access to projects and the other components.
 
-The latest version has enhanced user support: filtering on pages, storing filters and a calendar widget.
+The latest version has enhanced user support: filtering on pages, storing filters and a calendar widget. New is also a project copy function and a search function for rules and actions.
 
 Note 1: make sure that you have imported the database schema before you run the web application.
 
@@ -31,4 +31,4 @@ Note 1: make sure that you have imported the database schema before you run the 
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2016-03-24
+last update: 2016-04-16

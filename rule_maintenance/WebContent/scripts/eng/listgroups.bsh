@@ -1,4 +1,5 @@
 import com.datamelt.db.DbCollections;
+import com.datamelt.db.Group;
 
 adminaction="true";
 
@@ -9,6 +10,11 @@ if(user==null)
 else
 {
 		ArrayList list = DbCollections.getAllGroups(connection, user);
+		for(int i=0;i<list.size();i++)
+		{
+			Group group = list.get(i);
+			group.loadUsers();
+		}
 		context.put("groups",list);
 
 	

@@ -55,6 +55,7 @@ else
 				project.objectMethodGetter = objectMethodGetter;
 				project.objectMethodSetter = objectMethodSetter;
 				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+				context.put("mode","updated");
 				project.load();
 				
 				History history = new History();
@@ -104,6 +105,7 @@ else
 				project.objectMethodSetter = objectMethodSetter;
 				project.group.id = projectgroupid;
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
+				context.put("mode","inserted");
 				project.load();
 				
 				History history = new History();

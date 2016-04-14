@@ -1,0 +1,14 @@
+import com.datamelt.db.DbCollections;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		ArrayList list;
+		list = DbCollections.getSearch(connection, user);
+		context.put("search",list);
+		templatename="listsearch.vm";
+		
+}

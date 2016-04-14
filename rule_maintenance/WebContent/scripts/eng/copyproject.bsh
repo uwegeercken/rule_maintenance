@@ -1,0 +1,88 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.User;
+import java.util.zip.ZipFile;
+import javax.servlet.http.Part;
+import java.io.File;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled= request.getParameter("submit");
+	if(cancelled.equals("copy"))
+	{
+		copyprojectid=Integer.parseInt(request.getParameter("copyprojectid"));
+		Project copyProject = new Project();
+		copyProject.connection = connection;
+		copyProject.setId(copyprojectid);
+		copyProject.load();
+		context.put("copyproject",copyProject);
+		
+		name=request.getParameter("name");
+		description=request.getParameter("description");
+		objectclassname=request.getParameter("objectclassname");
+		objectmethodgetter = request.getParameter("objectmethodgetter");
+		objectmethodsetter = request.getParameter("objectmethodsetter");
+		projectgroupid=Integer.parseInt(request.getParameter("projectgroupid"));
+		if(request.getParameter("isprivate")!=null)
+		{
+			isprivate=1;
+		}
+		else
+		{
+			isprivate=0;
+		}
+
+		Project project = new Project();
+		project.setConnection(connection);
+		
+		project.setName(name);
+		project.setDescription(description);
+		project.setPrivateProject(isprivate);
+		project.lastUpdateUser.id = user.id;
+		project.ownerUser.id = user.id;
+		project.group.id = projectgroupid;
+		project.objectClassname = objectclassname;
+		project.objectMethodGetter = objectmethodgetter;
+		project.objectMethodSetter = objectmethodsetter;
+		
+		if(!project.exist(name) && name.length()>0 && projectgroupid>0)
+		{
+			project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
+			copyProject.copy(project, user);
+			context.put("mode","inserted");
+			infomessage.text="Project, rulegroups, subgroups, rules and actions copied";
+		}
+		else if(project.exist(name) && name.length()>0)
+		{
+			infomessage.type="error";
+			infomessage.text="Project with the same name already exists.";
+		}
+		else if(name==null || name.trim().length()==0)
+		{
+			infomessage.type="error";
+			infomessage.text="Project name must be specified.";
+		}
+		else if(projectgroupid==0)
+		{
+			infomessage.type="error";
+			infomessage.text="Owner group must be specified.";
+		}
+
+		context.put("project",project);
+		
+		ArrayList list = DbCollections.getAllGroups(connection, user);
+		context.put("groups",list);
+
+		templatename="copyproject.vm";
+	}
+	else
+	{
+		ArrayList list;
+		list = DbCollections.getAllProjects(connection, user);
+		context.put("projects",list);
+		templatename="listprojects.vm";
+	}
+}

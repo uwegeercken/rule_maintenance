@@ -1,37 +1,34 @@
-#set($pagetitle='Project Maintenance')
-<p class="heading">Project maintenance</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
+#set($pagetitle='Copy Project')
+<p class="heading">Copy Project</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p>Edit the selected project.</p>
-	<p>Enter the name and description of the project. The name will be used as the zip file name containing all rules, so it's better to not use special characters and spaces.</p>
-	<p>The group field defines to which group the project belongs. Only members of the group have write access to the project. Mark the group as private so that users outside the group do not see the project.</p>
-	<p>Field Getter/Setter Classname: The name of the Java class that will be used, to handle the data retrieval.</p>
-	<p>Field Getter Method: The name of the method that will be used to get/retrieve data.</p>
-	<p>Field Setter Method: The name of the method that will be used to set/update data.</p>
+	<p>Copy a project</p>
+	<p>Enter the name and description of the project to be created.</p>
+	<p>Define the group that the project belongs to. Members of this group have write access to the project. Mark the project as private, so that users outside the group do not see the project.</p>
 </div>
 <div class="formbox">
-#if($mode=="add")
-	<form method="POST" action="process?action=bsh&scriptname=editproject"> 
-	
-#else
-	<form method="POST" action="process?action=bsh&scriptname=editproject&id=${project.id}" enctype="multipart/form-data"> 
-#end
-<input type="hidden" name="id" value="${project.id}">
+<form method="POST" action="process?action=bsh&scriptname=copyproject&copyprojectid=${copyproject.id}"> 
 <table align="center" width="95%" border="0">
 	<tr> 
-		<td width="20%">Name:</td>
+		<td>Project to copy:</td>
+		<td>
+			$!{copyproject.name} - $!{copyproject.description}
+		</td>
+	</tr>
+	<tr> 
+		<td>new Project Name:</td>
 		<td>
 			<input name="name" type="text" size="40" maxlength="80" value="$!{project.name}">
 		</td>
 		
 	</tr>
 	<tr>
-		<td>Description:</td>
+		<td>new Project Description:</td>
 		<td>
 			<input name="description" type="text" size="40" maxlength="255" value="$!{project.description}">
 		</td>
 	</tr>
-	<tr class="hiddenrow">
+		<tr class="hiddenrow">
 		<td>Field Getter/Setter Classname:</td>
 		<td>
 			<input name="objectclassname" type="text" size="40" maxlength="80" value="$!{project.objectClassname}">
@@ -49,8 +46,9 @@
 			<input name="objectmethodsetter" type="text" size="40" maxlength="80" value="$!{project.objectMethodSetter}">
 		</td>
 	</tr>
+	
 	<tr>
-		<td>Group:</td>
+		<td>Owner group:</td>
 		<td>		
 			<select name="projectgroupid" size="1">
 				<option selected value="0"></option>
@@ -78,8 +76,7 @@
 		</td>
 	#else
 		<td colspan="2" align="center"><br />
-			<input type="submit" value="save" name="submit">
-			<input type="submit" value="cancel" name="submit">
+			<input type="submit" value="copy" name="submit">
 		</td>
 	#end
 	</tr>
@@ -88,11 +85,9 @@
 			<img id="moretoshow" height="24" width="24" src="img/more.png" title="more/less options">
 		</td>
 	</tr>
+	
 </table>
 </form>
-#if(${project.id}>0)
-	<p class="small">owner: ${project.ownerUser.name}, last edited by: ${project.lastUpdateUser.name}, ${project.lastUpdate}</p>
-#end
 </div>
 
 #if (${infomessage})

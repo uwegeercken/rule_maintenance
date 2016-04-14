@@ -1,5 +1,5 @@
 #set($pagetitle='Delete Rule Group')
-<p class="heading">Delete Rule Group</p>
+<p class="heading">Delete Rule Group - Project: ${project.name}</p>
 <form method="POST" action="process?action=bsh&scriptname=deleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}"> 
 <div class="unit">
 	<div class="grouptop">

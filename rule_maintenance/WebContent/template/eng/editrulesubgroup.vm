@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Subgroup Maintenance')
-<p class="heading">#if($mode=="add")Add Subgroup #else Edit Subgroup#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
+<p class="heading">#if($mode && $mode=="add")Add Subgroup #else Edit Subgroup#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p>Edit the selected subgroup.</p>
@@ -8,7 +8,7 @@
 	<p>Specify the operator indicating how the rules in the subgroup are connected to each other.</p>
 </div>
 <div class="formbox">
-#if($mode=="add")
+#if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulegroupid=${rulegroup.id}&rulesubgroupid=0"> 
 #else
 	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}"> 
@@ -64,10 +64,16 @@
 		</td>		
 	</tr>
 	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
 			<input type="submit" value="cancel" name="submit">
 		</td>
+	#end
 	</tr>
 </table>
 </form>

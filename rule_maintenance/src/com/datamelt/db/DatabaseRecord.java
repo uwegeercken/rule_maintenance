@@ -37,6 +37,14 @@ public abstract class DatabaseRecord
 	}
 	
 	/**
+	 * returns the date when the database record was last updated
+	 */
+	public String getLastUpdate(int length)
+	{
+		return lastUpdate.substring(0,length);
+	}
+	
+	/**
 	 * Method used to set the last update date of the database object.
 	 * On update of the database record, the last_update field is updated
 	 * automatically and does not need to be set. This method shall only be used

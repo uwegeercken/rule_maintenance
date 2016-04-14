@@ -39,6 +39,7 @@ else
 				}
 				dbUser.loadGroups();
 				dbUser.update(connection.getPreparedStatement(User.UPDATE_SQL), user);
+				context.put("mode","updated");
 				infomessage.text="User updated.";
 			}
 			else if(!dbUser.userid.equals(userid)&& dbUser.exist(userid) && userid.length()>0)
@@ -65,6 +66,7 @@ else
 				
 				String password=PasswordUtility.generateRandomPassword();
 				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password, user);
+				context.put("mode","inserted");
 				if(groups!=null)
 				{
 					for(int i=0;i<groups.length;i++)
@@ -91,6 +93,7 @@ else
 				infomessage.text="Userid and name must be specified.";
 			}
 		}
+		dbUser.load();
 		context.put("dbuser",dbUser);
 		
 		ArrayList allgroups = DbCollections.getAllGroups(connection,user);

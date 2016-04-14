@@ -11,6 +11,7 @@ public class User extends DatabaseRecord implements Loadable
     private String userid;
     private String name;
     private String password;
+    private String email;
     private String lastLogin;
     private int deactivated;
     private String deactivatedDate;
@@ -23,13 +24,13 @@ public class User extends DatabaseRecord implements Loadable
     
     public static final String UPDATE_PASSWORD_SQL          = "update " + TABLENAME + " set password=password(?) where id =?";
     public static final String UPDATE_LASTLOGIN_SQL         = "update " + TABLENAME + " set lastlogin=? where id =?";
-    public static final String UPDATE_SQL       		    = "update " + TABLENAME + " set userid=?, name=? where id =?";
+    public static final String UPDATE_SQL       		    = "update " + TABLENAME + " set userid=?, name=?, email=? where id =?";
     public static final String ACTIVATE_DEACTIVATE_SQL	    = "update " + TABLENAME + " set deactivated=?, deactivated_date=? where id =?";
     public static final String DELETE_SQL	    			= "delete from " + TABLENAME + " where id =?";
     public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into " + TABLENAME_GROUPUSER + " (groups_id,user_id) values (?,?)";
     public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from " + TABLENAME_GROUPUSER + " where groups_id=? and user_id=?";
     public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from " + TABLENAME_GROUPUSER + " where user_id=?";
-    public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, password) values (?,?,password(?))";
+    public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, password, email) values (?,?,password(?),?)";
     public static final String ADMINISTRATOR                = "admin";
 
     public void load() throws Exception
@@ -41,6 +42,7 @@ public class User extends DatabaseRecord implements Loadable
 	        this.userid = rs.getString("userid");
 	        this.name = rs.getString("name");
 	        this.password = rs.getString("password");
+	        this.email= rs.getString("email");
 	        this.lastLogin = rs.getString("lastlogin");
 	        
 	        this.deactivated = rs.getInt("deactivated");
@@ -106,6 +108,7 @@ public class User extends DatabaseRecord implements Loadable
         p.setString(1,userid);
         p.setString(2,name);
         p.setString(3, userPassword);
+        p.setString(4, email);
         try
 		{
 			if(user.isInGroup(User.ADMINISTRATOR))
@@ -224,8 +227,8 @@ public class User extends DatabaseRecord implements Loadable
 		    this.userid = rs.getString("userid");
 	        this.name = rs.getString("name");
 	        this.password = rs.getString("password");
+	        this.email= rs.getString("email");
 	        this.lastLogin = rs.getString("lastlogin");
-	        
 	        setLastUpdate(rs.getString("last_update"));
 	        try
 	        {
@@ -260,8 +263,8 @@ public class User extends DatabaseRecord implements Loadable
 	{
 		p.setString(1,userid);
 		p.setString(2,name);
-
-		p.setLong(3,getId());
+		p.setString(3,email);
+		p.setLong(4,getId());
 		try
 		{
 			if(user.isInGroup(User.ADMINISTRATOR))
@@ -431,6 +434,15 @@ public class User extends DatabaseRecord implements Loadable
 		return false;
 	}
     
+    public boolean canDeleteProject(Project project)
+	{
+		if(this.isInGroup(User.ADMINISTRATOR) || project.getOwnerUser().getId()==this.getId())
+    	{
+    		return true;
+    	}
+		return false;
+	}
+    
     public String getName()
     {
         return name;
@@ -500,4 +512,15 @@ public class User extends DatabaseRecord implements Loadable
 	{
 		this.hasAvatar = hasAvatar;
 	}
+
+	public String getEmail() 
+	{
+		return email;
+	}
+
+	public void setEmail(String email) 
+	{
+		this.email = email;
+	}
+	
 }

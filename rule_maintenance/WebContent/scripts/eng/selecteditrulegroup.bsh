@@ -29,7 +29,7 @@ else
 			rulegroup.load();
 			rulegroup.id=0;
 		}
-		if(mode.equals("copy"))
+		if(mode!=null && mode.equals("copy"))
 		{
 			context.put("copyid",id);
 		}
