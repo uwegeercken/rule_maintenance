@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div class="bottomtext"> 
-<p>Are you sure you want to deactivate this user and delete all group memberships.</p>
+<p>Are you sure you want to deactivate this user? This will also delete all group memberships.</p>
 <p><input type="submit" value="deactivate user" name="submit"><input type="submit" value="cancel deactivation" name="submit"></p>
 </div>
 </form>

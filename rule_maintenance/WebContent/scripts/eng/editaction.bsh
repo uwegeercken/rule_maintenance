@@ -293,7 +293,7 @@ else
 				// the transformation does not exist anymore
 				// or it could not be loaded
 				infomessage.type="error";
-				infomessage.text="the transformation: " + filename + " does not exit or can not be loaded";
+				infomessage.text="the transformation: " + filename + " does not exist or can not be loaded";
 			}
 			context.put("fields",fields);
 			templatename="edittransformationaction.vm";

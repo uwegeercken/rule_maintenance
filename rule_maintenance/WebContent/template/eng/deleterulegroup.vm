@@ -12,7 +12,7 @@
 	</div>
 </div>
 <div class="bottomtext">
-<p>Are you sure you want to delete this group, including subgroups, rules and actions?</p>
+<p>Are you sure you want to delete this rulegroup? This will include all subgroups, rules and actions.</p>
 <p><input type="submit" value="delete rule group" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
 </div>
 </form>

@@ -22,7 +22,7 @@
 #end
 #if($user.isInGroup("Admin"))
 	<ul>
-		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
+		
 		<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listgroups">groups</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
@@ -30,6 +30,7 @@
 	</ul>
 #end
 	<ul>
+		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
 		<li><a href="process?action=bsh&scriptname=about">about</a></li>
 	</ul>
 </div>

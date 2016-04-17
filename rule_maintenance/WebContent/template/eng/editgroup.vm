@@ -4,7 +4,7 @@
 <div id="help">
 	<p>Edit the selected group.</p>
 	<p>Enter the group name and description.</p> 
-	<p>Users are members of one or multiple groups. Group membership gives access to projects, that belong to the group.</p>
+	<p>Users are members of one or multiple groups. Group membership gives write access for projects to users that belong to the group.</p>
 </div>
 
 <div class="formbox">
