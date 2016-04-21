@@ -331,6 +331,23 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList <ActionMethod> getAllActionMethods(MySqlConnection connection, long actionId) throws Exception
+    {
+        String sql="select id from action_method where action_id=" + actionId ;
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <ActionMethod> list = new ArrayList<ActionMethod>();
+        while(rs.next())
+        {
+        	ActionMethod method = new ActionMethod();
+        	method.setConnection(connection);
+        	method.setId(rs.getLong("id"));
+        	method.load();
+            list.add(method);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static ArrayList <Action> getAllActions(MySqlConnection connection) throws Exception
     {
         String sql="select id from action" + 

@@ -16,9 +16,14 @@
 		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listhistory">history</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsearch">search</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export file</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import file</a></li>
+	</ul>
+#end
+#if($user)
+	<ul>	
+		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=listactions">actions</a></li>
 	</ul>
 #end
 #if($user.isInGroup("Admin"))
@@ -30,6 +35,7 @@
 		<li><a href="process?action=bsh&ro=1&scriptname=selectconfigure">configuration</a></li>
 	</ul>
 #end
+
 	<ul>
 		<li><a href="process?action=bsh&scriptname=about">about</a></li>
 	</ul>

@@ -1,0 +1,23 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Action;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		actionId=Long.parseLong(request.getParameter("id"));
+		
+		Action action = new Action();
+		action.connection = connection;
+		action.id = actionId;
+		action.load();
+		context.put("action",action);
+		
+		ArrayList list = DbCollections.getAllActionMethods(connection, actionId);
+		context.put("methods",list);
+
+	
+		templatename="listactionmethods.vm";
+}

@@ -1,0 +1,20 @@
+#set($pagetitle='List of Actions')
+<p class="heading">List of Actions ($checks.size())</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p>List of available Actions. An action is used to update data or to execute other actions based on if a rulegroup passed or failed. An action can use the data of another field or a fixed value to update another field.</p>
+</div>
+<p>Filter: <input id="search" searchtype="actions" type="text"></p>
+#foreach($action in $actions)
+	<div class="unit" tag="$!{action.methoddisplayname.toLowerCase()}">
+		<a href="process?action=bsh&ro=1&scriptname=listactionmethods&id=${action.id}"><img class="edit" height="24px" width="24px" src="img/edit.png" title="list methods"></a>
+		<div class="grouptop">
+			<p class="small">action</p>
+			<p class="big">$!{action.methoddisplayname}</a></p>
+			<p class="normal">$!action.description</p>
+		</div>
+		<div>
+			<p class="small">action class: $!{action.classnameShort}</p>
+		</div>
+	</div>
+#end

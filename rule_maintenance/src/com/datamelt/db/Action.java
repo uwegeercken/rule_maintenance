@@ -10,6 +10,7 @@ import com.datamelt.db.Loadable;
 
 public class Action extends DatabaseRecord implements Loadable
 {
+	private String description;
 	private String classname;
 	private String methodname;
 	private String methoddisplayname;
@@ -17,8 +18,8 @@ public class Action extends DatabaseRecord implements Loadable
 	private static final String TABLENAME="action";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(classname, methodname, methoddisplayname) values (?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set classname=?, methodname=?, methoddisplayname=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(description, classname, methodname, methoddisplayname) values (?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " + set description=?, classname=?, methodname=?, methoddisplayname=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
@@ -39,7 +40,8 @@ public class Action extends DatabaseRecord implements Loadable
         ResultSet rs = selectRecordById(getConnection().getPreparedStatement(SELECT_SQL));
 		if(rs.next())
 		{
-	        this.classname = rs.getString("classname");
+	        this.description = rs.getString("description");
+			this.classname = rs.getString("classname");
 	        this.methodname = rs.getString("methodname");
 	        this.methoddisplayname = rs.getString("methoddisplayname");
 	        
@@ -63,11 +65,12 @@ public class Action extends DatabaseRecord implements Loadable
 	
 	public void update(PreparedStatement p) throws Exception
 	{
-		p.setString(1,classname);
-		p.setString(2,methodname);
-		p.setString(3,methoddisplayname);
+		p.setString(1, description);
+		p.setString(2,classname);
+		p.setString(3,methodname);
+		p.setString(4,methoddisplayname);
 		
-		p.setLong(4,getId());
+		p.setLong(5,getId());
 
 		try
 		{
@@ -82,9 +85,10 @@ public class Action extends DatabaseRecord implements Loadable
 	
 	public void insert(PreparedStatement p) throws Exception
     {
-		p.setString(1,classname);
-		p.setString(2,methodname);
-		p.setString(3,methoddisplayname);
+		p.setString(1, description);
+		p.setString(2,classname);
+		p.setString(3,methodname);
+		p.setString(4,methoddisplayname);
 		
         p.execute();
         
@@ -121,6 +125,20 @@ public class Action extends DatabaseRecord implements Loadable
 	{
 		return classname;
 	}
+	
+	public String getClassnameShort()
+	{
+		if(classname!=null && classname.length()>0)
+		{
+			int position = classname.lastIndexOf(".");
+			return classname.substring(position+1);
+		}
+		else
+		{
+			return classname;
+		}
+		
+	}
 
 	public void setClassname(String classname) 
 	{
@@ -146,4 +164,16 @@ public class Action extends DatabaseRecord implements Loadable
 	{
 		this.methoddisplayname = methoddisplayname;
 	}
+
+	public String getDescription() 
+	{
+		return description;
+	}
+
+	public void setDescription(String description) 
+	{
+		this.description = description;
+	}
+	
+	
 }

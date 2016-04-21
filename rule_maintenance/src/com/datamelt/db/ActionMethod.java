@@ -7,11 +7,11 @@ import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 
 
-public class CheckMethod extends DatabaseRecord implements Loadable
+public class ActionMethod extends DatabaseRecord implements Loadable
 {
-	private long checkId;
-	private String compare;
-	private String compareTo;
+	private long actionId;
+	private String returnType;
+	private String valueType;
 	private String note;
 	private String parameter1;
 	private String parameter1Explanation;
@@ -20,21 +20,20 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 	private String parameter3;
 	private String parameter3Explanation;
 	
-	private static final String TABLENAME="check_method";
+	private static final String TABLENAME="action_method";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(check_id, compare, compare_to, note, parameter1, parameter1_explanation, parameter2, parameter2_explanation, parameter3, parameter3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, compare=?, compare_to=?, note=?, parameter1=?, parameter1_explanation=?, parameter2=?, parameter2_explanation=?, parameter3=?, parameter3_explanation=? where id =?";
-    public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(action_id, return_type, value, note, parameter1, parameter1_explanation, parameter2, parameter2_explanation, parameter3, parameter3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, return_type=?, value=?, note=?, parameter1=?, parameter1_explanation=?, parameter2=?, parameter2_explanation=?, parameter3=?, parameter3_explanation=? where id =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
 	
-	public CheckMethod()
+	public ActionMethod()
 	{
 		
 	}
 	
-	public CheckMethod(long id)
+	public ActionMethod(long id)
 	{
 		this.setId(id);
 	}
@@ -45,9 +44,9 @@ public class CheckMethod extends DatabaseRecord implements Loadable
         ResultSet rs = selectRecordById(getConnection().getPreparedStatement(SELECT_SQL));
 		if(rs.next())
 		{
-	        this.checkId = rs.getLong("check_id");
-			this.compare = rs.getString("compare");
-	        this.compareTo = rs.getString("compare_to");
+	        this.actionId = rs.getLong("action_id");
+			this.returnType = rs.getString("return_type");
+	        this.valueType = rs.getString("value_type");
 	        this.note = rs.getString("note");
 	        this.parameter1 = rs.getString("parameter1");
 	        this.parameter1Explanation = rs.getString("parameter1_explanation");
@@ -70,9 +69,9 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 
 	public void update(PreparedStatement p) throws Exception
 	{
-		p.setLong(1,checkId);
-		p.setString(2,compare);
-		p.setString(3,compareTo);
+		p.setLong(1,actionId);
+		p.setString(2,returnType);
+		p.setString(3,valueType);
 		p.setString(4,note);
 		p.setString(5,parameter1);
 		p.setString(6,parameter1Explanation);
@@ -96,9 +95,9 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 	
 	public void insert(PreparedStatement p) throws Exception
     {
-		p.setLong(1,checkId);
-		p.setString(2,compare);
-		p.setString(3,compareTo);
+		p.setLong(1,actionId);
+		p.setString(2,returnType);
+		p.setString(3,valueType);
 		p.setString(4,note);
 		p.setString(5,parameter1);
 		p.setString(6,parameter1Explanation);
@@ -126,24 +125,34 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public String getCompare()
+	public long getActionId() 
 	{
-		return compare;
+		return actionId;
 	}
 
-	public void setCompare(String compare) 
+	public void setActionId(long actionId) 
 	{
-		this.compare = compare;
+		this.actionId = actionId;
 	}
 
-	public String getCompareTo() 
+	public String getReturnType() 
 	{
-		return compareTo;
+		return returnType;
 	}
 
-	public void setCompareTo(String compareTo) 
+	public void setReturnType(String returnType) 
 	{
-		this.compareTo = compareTo;
+		this.returnType = returnType;
+	}
+
+	public String getValueType() 
+	{
+		return valueType;
+	}
+
+	public void setValueType(String valueType) 
+	{
+		this.valueType = valueType;
 	}
 
 	public String getNote() 
