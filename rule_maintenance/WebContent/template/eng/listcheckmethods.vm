@@ -1,5 +1,5 @@
 #set($pagetitle='List of Methods')
-<p class="heading">List of Methods ($methods.size()) for: ${check.name}</p>
+<p class="heading">List of Methods ($methods.size()) for Check: ${check.name}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listchecks"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Checks"></a></p>
 <div id="help">
 	<p>List of available methods for the selected Check. The Check usually compares one field against another one or one field against a given fixed value. Some checks only check the state of a given field, like e.g. CheckIsNull.</p>
@@ -11,7 +11,7 @@
 	<div class="unit" tag="${method.compare.toLowerCase()}">
 		<div class="grouptop">
 			<p class="small">compare</p>
-			<p class="big">${method.compare} #if(${method.compareTo}) to ${method.compareTo}#end</a></p>
+			<p class="big">${method.compare} #if(${method.compareTo}) to ${method.compareTo}#end</p>
 			#if($!{method.parameter1})
 			<p class="normal">Parameter 1: $!{method.parameter1} - $!{method.parameter1Explanation}</p>
 			#end

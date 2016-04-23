@@ -1,0 +1,19 @@
+#set($pagetitle='Documentation')
+<p class="heading">Business Rules Maintenance Tool Documentation</p>
+<p>Documentation for the web application and the ruleengine itself.</p>
+<p>All documents are in PDF format and are also available online at: <a href="http://github.com/uwegeercken">GitHub</a>. You will also find the source code, database schema and more tools on GitHub.</p>
+<ul>
+	<li><a target="_external" href="documents/business_rules_maintenance_web_application.pdf">Business Rule Maintenance Web Application</a></li>
+	<li>Detailed information on <a target="_external" href="documents/ruleengine_checks.pdf">Ruleengine Checks</a></li>
+	<li>Detailed information on <a target="_external" href="documents/ruleengine_actions.pdf">Ruleengine Actions</a></li>	
+</ul>
+<br>
+
+<br>
+<br>
+
+
+
+
+
+

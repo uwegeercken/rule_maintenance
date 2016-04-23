@@ -1,4 +1,4 @@
-context.put("version","1.8.1");
-context.put("lastupdate","2016-04-19");
+context.put("version","1.8.2");
+context.put("lastupdate","2016-04-23");
 
 templatename="about.vm";

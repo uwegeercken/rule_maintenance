@@ -10,6 +10,7 @@
 	<li>Beanshell scripts for on-the-fly code maintenance.</li>
 	<li>Velocity Template Engine. Gives flexibility in design, splits development from web-design and is very fast.</li>
 	<li>MySql Database. Most used open-source database worldwide. Relational, transactional, fast and modern. Easy to deploy, manage and maintain.</li>
+	<li>jQuery libraries for advanced functions and features when working with HTML</li>
 </ul>
 <br>
 <p>Requirements for this application:</p>
@@ -17,7 +18,7 @@
 	<li>HTML 4 conformal browser.</li>
 	<li>Some functionality requires JavaScript.</li>
 </ul>
-<p>Check for new versions and other tools on <a href="http://github.com/uwegeercken">GitHub</a></p>
+<p>Check for new versions, source code, database schema and more on <a href="http://github.com/uwegeercken">GitHub</a></p>
 <br>
 <br>
 <p>Copyright Uwe Geercken, 2014-2016. All code by: Uwe Geercken, uwe.geercken@web.de</p>

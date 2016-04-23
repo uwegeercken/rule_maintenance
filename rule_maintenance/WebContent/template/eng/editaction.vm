@@ -98,7 +98,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Parameter 1:</td>
+		<td>Parameter:</td>
 		<td>
 			<input name="parameter1" type="text" size="40" maxlength="255" value="$!{action.parameter1}">
 			Type: <select name="parameter1_type_id" size="1">
@@ -114,7 +114,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Parameter 2:</td>
+		<td>Parameter:</td>
 		<td>
 			<input name="parameter2" type="text" size="40" maxlength="255" value="$!{action.parameter2}">
 			Type: <select name="parameter2_type_id" size="1">
@@ -130,7 +130,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Parameter 3:</td>
+		<td>Parameter:</td>
 		<td>
 			<input name="parameter3" type="text" size="40" maxlength="255" value="$!{action.parameter3}">
 			Type: <select name="parameter3_type_id" size="1">

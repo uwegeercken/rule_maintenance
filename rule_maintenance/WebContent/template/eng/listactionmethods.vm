@@ -1,5 +1,5 @@
 #set($pagetitle='List of Methods')
-<p class="heading">List of Methods ($methods.size()) for: ${action.methoddisplayname}</p>
+<p class="heading">List of Methods ($methods.size()) for Action: ${action.methoddisplayname}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listactions"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Actions"></a></p>
 <div id="help">
 	<p>List of available methods for the selected Action. The Action usually updates one field from another one or updates the field from a given fixed value.</p>
@@ -8,20 +8,20 @@
 </div>
 <p>Filter: <input id="search" searchtype="methods" type="text"></p>
 #foreach($method in $methods)
-	<div class="unit" tag="${method.fieldToUpdate.toLowerCase()}">
+	<div class="unit" tag="${method.methodTypes.toLowerCase()}">
 		<div class="grouptop">
 			<p class="small">action</p>
-			<p class="big">${method.valueType}</a></p>
-			#if($!{method.parameter1})
-			<p class="normal">Parameter 1: $!{method.parameter1} - $!{method.parameter1Explanation}</p>
+			<p class="big">$!{method.methodTypes}</p>
+			#if($!{method.optionalType1})
+			<p class="normal">optional: $!{method.optionalType1} - $!{method.optionalType1Explanation}</p>
 			#end
-			#if($!{method.parameter2})
-			<p class="normal">Parameter 2: $!{method.parameter2} - $!{method.parameter2Explanation}</p>
+			#if($!{method.optionalType2})
+			<p class="normal">optional: $!{method.optionalType2} - $!{method.optionalType2Explanation}</p>
 			#end
-			#if($!{method.parameter3})
-			<p class="normal">Parameter 3: $!{method.parameter3} - $!{method.parameter3Explanation}</p>
+			#if($!{method.optionalType3})
+			<p class="normal">optional: $!{method.optionalType3} - $!{method.optionalType3Explanation}</p>
 			#end
-			#if($!{method.parameter1})
+			#if($!{method.returnType})
 			<p class="normal">return type: ${method.returnType}</p>
 			#end
 		</div>

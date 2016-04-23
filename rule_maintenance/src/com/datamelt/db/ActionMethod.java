@@ -11,20 +11,20 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 {
 	private long actionId;
 	private String returnType;
-	private String valueType;
+	private String methodTypes;
 	private String note;
-	private String parameter1;
-	private String parameter1Explanation;
-	private String parameter2;
-	private String parameter2Explanation;
-	private String parameter3;
-	private String parameter3Explanation;
+	private String optionalType1;
+	private String optionalType1Explanation;
+	private String optionalType2;
+	private String optionalType2Explanation;
+	private String optionalType3;
+	private String optionalType3Explanation;
 	
 	private static final String TABLENAME="action_method";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(action_id, return_type, value, note, parameter1, parameter1_explanation, parameter2, parameter2_explanation, parameter3, parameter3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, return_type=?, value=?, note=?, parameter1=?, parameter1_explanation=?, parameter2=?, parameter2_explanation=?, parameter3=?, parameter3_explanation=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(action_id, return_type, value, note, optionalType1, optionalType1_explanation, optionalType2, optionalType2_explanation, optionalType3, optionalType3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, return_type=?, value=?, note=?, optionalType1=?, optionalType1_explanation=?, optionalType2=?, optionalType2_explanation=?, optionalType3=?, optionalType3_explanation=? where id =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
 	
@@ -46,14 +46,14 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 		{
 	        this.actionId = rs.getLong("action_id");
 			this.returnType = rs.getString("return_type");
-	        this.valueType = rs.getString("value_type");
+	        this.methodTypes = rs.getString("method_types");
 	        this.note = rs.getString("note");
-	        this.parameter1 = rs.getString("parameter1");
-	        this.parameter1Explanation = rs.getString("parameter1_explanation");
-	        this.parameter2 = rs.getString("parameter2");
-	        this.parameter2Explanation = rs.getString("parameter2_explanation");
-	        this.parameter3 = rs.getString("parameter3");
-	        this.parameter3Explanation = rs.getString("parameter3_explanation");
+	        this.optionalType1 = rs.getString("optional_type1");
+	        this.optionalType1Explanation = rs.getString("optional_type1_explanation");
+	        this.optionalType2 = rs.getString("optional_type2");
+	        this.optionalType2Explanation = rs.getString("optional_type2_explanation");
+	        this.optionalType3 = rs.getString("optional_type3");
+	        this.optionalType3Explanation = rs.getString("optional_type3_explanation");
 	        
 	        setLastUpdate(rs.getString("last_update"));
 	        
@@ -71,14 +71,14 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 	{
 		p.setLong(1,actionId);
 		p.setString(2,returnType);
-		p.setString(3,valueType);
+		p.setString(3,methodTypes);
 		p.setString(4,note);
-		p.setString(5,parameter1);
-		p.setString(6,parameter1Explanation);
-		p.setString(7,parameter2);
-		p.setString(8,parameter2Explanation);
-		p.setString(9,parameter3);
-		p.setString(10,parameter3Explanation);
+		p.setString(5,optionalType1);
+		p.setString(6,optionalType1Explanation);
+		p.setString(7,optionalType2);
+		p.setString(8,optionalType2Explanation);
+		p.setString(9,optionalType3);
+		p.setString(10,optionalType3Explanation);
 		
 		p.setLong(11,getId());
 
@@ -97,14 +97,14 @@ public class ActionMethod extends DatabaseRecord implements Loadable
     {
 		p.setLong(1,actionId);
 		p.setString(2,returnType);
-		p.setString(3,valueType);
+		p.setString(3,methodTypes);
 		p.setString(4,note);
-		p.setString(5,parameter1);
-		p.setString(6,parameter1Explanation);
-		p.setString(7,parameter2);
-		p.setString(8,parameter2Explanation);
-		p.setString(9,parameter3);
-		p.setString(10,parameter3Explanation);
+		p.setString(5,optionalType1);
+		p.setString(6,optionalType1Explanation);
+		p.setString(7,optionalType2);
+		p.setString(8,optionalType2Explanation);
+		p.setString(9,optionalType3);
+		p.setString(10,optionalType3Explanation);
 		
         p.execute();
         
@@ -145,14 +145,14 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 		this.returnType = returnType;
 	}
 
-	public String getValueType() 
+	public String getMethodTypes() 
 	{
-		return valueType;
+		return methodTypes;
 	}
 
-	public void setValueType(String valueType) 
+	public void setMethodTypes(String methodTypes) 
 	{
-		this.valueType = valueType;
+		this.methodTypes = methodTypes;
 	}
 
 	public String getNote() 
@@ -165,64 +165,64 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 		this.note = note;
 	}
 
-	public String getParameter1()
+	public String getOptionalType1()
 	{
-		return parameter1;
+		return optionalType1;
 	}
 
-	public void setParameter1(String parameter1) 
+	public void setOptionalType1(String optionalType1) 
 	{
-		this.parameter1 = parameter1;
+		this.optionalType1 = optionalType1;
 	}
 
-	public String getParameter1Explanation() 
+	public String getOptionalType1Explanation() 
 	{
-		return parameter1Explanation;
+		return optionalType1Explanation;
 	}
 
-	public void setParameter1Explanation(String parameter1Explanation) 
+	public void setOptionalType1Explanation(String optionalType1Explanation) 
 	{
-		this.parameter1Explanation = parameter1Explanation;
+		this.optionalType1Explanation = optionalType1Explanation;
 	}
 	
-	public String getParameter2()
+	public String getOptionalType2()
 	{
-		return parameter2;
+		return optionalType2;
 	}
 
-	public void setParameter2(String parameter2) 
+	public void setOptionalType2(String optionalType2) 
 	{
-		this.parameter2 = parameter2;
+		this.optionalType2 = optionalType2;
 	}
 
-	public String getParameter2Explanation() 
+	public String getOptionalType2Explanation() 
 	{
-		return parameter2Explanation;
+		return optionalType2Explanation;
 	}
 
-	public void setParameter2Explanation(String parameter2Explanation) 
+	public void setOptionalType2Explanation(String optionalType2Explanation) 
 	{
-		this.parameter2Explanation = parameter2Explanation;
+		this.optionalType2Explanation = optionalType2Explanation;
 	}
 	
-	public String getParameter3()
+	public String getOptionalType3()
 	{
-		return parameter3;
+		return optionalType3;
 	}
 
-	public void setParameter3(String parameter3) 
+	public void setOptionalType3(String optionalType3) 
 	{
-		this.parameter3 = parameter3;
+		this.optionalType3 = optionalType3;
 	}
 
-	public String getParameter3Explanation() 
+	public String getOptionalType3Explanation() 
 	{
-		return parameter3Explanation;
+		return optionalType3Explanation;
 	}
 
-	public void setParameter3Explanation(String parameter3Explanation) 
+	public void setOptionalType3Explanation(String optionalType3Explanation) 
 	{
-		this.parameter3Explanation = parameter3Explanation;
+		this.optionalType3Explanation = optionalType3Explanation;
 	}
 
 

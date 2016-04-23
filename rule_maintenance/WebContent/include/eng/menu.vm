@@ -37,6 +37,7 @@
 #end
 
 	<ul>
+		<li><a href="process?action=bsh&scriptname=documentation">documentation</a></li>
 		<li><a href="process?action=bsh&scriptname=about">about</a></li>
 	</ul>
 </div>
