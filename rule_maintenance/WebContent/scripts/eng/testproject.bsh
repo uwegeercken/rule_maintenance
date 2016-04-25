@@ -61,8 +61,8 @@ else
 			String fileName = fileCreator.zipFiles(project);
 
 			BusinessRulesEngine ruleEngine = new BusinessRulesEngine(new ZipFile(fileName));
-			ruleEngine.printStream = null;
-			ruleEngine.actionsPrintStream = null;
+			//ruleEngine.printStream = null;
+			//ruleEngine.actionsPrintStream = null;
 			long counter=0;
 			ArrayList records = new ArrayList();			
 			MySqlConnection testdataConnection;

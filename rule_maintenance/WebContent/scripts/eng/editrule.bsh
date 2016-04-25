@@ -49,7 +49,19 @@ else
 			if(transformationrule==null)
 			{
 				ruleNew.object1Parameter = request.getParameter("object1_parameter");
-				ruleNew.object1Parametertype.id = 1;
+				try
+				{
+					// test if the field to check is an integer so the field value will be
+					// retrieved using this integer like e.g. getField(0)
+					int typeId = Integer.parseInt(ruleNew.object1Parameter);
+					ruleNew.object1Parametertype.id = 2;
+				}
+				catch(Exception ex)
+				{
+					// if the test above fails, it is not an integer then the field value
+					// will be retrieved as a string e.g. getField("somename")
+					ruleNew.object1Parametertype.id = 1;
+				}
 				ruleNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id")); 
 			}
 			else
@@ -57,7 +69,19 @@ else
 				if(!request.getParameter("object1_parameter").equals(""))
 				{
 					ruleNew.object1Parameter = request.getParameter("object1_parameter").split("\\|\\|")[0];
-					ruleNew.object1Parametertype.id = 1;
+					try
+					{
+						// test if the field to check is an integer so the field value will be
+						// retrieved using this integer like e.g. getField(0)
+						int typeId = Integer.parseInt(ruleNew.object1Parameter);
+						ruleNew.object1Parametertype.id = 2;
+					}
+					catch(Exception ex)
+					{
+						// if the test above fails, it is not an integer then the field value
+						// will be retrieved as a string e.g. getField("somename")
+						ruleNew.object1Parametertype.id = 1;
+					}
 					String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
 					ruleNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
@@ -74,7 +98,19 @@ else
 			if(transformationrule==null)
 			{
 				ruleNew.object2Parameter = request.getParameter("object2_parameter");
-				ruleNew.object2Parametertype.id = 1;
+				try
+				{
+					// test if the field to check is an integer so the field value will be
+					// retrieved using this integer like e.g. getField(0)
+					int typeId = Integer.parseInt(ruleNew.object2Parameter);
+					ruleNew.object2Parametertype.id = 2;
+				}
+				catch(Exception ex)
+				{
+					// if the test above fails, it is not an integer then the field value
+					// will be retrieved as a string e.g. getField("somename")
+					ruleNew.object2Parametertype.id = 1;
+				}
 				ruleNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
 			}
 			else
@@ -82,7 +118,19 @@ else
 				if(!request.getParameter("object2_parameter").equals(""))
 				{
 					ruleNew.object2Parameter = request.getParameter("object2_parameter").split("\\|\\|")[0];
-					ruleNew.object2Parametertype.id = 1;
+					try
+					{
+						// test if the field to check is an integer so the field value will be
+						// retrieved using this integer like e.g. getField(0)
+						int typeId = Integer.parseInt(ruleNew.object2Parameter);
+						ruleNew.object2Parametertype.id = 2;
+					}
+					catch(Exception ex)
+					{
+						// if the test above fails, it is not an integer then the field value
+						// will be retrieved as a string e.g. getField("somename")
+						ruleNew.object2Parametertype.id = 1;
+					}
 					String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
 					ruleNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
