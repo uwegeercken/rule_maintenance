@@ -11,8 +11,10 @@
 </div>
  #foreach($appuser in $users)
 	<div class="unit" tag="$!appuser.name.toLowerCase()">
+		#if(${appuser.userid}!="admin")
 		<a href="process?action=bsh&ro=1&scriptname=selectdeactivateuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="deactivate user"></a>
-		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit user"></a>
+		#end
 		<div class="grouptop">
 			<p class="small">user</p>
 			<p class="big">$!appuser.name</a></p>

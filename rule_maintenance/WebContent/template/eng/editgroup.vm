@@ -1,5 +1,5 @@
 #set($pagetitle='Group Maintenance')
-<p class="heading">Group maintenance: $!{group.name}</p>
+<p class="heading">#if($mode!="add")Edit Group: $!{group.name}#else Add Group#end</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listgroups"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: List of groups"></a></p>
 <div id="help">
 	<p>Edit the selected group.</p>

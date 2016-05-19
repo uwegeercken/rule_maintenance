@@ -65,6 +65,18 @@ p.heading, b
 	width: 98%;
 }
 
+p.printheading, b
+{
+	background: #eeeeec;
+	color: #000000;
+	margin:3px;
+	padding:6px;
+	font: normal 9pt/1.4 verdana, sans-serif;	
+	line-height:2;
+	border-radius: 4px;
+	width: 98%;
+}
+
 .errormessage
 {
 	padding-top: 20px;
@@ -172,6 +184,14 @@ img.delete
 	position:absolute;
 	margin-top: 6px;
 	margin-left: 250px;
+	border: none;
+}
+
+img.rulegrouplogic 
+{
+	position:absolute;
+	margin-top: 6px;
+	margin-left: 220px;
 	border: none;
 }
 

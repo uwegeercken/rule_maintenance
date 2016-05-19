@@ -11,6 +11,6 @@
 <p align="center"><img src="img/project_overview.png"></p>
 </br>
 <p>On the highest level there are projects. A project contains one to many rule groups. A rule group again consists of one to many subgroups. Rules in a subgroup are connected with an &quot;and&quot; or &quot;or&quot; condition. Subgroups are connected to each other also using an &quot;and&quot; or &quot;or&quot; condition. This way the logic of a rule group can be defined in a very flexible way. The rule group ultimately defines a set of logic and all rule groups in a project are executed one after the other to check the data for validity and conformity.</p>
-<p>Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not. This allows to plan changes ahead. At the same time this makes sure that expired groups with rules are not used for the business rule evaluation process.</p>
+<p>Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not and to plan changes ahead. At the same time this makes sure that expired groups with rules are not used for the business rule evaluation process.</p>
 </br>
 </br>

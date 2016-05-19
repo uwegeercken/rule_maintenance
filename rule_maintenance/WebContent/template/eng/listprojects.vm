@@ -13,6 +13,7 @@
 </div>
 #foreach($project in $projects)
 	<div class="unit" tag="$!{project.name.toLowerCase()}">
+		<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&projectid=${project.id}"><img class="rulegrouplogic" height="24px" width="24px" src="img/document.png" title="project logic"></a>
 		#if($user.canUpdateProject($project)==true)
 			#if($user.canDeleteProject($project)==true)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete project"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>

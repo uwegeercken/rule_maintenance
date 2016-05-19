@@ -26,6 +26,7 @@
 #set($counter=0)
 #foreach($rulegroup in $rulegroups)
 	<div class="unit" tag="$!{rulegroup.name.toLowerCase()}">
+			<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="rulegrouplogic" height="24px" width="24px" src="img/document.png" title="rulegroup logic"></a>
 		#if($user.canUpdateProject($project)==true)
 			<a href="process?action=bsh&ro=1&scriptname=selectdeleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete rulegroup"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit rulegroup"></a>

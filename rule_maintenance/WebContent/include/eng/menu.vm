@@ -16,11 +16,11 @@
 		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listhistory">history</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsearch">search</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export file</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import file</a></li>
 	</ul>
-#end
-#if($user)
+	<ul>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import</a></li>
+	</ul>
 	<ul>	
 		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listactions">actions</a></li>

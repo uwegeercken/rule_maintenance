@@ -80,6 +80,26 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList<RuleGroup> getAllRuleGroupsSubgroupsActions(MySqlConnection connection, long projectId) throws Exception
+    {
+        String sql="select id from rulegroup where project_id=" + projectId +
+        	" order by id";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
+        while(rs.next())
+        {
+        	RuleGroup rulegroup = new RuleGroup();
+        	rulegroup.setConnection(connection);
+        	rulegroup.setId(rs.getLong("id"));
+        	rulegroup.load();
+        	rulegroup.loadRuleSubgroups();
+        	rulegroup.loadRuleGroupActions();
+            list.add(rulegroup);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static long getAllRuleGroupsCount(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select count(1) as counter from rulegroup where project_id=" + projectId;
@@ -395,6 +415,19 @@ public class DbCollections
         }
         rs.close();
         return numberOfRules;
+    }
+    
+    public static long getActionsCount(MySqlConnection connection) throws Exception
+    {
+        String sql="select count(1) as numberofactions from rulegroupactions";
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfActions=0;
+        if(rs.next())
+        {
+        	numberOfActions= rs.getLong("numberofactions");
+        }
+        rs.close();
+        return numberOfActions;
     }
 
     public static long getUsersCount(MySqlConnection connection) throws Exception
