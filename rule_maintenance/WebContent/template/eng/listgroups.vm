@@ -3,7 +3,7 @@
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add group"></a></p>
 <div id="help">
 	<p>List of available Groups. Users are organized in groups which allow write access to projects that belong to the group.</p>
-	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new group</p>
+	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new group&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit group&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete group</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="groups" type="text""></p>

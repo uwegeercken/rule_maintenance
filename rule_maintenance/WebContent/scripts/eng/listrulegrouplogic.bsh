@@ -1,6 +1,5 @@
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.RuleGroup;
-import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.Project;
 
 if(user==null)
@@ -19,7 +18,7 @@ else
 		Project project = new Project();
 	    project.setConnection(connection);
 	    
-		if(projectId != null)
+		if(projectId != null && rulegroupId==null)
 		{
 	        project.setId(Long.parseLong(projectId));
 			rulegroups = DbCollections.getAllRuleGroupsSubgroupsActions(connection,Long.parseLong(projectId));
@@ -31,18 +30,14 @@ else
 	        rulegroup.setConnection(connection);
 	        rulegroup.setId(Long.parseLong(rulegroupId));
 	        rulegroup.load();
+	        rulegroup.loadRuleSubgroups();
+	        rulegroup.loadRuleGroupActions();
 	        
 	        rulegroups = new ArrayList();
 			rulegroups.add(rulegroup);
 			
 			project.setId(rulegroup.projectId);
 		}
-		
-		//ArrayList groups = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
-		//context.put("rulesubgroups",groups);
-
-		//ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupId);
-		//context.put("rulegroupactions",actions);
 		
 		context.put("rulegroups",rulegroups);
 	

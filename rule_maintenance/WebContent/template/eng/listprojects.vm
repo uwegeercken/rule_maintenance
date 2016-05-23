@@ -6,7 +6,7 @@
 </p>
 <div id="help">
 	<p>List of available Projects. Projects bundle rule groups, rules and actions for a certain topic together. Users that are in the group that the project belongs to have write access to the project. Projects marked as private are invisible to users outside the group.</p>
-	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project</p>
+	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete project&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy project&nbsp;<img height="24" width="24" src="img/document.png">&nbsp;project logic&nbsp;<img height="24" width="24" src="img/connect.png">&nbsp;project transformation</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="project" type="text"></p>

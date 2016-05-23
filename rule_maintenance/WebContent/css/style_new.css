@@ -65,7 +65,7 @@ p.heading, b
 	width: 98%;
 }
 
-p.printheading, b
+td.printheadingbold
 {
 	background: #eeeeec;
 	color: #000000;
@@ -74,7 +74,19 @@ p.printheading, b
 	font: normal 9pt/1.4 verdana, sans-serif;	
 	line-height:2;
 	border-radius: 4px;
-	width: 98%;
+	font-weight: bold;
+}
+
+td.printheading
+{
+	background: #eeeeec;
+	color: #000000;
+	margin:3px;
+	padding:6px;
+	font: normal 9pt/1.4 verdana, sans-serif;	
+	line-height:2;
+	border-radius: 4px;
+	font-weight: normal;
 }
 
 .errormessage

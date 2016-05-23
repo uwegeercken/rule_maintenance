@@ -4,7 +4,7 @@
 <div id="help">
 	<p>List of available Users with access to this application. Users may be in one or more groups, giving them appropriate security access to the projects.</p>
 	<p>Users may be deactivated, so they can not access the application anymore.</p>
-	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user</p>
+	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit user&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;deactivate user</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="users" type="text"></p>
