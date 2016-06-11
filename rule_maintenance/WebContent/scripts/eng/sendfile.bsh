@@ -38,6 +38,7 @@ else
 		    project.setConnection(connection);
 		    project.setId(id);
 		    project.load();
+		    project.loadRuleGroups(selecteddate);
 		}
      	context.put("selectedproject",project);
      	
@@ -51,11 +52,6 @@ else
 			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
-			project.loadRuleGroups(fileCreator.selectedDate);
-			
-			int numberOfRuleGroups = project.getRulegroups().size();
-			
-
 			fileCreator.writeFiles(project);
 			String fileName = fileCreator.zipFiles(project);
 
@@ -72,29 +68,26 @@ else
 		    op.flush();
 		    //op.close();  
 
-			ArrayList list = DbCollections.getAllProjects(connection,user);
-			context.put("projects",list);
-		
-			if(validselecteddate)
-			{
-				context.put("today",selecteddate);
-			}
-			templatename="sendfile.vm";
+		}
+		else if(id==0 || validselecteddate==false)
+		{
+			infomessage.type="error";
+			infomessage.text="Select a Project and specify a valid Validity Date";
 		}
 		else
 		{
 			infomessage.type="error";
-			infomessage.text="Select a Project and specify a valid Validity Date";
-			
-			ArrayList list = DbCollections.getAllProjects(connection,user);
-			context.put("projects",list);
-		
-			if(validselecteddate)
-			{
-				context.put("today",selecteddate);
-			}
-			templatename="sendfile.vm";
+			infomessage.text="An unknown error occurred";
 		}
+		
+		if(validselecteddate)
+		{
+			context.put("today",selecteddate);
+		}
+		
+		ArrayList list = DbCollections.getAllProjects(connection,user);
+		context.put("projects",list);
+		templatename="sendfile.vm";
 	}
 	
 }

@@ -1,6 +1,7 @@
 #set($pagetitle='Rule Maintenance')
 <p class="heading">#if($mode && $mode=="add")Add Rule #else Edit Rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+
 <div id="help">
 	<p>Add or update the selected rule.</p>
 	<p>Enter a name and description for the rule and specify the field to check and the type. The rule engine will retrieve the data from this field.</p>
@@ -140,6 +141,7 @@
 	</tr>
 </table>
 </form>
+
 #if(${rule.id}>0)
 <p class="small">last edited by: ${rule.lastUpdateUser.name}, ${rule.lastUpdate}</p>
 #end

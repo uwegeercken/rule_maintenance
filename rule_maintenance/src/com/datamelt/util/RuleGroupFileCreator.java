@@ -226,7 +226,7 @@ public class RuleGroupFileCreator {
     	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -u=tom -p=mysecret");
     	System.out.println();
     	System.out.println("published as open source under the GPL3.");
-    	System.out.println("all code by uwe geercken, 2014. uwe.geercken@web.de");
+    	System.out.println("all code by uwe geercken, 2014-2016. uwe.geercken@web.de");
     	System.out.println();
     }
 
