@@ -1,7 +1,6 @@
 import java.io.*;
 import com.datamelt.db.Rule;
 import com.datamelt.db.RuleSubgroup;
-import com.datamelt.util.PDITransformation;
 
 writeaction="true";
 if(user==null)
@@ -15,6 +14,7 @@ else
 	project.connection = connection;
 	project.id = Long.parseLong(request.getParameter("projectid"));;
 	project.load();
+	project.loadFields();
 	context.put("project",project);
 	
 	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
@@ -56,36 +56,13 @@ else
 		context.put("rule",rule);
 	}
 	
-	if(project.transformationFilename!=null && project.transformationStepname!=null)
+	if(project.fields.size()>0)
 	{
-		String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
-		List fields;
-		try
-		{
-			PDITransformation trans = new PDITransformation(filename);
-			fields = trans.getRuleEngineStepFields(project.transformationStepname);
-		}
-		catch(Exception ex)
-		{
-			// the transformation does not exist anymore
-			// or it could not be loaded
-			infomessage.type="error";
-			infomessage.text="the transformation: " + filename + " does not exit or can not be loaded";
-		}
-		if(fields!=null && fields.size()>0)
-		{
-			context.put("fields",fields);
-			templatename="edittransformationrule.vm";
-		}
-		else
-		{
-			templatename="editrule.vm";
-		}
-	}
+		templatename="editreferencefieldrule.vm";
+	}		
 	else
 	{
 		templatename="editrule.vm";
-	
 	}
 	
 	ArrayList checks = DbCollections.getAllChecks(connection);

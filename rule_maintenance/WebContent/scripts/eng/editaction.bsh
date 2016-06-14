@@ -1,7 +1,7 @@
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
-import com.datamelt.util.TypeMapper;
+import com.datamelt.db.Field;
 
 writeaction="true"; 
 if(user==null)
@@ -23,6 +23,7 @@ else
 	project.connection = connection;
 	project.id = Long.parseLong(request.getParameter("projectid"));;
 	project.load();
+	project.loadFields();
 	context.put("project",project);
 	
 	if(cancelled.equals("save"))
@@ -58,8 +59,12 @@ else
 				{
 					actionNew.object1Parameter = request.getParameter("object1_parameter").split("\\|\\|")[0];
 					actionNew.object1Parametertype.id = 1;
-					String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
-					actionNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					
+					Field field = project.getField(request.getParameter("object1_parameter"));
+					actionNew.object1Type.id = field.javaTypeId;
+					
+					//String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
+					//actionNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
 			} 
 		}
@@ -83,8 +88,12 @@ else
 				{
 					actionNew.object2Parameter = request.getParameter("object2_parameter").split("\\|\\|")[0];
 					actionNew.object2Parametertype.id = 1;
-					String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
-					actionNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					
+					Field field = project.getField(request.getParameter("object2_parameter"));
+					actionNew.object2Type.id = field.javaTypeId;
+					
+					//String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
+					//actionNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
 			}
 		}
@@ -274,29 +283,14 @@ else
 		
 		actionNew .load();
 		context.put("action",actionNew);
+
 		if(transformationaction==null)
 		{
 			templatename="editaction.vm";
 		}
 		else
 		{
-			String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
-			
-			List fields; 
-			try
-			{
-				PDITransformation trans = new PDITransformation(filename);
-				fields = trans.getRuleEngineStepFields(project.transformationStepname);
-			}
-			catch(Exception ex)
-			{
-				// the transformation does not exist anymore
-				// or it could not be loaded
-				infomessage.type="error";
-				infomessage.text="the transformation: " + filename + " does not exist or can not be loaded";
-			}
-			context.put("fields",fields);
-			templatename="edittransformationaction.vm";
+			templatename="editreferencefieldaction.vm";
 		}
 		
 		ArrayList actions = DbCollections.getAllActions(connection);

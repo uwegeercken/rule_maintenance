@@ -1,5 +1,5 @@
 #set($pagetitle='Copy Project')
-<p class="heading">Copy Project</p>
+<p class="heading">Copy Project - Project: ${copyproject.name}</p>
 <p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
 	<p>Copy a project</p>

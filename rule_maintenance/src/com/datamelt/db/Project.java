@@ -24,13 +24,12 @@ public class Project extends DatabaseRecord implements Loadable
 	private String databaseUserPassword;
 	private long numberOfRuleGroups;
 	private int privateProject;
-	private String transformationFilename;
-	private String transformationStepname;
 	private String objectClassname;
 	private String objectMethodGetter;
 	private String objectMethodSetter;
 
 	private ArrayList<RuleGroup> rulegroups;
+	private ArrayList<Field> fields;
 	private Group group = new Group();
 	private User lastUpdateUser = new User();
 	private User ownerUser = new User();
@@ -39,8 +38,8 @@ public class Project extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, transformation_filename, transformation_stepname,object_classname,object_method_getter,object_method_setter) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, transformation_filename=?,transformation_stepname=?, object_classname=?, object_method_getter=?, object_method_setter=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, object_classname,object_method_getter,object_method_setter) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, object_classname=?, object_method_getter=?, object_method_setter=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
 	
@@ -67,8 +66,6 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.name = rs.getString("name");
 	        this.description = rs.getString("description");
 	        this.privateProject = rs.getInt("is_private");
-	        this.transformationFilename = rs.getString("transformation_filename");
-	        this.transformationStepname = rs.getString("transformation_stepname");
 	        this.objectClassname = rs.getString("object_classname");
 	        this.objectMethodGetter = rs.getString("object_method_getter");
 	        this.objectMethodSetter = rs.getString("object_method_setter");
@@ -103,8 +100,6 @@ public class Project extends DatabaseRecord implements Loadable
 	        this.setId(rs.getLong("id"));
 	        this.description = rs.getString("description");
 	        this.privateProject = rs.getInt("is_private");
-	        this.transformationFilename = rs.getString("transformation_filename");
-	        this.transformationStepname = rs.getString("transformation_stepname");
 	        this.objectClassname = rs.getString("object_classname");
 	        this.objectMethodGetter = rs.getString("object_method_getter");
 	        this.objectMethodSetter = rs.getString("object_method_setter");
@@ -146,6 +141,12 @@ public class Project extends DatabaseRecord implements Loadable
 	public void loadRuleGroupsCount() throws Exception
 	{
 		numberOfRuleGroups = DbCollections.getAllRuleGroupsCount(getConnection(), this.getId());
+	}
+	
+	public void loadFields() throws Exception
+	{
+		fields = new ArrayList<Field>();
+		fields = DbCollections.getAllFields(getConnection(), this.getId());
 	}
 	
 	public String mergeWithTemplate(RuleGroup rulegroup,String templatePath, String templateName) throws Exception
@@ -195,13 +196,11 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(9,ownerUser.getId());
 		p.setLong(10,group.getId());
 		p.setLong(11,privateProject);
-		p.setString(12,transformationFilename);
-		p.setString(13,transformationStepname);
-		p.setString(14,objectClassname);
-		p.setString(15,objectMethodGetter);
-		p.setString(16,objectMethodSetter);
+		p.setString(12,objectClassname);
+		p.setString(13,objectMethodGetter);
+		p.setString(14,objectMethodSetter);
 		
-		p.setLong(17,getId());
+		p.setLong(15,getId());
 
 		try
 		{
@@ -234,11 +233,9 @@ public class Project extends DatabaseRecord implements Loadable
 		p.setLong(9,ownerUser.getId());
 		p.setLong(10,group.getId());
 		p.setLong(11,privateProject);
-		p.setString(12,transformationFilename);
-		p.setString(13,transformationStepname);
-		p.setString(14,objectClassname);
-		p.setString(15,objectMethodGetter);
-		p.setString(16,objectMethodSetter);
+		p.setString(12,objectClassname);
+		p.setString(13,objectMethodGetter);
+		p.setString(14,objectMethodSetter);
 		
 		try
 		{
@@ -723,26 +720,6 @@ public class Project extends DatabaseRecord implements Loadable
 		this.privateProject = privateProject;
 	}
 
-	public String getTransformationFilename() 
-	{
-		return transformationFilename;
-	}
-
-	public void setTransformationFilename(String transformationFilename) 
-	{
-		this.transformationFilename = transformationFilename;
-	}
-
-	public String getTransformationStepname()
-	{
-		return transformationStepname;
-	}
-
-	public void setTransformationStepname(String transformationStepname)
-	{
-		this.transformationStepname = transformationStepname;
-	}
-
 	public String getObjectClassname()
 	{
 		return objectClassname;
@@ -772,6 +749,27 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		this.objectMethodSetter = objectMethodSetter;
 	}
+
+	public ArrayList<Field> getFields() 
+	{
+		return fields;
+	}
+
+	public void setFields(ArrayList<Field> fields) 
+	{
+		this.fields = fields;
+	}
 	
-	
+	public Field getField(String fieldName) 
+	{
+		int found=-1;
+		for(int i=0;i<fields.size();i++)
+		{
+			if (fields.get(i).getName().equals(fieldName))
+			{
+				found=i;
+			}
+		}
+		return fields.get(found);
+	}
 }

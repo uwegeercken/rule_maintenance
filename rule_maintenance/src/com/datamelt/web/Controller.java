@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
-import org.pentaho.di.core.Const;
-
 import bsh.Interpreter;
 
 import com.datamelt.db.MySqlConnection;
@@ -37,7 +35,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	private static final String DIRECTORY_MESSAGES                 = "message";
     private static final String DB_HOSTNAME					       = "db_hostname";
     private static final String DB_PORT					       	   = "db_port";
-    private static final String PDI_PLUGINS_FOLDER		       	   = "pdi_plugins_folder";
     
     private static final String LDAP_HOSTNAME					   = "ldap_hostname";
     private static final String LDAP_DOMAIN						   = "ldap_domain";
@@ -55,7 +52,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	public static final String SCRIPT_EXTENSION					  = ".bsh";
 	public static final String SCRIPTS_PATH		                  = "scriptspath";
 	public static final String UPLOADS_PATH		                  = "uploadspath";
-	public static final String UPLOADS_TRANSFORMATIONS_PATH       = "uploadstransformationsspath";
 	public static final String IMAGES_PATH		                  = "imagespath";
 	public static final String TEMPLATES_PATH	                  = "templatespath";
 	public static final String MENU_PATH    	                  = "menupath";
@@ -73,7 +69,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static String dbHostname;
     private static int dbPort;
     private static String dbName;
-    private static String pdiPluginsFolder;
     private boolean dbConnectionOk;
     private static Ldap ldap;
     
@@ -129,12 +124,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	        properties.put(UPLOADS_PATH, uploadsPath); 
 	    }
 	    
-	    String uploadsTransformationsPath = config.getInitParameter(UPLOADS_TRANSFORMATIONS_PATH);
-	    if (uploadsTransformationsPath!=null)
-	    {
-	        properties.put(UPLOADS_TRANSFORMATIONS_PATH, uploadsTransformationsPath); 
-	    }
-
 	    String imagesPath = config.getInitParameter(IMAGES_PATH);
 	    if (imagesPath!=null)
 	    {
@@ -165,8 +154,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	        properties.put(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE, autoAddPlugins); 
 	    }
 	    
-	    setPdiPluginsFolder();
-	    
 	    loadMessages();
 	    
 	    try
@@ -179,27 +166,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	        ex.printStackTrace();
 	    }
     }	
-	
-	private void setPdiPluginsFolder()
-	{
-		// folder where the Pentaho PDI Plugins are located
-	    String pentahoFolder= Const.DEFAULT_PLUGIN_BASE_FOLDERS;
-	    
-	    if(pdiPluginsFolder!=null && !pdiPluginsFolder.trim().equals(""))
-        {
-	    	pentahoFolder = pentahoFolder	+ "," + pdiPluginsFolder;
-        }
-	    
-        String pluginPath = properties.getProperty(PLUGIN_PATH_WEBINF_ATTRIBUTE);
-        if(pluginPath!=null && !pluginPath.equals(""))
-        {
-        	pentahoFolder = pentahoFolder	+ "," + properties.getProperty(CONTEXT_PATH) + pluginPath;
-        }
-	    // set the system property so that Pentaho PDI will pick it up when initializing
-	    // a transformation
-	    System.setProperty(ConstantsWeb.KETTLE_PLUGIN_BASE_FOLDERS, pentahoFolder);
-        System.out.println("pentaho pdi plugin folders: " + pentahoFolder);
-	}
 	
 	private void readConfigFile(String realPath)
 	{
@@ -214,7 +180,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			dbName = p.getProperty(DB_NAME);
 			dbUser=p.getProperty(DB_USER);
 			dbUserPassword=p.getProperty(DB_USERPASSWORD);
-			pdiPluginsFolder=p.getProperty(PDI_PLUGINS_FOLDER);
 			
 			ldap = new Ldap();
 	        ldap.setHost(p.getProperty(LDAP_HOSTNAME));
@@ -287,7 +252,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			    if(scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
 		        {
 		        	readConfigFile((String)properties.get(CONTEXT_PATH));
-		        	setPdiPluginsFolder();
 		        	dbConnectionOk = databaseConnectionOk();
 		        }
 			    if(con!=null)

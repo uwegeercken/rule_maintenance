@@ -1,0 +1,107 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.Field;
+import com.datamelt.db.Type;
+import com.datamelt.db.DbCollections;
+import javax.servlet.http.Part;
+import java.io.File;
+import java.io.BufferedReader;
+
+writeaction="true"; 
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled= request.getParameter("submit");
+	id=Long.parseLong(request.getParameter("id"));
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.setId(id);
+	project.load();
+	project.loadFields();
+	
+	if(cancelled.equals("load"))
+	{
+		Part filePart;
+		filePart = request.getPart("csvfile");
+		String fileName;
+		String contentDisp = filePart.getHeader("content-disposition");
+		String[] items = contentDisp.split(";");
+		for (int i=0;i<items.length;i++) 
+		{	
+			String s = items[i];
+	    	if (s.trim().startsWith("filename")) 
+	    	{
+	        	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
+	    	}
+		}
+		
+		String fullfilename = uploadspath + "/" + project.id + "/referencefields.csv";
+		
+		if(filePart!=null && fileName!=null && !fileName.equals(""))
+		{
+			File dir = new File(uploadspath + "/" + project.id);
+			dir.mkdirs();
+			
+			File file = new File(fullfilename);
+			if(file.exists())
+			{
+				file.delete();
+			}
+		
+			filePart.write(fullfilename);
+			
+			DbCollections.deleteReferenceFields(connection, id);
+			
+			BufferedReader br = new BufferedReader(new FileReader(fullfilename));
+			int counter=0;
+			while ((line = br.readLine()) != null) 
+			{
+				if(!line.trim().equals("") && !line.startsWith("#"))
+				{
+					counter++;
+					String[] row = line.split(";");
+					
+					if(row.length>=2)
+					{
+						Field field = new Field();	
+						field.connection = connection;
+						field.projectId = id;
+						field.name=row[0];
+						field.description=row[1];
+						
+						Type type = new Type();
+						type.connection = connection;
+						type.name = row[2].toLowerCase();
+						type.loadByName();
+						
+						field.javaTypeId= type.getId();
+						field.lastUpdateUser.id = user.id;
+						
+						field.insert(connection.getPreparedStatement(Field.INSERT_SQL));
+						context.put("mode", "inserted");
+					}
+				}
+			}
+			
+			if(counter>0)
+			{
+				project.lastUpdateUser.id = user.id;
+				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+				project.load();
+				project.loadFields();
+				infomessage.text="Imported reference fields for the project: " +counter;
+			}			
+		}
+
+		context.put("project",project);
+		templatename="loadreferencefields.vm";
+	}
+	else
+	{
+		context.put("project",project);
+		templatename="listreferencefields.vm";
+	}
+}

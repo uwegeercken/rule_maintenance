@@ -36,7 +36,6 @@ $(document).ready(function() {
 		var checktype=$("#check option:selected").data("type");
 		
 		var partialmessage = "Field " + field + " $1 correctly " + check;
-		
 		if(checktype==1)
 		{
 			$("#messagepassed").val(partialmessage);

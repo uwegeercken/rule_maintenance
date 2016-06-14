@@ -1,7 +1,7 @@
 import com.datamelt.db.Rule;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
-import com.datamelt.util.TypeMapper;
+import com.datamelt.db.Field;
 
 writeaction="true";
 if(user==null)
@@ -29,6 +29,7 @@ else
 	project.connection = connection;
 	project.id = Long.parseLong(request.getParameter("projectid"));;
 	project.load();
+	project.loadFields();
 	context.put("project",project);
 	
 	if(cancelled.equals("save"))
@@ -68,7 +69,7 @@ else
 			{
 				if(!request.getParameter("object1_parameter").equals(""))
 				{
-					ruleNew.object1Parameter = request.getParameter("object1_parameter").split("\\|\\|")[0];
+					ruleNew.object1Parameter = request.getParameter("object1_parameter");
 					try
 					{
 						// test if the field to check is an integer so the field value will be
@@ -82,8 +83,11 @@ else
 						// will be retrieved as a string e.g. getField("somename")
 						ruleNew.object1Parametertype.id = 1;
 					}
-					String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
-					ruleNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					Field field = project.getField(request.getParameter("object1_parameter"));
+					ruleNew.object1Type.id = field.javaTypeId;
+					
+					//String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
+					//ruleNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
 			}
 		}
@@ -117,7 +121,7 @@ else
 			{
 				if(!request.getParameter("object2_parameter").equals(""))
 				{
-					ruleNew.object2Parameter = request.getParameter("object2_parameter").split("\\|\\|")[0];
+					ruleNew.object2Parameter = request.getParameter("object2_parameter");
 					try
 					{
 						// test if the field to check is an integer so the field value will be
@@ -131,8 +135,11 @@ else
 						// will be retrieved as a string e.g. getField("somename")
 						ruleNew.object2Parametertype.id = 1;
 					}
-					String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
-					ruleNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					Field field = project.getField(request.getParameter("object2_parameter"));
+					ruleNew.object2Type.id = field.javaTypeId;
+					
+					//String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
+					//ruleNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
 				}
 			}
 		}
@@ -329,11 +336,7 @@ else
 		}
 		else
 		{
-			String filename = uploadstransformationspath +"/" + project.id + "/" + project.transformationFilename;
-			PDITransformation trans = new PDITransformation(filename);
-			List fields = trans.getRuleEngineStepFields(project.transformationStepname);
-			context.put("fields",fields);
-			templatename="edittransformationrule.vm";
+			templatename="editreferencefieldrule.vm";
 		}
 		
 		ArrayList checks = DbCollections.getAllChecks(connection);

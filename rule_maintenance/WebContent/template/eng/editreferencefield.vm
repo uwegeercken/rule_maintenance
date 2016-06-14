@@ -1,0 +1,64 @@
+#set($pagetitle='Reference Field Maintenance')
+<p class="heading">#if($mode!="add")Edit Reference Field: <b>$!{field.name}</b>#else Add Reference Field#end  - Project: ${project.name}</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: List of Reference Fields"></a></p>
+<div id="help">
+	<p>Edit the selected Reference Field.</p>
+	<p>Enter the name, description and type of the field.</p> 
+</div>
+<div class="formbox">
+#if($mode=="add")
+	<form method="POST" action="process?action=bsh&scriptname=editreferencefield&id=0"> 
+	
+#else
+	<form method="POST" action="process?action=bsh&scriptname=editreferencefield&id=${field.id}"> 
+#end
+<input type="hidden" name="projectid" value="${project.id}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Name:</td>
+		<td>
+			<input name="name" type="text" size="40" maxlength="80" value="$!{field.name}">
+		</td>
+	</tr>
+	<tr> 
+		<td valign="top">Description:</td>
+		<td>
+			<textarea name="description" cols="40" rows="8">$!{field.description}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>Type:</td>
+		<td>
+			<select name="javatypeid" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${field.javaTypeId}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select> 
+		</td>
+	<tr>
+	#if($mode && ($mode=="inserted" || $mode=="updated"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	#end
+	</tr>
+</table>
+</form>
+</div>
+#if(${dbuser.id}>0)
+	<p class="small">last edited: ${dbuser.lastUpdate}</p>
+#end
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end
+

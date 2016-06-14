@@ -1,0 +1,45 @@
+#set($pagetitle='Import Project Reference Fields')
+<p class="heading">Import Project Reference Fields - Project: ${project.name}</p>
+<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Reference Fields List"></a></p>
+<div id="help">
+	<p>Import the reference fields from a CSV file.</p>
+	<p>You may import the reference fields for a project from a CSV file. The CSV file needs to have 3 columns which are separated by a semicolon:</p>
+	<p>
+		Column 1: contains the name of the reference field.</br>
+		Column 2: contains the description of the reference field.</br>
+		Column 3: contains the name of the relevant type of the field: string, integer, float, double, boolean, long, bigdecimal or date.</br>
+	</p>
+	<p>Attention: All existing reference fields will be deleted and the new reference fields will be imported from the CSV file.</p>
+</div>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=loadreferencefields&id=${project.id}" enctype="multipart/form-data"> 
+<input type="hidden" name="id" value="${project.id}">
+<table align="center" width="95%" border="0">
+	<tr>
+		<td>File to Import:</td>
+		<td>
+			<input name="csvfile" type="file" size="40" maxlength="255" accept=".csv">
+		</td>
+	</tr>
+	<tr>
+	#if($mode && ($mode=="inserted"))
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="close" name="submit">
+		</td>
+	#else
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="load" name="submit">
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	#end
+	</tr>
+</table>
+</form>
+#if(${project.id}>0)
+	<p class="small">owner: ${project.ownerUser.name}, last edited by: ${project.lastUpdateUser.name}, ${project.lastUpdate}</p>
+#end
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

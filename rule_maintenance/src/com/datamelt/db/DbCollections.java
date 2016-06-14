@@ -169,6 +169,24 @@ public class DbCollections
         return list;
     }
     
+    public static ArrayList<Field> getAllFields(MySqlConnection connection, long projectId) throws Exception
+    {
+        String sql="select id from reference_fields where project_id=" + projectId +
+        	" order by id";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <Field>list = new ArrayList<Field>();
+        while(rs.next())
+        {
+        	Field field = new Field();
+        	field.setConnection(connection);
+        	field.setId(rs.getLong("id"));
+        	field.load();
+            list.add(field);
+        }
+        rs.close();
+        return list;
+    }
+    
     public static ArrayList<User> getAllGroupUsers(MySqlConnection connection, String groupName) throws Exception
     {
         String sql="select user_id from groups, groupuser" + 
@@ -452,6 +470,15 @@ public class DbCollections
     	psHistory.setLong(2, typeId);
     	psHistory.setLong(3, user.getId());
     	psHistory.executeUpdate();    			
+    }
+    
+    public static void deleteReferenceFields(MySqlConnection connection, long projectId) throws Exception
+    {
+    	String deleteSql = "delete from reference_fields where project_id=?";
+    	PreparedStatement psFields = connection.getPreparedStatement(deleteSql);
+    	
+    	psFields.setLong(1, projectId);
+    	psFields.executeUpdate();    			
     }
     
     public static ArrayList <Object> getUserHistory(MySqlConnection connection, User user) throws Exception

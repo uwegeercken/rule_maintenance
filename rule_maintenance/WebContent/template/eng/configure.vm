@@ -39,12 +39,6 @@
 		</td>
 	</tr>
 	<tr> 
-		<td>Pentaho PDI Plugins Folder:</td>
-		<td>
-			<input name="pdi_plugins_folder" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("pdi_plugins_folder")}">
-		</td>
-	</tr>
-	<tr> 
 		<td>LDAP Server Hostname or IP Adress:</td>
 		<td>
 			<input name="ldap_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_hostname")}">

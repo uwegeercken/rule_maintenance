@@ -1,0 +1,113 @@
+import com.datamelt.db.Field;
+import com.datamelt.db.DbCollections;
+
+writeaction="true"; 
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	cancelled = request.getParameter("submit");
+	id=Long.parseLong(request.getParameter("id"));
+	projectid=Long.parseLong(request.getParameter("projectid"));
+	description=request.getParameter("description");
+	name=request.getParameter("name");
+	javatypeid=Integer.parseInt(request.getParameter("javatypeid"));
+	
+	mode = request.getParameter("mode");
+	context.put("mode", mode);
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = projectid;
+	
+	if(cancelled.equals("save"))
+	{
+		Field field = new Field();	
+		field.connection = connection;
+		field.id = id;
+		field.projectId = projectid;
+		field.name=name;
+		field.description=description;
+		field.javaTypeId=javatypeid;
+		field.lastUpdateUser.id = user.id;
+		
+		if(name.length()==0 )
+		{
+				infomessage.type="error";
+				infomessage.text="Name must be specified.";
+				context.put("field", field);
+		}
+		else if(javatypeid==0)
+		{
+			infomessage.type="error";
+			infomessage.text="Field Type must be selected.";
+			context.put("field", field);
+		}
+		else
+		{
+			if(id>0)
+			{
+				Field fieldOrg = new Field();	
+				fieldOrg.connection = connection;
+				fieldOrg.id = id;
+				fieldOrg.load();
+				
+				if(!name.equals(fieldOrg.name) && fieldOrg.exist(name))
+				{
+					infomessage.type="error";
+					infomessage.text="Field already exists.";
+					context.put("field", field);
+				}
+				else 
+				{
+					field.update(connection.getPreparedStatement(Field.UPDATE_SQL));
+					context.put("mode","updated");
+					infomessage.text="Field updated.";
+					context.put("field", field);
+				}
+			}
+			else
+			{
+				Field fieldNew = new Field();
+				fieldNew.connection = connection;
+				fieldNew.projectId = projectid;
+				fieldNew.name=name;
+				fieldNew.description=description;
+				fieldNew.javaTypeId=javatypeid;
+				fieldNew.lastUpdateUser.id = user.id;
+			
+				if(fieldNew.exist(name))
+				{
+					infomessage.type="error";
+					infomessage.text="Field already exists.";
+					context.put("field", fieldNew);
+				}
+				else
+				{
+					fieldNew.insert(connection.getPreparedStatement(Field.INSERT_SQL));
+					infomessage.text="Field inserted.";
+					context.put("mode","inserted");
+				}
+				
+				context.put("field", fieldNew);
+			}
+		}
+		templatename="editreferencefield.vm";
+		
+
+	}
+	else
+	{
+		templatename="listreferencefields.vm";
+	}
+	
+	project.load();
+	project.loadFields();
+	context.put("project", project);
+	
+	ArrayList types = DbCollections.getAllTypes(connection);
+	context.put("types",types);
+
+}

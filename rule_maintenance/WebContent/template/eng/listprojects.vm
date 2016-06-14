@@ -6,7 +6,7 @@
 </p>
 <div id="help">
 	<p>List of available Projects. Projects bundle rule groups, rules and actions for a certain topic together. Users that are in the group that the project belongs to have write access to the project. Projects marked as private are invisible to users outside the group.</p>
-	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete project&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy project&nbsp;<img height="24" width="24" src="img/document.png">&nbsp;project logic&nbsp;<img height="24" width="24" src="img/connect.png">&nbsp;project transformation</p>
+	<p><img height="24" width="24" src="img/edit.png">&nbsp;edit project&nbsp;<img height="24" width="24" src="img/plus_red.png">&nbsp;add new project&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete project&nbsp;<img height="24" width="24" src="img/copy.png">&nbsp;copy project&nbsp;<img height="24" width="24" src="img/document.png">&nbsp;project logic&nbsp;<img height="24" width="24" src="img/reference_field.png">&nbsp;project reference fields</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="project" type="text"></p>
@@ -17,7 +17,7 @@
 		#if($user.canUpdateProject($project)==true)
 			#if($user.canDeleteProject($project)==true)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete project"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit project"></a>
-			<a href="process?action=bsh&ro=1&scriptname=selecteditprojecttransformation&id=${project.id}&mode=change">#if(${project.transformationFilename})<img class="attach" height="24px" width="24px" src="img/connect.png" title="edit project transformation">#else<img class="attach" height="24px" width="24px" src="img/disconnect.png" title="edit project transformation">#end</a>
+			<a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}&mode=change"><img class="attach" height="24px" width="24px" src="img/reference_field.png" title="project reference fields"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selectcopyproject&projectid=${project.id}"><img class="copyproject" height="24px" width="24px" src="img/copy.png" title="copy project"></a>
 		#end
 		<div class="grouptop">

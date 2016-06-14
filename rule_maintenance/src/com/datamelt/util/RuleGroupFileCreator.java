@@ -20,6 +20,9 @@ public class RuleGroupFileCreator {
 	public String templateName=null;
 	public String outputPath=null;
 	public String selectedDate=null;
+	public String dbServerHostname=null;
+	public int dbServerPort;
+	public String dbName=null;
 	public String dbUser=null;
 	public String dbPassword=null;
 
@@ -35,8 +38,6 @@ public class RuleGroupFileCreator {
 	{
 		
 		RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
-		
-		
 		
 		if (args.length<6)
         {
@@ -66,9 +67,21 @@ public class RuleGroupFileCreator {
 	    		{
 	    			fileCreator.selectedDate = args[i].substring(3);
 	    		}
+	    		else if (args[i].startsWith("-s="))
+	    		{
+	    			fileCreator.dbServerHostname = args[i].substring(3);
+	    		}
+	    		else if (args[i].startsWith("-r="))
+	    		{
+	    			fileCreator.dbServerPort = Integer.parseInt(args[i].substring(3));
+	    		}
 	    		else if (args[i].startsWith("-u="))
 	    		{
 	    			fileCreator.dbUser = args[i].substring(3);
+	    		}
+	    		else if (args[i].startsWith("-b="))
+	    		{
+	    			fileCreator.dbName = args[i].substring(3);
 	    		}
 	    		else if (args[i].startsWith("-w="))
 	    		{
@@ -92,6 +105,18 @@ public class RuleGroupFileCreator {
 	    	{
 	    		throw new Exception("parameter -v: validity date for the rule group must be specified");
 	    	}
+			if(fileCreator.dbServerHostname==null)
+	    	{
+	    		throw new Exception("parameter -s: database server hostname must be specified");
+	    	}
+			if(fileCreator.dbServerPort==0)
+	    	{
+	    		throw new Exception("parameter -r: database server port must be specified (integer value)");
+	    	}
+			if(fileCreator.dbName==null)
+	    	{
+	    		throw new Exception("parameter -b: database name must be specified");
+	    	}
 			if(fileCreator.dbUser==null)
 	    	{
 	    		throw new Exception("parameter -u: database user must be specified");
@@ -103,14 +128,12 @@ public class RuleGroupFileCreator {
 			
 			System.out.println("start of program...");
 			System.out.println("getting connection to database");
-			MySqlConnection connection = new MySqlConnection();
-			connection.setUsername(fileCreator.dbUser);
-			connection.setPassword(fileCreator.dbPassword);
-			connection.connect();
+			MySqlConnection connection = new MySqlConnection(fileCreator.dbServerHostname,fileCreator.dbServerPort,fileCreator.dbName,fileCreator.dbUser,fileCreator.dbPassword);
 			
 			ArrayList<Project> projects = new ArrayList<Project>();
 			if(fileCreator.projectName!=null)
 			{
+				System.out.println("getting project:" + fileCreator.projectName);
 				Project project = new Project();
 				project.setConnection(connection);
 				project.setName(fileCreator.projectName);
@@ -119,6 +142,7 @@ public class RuleGroupFileCreator {
 			}
 			else
 			{
+				System.out.println("retrieving the list of project");
 				projects = DbCollections.getAllProjects(connection);
 			}
 			
@@ -130,16 +154,15 @@ public class RuleGroupFileCreator {
 				project.loadRuleGroups(fileCreator.selectedDate);
 				System.out.println("found rule groups: " + project.getRulegroups().size());
 				
-				
 				if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
 				{
+					System.out.println("writing files");
 					fileCreator.writeFiles(project);
 					
 					System.out.println("creating zip file: " + fileCreator.getTempfolder(project) + "/" + project.getName().toLowerCase() + "_" + fileCreator.selectedDate + RuleGroupFileCreator.ZIP_EXTENSION);
 					fileCreator.zipFiles(project);
 					
 					System.out.println("deleting temp folder and files: " + fileCreator.getTempfolder(project));
-					
 				}
 			}
 			System.out.println("end of program.");
@@ -165,8 +188,6 @@ public class RuleGroupFileCreator {
 			fw.write(project.mergeWithTemplate(rulegroup, templatePath, templateName));
 			fw.close();
 		}
-		
-		
 	}
 	
 	public String zipFiles(Project project) throws Exception
@@ -204,26 +225,29 @@ public class RuleGroupFileCreator {
 			file.delete();
 		}
 		folder.delete();
-		
 		return zipfilename;
 	}
 	
 	public static void help()
     {
-    	System.out.println("RuleGroupFileCreator. program to generate rules files in xml format for the JaRe - Java Ruleengine - from a MySql database");
+    	System.out.println("RuleGroupFileCreator. program to generate rules files in xml format for the JaRe - Java Ruleengine - from a MySql database.");
+    	System.out.println("At the end of the process the files are be put/compressed into a zip file.");
     	System.out.println("Only Rule Groups which are valid for the given date are output.");
     	System.out.println();
     	System.out.println();
-    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder]-v=[validity date] -u=[db user] -w=[db password]");
-    	System.out.println("where [project name]    : optional. name of the project for which files shall be generated.");
-    	System.out.println("      [template folder] : required. path to the folder containing the template file.");
-    	System.out.println("      [template name]   : required. filename of the template.");
-    	System.out.println("      [output folder]   : required. path to the output folder where files are created.");
-    	System.out.println("      [validity date]   : required. validity date for the rule groups.");
-    	System.out.println("      [db user]         : required. user to access the database");
-    	System.out.println("      [db password]     : required. user password to access the database");
+    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder]-v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password]");
+    	System.out.println("where [project name]     : optional. name of the project for which files shall be generated.");
+    	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
+    	System.out.println("      [template name]    : required. filename of the template.");
+    	System.out.println("      [output folder]    : required. path to the output folder where files are created.");
+    	System.out.println("      [validity date]    : required. validity date for the rule groups.");
+    	System.out.println("      [db server hostname: required. hostname or IP adress of the database server");
+    	System.out.println("      [db server port]   : required. port the database server is listening");
+    	System.out.println("      [db name]          : required. name of the database");
+    	System.out.println("      [db user]          : required. user to access the database");
+    	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -u=tom -p=mysecret");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret");
     	System.out.println();
     	System.out.println("published as open source under the GPL3.");
     	System.out.println("all code by uwe geercken, 2014-2016. uwe.geercken@web.de");
@@ -294,6 +318,4 @@ public class RuleGroupFileCreator {
 	{
 		this.dbPassword = dbPassword;
 	}
-
-
 }

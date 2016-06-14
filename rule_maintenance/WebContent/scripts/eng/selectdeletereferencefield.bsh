@@ -1,0 +1,18 @@
+import com.datamelt.db.Field;
+
+adminaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	Field field = new Field();
+	field.connection = connection;
+	field.id = Long.parseLong(request.getParameter("fieldid"));;
+	field.load();
+	context.put("field",field);
+		
+
+	templatename="deletereferencefield.vm";
+}
