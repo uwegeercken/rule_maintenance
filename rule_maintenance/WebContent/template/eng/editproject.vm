@@ -1,6 +1,6 @@
 #set($pagetitle='Project Maintenance')
 <p class="heading">#if($mode!="add")Edit Project: ${project.name}#else Add Project#end</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Project List"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Project List"></a></p>
 <div id="help">
 	<p>Edit the selected project.</p>
 	<p>Enter the name and description of the project. The name will be used as the zip file name containing all rules, so it's better to not use special characters and spaces.</p>
@@ -85,7 +85,7 @@
 	</tr>
 	<tr>
 		<td colspan="2"><br />
-			<img id="moretoshow" height="24" width="24" src="img/more.png" title="more/less options">
+			<img id="moretoshow" height="22" width="22" src="img/more.png" title="more/less options">
 		</td>
 	</tr>
 </table>

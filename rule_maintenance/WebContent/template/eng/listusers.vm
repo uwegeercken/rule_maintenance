@@ -1,10 +1,10 @@
 #set($pagetitle='User List')
 <p class="heading">User List ($users.size())</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add user"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="22px" width="22px" src="img/plus_red.png" title="add user"></a></p>
 <div id="help">
 	<p>List of available Users with access to this application. Users may be in one or more groups, giving them appropriate security access to the projects.</p>
 	<p>Users may be deactivated, so they can not access the application anymore.</p>
-	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new user&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit user&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;deactivate user</p>
+	<p><img height="22" width="22" src="img/plus_red.png">&nbsp;add new user&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit user&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;deactivate user</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="users" type="text"></p>
@@ -12,8 +12,8 @@
  #foreach($appuser in $users)
 	<div class="unit" tag="$!appuser.name.toLowerCase()">
 		#if(${appuser.userid}!="admin")
-		<a href="process?action=bsh&ro=1&scriptname=selectdeactivateuser&id=${appuser.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="deactivate user"></a>
-		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit user"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selectdeactivateuser&id=${appuser.id}"><img class="delete" height="22px" width="22px" src="img/remove.png" title="deactivate user"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selectedituser&id=${appuser.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit user"></a>
 		#end
 		<div class="grouptop">
 			<p class="small">user</p>

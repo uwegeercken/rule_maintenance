@@ -1,7 +1,7 @@
 #set($pagetitle='History')
 <p class="heading">History</p>
 <p>
-	<img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()">
+	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
 </p>
 <div id="help">
 	<p>History. List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated. Click on the link to update the item again.</p>

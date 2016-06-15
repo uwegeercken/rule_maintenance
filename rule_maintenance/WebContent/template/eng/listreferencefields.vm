@@ -1,8 +1,8 @@
 #set($pagetitle='List of Reference Fields')
 <p class="heading">Reference Fields ($project.fields.size()) for Project: ${project.name}</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Project List"></a>
-<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&fieldid=0&projectid=${project.id}&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add reference field"></a>
-<a href="process?action=bsh&ro=1&scriptname=selectloadreferencefields&projectid=${project.id}&mode=add"><img class="add_external" height="24px" width="24px" src="img/csv.png" title="import reference fields from a CSV file"></a>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Project List"></a>
+<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&fieldid=0&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/plus_red.png" title="add reference field"></a>
+<a href="process?action=bsh&ro=1&scriptname=selectloadreferencefields&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/csv.png" title="import reference fields from a CSV file"></a>
 </p>
 <div id="help">
 	<p>List of reference fields for the selected Project.</p>
@@ -15,8 +15,8 @@
 <p>Filter: <input id="search" searchtype="methods" type="text"></p>
 #foreach($field in $project.fields)
 	<div class="unit" tag="${field.name.toLowerCase()}">
-		<a href="process?action=bsh&ro=1&scriptname=selectdeletereferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete reference field"></a>
-		<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit reference field"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selectdeletereferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete reference field"></a>
+		<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit reference field"></a>
 		<div class="grouptop">
 			<p class="small">reference field</p>
 			<p class="big">$!{field.name}</p>

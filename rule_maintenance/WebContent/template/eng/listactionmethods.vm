@@ -1,6 +1,6 @@
 #set($pagetitle='List of Methods')
 <p class="heading">List of Methods ($methods.size()) for Action: ${action.methoddisplayname}</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listactions"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: Actions"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listactions"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Actions"></a></p>
 <div id="help">
 	<p>List of available methods for the selected Action. The Action usually updates one field from another one or updates the field from a given fixed value.</p>
 	<p>The listed methods can be invoked using the rule engine and show which data types can be used. Additionally some methods allow the user to specify additional (optional) parameters.</p>

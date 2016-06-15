@@ -1,17 +1,17 @@
 #set($pagetitle='Group List')
 <p class="heading">Group List ($groups.size())</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=0&mode=add"><img class="add_external" height="24px" width="24px" src="img/plus_red.png" title="add group"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=0&mode=add"><img class="add_external" height="22px" width="22px" src="img/plus_red.png" title="add group"></a></p>
 <div id="help">
 	<p>List of available Groups. Users are organized in groups which allow write access to projects that belong to the group.</p>
-	<p><img height="24" width="24" src="img/plus_red.png">&nbsp;add new group&nbsp;<img height="24" width="24" src="img/edit.png">&nbsp;edit group&nbsp;<img height="24" width="24" src="img/remove.png">&nbsp;delete group</p>
+	<p><img height="22" width="22" src="img/plus_red.png">&nbsp;add new group&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit group&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete group</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="groups" type="text""></p>
 </div>
 #foreach($group in $groups)
 	<div class="unit" tag="$!group.name.toLowerCase()">
-		#if($group.id>1)<a href="process?action=bsh&ro=1&scriptname=selectdeletegroup&id=${group.id}"><img class="delete" height="24px" width="24px" src="img/remove.png" title="delete group"></a>#end
-		#if($group.id>1)<a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=${group.id}&mode=change"><img class="edit" height="24px" width="24px" src="img/edit.png" title="edit"></a>#end
+		#if($group.id>1)<a href="process?action=bsh&ro=1&scriptname=selectdeletegroup&id=${group.id}"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete group"></a>#end
+		#if($group.id>1)<a href="process?action=bsh&ro=1&scriptname=selecteditgroup&id=${group.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit"></a>#end
 		<div class="grouptop">
 			<p class="small">group</p>
 			<p class="big">$!group.name</a></p>

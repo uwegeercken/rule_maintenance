@@ -1,6 +1,6 @@
 #set($pagetitle='Copy Project')
 <p class="heading">Copy Project - Project: ${copyproject.name}</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
 	<p>Copy a project</p>
 	<p>Enter the name and description of the project to be created. The process will copy all content of the project into a new one.</p>
@@ -82,7 +82,7 @@
 	</tr>
 	<tr>
 		<td colspan="2"><br />
-			<img id="moretoshow" height="24" width="24" src="img/more.png" title="more/less options">
+			<img id="moretoshow" height="22" width="22" src="img/more.png" title="more/less options">
 		</td>
 	</tr>
 	

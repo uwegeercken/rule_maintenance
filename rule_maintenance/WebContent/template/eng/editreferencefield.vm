@@ -1,6 +1,6 @@
 #set($pagetitle='Reference Field Maintenance')
 <p class="heading">#if($mode!="add")Edit Reference Field: <b>$!{field.name}</b>#else Add Reference Field#end  - Project: ${project.name}</p>
-<p><img id="helpimg" height="24" width="24" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="24" width="24" src="img/go_back.png" title="go back: List of Reference Fields"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: List of Reference Fields"></a></p>
 <div id="help">
 	<p>Edit the selected Reference Field.</p>
 	<p>Enter the name, description and type of the field.</p> 
