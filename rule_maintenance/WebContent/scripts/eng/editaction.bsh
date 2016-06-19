@@ -17,7 +17,9 @@ else
     rulegroup.setConnection(connection);
     rulegroup.setId(Long.parseLong(request.getParameter("rulegroupid")));
     rulegroup.load();
+    rulegroup.loadRuleSubgroups();
 	context.put("rulegroup",rulegroup);
+	context.put("usedfields",rulegroup.getReferencedFields());
 	
 	Project project = new Project();
 	project.connection = connection;

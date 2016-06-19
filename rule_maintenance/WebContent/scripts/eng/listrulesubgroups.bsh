@@ -25,12 +25,15 @@ else
         rulegroup.setConnection(connection);
         rulegroup.setId(rulegroupId);
         rulegroup.load();
+        rulegroup.loadRuleSubgroups();
 		context.put("rulegroup",rulegroup);
+		context.put("usedfields",rulegroup.getReferencedFields());
 	
 		Project project = new Project();
         project.setConnection(connection);
         project.setId(rulegroup.projectId);
         project.load();
+        project.loadFields();
 		context.put("project",project);
 
 		templatename="listrulesubgroups.vm";

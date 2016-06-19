@@ -2,11 +2,11 @@
 <p class="heading">Projects List ($projects.size())</p>
 <p>
 	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
-	<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=0&mode=add"><img class="add_external" height="22px" width="22px" src="img/plus_red.png" title="add project"></a>
+	<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=0&mode=add"><img class="add_external" height="22px" width="22px" src="img/add_project.png" title="add project"></a>
 </p>
 <div id="help">
 	<p>List of available Projects. Projects bundle rule groups, rules and actions for a certain topic together. Users that are in the group that the project belongs to have write access to the project. Projects marked as private are invisible to users outside the group.</p>
-	<p><img height="22" width="22" src="img/edit.png">&nbsp;edit project&nbsp;<img height="22" width="22" src="img/plus_red.png">&nbsp;add new project&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete project&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy project&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;project logic&nbsp;<img height="22" width="22" src="img/reference_field.png">&nbsp;project reference fields</p>
+	<p><img height="22" width="22" src="img/edit.png">&nbsp;edit project&nbsp;<img height="22" width="22" src="img/plus_grey.png">&nbsp;add new project&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete project&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy project&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;project logic&nbsp;<img height="22" width="22" src="img/reference_field.png">&nbsp;project reference fields</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="project" type="text"></p>

@@ -126,6 +126,19 @@ public class Project extends DatabaseRecord implements Loadable
         rs.close();
 	}
 	
+	public void loadRuleGroup(long rulegroupId) throws Exception
+	{
+		RuleGroup rulegroup = new RuleGroup();
+		rulegroup.setConnection(getConnection());
+		rulegroup.setId(rulegroupId);
+		rulegroup.load();
+		rulegroup.loadRuleSubgroups();
+		
+		rulegroups = new ArrayList();
+		rulegroups.add(rulegroup);
+		
+	}
+	
 	public void loadRuleGroups(String date) throws Exception
 	{
 		rulegroups = new ArrayList<RuleGroup>();

@@ -83,8 +83,13 @@ $(document).ready(function() {
   $( "#helpimg" ).click(function() {
 		$("#help").toggle();
   });
+  $( "#testimg" ).click(function() {
+		$("#help").hide();
+		$("#listrulegroup").toggle();
+		$("#testrulegroup").toggle();
+  });
   $( "#moretoshow" ).click(function() {
-  	$(".hiddenrow").toggle();
+  		$(".hiddenrow").toggle();
   });
 	var value = $.jStorage.get("searchtext"+ $('#search').attr("searchtype"));
 	if(value)
@@ -112,7 +117,15 @@ $(document).ready(function() {
 				firstDay: 1
 		});
 	});
-	
+	$(function() {
+		$( ".datepicker" ).datepicker({
+				dateFormat: "yy-mm-dd",
+				changeMonth: true,
+				changeYear: true,
+				firstDay: 1
+		});
+	});
+
 </script>
 </head>
 <body>

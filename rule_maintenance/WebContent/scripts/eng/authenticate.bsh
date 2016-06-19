@@ -18,11 +18,11 @@ if(!user.exist(userid) || userid==null || password==null || userid.equals("") ||
 	infomessage.type="error";
 	if(!user.exist(userid)&& userid!=null && !userid.equals(""))
 	{
-		infomessage.text="Unknown User";
+		infomessage.text="Unknown Userid";
 	}
 	else if(user.deactivated==1)
 	{
-		infomessage.text="User deactivated";
+		infomessage.text="User is deactivated";
 	}
 	else
 	{

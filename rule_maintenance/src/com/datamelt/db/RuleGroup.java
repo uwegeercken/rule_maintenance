@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
@@ -237,6 +239,17 @@ public class RuleGroup extends DatabaseRecord implements Loadable
         rs.close();
         return exists;
     }
+	
+	public Set<String> getReferencedFields()
+	{
+		Set<String> fields = new LinkedHashSet<String>();
+		for(int i=0;i<ruleSubgroups.size();i++)
+		{
+			RuleSubgroup subgroup = ruleSubgroups.get(i);
+			fields.addAll(subgroup.getReferencedFields());
+		}
+		return fields;
+	}
 	
 	public String getName()
 	{

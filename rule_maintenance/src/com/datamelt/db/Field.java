@@ -13,6 +13,7 @@ public class Field extends DatabaseRecord implements Loadable
 	private String description;
 	private long javaTypeId;
 	private User lastUpdateUser = new User();
+	private String testValue;
 
 	private Type type = new Type();
 	
@@ -197,6 +198,16 @@ public class Field extends DatabaseRecord implements Loadable
 	public Type getType() 
 	{
 		return type;
+	}
+
+	public String getTestValue() 
+	{
+		return testValue;
+	}
+
+	public void setTestValue(String testValue) 
+	{
+		this.testValue = testValue;
 	}
 	
 }

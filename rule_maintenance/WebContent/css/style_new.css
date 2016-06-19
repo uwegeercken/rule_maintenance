@@ -146,8 +146,6 @@ a
   	
 }
 
-
-
 .unitclear 
 {
   	clear: both;
@@ -200,6 +198,22 @@ img.delete
 }
 
 img.rulegrouplogic 
+{
+	position:absolute;
+	margin-top: 6px;
+	margin-left: 220px;
+	border: none;
+}
+
+img.testimg 
+{
+	position:absolute;
+	margin-top: 6px;
+	margin-left: 250px;
+	border: none;
+}
+
+img.teststopimg 
 {
 	position:absolute;
 	margin-top: 6px;
@@ -348,6 +362,11 @@ div.horizontaldevider {
   	box-shadow:         3px 3px 5px 6px #ccc;
   	display:none;
   	width: 98%;
+}
+
+#testrulegroup
+{
+  	display:none;
 }
 
 #help p, #help img

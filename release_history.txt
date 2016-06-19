@@ -9,7 +9,8 @@ version 1.8
 - updated listing of methods for checks
 - after updating now a "close" button is displayed
 - implemented reference fields for projects and remove the direct reference to Pentaho PDI transformations
-- made the icons a little bit smaller
+- changed some icons and made them a little bit smaller
+- new feature to test rulegroups
 
 version 1.6
 ===========

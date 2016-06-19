@@ -3,6 +3,8 @@ package com.datamelt.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
@@ -278,6 +280,27 @@ public class RuleSubgroup extends DatabaseRecord implements Loadable
 	public ArrayList<Rule> getRules() 
 	{
 		return rules;
+	}
+	
+	public Set<String> getReferencedFields()
+	{
+		Set<String> fields = new LinkedHashSet<String>();
+		//ArrayList<String> fields = new ArrayList<String>();
+		for(int i=0;i<rules.size();i++)
+		{
+			Rule rule = getRules().get(i);
+			if(rule.getObject1Parameter()!=null)
+			{
+				fields.add(rule.getObject1Parameter());
+			}
+			if(rule.getObject2Parameter()!=null)
+			{
+				fields.add(rule.getObject2Parameter());
+			}
+
+		}
+		
+		return fields;
 	}
 
 	public User getLastUpdateUser()

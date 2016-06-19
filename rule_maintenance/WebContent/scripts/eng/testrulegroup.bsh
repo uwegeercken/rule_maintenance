@@ -1,0 +1,201 @@
+import java.io.*;
+import com.datamelt.db.Project;
+import com.datamelt.db.Field;
+import com.datamelt.util.RuleGroupFileCreator;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import com.datamelt.rules.engine.BusinessRulesEngine;
+import com.datamelt.rules.core.RuleExecutionCollection;
+import com.datamelt.util.RowFieldCollection;
+import com.datamelt.util.RowField;
+import java.util.zip.ZipFile;
+import java.util.Date;
+
+cancelled= request.getParameter("submit");
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	id=Long.parseLong(request.getParameter("id"));
+	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+	selecteddate=request.getParameter("selecteddate");
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
+	Project project = new Project();
+    project.setConnection(connection);
+    project.setId(id);
+    project.load();
+    project.loadFields();
+    
+    RuleGroup rulegroup = new RuleGroup();
+    rulegroup.setConnection(connection);
+    rulegroup.setId(rulegroupid);
+    rulegroup.load();
+    rulegroup.loadRuleSubgroups();
+    
+	if(cancelled!=null && cancelled.equals("test data"))
+	{
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+		String realPath = request.getSession().getServletContext().getRealPath("/");
+     	if(id >0)
+     	{
+			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
+		
+			fileCreator.projectName = project.name;
+			fileCreator.templatePath = realPath + "template";
+			fileCreator.outputPath = realPath + "tmp";
+			fileCreator.templateName = "ruleengine.vm";
+			fileCreator.selectedDate = selecteddate;
+			
+			project.loadRuleGroup(rulegroupid);
+			
+			fileCreator.writeFiles(project);
+			String fileName = fileCreator.zipFiles(project);
+
+			BusinessRulesEngine ruleEngine = new BusinessRulesEngine(new ZipFile(fileName));
+
+            int numberOfColumns = rulegroup.referencedFields.size();
+	        RowFieldCollection rowFieldCollection = new RowFieldCollection();
+	        
+	        int error=0;
+	        String errorField="";
+	        for(int i=0;i< project.fields.size();i++)
+		    {
+		    	Field field = project.fields.get(i);
+		    	String value = request.getParameter("field_" + field.id);
+		    	if(value!=null)
+		    	{
+					field.testValue = value;
+			    	if(field.type.name.equals("date") && value!="")
+			    	{
+			    		try
+			    		{
+			    			Date date = dateformat.parse (value); 
+			    			rowFieldCollection.addField(new RowField(field.name,date));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else if(field.type.name.equals("integer") && value!="")
+			    	{
+			    		try
+			    		{
+			    			rowFieldCollection.addField(new RowField(field.name,Integer.parseInt(value)));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else if(field.type.name.equals("boolean") && value!="")
+			    	{
+			    		try
+			    		{
+			    			rowFieldCollection.addField(new RowField(field.name,Boolean.parseBoolean(value)));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else if(field.type.name.equals("long") && value!="")
+			    	{
+			    		try
+			    		{
+			    			rowFieldCollection.addField(new RowField(field.name,Long.parseLong(value)));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else if(field.type.name.equals("float") && value!="")
+			    	{
+			    		try
+			    		{
+			    			rowFieldCollection.addField(new RowField(field.name,Float.parseFloat(value)));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else if(field.type.name.equals("double") && value!="")
+			    	{
+						try
+						{
+			    			rowFieldCollection.addField(new RowField(field.name,Double.parseDouble(value)));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+			    	else
+			    	{
+			    		try
+			    		{
+			    			rowFieldCollection.addField(new RowField(field.name,value));
+			    		}
+			    		catch(Exception ex)
+			    		{
+			    			errorField = field.name;
+			    			error = 1;
+			    		}
+			    	}
+		    	}
+		    }
+			if(error==0)
+			{
+				int rowFailed=0;
+		        try
+				{
+		        	ruleEngine.run("row: " + counter, rowFieldCollection);
+					RuleExecutionCollection results = ruleEngine.getRuleExecutionCollection();
+					context.put("results",results);
+					
+					if(ruleEngine.getNumberOfGroupsFailed()>0)
+	    	    	{
+	        			rowFailed = 1;
+	        			
+	        		}
+	        		context.put("rulegroupfailed",rowFailed);
+				}
+				catch(Exception ex)
+				{
+					infomessage.type="error";
+					infomessage.text="error running the rule engine" + ex.toString();
+				}
+	        	if(ruleEngine.getNumberOfGroupsFailed()>0)
+	        	{
+	        		rowFieldCollection.setRowFailed(true);
+	        	}
+			}
+			else
+			{
+				infomessage.type="error";
+				infomessage.text="An error occurred processing the test values for the field: " + errorField;
+			}
+		}
+	}
+	ArrayList groups = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
+	context.put("rulesubgroups",groups);
+	ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupId);
+	context.put("rulegroupactions",actions);
+	context.put("project",project);
+	context.put("rulegroup",rulegroup);
+	context.put("usedfields",rulegroup.getReferencedFields());
+	templatename="listrulesubgroups.vm";
+}
