@@ -7,7 +7,7 @@ On the highest level there are projects. A project contains one to many rule gro
 
 Rule groups also have a validity date, defining from which date until which other date the group is valid. This allows to define time frames in which rules are to be used or not.
 
-A transformation from Pentaho PDI containing Rule Engine steps may be imported. As a consequence the user does not need to type in field names and types - when writing rules or actions - but may select the fields from a dropdown.
+Reference fields may be assigned to a project. As a consequence the user does not need to type in field names and types - when writing rules or actions - but may select the fields from a dropdown.
 
 The application allows to use LDAP for authentication. Projects can be private or read-only. Roles can be setup that define access to projects and the other components.
 
@@ -31,4 +31,4 @@ Note 1: make sure that you have imported the database schema before you run the 
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2016-06-15
+last update: 2016-06-21
