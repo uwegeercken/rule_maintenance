@@ -26,6 +26,7 @@ else
         rulegroup.setId(rulegroupId);
         rulegroup.load();
         rulegroup.loadRuleSubgroups();
+        rulegroup.loadRuleGroupActions();
 		context.put("rulegroup",rulegroup);
 		context.put("usedfields",rulegroup.getReferencedFields());
 	

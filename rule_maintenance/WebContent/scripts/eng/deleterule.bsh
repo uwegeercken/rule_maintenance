@@ -10,12 +10,12 @@ RuleGroup rulegroup = new RuleGroup();
 rulegroup.setConnection(connection);
 rulegroup.setId(rulegroupid);
 rulegroup.load();
-context.put("rulegroup",rulegroup);
 		
 Project project = new Project();
 project.setConnection(connection);
 project.setId(rulegroup.projectId);
 project.load();
+project.loadFields();
 context.put("project",project);
 
 if(cancelled.equals("delete rule"))
@@ -29,6 +29,11 @@ if(cancelled.equals("delete rule"))
 	
 	DbCollections.deleteUserHistory(connection, "rule", rule.id, user);
 }
+
+rulegroup.loadRuleSubgroups();
+rulegroup.loadRuleGroupActions();
+context.put("rulegroup",rulegroup);
+context.put("usedfields",rulegroup.getReferencedFields());
 
 ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupId);
 context.put("rulesubgroups",list);

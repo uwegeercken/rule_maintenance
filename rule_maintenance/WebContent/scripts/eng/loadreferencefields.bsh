@@ -6,6 +6,7 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.BufferedReader;
 
+adminaction="true";
 writeaction="true"; 
 if(user==null)
 {
@@ -70,11 +71,12 @@ else
 						field.connection = connection;
 						field.projectId = id;
 						field.name=row[0];
-						field.description=row[1];
+						field.nameDescriptive=row[1];
+						field.description=row[2];
 						
 						Type type = new Type();
 						type.connection = connection;
-						type.name = row[2].toLowerCase();
+						type.name = row[3].toLowerCase();
 						type.loadByName();
 						
 						field.javaTypeId= type.getId();

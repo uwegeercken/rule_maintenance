@@ -1,6 +1,7 @@
 import com.datamelt.db.Field;
 import com.datamelt.db.DbCollections;
 
+adminaction="true";
 writeaction="true"; 
 if(user==null)
 {
@@ -13,6 +14,7 @@ else
 	projectid=Long.parseLong(request.getParameter("projectid"));
 	description=request.getParameter("description");
 	name=request.getParameter("name");
+	namedescriptive=request.getParameter("namedescriptive");
 	javatypeid=Integer.parseInt(request.getParameter("javatypeid"));
 	
 	mode = request.getParameter("mode");
@@ -29,11 +31,18 @@ else
 		field.id = id;
 		field.projectId = projectid;
 		field.name=name;
+		field.nameDescriptive=namedescriptive;
 		field.description=description;
 		field.javaTypeId=javatypeid;
 		field.lastUpdateUser.id = user.id;
 		
-		if(name.length()==0 )
+		if(namedescriptive.length()==0 )
+		{
+				infomessage.type="error";
+				infomessage.text="Name Desciptive must be specified.";
+				context.put("field", field);
+		}
+		else if(name.length()==0 )
 		{
 				infomessage.type="error";
 				infomessage.text="Name must be specified.";
@@ -74,6 +83,7 @@ else
 				fieldNew.connection = connection;
 				fieldNew.projectId = projectid;
 				fieldNew.name=name;
+				fieldNew.nameDescriptive=namedescriptive;
 				fieldNew.description=description;
 				fieldNew.javaTypeId=javatypeid;
 				fieldNew.lastUpdateUser.id = user.id;

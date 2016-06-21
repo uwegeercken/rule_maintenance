@@ -2,6 +2,7 @@ import java.io.*;
 import com.datamelt.db.Project;
 import com.datamelt.db.Field;
 
+adminaction="true";
 writeaction="true";
 if(user==null)
 {

@@ -2,7 +2,6 @@ package com.datamelt.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;

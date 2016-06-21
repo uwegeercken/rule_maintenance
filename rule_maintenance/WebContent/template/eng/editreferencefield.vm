@@ -15,6 +15,12 @@
 <input type="hidden" name="projectid" value="${project.id}">
 <table align="center" width="95%" border="0">
 	<tr> 
+		<td>Name Descriptive:</td>
+		<td>
+			<input name="namedescriptive" type="text" size="40" maxlength="80" value="$!{field.nameDescriptive}">
+		</td>
+	</tr>
+	<tr> 
 		<td>Name:</td>
 		<td>
 			<input name="name" type="text" size="40" maxlength="80" value="$!{field.name}">

@@ -10,6 +10,7 @@ public class Field extends DatabaseRecord implements Loadable
 {
 	private long projectId;
 	private String name;
+	private String nameDescriptive;
 	private String description;
 	private long javaTypeId;
 	private User lastUpdateUser = new User();
@@ -21,8 +22,8 @@ public class Field extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=? and project_id=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (project_id, name, description, java_type_id,last_update_user_id) values (?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set project_id=?, name=?, description=?,java_type_id=?,last_update_user_id=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (project_id, name, name_descriptive, description, java_type_id,last_update_user_id) values (?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set project_id=?, name=?, name_descriptive=?, description=?,java_type_id=?,last_update_user_id=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name=? and project_id=?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
 	
@@ -43,6 +44,7 @@ public class Field extends DatabaseRecord implements Loadable
 		{
 	        this.projectId = rs.getLong("project_id");
 			this.name = rs.getString("name");
+			this.nameDescriptive = rs.getString("name_descriptive");
 			this.description = rs.getString("description");
 	        this.javaTypeId = rs.getInt("java_type_id");
 	        
@@ -65,7 +67,7 @@ public class Field extends DatabaseRecord implements Loadable
 		if(rs.next())
 		{
 	        this.setId(rs.getLong("id"));
-	        this.projectId = rs.getInt("project_id");
+	        this.nameDescriptive = rs.getString("name_descriptive");
 	        this.description = rs.getString("description");
 	        this.javaTypeId = rs.getInt("java_type_id");
 	        
@@ -106,10 +108,11 @@ public class Field extends DatabaseRecord implements Loadable
 	{
 		p.setLong(1, projectId);
 		p.setString(2,name);
-		p.setString(3,description);
-		p.setLong(4, javaTypeId);
-		p.setLong(5,lastUpdateUser.getId());
-		p.setLong(6,getId());
+		p.setString(3,nameDescriptive);
+		p.setString(4,description);
+		p.setLong(5, javaTypeId);
+		p.setLong(6,lastUpdateUser.getId());
+		p.setLong(7,getId());
 		
 		p.executeUpdate();
 	}
@@ -118,9 +121,10 @@ public class Field extends DatabaseRecord implements Loadable
     {
 		p.setLong(1, projectId);
         p.setString(2,name);
-        p.setString(3,description);
-		p.setLong(4, javaTypeId);
-		p.setLong(5,lastUpdateUser.getId());
+        p.setString(3,nameDescriptive);
+        p.setString(4,description);
+		p.setLong(5, javaTypeId);
+		p.setLong(6,lastUpdateUser.getId());
         
 		p.execute();
 		
@@ -153,6 +157,17 @@ public class Field extends DatabaseRecord implements Loadable
 	public void setName(String name) 
 	{
 		this.name = name;
+	}
+
+	
+	public String getNameDescriptive() 
+	{
+		return nameDescriptive;
+	}
+
+	public void setNameDescriptive(String nameDescriptive) 
+	{
+		this.nameDescriptive = nameDescriptive;
 	}
 
 	public long getJavaTypeId() 

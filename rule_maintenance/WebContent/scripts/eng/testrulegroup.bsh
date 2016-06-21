@@ -36,6 +36,7 @@ else
     rulegroup.setId(rulegroupid);
     rulegroup.load();
     rulegroup.loadRuleSubgroups();
+	rulegroup.loadRuleGroupActions();
     
 	if(cancelled!=null && cancelled.equals("test data"))
 	{
@@ -53,6 +54,9 @@ else
 			
 			project.loadRuleGroup(rulegroupid);
 			
+			// contains all the field from actions that shqall be updated
+			Set fieldsToUpdate = rulegroup.getReferencedFieldsToUpdate();
+			
 			fileCreator.writeFiles(project);
 			String fileName = fileCreator.zipFiles(project);
 
@@ -67,7 +71,7 @@ else
 		    {
 		    	Field field = project.fields.get(i);
 		    	String value = request.getParameter("field_" + field.id);
-		    	if(value!=null)
+		    	if(value!=null || fieldsToUpdate.contains(field.name))
 		    	{
 					field.testValue = value;
 			    	if(field.type.name.equals("date") && value!="")

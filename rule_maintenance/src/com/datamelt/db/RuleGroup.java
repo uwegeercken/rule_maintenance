@@ -248,6 +248,31 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 			RuleSubgroup subgroup = ruleSubgroups.get(i);
 			fields.addAll(subgroup.getReferencedFields());
 		}
+		
+		for(int f=0;f<actions.size();f++)
+		{
+			RuleGroupAction action = actions.get(f);
+			if(action.getObject1Parameter()!=null)
+			{
+				fields.add(action.getObject1Parameter());
+			}
+		}
+		
+		return fields;
+	}
+	
+	public Set<String> getReferencedFieldsToUpdate()
+	{
+		Set<String> fields = new LinkedHashSet<String>();
+		for(int f=0;f<actions.size();f++)
+		{
+			RuleGroupAction action = actions.get(f);
+			if(action.getObject2Parameter()!=null)
+			{
+				fields.add(action.getObject2Parameter());
+			}
+		}
+		
 		return fields;
 	}
 	

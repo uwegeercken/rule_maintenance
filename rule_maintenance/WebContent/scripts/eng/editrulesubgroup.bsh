@@ -24,6 +24,7 @@ else
         project.setConnection(connection);
         project.setId(rulegroup.projectId);
         project.load();
+        project.loadsFields();
         context.put("project",project);
         
 		RuleSubgroup rulesubgroupNew = new RuleSubgroup();	
@@ -116,12 +117,17 @@ else
         rulegroup.setConnection(connection);
         rulegroup.setId(rulegroupId);
         rulegroup.load();
+        rulegroup.loadRuleSubgroups();
+    	rulegroup.loadRuleGroupActions();
+		context.put("rulegroup",rulegroup);
+		context.put("usedfields",rulegroup.getReferencedFields());
 		context.put("rulegroup",rulegroup);
 		
 		Project project = new Project();
         project.setConnection(connection);
         project.setId(rulegroup.projectId);
         project.load();
+        project.loadFields();
 		context.put("project",project);
 		
 		templatename="listrulesubgroups.vm";

@@ -18,8 +18,6 @@ else
     rulegroup.setId(Long.parseLong(request.getParameter("rulegroupid")));
     rulegroup.load();
     rulegroup.loadRuleSubgroups();
-	context.put("rulegroup",rulegroup);
-	context.put("usedfields",rulegroup.getReferencedFields());
 	
 	Project project = new Project();
 	project.connection = connection;
@@ -59,14 +57,11 @@ else
 			{
 				if(!request.getParameter("object1_parameter").equals(""))
 				{
-					actionNew.object1Parameter = request.getParameter("object1_parameter").split("\\|\\|")[0];
-					actionNew.object1Parametertype.id = 1;
-					
-					Field field = project.getField(request.getParameter("object1_parameter"));
+					Field field = project.getField(Long.parseLong(request.getParameter("object1_parameter")));
 					actionNew.object1Type.id = field.javaTypeId;
 					
-					//String pentahoType = request.getParameter("object1_parameter").split("\\|\\|")[1];
-					//actionNew.object1Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					actionNew.object1Parameter = field.name;
+					actionNew.object1Parametertype.id = 1;
 				}
 			} 
 		}
@@ -82,20 +77,18 @@ else
 			{
 				actionNew.object2Parameter = request.getParameter("object2_parameter");
 				actionNew.object2Parametertype.id = 1;
-				actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
+				actionNew.object2Type.id = request.getParameter("object2_type_id");
 			}
 			else
 			{
 				if(!request.getParameter("object2_parameter").equals(""))
 				{
-					actionNew.object2Parameter = request.getParameter("object2_parameter").split("\\|\\|")[0];
-					actionNew.object2Parametertype.id = 1;
-					
-					Field field = project.getField(request.getParameter("object2_parameter"));
+					Field field = project.getField(Long.parseLong(request.getParameter("object2_parameter")));
 					actionNew.object2Type.id = field.javaTypeId;
 					
-					//String pentahoType = request.getParameter("object2_parameter").split("\\|\\|")[1];
-					//actionNew.object2Type.id = TypeMapper.getJavaType(Integer.parseInt(pentahoType));
+					actionNew.object2Parameter = field.name;
+					actionNew.object2Parametertype.id = 1;
+					
 				}
 			}
 		}
@@ -295,6 +288,10 @@ else
 			templatename="editreferencefieldaction.vm";
 		}
 		
+		rulegroup.loadRuleGroupActions();
+		context.put("rulegroup",rulegroup);
+		context.put("usedfields",rulegroup.getReferencedFields());
+		
 		ArrayList actions = DbCollections.getAllActions(connection);
 		context.put("actions",actions);
 	
@@ -304,6 +301,10 @@ else
 	}
 	else
 	{
+		rulegroup.loadRuleGroupActions();
+		context.put("rulegroup",rulegroup);
+		context.put("usedfields",rulegroup.getReferencedFields());
+		
 		ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroup.id);
 		context.put("rulesubgroups",list);
 		

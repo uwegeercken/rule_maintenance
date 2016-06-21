@@ -134,7 +134,7 @@ public class Project extends DatabaseRecord implements Loadable
 		rulegroup.load();
 		rulegroup.loadRuleSubgroups();
 		
-		rulegroups = new ArrayList();
+		rulegroups = new ArrayList<RuleGroup>();
 		rulegroups.add(rulegroup);
 		
 	}
@@ -779,6 +779,19 @@ public class Project extends DatabaseRecord implements Loadable
 		for(int i=0;i<fields.size();i++)
 		{
 			if (fields.get(i).getName().equals(fieldName))
+			{
+				found=i;
+			}
+		}
+		return fields.get(found);
+	}
+	
+	public Field getField(long fieldId) 
+	{
+		int found=-1;
+		for(int i=0;i<fields.size();i++)
+		{
+			if (fields.get(i).getId() == fieldId)
 			{
 				found=i;
 			}

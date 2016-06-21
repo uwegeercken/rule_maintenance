@@ -36,9 +36,9 @@
 			<option value=""></option>
 			#foreach($field in $project.fields)
 				#if(${rule.object1Parameter}==${field.name})
-					<option selected value="${field.name}">${field.name} (${field.type.name})</option>
+					<option selected value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>
 				#else
-					<option value="${field.name}">${field.name} (${field.type.name})</option>
+					<option value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>
 				#end
 			#end
     		</select>
@@ -66,9 +66,9 @@
 			<option value=""></option>
 			#foreach($field in $project.fields)
 				#if(${rule.object2Parameter}==${field.name})
-					<option selected value="${field.name}">${field.name} (${field.type.name})</option>
+					<option selected value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>
 				#else
-					<option value="${field.name}">${field.name} (${field.type.name})</option>
+					<option value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>
 				#end
 			#end
     		</select>

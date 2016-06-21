@@ -17,7 +17,7 @@
 		#if($user.canUpdateProject($project)==true)
 			#if($user.canDeleteProject($project)==true)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete project"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit project"></a>
-			<a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}&mode=change"><img class="attach" height="22px" width="22px" src="img/reference_field.png" title="project reference fields"></a>
+			#if($user.isInGroup("Admin"))<a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}&mode=change"><img class="attach" height="22px" width="22px" src="img/reference_field.png" title="project reference fields"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=selectcopyproject&projectid=${project.id}"><img class="copyproject" height="22px" width="22px" src="img/copy.png" title="copy project"></a>
 		#end
 		<div class="grouptop">

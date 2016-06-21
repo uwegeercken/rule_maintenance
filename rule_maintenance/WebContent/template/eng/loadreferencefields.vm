@@ -3,11 +3,12 @@
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Reference Fields List"></a></p>
 <div id="help">
 	<p>Import the reference fields from a CSV file.</p>
-	<p>You may import the reference fields for a project from a CSV file. The CSV file needs to have 3 columns which are separated by a semicolon:</p>
+	<p>You may import the reference fields for a project from a CSV file. The CSV file needs to have 4 columns which are separated by a semicolon:</p>
 	<p>
 		Column 1: contains the name of the reference field.</br>
-		Column 2: contains the description of the reference field.</br>
-		Column 3: contains the name of the relevant type of the field: string, integer, float, double, boolean, long, bigdecimal or date.</br>
+		Column 2: contains the descriptive name of the reference field.</br>
+		Column 3: contains the description of the reference field.</br>
+		Column 4: contains the name of the relevant type of the field: string, integer, float, double, boolean, long, bigdecimal or date.</br>
 	</p>
 	<p>Attention: All existing reference fields will be deleted and the new reference fields will be imported from the CSV file.</p>
 </div>

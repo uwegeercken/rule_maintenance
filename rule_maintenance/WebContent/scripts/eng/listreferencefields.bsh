@@ -1,6 +1,7 @@
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.Project;
 
+adminaction="true";
 if(user==null)
 {
 	templatename="login.vm";
