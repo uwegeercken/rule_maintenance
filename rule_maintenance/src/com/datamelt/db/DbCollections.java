@@ -251,27 +251,34 @@ public class DbCollections
     
     public static ArrayList<Rule> getSearchRules(MySqlConnection connection, User user, String searchTerm) throws Exception
     {
-        String sql="select id from rule"
-        		+ " where name like " + "'%" + searchTerm + "%'"
-        		+ " or description like "+ "'%" + searchTerm + "%'"
-        		+ "order by name";	
+        String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
+        		+ " from rule, rulesubgroup, rulegroup"
+        		+ " where rule.rulesubgroup_id = rulesubgroup.id and rulesubgroup.rulegroup_id = rulegroup.id"
+        		+ " and (rule.name like " + "'%" + searchTerm + "%'"
+        		+ " or rule.description like "+ "'%" + searchTerm + "%')"
+        		+ " order by rule.name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<Rule> list = new ArrayList<Rule>();
         while(rs.next())
         {
-        	Rule rule = new Rule();
-        	rule.setConnection(connection);
-        	rule.setId(rs.getLong("id"));
-        	rule.load();
+        	Project project = new Project();
+        	project.setConnection(connection);
+        	project.setId(rs.getLong("projectid"));
+        	project.load();
         	
-        	RuleSubgroup subgroup= new RuleSubgroup();
-        	subgroup.setConnection(connection);
-        	subgroup.setId(rule.getRuleSubgroupId());
-        	subgroup.load();
+        	if(project.getPrivateProject()==1 && user.isInProjectGroup(project.getGroup()) || project.getPrivateProject()==0)
+        	{
         	
-        	rule.setRuleGroupId(subgroup.getRulegroupId());
+	        	Rule rule = new Rule();
+	        	rule.setConnection(connection);
+	        	rule.setId(rs.getLong("ruleid"));
+	        	rule.load();
+	        	rule.setProject(project);
         	
-       		list.add(rule);
+	        	rule.setRuleGroupId(rs.getLong("rulegroupid"));
+        	
+	        	list.add(rule);
+        	}
         }
         rs.close();
         return list;
@@ -279,20 +286,31 @@ public class DbCollections
     
     public static ArrayList<RuleGroupAction> getSearchActions(MySqlConnection connection, User user, String searchTerm) throws Exception
     {
-        String sql="select id from rulegroupaction"
-        		+ " where name like " + "'%" + searchTerm + "%'"
-        		+ " or description like "+ "'%" + searchTerm + "%'"
-        		+ "order by name";	
+        String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
+        		+ " from rulegroupaction, rulegroup"
+        		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
+        		+ " and (rulegroupaction.name like " + "'%" + searchTerm + "%'"
+        		+ " or rulegroupaction.description like "+ "'%" + searchTerm + "%')"
+        		+ " order by rulegroupaction.name";	
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<RuleGroupAction> list = new ArrayList<RuleGroupAction>();
         while(rs.next())
         {
-        	RuleGroupAction action = new RuleGroupAction();
-        	action.setConnection(connection);
-        	action.setId(rs.getLong("id"));
-        	action.load();
+        	Project project = new Project();
+        	project.setConnection(connection);
+        	project.setId(rs.getLong("projectid"));
+        	project.load();
         	
-       		list.add(action);
+        	if(project.getPrivateProject()==1 && user.isInProjectGroup(project.getGroup()) || project.getPrivateProject()==0)
+        	{
+	        	RuleGroupAction action = new RuleGroupAction();
+	        	action.setConnection(connection);
+	        	action.setId(rs.getLong("rulegroupactionid"));
+	        	action.load();
+	        	action.setProject(project);
+	        	
+	       		list.add(action);
+        	}
         }
         rs.close();
         return list;

@@ -19,6 +19,22 @@ body
 	
 }
 
+.containerForTextarea
+{
+	border:1px solid #999999;
+	margin:5px 0;
+	padding:3px;
+	width: 100%;
+}
+
+.textareaContainer 
+{
+    width: 100%; 
+    margin: 0; 
+    padding: 0; 
+    border-width: 0;
+}
+
 img
 {
 	border: none;

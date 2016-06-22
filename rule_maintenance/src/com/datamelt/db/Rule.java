@@ -27,6 +27,7 @@ public class Rule extends DatabaseRecord implements Loadable
 	private String messageFailed;
 	private Check check = new Check();
 	private User lastUpdateUser = new User();
+	private Project project;
 
 	
 	public static final String TABLENAME="rule";
@@ -498,6 +499,16 @@ public class Rule extends DatabaseRecord implements Loadable
 	public void setAdditionalParameterType(Type additionalParameterType) 
 	{
 		this.additionalParameterType = additionalParameterType;
+	}
+
+	public Project getProject() 
+	{
+		return project;
+	}
+
+	public void setProject(Project project) 
+	{
+		this.project = project;
 	}
 
 

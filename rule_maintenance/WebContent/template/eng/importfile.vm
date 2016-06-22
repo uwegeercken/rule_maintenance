@@ -1,5 +1,5 @@
-#set($pagetitle='Import Rule Maintanance Zip file')
-<p class="heading">Import Rule Maintanance Zip file</p>
+#set($pagetitle='Import Rule Maintanance Project Zip file')
+<p class="heading">Import Rule Maintanance Project Zip file</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
 	<p>Import data into a new project</p>

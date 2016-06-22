@@ -44,6 +44,9 @@
 				<p class="normal">${rule.description}</p>
 				<p class="normal">$!{rule.ruleLogic}</p>
 			</div>
+			<div>
+				<p class="small">project: ${rule.project.name}</p>
+			</div>
 		</div>
 	#end
 #end
@@ -55,6 +58,9 @@
 				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${action.ruleGroupId}&searchid=${action.id}">${action.name}</a></p>
 				<p class="normal">$action.description</p>
 				<p class="normal">$action.actionLogic</p>
+			</div>
+			<div>
+				<p class="small">project: ${action.project.name}</p>
 			</div>
 		</div>
 	#end

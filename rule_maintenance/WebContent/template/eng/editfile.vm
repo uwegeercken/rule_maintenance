@@ -25,7 +25,10 @@
 	</tr>
 	#end
 	<tr> 
-		<td>Code:<br /><textarea name="code" cols="120" rows="20">$!{filecode}</textarea></td>
+		<td>Code:<br />
+		<div class="containerForTextarea">
+			<textarea class="textareaContainer" rows="32" name="code">$!{filecode}</textarea></td>
+		</div>
 	</tr>
 	<tr>
 		<td align="center">

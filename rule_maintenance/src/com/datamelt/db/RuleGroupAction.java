@@ -25,6 +25,7 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	private String parameter3;
 	private Type parameter3Type = new Type();
 	private String executeIf;
+	private Project project;
 	
 	private Action action = new Action();
 	private User lastUpdateUser = new User();
@@ -520,6 +521,16 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	public void setLastUpdateUser(User user) 
 	{
 		this.lastUpdateUser = user;
+	}
+
+	public Project getProject() 
+	{
+		return project;
+	}
+
+	public void setProject(Project project) 
+	{
+		this.project = project;
 	}
 	
 }
