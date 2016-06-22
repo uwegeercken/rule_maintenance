@@ -78,8 +78,15 @@ else
 			    	{
 			    		try
 			    		{
-			    			Date date = dateformat.parse (value); 
-			    			rowFieldCollection.addField(new RowField(field.name,date));
+			    			if(value!=null)
+			    			{
+			    				Date date = dateformat.parse (value); 
+			    				rowFieldCollection.addField(new RowField(field.name,date));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -91,7 +98,14 @@ else
 			    	{
 			    		try
 			    		{
-			    			rowFieldCollection.addField(new RowField(field.name,Integer.parseInt(value)));
+			    			if(value!=null)
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,Integer.parseInt(value)));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -103,7 +117,14 @@ else
 			    	{
 			    		try
 			    		{
-			    			rowFieldCollection.addField(new RowField(field.name,Boolean.parseBoolean(value)));
+			    			if(value!=null)
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,Boolean.parseBoolean(value)));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -115,7 +136,14 @@ else
 			    	{
 			    		try
 			    		{
-			    			rowFieldCollection.addField(new RowField(field.name,Long.parseLong(value)));
+			    			if(value!=null)
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,Long.parseLong(value)));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -127,7 +155,14 @@ else
 			    	{
 			    		try
 			    		{
-			    			rowFieldCollection.addField(new RowField(field.name,Float.parseFloat(value)));
+			    			if(value!=null)
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,Float.parseFloat(value)));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -137,9 +172,16 @@ else
 			    	}
 			    	else if(field.type.name.equals("double") && value!="")
 			    	{
-						try
+					try
+					{
+						if(value!=null)
 						{
-			    			rowFieldCollection.addField(new RowField(field.name,Double.parseDouble(value)));
+			    				rowFieldCollection.addField(new RowField(field.name,Double.parseDouble(value)));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
@@ -151,7 +193,14 @@ else
 			    	{
 			    		try
 			    		{
-			    			rowFieldCollection.addField(new RowField(field.name,value));
+			    			if(value!=null)
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,value));
+			    			}
+			    			else
+			    			{
+			    				rowFieldCollection.addField(new RowField(field.name,null));
+			    			}
 			    		}
 			    		catch(Exception ex)
 			    		{
