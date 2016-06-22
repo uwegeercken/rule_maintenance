@@ -20,7 +20,6 @@
 		<div class="grouptop">
 			<p class="small">reference field</p>
 			<p class="big">$!{field.nameDescriptive}</p>
-			<p class="normal">$!{field.name}</p>
 			<p class="normal">$!{field.description}</p>
 			<p class="normal">type: $!{field.type.name}</p>
 		</div>
