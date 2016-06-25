@@ -1,15 +1,26 @@
 #set($pagetitle='Documentation')
 <p class="heading">Business Rules Maintenance Tool Documentation</p>
-<p>Documentation for the web application and the ruleengine itself.</p>
-<p>All documents are in PDF format and are also available online at: <a href="http://github.com/uwegeercken">GitHub</a>. You will also find the source code, database schema and more tools on GitHub.</p>
+<p>Documentation for the web application and the ruleengine itself. All documents are in PDF format.</p>
 <ul>
 	<li><a target="_external" href="documents/rule_engine_presentation_english.pdf">Business Rule Engine presentation - English</a></li>
 	<li><a target="_external" href="documents/business_rules_maintenance_web_application.pdf">Business Rule Maintenance Web Application - setup, concept and workflow details</a></li>
-	<li>Detailed information on <a target="_external" href="documents/ruleengine_checks.pdf">List of available Ruleengine Checks</a></li>
-	<li>Detailed information on <a target="_external" href="documents/ruleengine_actions.pdf">List of available Ruleengine Actions</a></li>	
+	<li><a target="_external" href="documents/ruleengine_checks.pdf">List of available Ruleengine Checks</a></li>
+	<li><a target="_external" href="documents/ruleengine_actions.pdf">List of available Ruleengine Actions</a></li>	
 </ul>
 <br>
-
+<p>Below are the external links to my GitHub repositories where the documentation, source code, libraries and other tools are available. You will always find the latest versions of the tools there.</p>
+<ul>
+	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_documentation">Business Rules Maintenance Tool Documentation</a></li>
+	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_war">Business Rules Maintenance Tool Web archive (war file)</a></li>
+	<li><a target="_external" href="https://github.com/uwegeercken/jare">JaRE - Java Rule Engine</a></li>
+	<li><a target="_external" href="https://github.com/uwegeercken/jareplugin">Pentaho PDI Ruleengine Step (plugin)</a></li>
+	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_db">MySQL Database Schema</a></li>
+</ul>
+<br>
+<p>Find more information, practical examples and more in my blog</p>
+<ul>
+	<li><a target="_external" href="http://datamelt.weebly.com">Datamelt blog at Weebly</a></li>
+</ul>
 <br>
 <br>
 

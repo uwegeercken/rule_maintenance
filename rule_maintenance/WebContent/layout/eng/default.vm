@@ -29,8 +29,28 @@ $(document).ready(function() {
   });
 
   $( "#proposepassed" ).click(function() {
-  		var field=$("#object1_parameter").val();
-  		var field2=$("#object2_parameter").val();
+  		var field=$("#object1_parameter option:selected").text();
+		if(field==null || field=="")
+		{
+			field=$("#object1_parameter").val();
+		}
+		else
+		{
+			pos = field.indexOf("(");
+			field = field.substring(0,pos).trim();
+		
+		}
+		var field2=$("#object2_parameter option:selected").text();
+		if(field2==null || field2=="")
+		{
+  			field2=$("#object2_parameter").val();
+  		}
+  		else
+		{
+			pos = field2.indexOf("(");
+			field2 = field2.substring(0,pos).trim();
+		
+		}
   		var expectedvalue=$("#expectedvalue").val();
 		var check=$("#check option:selected").text();
 		var checktype=$("#check option:selected").data("type");
@@ -50,13 +70,37 @@ $(document).ready(function() {
 			{
 				$("#messagepassed").val(partialmessage + " field " + field2 + " $0");
 			}
+			else
+			{
+				$("#messagepassed").val(partialmessage);
+			}
 		
 		}
   });
   
   $( "#proposefailed" ).click(function() {
-  		var field=$("#object1_parameter").val();
-  		var field2=$("#object2_parameter").val();
+  		var field=$("#object1_parameter option:selected").text();
+		if(field==null || field=="")
+		{
+			field=$("#object1_parameter").val();
+		}
+		else
+		{
+			pos = field.indexOf("(");
+			field = field.substring(0,pos).trim();
+		
+		}
+		var field2=$("#object2_parameter option:selected").text();
+		if(field2==null || field2=="")
+		{
+  			field2=$("#object2_parameter").val();
+  		}
+  		else
+		{
+			pos = field2.indexOf("(");
+			field2 = field2.substring(0,pos).trim();
+		
+		}
   		var expectedvalue=$("#expectedvalue").val();
 		var check=$("#check option:selected").text();
 		var checktype=$("#check option:selected").data("type");
@@ -76,6 +120,10 @@ $(document).ready(function() {
 			else if(field2)
 			{
 				$("#messagefailed").val(partialmessage + " field " + field2 + " $0");
+			}
+			else
+			{
+				$("#messagefailed").val(partialmessage);
 			}
 		
 		}

@@ -13,7 +13,7 @@ user.setUserid(userid);
 user.setConnection(connection);
 user.loadByUserid();
 
-if(!user.exist(userid) || userid==null || password==null || userid.equals("") || password.equals("") || user.deactivated==1)
+if(!user.exist(userid) || userid==null || password==null || userid.trim().equals("") || password.trim().equals("") || user.deactivated==1)
 {
 	infomessage.type="error";
 	if(!user.exist(userid)&& userid!=null && !userid.equals(""))
