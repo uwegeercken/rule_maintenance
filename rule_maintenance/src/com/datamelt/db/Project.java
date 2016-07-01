@@ -23,6 +23,7 @@ public class Project extends DatabaseRecord implements Loadable
 	private String databaseUserid;
 	private String databaseUserPassword;
 	private long numberOfRuleGroups;
+	private long numberOfRules;
 	private int privateProject;
 	private String objectClassname;
 	private String objectMethodGetter;
@@ -154,6 +155,11 @@ public class Project extends DatabaseRecord implements Loadable
 	public void loadRuleGroupsCount() throws Exception
 	{
 		numberOfRuleGroups = DbCollections.getAllRuleGroupsCount(getConnection(), this.getId());
+	}
+	
+	public void loadRulesCount() throws Exception
+	{
+		numberOfRules = DbCollections.getRulesCount(getConnection(), this.getId());
 	}
 	
 	public void loadFields() throws Exception
@@ -340,6 +346,11 @@ public class Project extends DatabaseRecord implements Loadable
 	public long getNumberOfRuleGroups()
 	{
 		return numberOfRuleGroups;
+	}
+	
+	public long getNumberOfRules()
+	{
+		return numberOfRules;
 	}
 
 	public User getLastUpdateUser()

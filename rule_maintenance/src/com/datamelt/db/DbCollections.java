@@ -45,6 +45,7 @@ public class DbCollections
         	project.setId(rs.getLong("id"));
         	project.load();
         	project.loadRuleGroupsCount();
+        	project.loadRulesCount();
         	if(project.getPrivateProject()==1) 
         	{
         		if(user.canUpdateProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())
@@ -172,7 +173,7 @@ public class DbCollections
     public static ArrayList<Field> getAllFields(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select id from reference_fields where project_id=" + projectId +
-        	" order by id";
+        	" order by name_descriptive";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <Field>list = new ArrayList<Field>();
         while(rs.next())
@@ -453,14 +454,45 @@ public class DbCollections
         return numberOfRules;
     }
     
+    public static long getRulesCount(MySqlConnection connection, long projectId) throws Exception
+    {
+        String sql="SELECT count(rule.id) as numberOfRules"
+        		+ " FROM rule, rulesubgroup, rulegroup"
+        		+ " where rule.rulesubgroup_id = rulesubgroup.id"
+        		+ " and rulesubgroup.rulegroup_id = rulegroup.id"
+        		+ " and rulegroup.project_id = " + projectId;
+        		
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfRules=0;
+        if(rs.next())
+        {
+        	numberOfRules= rs.getLong("numberofrules");
+        }
+        rs.close();
+        return numberOfRules;
+    }
+    
     public static long getActionsCount(MySqlConnection connection) throws Exception
     {
-        String sql="select count(1) as numberofactions from rulegroupactions";
+        String sql="select count(1) as numberofactions from rulegroupaction";
         ResultSet rs = connection.getResultSet(sql);
         long numberOfActions=0;
         if(rs.next())
         {
         	numberOfActions= rs.getLong("numberofactions");
+        }
+        rs.close();
+        return numberOfActions;
+    }
+    
+    public static long getProjectsCount(MySqlConnection connection) throws Exception
+    {
+        String sql="select count(1) as numberofprojects from project";
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfActions=0;
+        if(rs.next())
+        {
+        	numberOfActions= rs.getLong("numberofprojects");
         }
         rs.close();
         return numberOfActions;

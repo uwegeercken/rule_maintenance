@@ -24,7 +24,7 @@ else
         project.setConnection(connection);
         project.setId(rulegroup.projectId);
         project.load();
-        project.loadsFields();
+        project.loadFields();
         context.put("project",project);
         
 		RuleSubgroup rulesubgroupNew = new RuleSubgroup();	

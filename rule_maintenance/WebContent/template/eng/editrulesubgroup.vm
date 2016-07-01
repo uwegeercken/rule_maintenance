@@ -4,7 +4,7 @@
 <div id="help">
 	<p>Edit the selected subgroup.</p>
 	<p>Enter the name and description of the subgroup.</p> 
-	<p>Specify the operator indicating how the subgroup is connected to the previous subgroup.</p>
+	<p>Specify the operator indicating how the subgroup is connected to the <b>previous</b> subgroup.</p>
 	<p>Specify the operator indicating how the rules in the subgroup are connected to each other.</p>
 </div>
 <div class="formbox">
