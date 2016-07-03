@@ -250,14 +250,21 @@ public class DbCollections
         return list;
     }
     
-    public static ArrayList<Rule> getSearchRules(MySqlConnection connection, User user, String searchTerm) throws Exception
+    public static ArrayList<Rule> getSearchRules(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
     {
         String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
         		+ " from rule, rulesubgroup, rulegroup"
         		+ " where rule.rulesubgroup_id = rulesubgroup.id and rulesubgroup.rulegroup_id = rulegroup.id"
         		+ " and (rule.name like " + "'%" + searchTerm + "%'"
-        		+ " or rule.description like "+ "'%" + searchTerm + "%')"
-        		+ " order by rule.name";	
+        		+ " or rule.description like "+ "'%" + searchTerm + "%')";
+        
+        if(searchDate!=null && !searchDate.trim().equals(""))
+        {
+        	sql = sql + " and rule.last_update >= '" + searchDate + "'";
+        }
+        
+        sql = sql + " order by rule.name";
+        
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<Rule> list = new ArrayList<Rule>();
         while(rs.next())
@@ -285,14 +292,21 @@ public class DbCollections
         return list;
     }
     
-    public static ArrayList<RuleGroupAction> getSearchActions(MySqlConnection connection, User user, String searchTerm) throws Exception
+    public static ArrayList<RuleGroupAction> getSearchActions(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
     {
         String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
         		+ " from rulegroupaction, rulegroup"
         		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
         		+ " and (rulegroupaction.name like " + "'%" + searchTerm + "%'"
-        		+ " or rulegroupaction.description like "+ "'%" + searchTerm + "%')"
-        		+ " order by rulegroupaction.name";	
+        		+ " or rulegroupaction.description like "+ "'%" + searchTerm + "%')";
+        		
+        if(searchDate!=null && !searchDate.trim().equals(""))
+        {
+        	sql = sql + " and rulegroupaction.last_update >= '" + searchDate + "'";
+        }
+        
+        sql = sql + " order by rulegroupaction.name";		
+
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<RuleGroupAction> list = new ArrayList<RuleGroupAction>();
         while(rs.next())

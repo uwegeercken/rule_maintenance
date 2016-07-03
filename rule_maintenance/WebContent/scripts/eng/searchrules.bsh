@@ -10,6 +10,7 @@ if(user==null)
 else
 {
 	searchterm=request.getParameter("searchterm");
+	searchdate=request.getParameter("searchdate");
 	String[] options = request.getParameterValues("options");
 	if(options.length >0)
 	{
@@ -18,20 +19,20 @@ else
 			String option = options[i];
 			if(option.equals("searchrules"))
 			{
-				ArrayList list = DbCollections.getSearchRules(connection, user, searchterm);
+				ArrayList list = DbCollections.getSearchRules(connection, user, searchterm, searchdate);
 				context.put("rules",list);
 				context.put("searchrules","searchrules");
 			}
 			if(option.equals("searchactions"))
 			{
-				ArrayList list = DbCollections.getSearchActions(connection, user, searchterm);
+				ArrayList list = DbCollections.getSearchActions(connection, user, searchterm,searchdate);
 				context.put("actions",list);
 				context.put("searchactions","searchactions");
 			}
-			
 		}
 	}
 	context.put("searchterm",searchterm);
+	context.put("searchdate",searchdate);
 	
 	templatename="search.vm";
 }

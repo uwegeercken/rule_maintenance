@@ -1,11 +1,11 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, June 2016
+last update: Uwe Geercken, July 2016
 
 version 1.8
 ===========
 - Added functionality to copy projects as a whole
-- New search function to search for rules and/or actions
+- New search function to search for rules and/or actions - also by date
 - updated listing of methods for checks
 - after updating now a "close" button is displayed
 - implemented reference fields for projects and remove the direct reference to Pentaho PDI transformations

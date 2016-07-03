@@ -31,4 +31,4 @@ Note 1: make sure that you have imported the database schema before you run the 
     along with this program.  If not, see http://www.gnu.org/licenses
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2016-06-21
+last update: 2016-07-03
