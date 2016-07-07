@@ -1,5 +1,6 @@
 import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.Rule;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import java.text.ParseException;
