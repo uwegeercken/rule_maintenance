@@ -1,6 +1,4 @@
 import com.datamelt.db.User;
-import com.datamelt.db.DbCollections;
-import com.datamelt.db.RssChannel;
 import com.datamelt.util.Message;
 import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;

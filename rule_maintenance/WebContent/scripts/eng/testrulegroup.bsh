@@ -1,5 +1,6 @@
 import java.io.*;
 import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
 import com.datamelt.db.Field;
 import com.datamelt.util.RuleGroupFileCreator;
 import java.text.SimpleDateFormat;
@@ -74,11 +75,11 @@ else
 		    	if(value!=null || fieldsToUpdate.contains(field.name))
 		    	{
 					field.testValue = value;
-			    	if(field.type.name.equals("date") && value!="")
+			    	if(field.type.name.equals("date"))
 			    	{
 			    		try
 			    		{
-			    			if(value!=null)
+			    			if(value!=null && value!="")
 			    			{
 			    				Date date = dateformat.parse (value); 
 			    				rowFieldCollection.addField(new RowField(field.name,date));
@@ -94,11 +95,11 @@ else
 			    			error = 1;
 			    		}
 			    	}
-			    	else if(field.type.name.equals("integer") && value!="")
+			    	else if(field.type.name.equals("integer") )
 			    	{
 			    		try
 			    		{
-			    			if(value!=null)
+			    			if(value!=null && value!="")
 			    			{
 			    				rowFieldCollection.addField(new RowField(field.name,Integer.parseInt(value)));
 			    			}
@@ -113,11 +114,11 @@ else
 			    			error = 1;
 			    		}
 			    	}
-			    	else if(field.type.name.equals("boolean") && value!="")
+			    	else if(field.type.name.equals("boolean"))
 			    	{
 			    		try
 			    		{
-			    			if(value!=null)
+			    			if(value!=null && value!="")
 			    			{
 			    				rowFieldCollection.addField(new RowField(field.name,Boolean.parseBoolean(value)));
 			    			}
@@ -132,11 +133,11 @@ else
 			    			error = 1;
 			    		}
 			    	}
-			    	else if(field.type.name.equals("long") && value!="")
+			    	else if(field.type.name.equals("long"))
 			    	{
 			    		try
 			    		{
-			    			if(value!=null)
+			    			if(value!=null && value!="")
 			    			{
 			    				rowFieldCollection.addField(new RowField(field.name,Long.parseLong(value)));
 			    			}
@@ -151,11 +152,11 @@ else
 			    			error = 1;
 			    		}
 			    	}
-			    	else if(field.type.name.equals("float") && value!="")
+			    	else if(field.type.name.equals("float"))
 			    	{
 			    		try
 			    		{
-			    			if(value!=null)
+			    			if(value!=null && value!="")
 			    			{
 			    				rowFieldCollection.addField(new RowField(field.name,Float.parseFloat(value)));
 			    			}
@@ -170,11 +171,11 @@ else
 			    			error = 1;
 			    		}
 			    	}
-			    	else if(field.type.name.equals("double") && value!="")
+			    	else if(field.type.name.equals("double"))
 			    	{
 					try
 					{
-						if(value!=null)
+						if(value!=null && value!="")
 						{
 			    				rowFieldCollection.addField(new RowField(field.name,Double.parseDouble(value)));
 			    			}

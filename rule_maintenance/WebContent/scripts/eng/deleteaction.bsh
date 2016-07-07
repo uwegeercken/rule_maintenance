@@ -1,4 +1,6 @@
 import java.sql.PreparedStatement;
+import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
 
 writeaction="true";
 cancelled= request.getParameter("submit");

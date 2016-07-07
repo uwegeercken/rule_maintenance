@@ -1,3 +1,4 @@
+import com.datamelt.db.User;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 

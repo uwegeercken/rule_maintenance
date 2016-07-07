@@ -1,3 +1,4 @@
+import com.datamelt.db.Project;
 import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
@@ -206,8 +207,6 @@ else
 		rulegroupNew.load();
 		context.put("rulegroup",rulegroupNew);
 		templatename="editrulegroup.vm";
-		
-
 	}
 	else
 	{
@@ -216,6 +215,4 @@ else
 		
 		templatename="listrulegroups.vm";
 	}
-	
-
 }

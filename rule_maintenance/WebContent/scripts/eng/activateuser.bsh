@@ -1,4 +1,5 @@
 import java.sql.PreparedStatement;
+import com.datamelt.db.User;
 
 adminaction="true";
 cancelled= request.getParameter("submit");
