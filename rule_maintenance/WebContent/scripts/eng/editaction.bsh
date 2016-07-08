@@ -79,7 +79,7 @@ else
 			{
 				actionNew.object2Parameter = request.getParameter("object2_parameter");
 				actionNew.object2Parametertype.id = 1;
-				actionNew.object2Type.id = request.getParameter("object2_type_id");
+				actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
 			}
 			else
 			{
