@@ -536,6 +536,15 @@ public class DbCollections
     	psHistory.executeUpdate();    			
     }
     
+    public static void deleteUserHistory(MySqlConnection connection, User user) throws Exception
+    {
+    	String deleteSql = "delete from history where user_id=?";
+    	PreparedStatement psHistory = connection.getPreparedStatement(deleteSql);
+    	
+    	psHistory.setLong(1, user.getId());
+    	psHistory.executeUpdate();    			
+    }
+    
     public static void deleteReferenceFields(MySqlConnection connection, long projectId) throws Exception
     {
     	String deleteSql = "delete from reference_fields where project_id=?";

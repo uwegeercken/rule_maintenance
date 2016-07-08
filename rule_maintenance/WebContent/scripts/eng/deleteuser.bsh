@@ -1,6 +1,5 @@
 import com.datamelt.db.User;
 import java.sql.PreparedStatement;
-import java.text.SimpleDateFormat;
 
 adminaction="true";
 cancelled= request.getParameter("submit");

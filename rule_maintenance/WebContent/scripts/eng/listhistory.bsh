@@ -6,9 +6,7 @@ if(user==null)
 }
 else
 {
-		ArrayList list;
-		list = DbCollections.getUserHistory(connection, user);
+		ArrayList list = DbCollections.getUserHistory(connection, user);
 		context.put("history",list);
 		templatename="listhistory.vm";
-		
 }

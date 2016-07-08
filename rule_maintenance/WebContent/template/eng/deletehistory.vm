@@ -1,0 +1,20 @@
+#set($pagetitle='Delete History')
+<p class="heading">Delete History</p>
+<form method="POST" action="process?action=bsh&scriptname=deletehistory"> 
+<div class="unit">
+	<div class="grouptop">
+		<p class="small">user</p>
+		<p class="big">$!{dbuser.name}</p>
+		<p class="normal">userid: $!dbuser.userid</p>
+		<p class="normal">groups: $!{dbuser.getGroupsAsString()}</p>
+
+	</div>
+</div>
+<div class="bottomtext"> 
+<p>Are you sure you want to delete your complete history? This can not be undone!</p>
+<p><input type="submit" value="delete history" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
+</div>	
+</form>
+<br>
+<br>
+<br>

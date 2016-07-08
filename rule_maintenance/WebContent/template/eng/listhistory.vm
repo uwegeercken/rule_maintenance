@@ -2,6 +2,7 @@
 <p class="heading">History</p>
 <p>
 	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
+	<a href="process?action=bsh&ro=1&scriptname=selectdeletehistory"><img id="helpimg" height="22" width="22" src="img/remove.png" title="delete history"></a>
 </p>
 <div id="help">
 	<p>History. List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated. Click on the link to update the item again.</p>

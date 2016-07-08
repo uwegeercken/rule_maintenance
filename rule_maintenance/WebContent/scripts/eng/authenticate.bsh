@@ -2,6 +2,7 @@ import com.datamelt.db.User;
 import com.datamelt.util.Message;
 import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
+import java.util.Random;
 
 userid = request.getParameter("userid");
 password = request.getParameter("password");
@@ -45,6 +46,13 @@ else
 		PreparedStatement ps = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
 		user.updateLastLogin(ps,dateTime.format(new Date()));
 		
+		Random rand= new Random();
+		int min=1;
+		int max=2;
+		int randomNum = rand.nextInt((max - min) + 1) + min;	
+
+		context.put("shotnumber",randomNum);
+
 		templatename="welcome.vm";
 	}
 	else

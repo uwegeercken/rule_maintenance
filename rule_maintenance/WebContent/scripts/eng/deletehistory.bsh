@@ -1,0 +1,13 @@
+import com.datamelt.db.User;
+
+cancelled= request.getParameter("submit");
+
+if(cancelled.equals("delete history"))
+{
+	DbCollections.deleteUserHistory(connection, user);
+}
+
+ArrayList list = DbCollections.getUserHistory(connection, user);
+context.put("history",list);
+
+templatename="listhistory.vm";
