@@ -11,7 +11,8 @@
 	</div>
 </div>
 <div class="bottomtext"> 
-<p>Are you sure you want to delete your complete history? This can not be undone!</p>
+<p>Are you sure you want to delete your complete history? Only the history of the user shown will be deleted; the history of other users is not affected.</p>
+<p>This action can not be undone!</p> 
 <p><input type="submit" value="delete history" name="submit"><input type="submit" value="cancel delete" name="submit"></p>
 </div>	
 </form>

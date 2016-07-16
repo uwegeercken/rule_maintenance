@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 
@@ -280,6 +282,11 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	{
 		return name;
 	}
+	
+	public String getNameXMLEscaped()
+	{
+		return StringEscapeUtils.escapeXml(name);
+	}
 
 	public void setName(String name) 
 	{
@@ -289,6 +296,11 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	public String getDescription() 
 	{
 		return description;
+	}
+
+	public String getDescriptionXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(description);
 	}
 
 	public void setDescription(String description) 

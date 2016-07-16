@@ -171,11 +171,11 @@
 	</table>
 	</div>
 	<ul>
-		<li>Enter string values as regular text</li>
-		<li>Enter date values in the format yyyy-MM-dd (e.g. 2016-05-25)</li>
-		<li>Enter integer and long values as numbers without decimal point and precision (e.g. 12345)</li>
-		<li>Enter float and double values as numbers with decimal point and precision (e.g. 567.89)</li>
-		<li>Select boolean values from the dropdown list</li>
+		<li>Enter &quot;string&quot; values as regular text</li>
+		<li>Enter &quot;date&quot; values in the format yyyy-MM-dd (e.g. 2016-05-25) or select them from the calendar</li>
+		<li>Enter &quot;integer&quot; and &quot;long&quot; values as numbers without decimal point and precision (e.g. 12345)</li>
+		<li>Enter &quot;float&quot; and &quot;double&quot; values as numbers with decimal point and precision (e.g. 567.89)</li>
+		<li>Select &quot;boolean&quot; values from the dropdown list</li>
 	</ul>
 </div>
 <div class="unitclear">

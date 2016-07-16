@@ -131,6 +131,7 @@ $(document).ready(function() {
   $( "#helpimg" ).click(function() {
 		$("#help").toggle();
   });
+  
   $( "#testimg" ).click(function() {
 		$("#help").hide();
 		$("#listrulegroup").toggle();

@@ -3,6 +3,8 @@ package com.datamelt.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 
@@ -326,6 +328,11 @@ public class Rule extends DatabaseRecord implements Loadable
 		return name;
 	}
 
+	public String getNameXMLEscaped()
+	{
+		return StringEscapeUtils.escapeXml(name);
+	}
+
 	public void setName(String name) 
 	{
 		this.name = name;
@@ -334,6 +341,11 @@ public class Rule extends DatabaseRecord implements Loadable
 	public String getDescription() 
 	{
 		return description;
+	}
+
+	public String getDescriptionXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(description);
 	}
 
 	public void setDescription(String description) 
@@ -446,6 +458,11 @@ public class Rule extends DatabaseRecord implements Loadable
 		return messagePassed;
 	}
 
+	public String getMessagePassedXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(messagePassed);
+	}
+
 	public void setMessagePassed(String messagePassed) 
 	{
 		this.messagePassed = messagePassed;
@@ -454,6 +471,11 @@ public class Rule extends DatabaseRecord implements Loadable
 	public String getMessageFailed() 
 	{
 		return messageFailed;
+	}
+
+	public String getMessageFailedXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(messageFailed);
 	}
 
 	public void setMessageFailed(String messageFailed) 
