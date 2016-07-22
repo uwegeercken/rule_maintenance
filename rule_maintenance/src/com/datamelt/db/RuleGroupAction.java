@@ -507,6 +507,18 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	{
 		return executeIf;
 	}
+	
+	public int getExecuteIfInteger() 
+	{
+		if(executeIf.equals("passed"))
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
+	}
 
 	public void setExecuteIf(String executeIf) 
 	{

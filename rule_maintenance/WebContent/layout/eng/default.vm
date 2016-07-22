@@ -55,7 +55,7 @@ $(document).ready(function() {
 		var check=$("#check option:selected").text();
 		var checktype=$("#check option:selected").data("type");
 		
-		var partialmessage = "Field " + field + " $1 correctly " + check;
+		var partialmessage = "Field [" + field + "] $1 correctly " + check;
 		if(checktype==1)
 		{
 			$("#messagepassed").val(partialmessage);
@@ -68,7 +68,7 @@ $(document).ready(function() {
 			}
 			else if(field2)
 			{
-				$("#messagepassed").val(partialmessage + " field " + field2 + " $0");
+				$("#messagepassed").val(partialmessage + " field [" + field2 + "] $0");
 			}
 			else
 			{
@@ -105,7 +105,7 @@ $(document).ready(function() {
 		var check=$("#check option:selected").text();
 		var checktype=$("#check option:selected").data("type");
 		
-		var partialmessage = "Field " + field + " $1 incorrectly not " + check;
+		var partialmessage = "Field [" + field + "] $1 incorrectly not " + check;
 		
 		if(checktype==1)
 		{
@@ -119,7 +119,7 @@ $(document).ready(function() {
 			}
 			else if(field2)
 			{
-				$("#messagefailed").val(partialmessage + " field " + field2 + " $0");
+				$("#messagefailed").val(partialmessage + " field [" + field2 + "] $0");
 			}
 			else
 			{

@@ -31,7 +31,7 @@
 			<img class="testimg" id="testimg" height="22" width="22" src="img/test.png" title="test rule group">
 		#end
 			<p class="small">rulegroup</p>
-			<p class="big">$!{rulegroup.name} #if($results && $rulegroupfailed==1)<img height="22" width="22" src="img/rule_failed.png" title="rule group failed">#elseif($results && $rulegroupfailed==0)<img height="22" width="22" src="img/rule_passed.png" title="rule group passed">#end</p>
+			<p class="big">$!{rulegroup.name} #if($results && $rulegroupfailed==1)<img height="22" width="22" src="img/failed.png" title="rule group failed">#elseif($results && $rulegroupfailed==0)<img height="22" width="22" src="img/passed.png" title="rule group passed">#end</p>
 			<p class="normal">$!{rulegroup.description}</p>
 		</div>
 		<div>
@@ -87,7 +87,7 @@
 					#set($ruleresult=$!{results.getSubgroupRuleResult(${rulesubgroup.name},${rule.name})})
 					#end
 					#if($ruleresult)
-						<p class="big">${rule.name} #if(${ruleresult.rule.failed}==1)<img height="22" width="22" src="img/rule_failed.png" title="rule failed">#else<img height="22" width="22" src="img/rule_passed.png" title="rule passed">#end</p>
+						<p class="big">${rule.name} #if(${ruleresult.rule.failed}==1)<img height="22" width="22" src="img/failed.png" title="rule failed">#else<img height="22" width="22" src="img/passed.png" title="rule passed">#end</p>
 						<p class="normal">$!{ruleresult.getMessage()}</p>
 					#else
 						<p class="big">${rule.name}</p>
@@ -119,9 +119,13 @@
 				#end
 				<div class="grouptopaction">
 					<p class="small">action</p>
-					<p class="big">$action.name</p>
+					<p class="big">$action.name #if($results && $action.executeIfInteger==$rulegroupfailed)<img height="22" width="22" src="img/passed.png" title="action executed">#elseif($results && $action.executeIfInteger!=$rulegroupfailed)<img height="22" width="22" src="img/failed.png" title="action not executed">#end</p>
 					<p class="normal">$action.description</p>
-					<p class="normal">$action.actionLogic</p>
+					#if($ruleresult && $action.executeIfInteger==$rulegroupfailed)
+						<p class="normal">field: [$action.object2Parameter] updated to: [$row.getFieldValue($action.object2Parameter)]</p>
+					#else
+						<p class="normal">$action.actionLogic</p>
+					#end
 				</div>
 				<div>
 					<p class="small">execute action when: $action.executeIf</p>
