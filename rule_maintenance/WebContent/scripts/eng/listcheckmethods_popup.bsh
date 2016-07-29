@@ -1,0 +1,23 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Check;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		checkId=Long.parseLong(request.getParameter("id"));
+		
+		Check check = new Check();
+		check.connection = connection;
+		check.id = checkId;
+		check.load();
+		context.put("check",check);
+		
+		ArrayList list = DbCollections.getAllCheckMethods(connection, checkId);
+		context.put("methods",list);
+
+	
+		templatename="listcheckmethods_popup.vm";
+}

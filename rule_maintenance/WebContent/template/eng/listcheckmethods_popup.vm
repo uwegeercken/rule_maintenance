@@ -1,0 +1,28 @@
+#set($pagetitle='List of Methods')
+#set($layout="eng/layout_logic.vm")
+<p class="heading">List of Methods ($methods.size()) for Check: ${check.name}</p>
+
+<table border="0" width="100%">
+	<tr class="light">
+		<td width="20%">Compare</td>
+		<td width="40%">Additional Parameter</td>
+		<td width="40%">Note</td>
+	<tr>
+	#set($counter=0)
+	#foreach($method in $methods)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>${method.compare} #if(${method.compareTo}) to ${method.compareTo}#end</td>
+		#if($!{method.parameter1})
+			<td>$!{method.parameter1} - $!{method.parameter1Explanation}</td>
+		#else
+			<td></td>
+		#end
+		<td>$!method.note</td>
+		</tr>
+		#set($counter=$counter +1)
+	#end
+</table>

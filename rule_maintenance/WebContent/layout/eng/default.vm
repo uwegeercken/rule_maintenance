@@ -8,6 +8,7 @@
 <script type="text/javascript" src="jquery/jquery-2.1.3.js"></script>
 <script src="jquery/jquery-ui.js"></script>
 <script src="jquery/jstorage.js"></script>
+<script src="jquery/jquery.bpopup.min.js"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 
@@ -125,9 +126,32 @@ $(document).ready(function() {
 			{
 				$("#messagefailed").val(partialmessage);
 			}
-		
 		}
   });
+  
+  $(function() {
+
+	    $('#popup').on('click', function(e) {
+			var id=$("#check option:selected").val() || $("#action option:selected").val();
+			var baseurl="process?action=bsh&ro=1&scriptname=";
+			var suffix="&id=";
+			var url= $("#popupurl").text();
+	        // Prevents the default action to be triggered. 
+	        e.preventDefault();
+	
+	        if(id!=0)
+	        {
+	        // Triggering bPopup when click event is fired
+	        $('#element_to_pop_up').bPopup({
+	        		loadUrl: baseurl + url + suffix + id,
+	        		transitionClose: true,
+	        		transition: 'fadeln',
+	        		speed: 700
+	        })
+	        }
+	    });
+  });
+  
   $( "#helpimg" ).click(function() {
 		$("#help").toggle();
   });

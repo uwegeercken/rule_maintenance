@@ -1,0 +1,45 @@
+#set($pagetitle='List of Methods')
+#set($layout="eng/layout_logic.vm")
+<p class="heading">List of Methods ($methods.size()) for Action: ${action.methoddisplayname}</p>
+
+<table border="0" width="100%">
+	<tr class="light">
+		<td width="20%">Method Types</td>
+		<td width="25%">Parameter 1</td>
+		<td width="20%">Parameter 2</td>
+		<td width="20%">Parameter 3</td>
+		<td width="15%">Returns</td>
+	<tr>
+	#set($counter=0)
+	#foreach($method in $methods)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>$!{method.methodTypes}</td>
+		#if($!{method.optionalType1})
+			<td>$!{method.optionalType1} - $!{method.optionalType1Explanation}</p>
+		#else
+			<td></td>
+		#end
+		#if($!{method.optionalType2})
+			<td>$!{method.optionalType2} - $!{method.optionalType3Explanation}</p>
+		#else
+			<td></td>
+		#end
+		#if($!{method.optionalType3})
+			<td>$!{method.optionalType3} - $!{method.optionalType3Explanation}</p>
+		#else
+			<td></td>
+		#end
+		#if($!{method.returnType})
+			<td>${method.returnType}</td>
+		#else
+			<td></td>
+		#end
+		</tr>
+		#set($counter=$counter +1)
+	#end
+</table>
+

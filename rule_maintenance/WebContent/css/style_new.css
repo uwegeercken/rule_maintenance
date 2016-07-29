@@ -35,6 +35,23 @@ body
     border-width: 0;
 }
 
+#element_to_pop_up
+{
+	background-color:#fff;
+    border-radius:15px;
+    color:#000;
+    display:none; 
+    padding:20px;
+    min-width:50%;
+    min-height: 50%;
+}
+
+#popupurl
+{
+	display:none;
+	
+}
+
 img
 {
 	border: none;
@@ -344,7 +361,7 @@ tr.light2 > td
 
 td.title
 {
-	font: normal 16pt/1.6 verdana, sans-serif;
+	font: normal 12pt/1.6 verdana, sans-serif;
 }
 
 div.data {

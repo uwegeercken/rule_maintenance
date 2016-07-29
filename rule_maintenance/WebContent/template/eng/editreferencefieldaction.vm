@@ -65,7 +65,7 @@
 	<tr>
 		<td>Action:</td>
 		<td>		
-			<select name="action_id" size="1">
+			<select id="action" name="action_id" size="1">
 			<option value="0"></option>
 			#foreach($actiontype in $actions)
 				#if(${action.action.id}==${actiontype.id})
@@ -75,6 +75,10 @@
 				#end
 			#end
     		</select>
+    		<img id="popup" src="img/help_black.png" height="22" width="22" title="display action methods">
+    		<p id="popupurl">listactionmethods_popup</p>
+    		<div id="element_to_pop_up"></div>
+    		
 		</td>		
 	</tr>
 	<tr>
