@@ -24,10 +24,18 @@
 			<td class="printheadingbold" width="25%">Subgroup:</td>
 			<td class="printheading" width="75%">$rulesubgroup.name</td>
 		</tr>
+		#if($subgroupcounter>0)
 		<tr>
 			<td width="25%"></td>
-			<td class="printheading" width="75%">#if($subgroupcounter < ${rulegroup.ruleSubgroups.size()})connector: $!rulesubgroup.intergroupOperator#end</td>
+			<td class="printheading" width="75%">#if($subgroupcounter < ${rulegroup.ruleSubgroups.size()})connector to previous subgroup: $!rulesubgroup.intergroupOperator#end</td>
 		</tr>
+		#end
+		#if($rulesubgroup.rules.size()>1)
+		<tr>
+			<td width="25%"></td>
+			<td class="printheading" width="75%">connector between rules: $!rulesubgroup.ruleOperator</td>
+		</tr>
+		#end
 	</table>
 	<table width="99%" border="0">
 		<tr>

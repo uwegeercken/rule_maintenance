@@ -2,7 +2,8 @@
 <p class="heading">List of Checks ($checks.size())</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a target="_external" href="documents/ruleengine_checks.pdf"><img id="docimg" height="22" width="22" src="img/pdf.png" title="documentation"></a></p>
 <div id="help">
-	<p>List of available Checks. A check is used to verify a certain condition of the data. Usually a value against another value, but some checks test one specific value (e.g. if it is not null, a negative numer, etc). You may extend the functionality of the rule engine by defining your own checks.</p>
+	<p>List of Checks</p>
+	<p>A check is used to verify a certain condition of the data. Usually a value against another value, but some checks test one specific value (e.g. if it is not null, a negative numer, etc). You may extend the functionality of the rule engine by defining your own checks.</p>
 </div>
 <p>Filter: <input id="search" searchtype="checks" type="text"></p>
 #foreach($check in $checks)

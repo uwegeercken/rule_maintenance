@@ -2,7 +2,8 @@
 <p class="heading">User List ($users.size())</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=selectedituser&id=0&mode=add"><img class="add_external" height="22px" width="22px" src="img/user_add.png" title="add user"></a></p>
 <div id="help">
-	<p>List of available Users with access to this application. Users may be in one or more groups, giving them appropriate security access to the projects.</p>
+	<p>List of Users</p>
+	<p>Lists users with access to this application. Users may be in one or more groups, giving them appropriate security access to the projects.</p>
 	<p>Users may be deactivated, so they can not access the application anymore.</p>
 	<p><img height="22" width="22" src="img/user_add.png">&nbsp;add new user&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit user&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;deactivate user</p>
 </div>

@@ -2,7 +2,7 @@
 <p class="heading">Import Project Reference Fields - Project: ${project.name}</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Reference Fields List"></a></p>
 <div id="help">
-	<p>Import the reference fields from a CSV file.</p>
+	<p>Import reference fields from a CSV file.</p>
 	<p>You may import the reference fields for a project from a CSV file. The CSV file needs to have 4 columns which are separated by a semicolon:</p>
 	<p>
 		Column 1: contains the name of the reference field.</br>

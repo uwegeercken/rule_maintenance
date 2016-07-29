@@ -11,7 +11,7 @@
 	<li>Beanshell scripts for on-the-fly code maintenance.</li>
 	<li>Velocity Template Engine. Gives flexibility in design, splits development from web-design and is very fast.</li>
 	<li>MySql Database. Most used open-source database worldwide. Relational, transactional, fast and modern. Easy to deploy, manage and maintain.</li>
-	<li>jQuery libraries for advanced functions and features when working with HTML</li>
+	<li>jQuery libraries for advanced functions, features and user experience.</li>
 </ul>
 <br>
 <p>Requirements for this application:</p>

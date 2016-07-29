@@ -70,13 +70,13 @@ else
 						Field field = new Field();	
 						field.connection = connection;
 						field.projectId = id;
-						field.name=row[0];
-						field.nameDescriptive=row[1];
-						field.description=row[2];
+						field.name=row[0].trim();
+						field.nameDescriptive=row[1].trim();
+						field.description=row[2].trim();
 						
 						Type type = new Type();
 						type.connection = connection;
-						type.name = row[3].toLowerCase();
+						type.name = row[3].toLowerCase().trim();
 						type.loadByName();
 						
 						field.javaTypeId= type.getId();

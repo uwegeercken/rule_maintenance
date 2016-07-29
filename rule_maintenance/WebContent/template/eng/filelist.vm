@@ -2,7 +2,8 @@
 <p class="heading">File List (scripts: $filelist.size(), templates: $templateslist.size())</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&scriptname=selecteditfile&mode=add"><img class="add_external" height="22px" width="22px" src="img/file_add.png" title="add file">&nbsp;</a><a href="process?action=bsh&scriptname=selecteditmenu&name=menu.vm">&nbsp;&nbsp;<img class="edit_external" height="22px" width="22px" src="img/menu.png" title="edit menu"></a></p>
 <div id="help">
-	<p>List of available files beanshell scripts and apache velocity templates.</p>
+	<p>List of Source files</p>
+	<p>List of Beanshell scripts and Apache Velocity templates. These may be updated here to dynamically change the web application on the fly.</p>
 	<p><img height="22" width="22" src="img/file_add.png">&nbsp;add file&nbsp;<img height="22" width="22" src="img/menu.png">&nbsp;edit menu&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit file&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete file</p>
 </div>
 
