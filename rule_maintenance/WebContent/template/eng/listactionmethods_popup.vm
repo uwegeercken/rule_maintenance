@@ -1,14 +1,14 @@
 #set($pagetitle='List of Methods')
 #set($layout="eng/layout_logic.vm")
-<p class="heading">List of Methods ($methods.size()) for Action: ${action.methoddisplayname}</p>
+<p class="heading">List of Methods ($methods.size()) for Action: ${action.methoddisplayname} - ${action.description}</p>
 
 <table border="0" width="100%">
 	<tr class="light">
-		<td width="20%">Method Types</td>
-		<td width="25%">Parameter 1</td>
-		<td width="20%">Parameter 2</td>
-		<td width="20%">Parameter 3</td>
-		<td width="15%">Returns</td>
+		<td width="30%">Field or Parameters</td>
+		<td width="20%">optional Parameter</td>
+		<td width="20%">optional Parameter</td>
+		<td width="20%">optional Parameter</td>
+		<td width="10%">Returns</td>
 	<tr>
 	#set($counter=0)
 	#foreach($method in $methods)

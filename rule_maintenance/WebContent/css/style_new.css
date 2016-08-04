@@ -351,12 +351,12 @@ tr.light > td
 	background: #f06343;
 	color: #d8d8d8;
 	border-radius: 4px;
+	padding: 4px;
 }
 
 tr.light2 > td
 {
 	background:  #E8E8E8;
-	
 }
 
 td.title
