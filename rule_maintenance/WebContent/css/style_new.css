@@ -359,6 +359,11 @@ tr.light2 > td
 	background:  #E8E8E8;
 }
 
+td
+{
+	padding: 4px;
+}
+
 td.title
 {
 	font: normal 12pt/1.6 verdana, sans-serif;

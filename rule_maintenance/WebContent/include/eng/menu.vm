@@ -15,6 +15,7 @@
 	<ul>	
 		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=listhistory">history</a></li>
+		<li><a href="process?action=bsh&ro=1&scriptname=listactivity">activity</a></li>
 		<li><a href="process?action=bsh&ro=1&scriptname=selectsearch">search</a></li>
 	</ul>
 	<ul>

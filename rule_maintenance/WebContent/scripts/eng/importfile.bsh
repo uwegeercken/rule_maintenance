@@ -70,6 +70,12 @@ else
 				
 				f.delete();
 				
+				Activity activity = new Activity();
+				activity.connection = connection;
+				activity.user = user;
+				activity.message = "Imported file [" + fileName + "] into project [" + project.name +"]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				
 			}
 			catch(FileNotFoundException fnfe)
 			{

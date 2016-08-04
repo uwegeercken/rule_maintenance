@@ -1,5 +1,6 @@
 import java.io.*;
 import com.datamelt.db.Project;
+import com.datamelt.db.Activity;
 import com.datamelt.util.RuleGroupFileCreator;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -55,6 +56,12 @@ else
 			fileCreator.writeFiles(project);
 			String fileName = fileCreator.zipFiles(project);
 
+			Activity activity = new Activity();
+			activity.connection = connection;
+			activity.user = user;
+			activity.message = "Exported project [" + project.name + "]";
+			activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+			
 			response.setContentType("application/zip");  
 		    response.setHeader("Content-Disposition","attachment;filename=\"" + project.name + ".zip\"");
 			

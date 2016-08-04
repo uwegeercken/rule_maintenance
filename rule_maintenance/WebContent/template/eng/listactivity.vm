@@ -1,0 +1,29 @@
+#set($pagetitle='Activities')
+<p class="heading">Activities</p>
+<p>
+	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
+</p>
+<div id="help">
+	<p>Activities</p>
+	<p>List the recent activities in descending ordered by date.</p>
+</div>
+<table border="0" width="98%" align="center">
+	<tr class="light">
+		<td width="20%">Date/Time</td>
+		<td width="20%">User</td>
+		<td width="60%">Activity</td>
+	<tr>
+	#set($counter=0)
+	#foreach($activity in $activities)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>$!{activity.date}</td>
+		<td>$!{activity.user.name} ($!{activity.user.userid})</td>
+		<td>$!{activity.message}</td>				
+		</tr>
+		#set($counter=$counter +1)
+	#end
+</table>

@@ -439,8 +439,7 @@ public class DbCollections
     
     public static ArrayList <Type> getAllTypes(MySqlConnection connection) throws Exception
     {
-        String sql="select id from types" + 
-        	" order by id";
+        String sql="select id from types order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <Type> list = new ArrayList<Type>();
         while(rs.next())
@@ -450,6 +449,23 @@ public class DbCollections
         	type.setId(rs.getLong("id"));
         	type.load();
             list.add(type);
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static ArrayList <Activity> getActivities(MySqlConnection connection) throws Exception
+    {
+        String sql="select id from activity_log order by last_update desc limit 40";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <Activity> list = new ArrayList<Activity>();
+        while(rs.next())
+        {
+        	Activity activity = new Activity();
+        	activity.setConnection(connection);
+        	activity.setId(rs.getLong("id"));
+        	activity.load();
+            list.add(activity);
         }
         rs.close();
         return list;
