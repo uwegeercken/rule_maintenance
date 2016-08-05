@@ -1,4 +1,5 @@
 import com.datamelt.db.User;
+import com.datamelt.db.Activity;
 import java.sql.PreparedStatement;
 
 adminaction="true";
@@ -11,9 +12,16 @@ if(cancelled.equals("delete user"))
 	User dbuser = new User();
 	dbuser.connection = connection;
 	dbuser.id= id;
+	dbuser.load();
 	
 	PreparedStatement ps = connection.getPreparedStatement(User.DELETE_SQL);
 	dbuser.delete(ps, user);
+	
+	Activity activity = new Activity();
+	activity.connection = connection;
+	activity.user = user;
+	activity.message = "Deleted user [" + dbuser.name +"], userid [" + dbuser.userid +"]";
+	activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 }
 
 ArrayList list = DbCollections.getAllDeactivatedUsers(connection);

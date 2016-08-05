@@ -1,4 +1,5 @@
 import com.datamelt.db.Group;
+import com.datamelt.db.Activity;
 import com.datamelt.db.DbCollections;
 
 adminaction="true"; 
@@ -56,6 +57,12 @@ else
 				context.put("mode","inserted");
 				group.load();
 				infomessage.text="Group added.";
+				
+				Activity activity = new Activity();
+				activity.connection = connection;
+				activity.user = user;
+				activity.message = "Added group [" + group.name +"], description [" + group.description +"]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 			}
 			else if(group.exist(name) && name.length()>0)
 			{

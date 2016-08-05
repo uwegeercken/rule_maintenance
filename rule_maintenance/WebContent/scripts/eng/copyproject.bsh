@@ -1,4 +1,5 @@
 import com.datamelt.db.Project;
+import com.datamelt.db.Activity;
 import com.datamelt.db.User;
 import java.util.zip.ZipFile;
 import javax.servlet.http.Part;
@@ -54,6 +55,14 @@ else
 			copyProject.copy(project, user);
 			context.put("mode","inserted");
 			infomessage.text="Project, rulegroups, subgroups, rules and actions copied";
+			
+			project.load();
+			
+			Activity activity = new Activity();
+			activity.connection = connection;
+			activity.user = user;
+			activity.message = "Copied project [" + copyProject.name +"], description [" + copyProject.description +"] to project [" + project.name +"], description [" + project.description +"], group [" +project.group.name + "]";
+			activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 		}
 		else if(project.exist(name) && name.length()>0)
 		{

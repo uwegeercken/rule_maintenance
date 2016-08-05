@@ -1,5 +1,6 @@
 import java.sql.PreparedStatement;
 import com.datamelt.db.User;
+import com.datamelt.db.Activity;
 
 adminaction="true";
 cancelled= request.getParameter("submit");
@@ -11,11 +12,18 @@ if(cancelled.equals("activate user"))
 	User dbuser = new User();
 	dbuser.connection = connection;
 	dbuser.id= id;
+	dbuser.load();
 	dbuser.deactivated=0;
 	dbuser.deactivatedDate = null; 
 
 	PreparedStatement ps = connection.getPreparedStatement(User.ACTIVATE_DEACTIVATE_SQL);
 	dbuser.activate(ps, user);
+	
+	Activity activity = new Activity();
+	activity.connection = connection;
+	activity.user = user;
+	activity.message = "Re-activated user [" + dbuser.name +"], userid [" + dbuser.userid +"]";
+	activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 	
 	ArrayList list = DbCollections.getAllUsers(connection);
 	context.put("users",list);

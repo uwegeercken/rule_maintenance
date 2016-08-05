@@ -1,4 +1,5 @@
 import com.datamelt.db.User;
+import com.datamelt.db.Activity;
 import com.datamelt.db.DbCollections;
 import com.datamelt.util.PasswordUtility;
  
@@ -77,6 +78,12 @@ else
 				}
 				dbUser.loadGroups();
 				infomessage.text="User added. Password: " + password;
+				
+				Activity activity = new Activity();
+				activity.connection = connection;
+				activity.user = user;
+				activity.message = "Added user [" + name +"], userid [" + userid +"]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 			}
 			else if(dbUser.exist(userid)&& userid.length()>0)
 			{

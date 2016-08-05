@@ -1,4 +1,5 @@
 import com.datamelt.db.User;
+import com.datamelt.db.Activity;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 
@@ -12,6 +13,7 @@ if(cancelled.equals("deactivate user"))
 	User dbuser = new User();
 	dbuser.connection = connection;
 	dbuser.id= id;
+	dbuser.load();
 	dbuser.deactivated=1;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -21,6 +23,12 @@ if(cancelled.equals("deactivate user"))
 	dbuser.deactivate(ps, user);
 	
 	dbuser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS),user);
+	
+	Activity activity = new Activity();
+	activity.connection = connection;
+	activity.user = user;
+	activity.message = "Deactivated user [" + dbuser.name +"], userid [" + dbuser.userid +"], group memberships deleted";
+	activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 }
 
 ArrayList list = DbCollections.getAllUsers(connection);

@@ -2,6 +2,7 @@ import com.datamelt.db.Project;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.Group;
+import com.datamelt.db.Activity;
 
 writeaction="true"; 
 if(user==null)
@@ -107,6 +108,12 @@ else
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				context.put("mode","inserted");
 				project.load();
+				
+				Activity activity = new Activity();
+				activity.connection = connection;
+				activity.user = user;
+				activity.message = "Added project [" + project.name +"], description [" + project.description +"], group [" + project.group.name + "]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 				
 				History history = new History();
 				history.connection = connection;
