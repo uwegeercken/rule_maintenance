@@ -5,7 +5,8 @@
 	<li><a target="_external" href="documents/rule_engine_presentation_english.pdf">Business Rule Engine presentation - English</a></li>
 	<li><a target="_external" href="documents/business_rules_maintenance_web_application.pdf">Business Rule Maintenance Web Application - setup, concept and workflow details</a></li>
 	<li><a target="_external" href="documents/ruleengine_checks.pdf">List of available Ruleengine Checks</a></li>
-	<li><a target="_external" href="documents/ruleengine_actions.pdf">List of available Ruleengine Actions</a></li>	
+	<li><a target="_external" href="documents/ruleengine_actions.pdf">List of available Ruleengine Actions</a></li>
+	<li><a target="_external" href="documents/ruleengine_real-life_sample_rent-a-ferrari.pdf">Sample: Business logic for &quot;How to rent a Ferrari&quot;</a></li>		
 </ul>
 <br>
 <p>Below are the external links to my GitHub repositories where the documentation, source code, libraries and other tools are available. You will always find the latest versions of the tools there.</p>

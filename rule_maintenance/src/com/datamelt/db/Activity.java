@@ -1,12 +1,8 @@
 package com.datamelt.db;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Calendar;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;

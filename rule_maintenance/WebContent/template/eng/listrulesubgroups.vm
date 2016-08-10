@@ -11,7 +11,7 @@
 <div id="help">
 	<p>List of Subgroups, Rules and Actions</p>
 	<p>Subgroups are connected to the previous subgroup by [and] or [or]. Rules in a subgroup are connected by [and] or [or]. Actions apply to the whole rule group.</p>
-	<p>You can test the rules of a rulegroup by providing sample data for the fields involved in the rules. Run the test and you recieve a visual indication if the group and the rules passed or failed. Also the rule message is displayed. If no fields are defined for the selected project, you won't be able to run tests on the rulegroup.</p> 
+	<p>You can test the rules of a rulegroup by providing sample data for the fields involved in the rules. Run the test and you receive a visual indication if the group and the rules passed or failed. Also the rule message is displayed. If no fields are defined for the selected project, you won't be able to run tests on the rulegroup.</p> 
 	<p><img height="22" width="22" src="img/subgroup_add.png">&nbsp;add subgroup&nbsp;<img height="22" width="22" src="img/action_add.png">&nbsp;add action &nbsp;<img height="22" width="22" src="img/rule_add2.png">&nbsp;add rule&nbsp;<img height="22" width="22" src="img/test.png">&nbsp;test rule group&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule/action</p>
 </div>
 <div id="listrulegroup">
@@ -136,7 +136,7 @@
 	</div>
 </div>
 <div id="testrulegroup">
-<p>Below find a list of all fields that are referenced in rules or actions of this rule group. Fields not used by any of the rules and actions are not shown. To test the rule group, enter test values for all displayed fields.</p>
+<p>Below find a list of all fields that are referenced in rules of this rule group. Fields not used by any of the rules are not shown. To test the rule group, enter test values for the displayed fields.</p>
 <div class="formbox">
 	<form method="POST" action="process?action=bsh&scriptname=testrulegroup"> 
 	<input type="hidden" name="id" value="${project.id}">
