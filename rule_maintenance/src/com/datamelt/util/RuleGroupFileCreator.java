@@ -182,6 +182,7 @@ public class RuleGroupFileCreator {
 		{
 			RuleGroup rulegroup = project.getRulegroups().get(i);
 			rulegroup.loadRuleGroupActions();
+			rulegroup.loadDependentRuleGroup();
 			String fileName=getTempfolder(project) + "/" + rulegroup.getName() + RuleGroupFileCreator.FILE_EXTENSION;
 			File file = new File(fileName);
 			FileWriter fw = new FileWriter(file);

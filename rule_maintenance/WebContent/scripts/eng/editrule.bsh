@@ -4,6 +4,7 @@ import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.Field;
+import com.datamelt.db.Type;
 
 writeaction="true";
 if(user==null)
@@ -207,22 +208,51 @@ else
 			}
 			else
 			{
-				ruleNew.lastUpdateUser.id = user.id;
-				ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL),project,user);
-				ruleNew.load();
-				context.put("mode","updated");
+				Type object1Type = new Type();
+				object1Type.connection = connection;
+				if(ruleNew.object1Type.id!=0)
+				{
+					object1Type.id = ruleNew.object1Type.id;
+					object1Type.load();
+				}
+				Type object2Type = new Type();;
+				object2Type.connection = connection;
+				if(ruleNew.object2Type.id!=0)
+				{
+				 	object2Type.id = ruleNew.object2Type.id;
+				 	object2Type.load();
+				}
+				else if(ruleNew.expectedValueType.id!=0)
+				{
+					object2Type.id = ruleNew.expectedValueType.id;
+					object2Type.load();
+				}
 				
-				History history = new History();
-				history.connection = connection;
-				history.user = user;
-				history.type = "rule";
-				history.typeId = ruleNew.id;
-				history.parent1 = ruleSubgroup.id;
-				history.parent2 = rulegroup.id;
-				history.parent3 = project.id;
-				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
-				
-				infomessage.text="Rule updated.";
+				boolean exists = DbCollections.getCheckMethodExists(connection,ruleNew.check.id,object1Type.name, object2Type.name);
+				if(!exists)
+				{
+					infomessage.type="error";
+					infomessage.text="Method to compare [" + object1Type.name + "] to [" + object2Type.name + "] does not exist for check [" + ruleNew.check.nameDescriptive + "]";
+				}
+				else
+				{
+					ruleNew.lastUpdateUser.id = user.id;
+					ruleNew.update(connection.getPreparedStatement(Rule.UPDATE_SQL),project,user);
+					ruleNew.load();
+					context.put("mode","updated");
+					
+					History history = new History();
+					history.connection = connection;
+					history.user = user;
+					history.type = "rule";
+					history.typeId = ruleNew.id;
+					history.parent1 = ruleSubgroup.id;
+					history.parent2 = rulegroup.id;
+					history.parent3 = project.id;
+					history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+					
+					infomessage.text="Rule updated.";
+				}
 			}
 		}
 		else
@@ -289,22 +319,51 @@ else
 			}
 			else
 			{
-				ruleNew.lastUpdateUser.id = user.id;
-				ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
-				ruleNew.load();
-				context.put("mode","inserted");
+				Type object1Type = new Type();
+				object1Type.connection = connection;
+				if(ruleNew.object1Type.id!=0)
+				{
+					object1Type.id = ruleNew.object1Type.id;
+					object1Type.load();
+				}
+				Type object2Type = new Type();;
+				object2Type.connection = connection;
+				if(ruleNew.object2Type.id!=0)
+				{
+				 	object2Type.id = ruleNew.object2Type.id;
+				 	object2Type.load();
+				}
+				else if(ruleNew.expectedValueType.id!=0)
+				{
+					object2Type.id = ruleNew.expectedValueType.id;
+					object2Type.load();
+				}
 				
-				History history = new History();
-				history.connection = connection;
-				history.user = user;
-				history.type = "rule";
-				history.typeId = ruleNew.id;
-				history.parent1 = ruleSubgroup.id;
-				history.parent2 = rulegroup.id;
-				history.parent3 = project.id;
-				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
-				
-				infomessage.text="Rule added.";
+				boolean exists = DbCollections.getCheckMethodExists(connection,ruleNew.check.id,object1Type.name, object2Type.name);
+				if(!exists)
+				{
+					infomessage.type="error";
+					infomessage.text="Method to compare [" + object1Type.name + "] to [" + object2Type.name + "] does not exist for check [" + ruleNew.check.nameDescriptive + "]";
+				}
+				else
+				{
+					ruleNew.lastUpdateUser.id = user.id;
+					ruleNew.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
+					ruleNew.load();
+					context.put("mode","inserted");
+					
+					History history = new History();
+					history.connection = connection;
+					history.user = user;
+					history.type = "rule";
+					history.typeId = ruleNew.id;
+					history.parent1 = ruleSubgroup.id;
+					history.parent2 = rulegroup.id;
+					history.parent3 = project.id;
+					history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+					
+					infomessage.text="Rule added.";
+				}
 			}
 		}
 		

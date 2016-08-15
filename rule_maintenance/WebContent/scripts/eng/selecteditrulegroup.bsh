@@ -1,5 +1,6 @@
 import java.io.*;
 import com.datamelt.db.RuleGroup;
+import com.datamelt.db.DbCollections;
 
 writeaction="true";
 if(user==null)
@@ -11,9 +12,9 @@ else
 	id=Long.parseLong(request.getParameter("id"));
 	mode=request.getParameter("mode");
 	context.put("mode",mode);
+	RuleGroup rulegroup = new RuleGroup();
 	if(mode!=null && !mode.equals("add")&& !mode.equals("copy"))
 	{
-		RuleGroup rulegroup = new RuleGroup();
 		rulegroup.connection = connection;
 		rulegroup.id=id;
 		rulegroup.load();
@@ -21,7 +22,6 @@ else
 	}
 	else
 	{
-		RuleGroup rulegroup = new RuleGroup();
 		if(id>0)
 		{
 			rulegroup.connection = connection;
@@ -41,6 +41,9 @@ else
 	project.id = Long.parseLong(request.getParameter("projectid"));
 	project.load();
 	context.put("project", project);
+	
+	ArrayList dependentGroups = DbCollections.getAllPossibleDependentRuleGroups(connection,project.id, rulegroup.id);
+	context.put("dependentGroups",dependentGroups);
 	
 	templatename="editrulegroup.vm";
 }

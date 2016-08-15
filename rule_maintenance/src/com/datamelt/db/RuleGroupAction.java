@@ -309,28 +309,35 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	public String getActionLogic()
 	{
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("update field [" + object2Parameter + "] from: ");
+		buffer.append("update field [" + object2Parameter + "] ");
 		buffer.append(action.getMethoddisplayname() + " ");
 		if(object1Parameter!=null && !object1Parameter.trim().equals(""))
 		{
-			buffer.append("field [" + object1Parameter + "] ");
+			buffer.append("from: field [" + object1Parameter + "] ");
 		}
-		if(parameter1!=null && !parameter1.equals(""))
+		if(object1Parameter==null || object1Parameter.trim().equals(""))
 		{
-			buffer.append("[" + parameter1 + "] ");
+			if(parameter1!=null && !parameter1.equals(""))
+			{
+				buffer.append("from: parameter [" + parameter1 + "] ");
+			}
+		}
+		else
+		{
+			if(parameter1!=null && !parameter1.equals(""))
+			{
+				buffer.append("with: parameter [" + parameter1 + "] ");
+			}
 		}
 		if(parameter2!=null && !parameter2.equals(""))
 		{
-			buffer.append(" [" + parameter2 + "] ");
+			buffer.append("and parameter [" + parameter2 + "] ");
 		}
 		if(parameter3!=null && !parameter3.equals(""))
 		{
-			buffer.append(" [" + parameter3 + "] ");
+			buffer.append("and parameter [" + parameter3 + "] ");
 		}
-
-
 		return buffer.toString();
-		
 	}
 	
 	public String getName()

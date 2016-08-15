@@ -128,7 +128,11 @@
 					#end
 				</div>
 				<div>
-					<p class="small">execute action when: $action.executeIf</p>
+				#if($action.executeIf=="always")
+					<p class="small">execute: $action.executeIf</p>
+				#else
+					<p class="small">execute: when rulegroup $action.executeIf</p>
+				#end
 				</div>
 			</div>
 			#set($counter2=$counter2+1)

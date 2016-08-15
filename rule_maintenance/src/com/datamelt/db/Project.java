@@ -3,6 +3,8 @@ package com.datamelt.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipFile;
 
 import com.datamelt.db.DatabaseRecord;
@@ -437,6 +439,11 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		BusinessRulesEngine ruleEngine = new BusinessRulesEngine(zipFile);
 		ArrayList <com.datamelt.rules.core.RuleGroup>groups = ruleEngine.getGroups();
+		
+		// create a map of groups to dependent groups 
+		// the dependencies will be generated after all groups have been imported
+		Map<String, com.datamelt.rules.core.RuleGroup> dependantGroups = new HashMap<String, com.datamelt.rules.core.RuleGroup>();
+		
 		for (int i=0;i<groups.size();i++)
 		{
 			com.datamelt.rules.core.RuleGroup group = groups.get(i);
@@ -687,6 +694,42 @@ public class Project extends DatabaseRecord implements Loadable
 					dbRule.insert(getConnection().getPreparedStatement(Rule.INSERT_SQL),this,user);
 				}
 			}
+			if(group.getDependentRuleGroupId()!=null && !group.getDependentRuleGroupId().equals(""))
+			{
+				dependantGroups.put(group.getId(),group);
+			}
+		}
+		ArrayList<RuleGroup> projectGroups = DbCollections.getAllRuleGroups(getConnection(), this.getId());
+		for(String groupId : dependantGroups.keySet())
+		{
+			// get the group from the map
+			com.datamelt.rules.core.RuleGroup group = dependantGroups.get(groupId);
+			RuleGroup ruleGroup = null;
+			RuleGroup dependentRuleGroup = null;
+			for(int i=0;i<projectGroups.size();i++)
+			{
+				RuleGroup projectGroup = projectGroups.get(i);
+				if(group.getId().equals(projectGroup.getName()))
+				{
+					ruleGroup = projectGroup;
+				}
+				if(group.getDependentRuleGroupId().equals(projectGroup.getName()))
+				{
+					dependentRuleGroup = projectGroup;
+				}
+			}
+			
+			// update the rulegroup
+			ruleGroup.setDependentRuleGroupId(dependentRuleGroup.getId());
+			if(group.getDependentRuleGroupExecuteIf()==0)
+			{
+				ruleGroup.setDependentRuleGroupExecuteIf("passed");
+			}
+			else if(group.getDependentRuleGroupExecuteIf()==1)
+			{
+				ruleGroup.setDependentRuleGroupExecuteIf("failed");
+			}
+			ruleGroup.update(getConnection().getPreparedStatement(RuleGroup.UPDATE_SQL),this,user);
 		}
 	}
 	

@@ -10,30 +10,39 @@
 	<table width="99%" border="0">
 		<tr>
 			<td class="printheadingbold" width="25%">Rule Group:</td>
-			<td class="printheading" width="75%">${rulegroup.name}</td>
+			<td class="printheading" width="75%">${rulegroup.name} - $!{rulegroup.description}</td>
 		</tr>
 		<tr>
 			<td width="25%"></td>
-			<td class="printheading" width="75%">valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</td>
+			<td class="printheading" width="75%">valid: [$!{rulegroup.validFrom}] until: [$!{rulegroup.validUntil}]</td>
 		</tr>
+		<tr>
+			<td width="25%"></td>
+			<td class="printheading" width="75%">depends on: #if($rulegroup.dependentRuleGroup.id>0)[$!{rulegroup.dependentRuleGroup.name}]#else [none]#end</td>
+		</tr>
+		<tr>
+			<td width="25%"></td>
+			<td class="printheading" width="75%">rule groups depending: #if($!{rulegroup.dependentRuleGroups}!="")$!{rulegroup.dependentRuleGroups}#else [none]#end</td>
+		</tr>
+		DependentRuleGroupsList
 	</table>
 	#set($subgroupcounter=0)
 	#foreach($rulesubgroup in $rulegroup.ruleSubgroups)
 	<table width="99%" border="0">
 		<tr>
 			<td class="printheadingbold" width="25%">Subgroup:</td>
-			<td class="printheading" width="75%">$rulesubgroup.name</td>
+			<td class="printheading" width="75%">$rulesubgroup.name - $!rulesubgroup.description</td>
 		</tr>
 		#if($subgroupcounter>0)
 		<tr>
 			<td width="25%"></td>
-			<td class="printheading" width="75%">#if($subgroupcounter < ${rulegroup.ruleSubgroups.size()})connector to previous subgroup: $!rulesubgroup.intergroupOperator#end</td>
+			<td class="printheading" width="75%">#if($subgroupcounter < ${rulegroup.ruleSubgroups.size()})connector to previous subgroup: [$!rulesubgroup.intergroupOperator]#end</td>
 		</tr>
 		#end
 		#if($rulesubgroup.rules.size()>1)
 		<tr>
 			<td width="25%"></td>
-			<td class="printheading" width="75%">connector between rules: $!rulesubgroup.ruleOperator</td>
+			<td class="printheading" width="75%">connector between rules: [$!rulesubgroup.ruleOperator]</td>
 		</tr>
 		#end
 	</table>
@@ -70,7 +79,7 @@
 			<tr>
 				<td width="5%" align="right" valign="top">#if($counter2>0 && $counter2 < ${rulegroup.actions.size()})and#end</td>
 				<td width="20%">$action.name</td>
-				<td width="75%">when $action.executeIf : $action.actionLogic</td>
+				<td width="75%">#if($action.executeIf!="always")when $action.executeIf#else always#end : $action.actionLogic</td>
 			</tr>
 			#set($counter2=$counter2+1)
 			</table>

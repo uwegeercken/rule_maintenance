@@ -4,6 +4,7 @@
 <div id="help">
 	<p>Edit the selected rule group.</p>
 	<p>Enter the name and description of the rule group. Specify from and until date for the validity of the group.</p>
+	<p>Select a rulegroup that this rulegroup depends on and which result the dependent rulegroup must have. This rulegroup - and all rules and actions - will in turn only be executed if the result of the dependent rulegroup is corresponding.</p>
 </div>
 <div class="formbox">
 #if($mode && $mode=="add")
@@ -40,6 +41,45 @@
 			<input id="datepicker2" name="valid_until" type="text" size="40" maxlength="255" value="$!{rulegroup.validUntil}"> (format: YYYY-MM-DD)
 		</td>
 	</tr>
+	#if($mode!="copy")
+		#if($dependentGroups.size()>0)
+		<tr>
+			<td>Depends on Rulegroup:</td>
+			<td>
+				<select id="rulegroup" name="dependentgroupid" size="1">
+				<option value="0"></option>
+				#foreach($dependentgroup in $dependentGroups)
+					#if(${rulegroup.id}!=${dependentgroup.id} && ${rulegroup.dependentRuleGroupId}==${dependentgroup.id})
+						<option selected value="${dependentgroup.id}">${dependentgroup.name} - ${dependentgroup.description}</option>
+					#elseif(${rulegroup.id}!=${dependentgroup.id})
+						<option value="${dependentgroup.id}">${dependentgroup.name} - ${dependentgroup.description}</option>
+					#end
+				#end
+	    		</select> with result: 
+	    		<select name="dependentgroupexecuteif" size="1" id="executeif">
+				<option value=""></option>
+				#if($dependentGroups.size()>0)
+					#if(${rulegroup.dependentRuleGroupExecuteIf}=="passed")
+						<option selected="selected" value="passed">passed</option>
+					#else
+						<option value="passed">passed</option>
+					#end
+					#if(${rulegroup.dependentRuleGroupExecuteIf}=="failed")
+						<option selected="selected" value="failed">failed</option>
+					#else
+						<option value="failed">failed</option>
+					#end
+				#end
+	    		</select>
+			</td>
+		</tr>
+		#else
+			<tr>
+				<td>Depends on Rulegroup:</td>
+				<td>[no dependencies possible]</td>
+			</tr>
+		#end
+	#end
 	<tr>
 	#if($mode && ($mode=="inserted" || $mode=="updated"))
 		<td colspan="2" align="center"><br />

@@ -1,5 +1,6 @@
 import com.datamelt.db.Project;
 import com.datamelt.db.RuleGroup;
+import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
 import com.datamelt.db.History;
@@ -39,6 +40,14 @@ else
 		rulegroupNew.description=request.getParameter("description");
 		rulegroupNew.validFrom=request.getParameter("valid_from");
 		rulegroupNew.validUntil=request.getParameter("valid_until");
+		if(request.getParameter("dependentgroupid")!=null)
+		{
+			rulegroupNew.dependentRuleGroupId = Long.parseLong(request.getParameter("dependentgroupid"));
+		}
+		if(request.getParameter("dependentgroupexecuteif")!=null)
+		{
+			rulegroupNew.dependentRuleGroupExecuteIf = request.getParameter("dependentgroupexecuteif");
+		}
 		rulegroupNew.projectId = Long.parseLong(request.getParameter("projectid"));
 		
 		boolean validFromFormatOk = false;
@@ -67,9 +76,11 @@ else
 		rulegroup.setConnection(connection);
 		if(id>0)
 		{
-			rulegroupNew.setId(id);
 			rulegroup.setId(id);
 			rulegroup.load();
+			rulegroupNew.setId(id);			
+			rulegroupNew.lastUpdateUser = rulegroup.lastUpdateUser;
+			rulegroupNew.lastUpdate = rulegroup.lastUpdate;
 			if(rulegroupNew.name.length()==0 )
 			{
 				infomessage.type="error";
@@ -95,10 +106,21 @@ else
 				infomessage.type="error";
 				infomessage.text="Valid Until format invalid.";
 			}
+			else if(rulegroupNew.dependentRuleGroupId!=0 && rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Select which result the dependent rulegroup must have";
+			}
+			else if(rulegroupNew.dependentRuleGroupId==0 && rulegroupNew.dependentRuleGroupExecuteIf !=null && !rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Select the dependent rulegroup";
+			}
 			else 
 			{
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.update(connection.getPreparedStatement(RuleGroup.UPDATE_SQL),project,user);
+				rulegroupNew.load();
 				context.put("mode","updated");
 				
 				History history = new History();
@@ -139,8 +161,23 @@ else
 				infomessage.type="error";
 				infomessage.text="Valid Until format invalid.";
 			}
+			else if(rulegroupNew.dependentRuleGroupId!=0 && rulegroupNew.dependentRuleGroupExecuteIf!=null && rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Select which result the dependent rulegroup must have";
+			}
+			else if(rulegroupNew.dependentRuleGroupId==0 && rulegroupNew.dependentRuleGroupExecuteIf!=null && !rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
+			{
+				infomessage.type="error";
+				infomessage.text="Select the dependent rulegroup";
+			}
 			else
 			{
+				if(mode.equals("copy"))
+				{
+					rulegroupNew.dependentRuleGroupExecuteIf="";
+					rulegroupNew.dependentRuleGroupId=0;
+				}
 				rulegroupNew.lastUpdateUser.id = user.id;
 				rulegroupNew.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),project,user);
 				context.put("mode","inserted");
@@ -201,11 +238,17 @@ else
 				history.typeId = rulegroupNew.id;
 				history.parent1 = project.id;
 				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				
+				rulegroupNew.load();
 			}
+			
 		}
 		
-		rulegroupNew.load();
 		context.put("rulegroup",rulegroupNew);
+		
+		ArrayList dependentGroups = DbCollections.getAllPossibleDependentRuleGroups(connection,project.id, rulegroupNew.id);
+		context.put("dependentGroups",dependentGroups);
+		
 		templatename="editrulegroup.vm";
 	}
 	else

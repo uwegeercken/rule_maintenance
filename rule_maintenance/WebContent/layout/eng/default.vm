@@ -28,7 +28,7 @@ $(document).ready(function() {
 	  	$.jStorage.deleteKey("searchtext" + $('#search').attr("searchtype"));
 	  }
   });
-
+	
   $( "#proposepassed" ).click(function() {
   		var field=$("#object1_parameter option:selected").text();
 		if(field==null || field=="")

@@ -32,6 +32,8 @@ else
 	        rulegroup.load();
 	        rulegroup.loadRuleSubgroups();
 	        rulegroup.loadRuleGroupActions();
+	        rulegroup.loadDependentRuleGroup();
+	        rulegroup.loadDependentRuleGroupsList();
 	        
 	        rulegroups = new ArrayList();
 			rulegroups.add(rulegroup);

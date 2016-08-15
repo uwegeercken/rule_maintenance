@@ -22,6 +22,12 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private String validFrom;
 	private String validUntil;
 	private long projectId;
+	
+	private RuleGroup dependentRuleGroup;
+	private long dependentRuleGroupId;
+	private String dependentRuleGroupExecuteIf; 
+	private String dependentRuleGroups;
+	
 	private User lastUpdateUser = new User();
 	
 	private ArrayList<RuleSubgroup> ruleSubgroups;
@@ -31,8 +37,8 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " (name, description, valid_from, valid_until, project_id, last_update_user_id) values (?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " set name=?, description=?, valid_from=?, valid_until=?, project_id=?, last_update_user_id=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (name, description, valid_from, valid_until, project_id, last_update_user_id,dependent_rulegroup_id,dependent_rulegroup_execute_if) values (?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set name=?, description=?, valid_from=?, valid_until=?, project_id=?, last_update_user_id=?, dependent_rulegroup_id=?,dependent_rulegroup_execute_if=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + " where name =? and project_id=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
@@ -59,6 +65,9 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
 	        
+        	this.dependentRuleGroupId = rs.getLong("dependent_rulegroup_id");
+	        this.dependentRuleGroupExecuteIf = rs.getString("dependent_rulegroup_execute_if");
+	        
 	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
 	        this.lastUpdateUser.setConnection(getConnection());
 	        this.lastUpdateUser.load();
@@ -79,6 +88,9 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.projectId = rs.getLong("project_id");
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
+	        
+	        this.dependentRuleGroupId = rs.getLong("dependent_rulegroup_id");
+	        this.dependentRuleGroupExecuteIf = rs.getString("dependent_rulegroup_execute_if");
 
 	        this.lastUpdateUser.setId(rs.getLong("last_update_user_id"));
 	        this.lastUpdateUser.setConnection(getConnection());
@@ -99,6 +111,29 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	{
 		actions = new ArrayList<RuleGroupAction>();
 		actions = DbCollections.getAllRuleGroupActions(getConnection(), getId());
+	}
+	
+	public void loadDependentRuleGroupsList() throws Exception
+	{
+		ArrayList<RuleGroup>dependentRuleGroupsList = DbCollections.getAllDependentRuleGroups(getConnection(), projectId, getId());
+		StringBuffer dependentRuleGroups = new StringBuffer();
+		for(int i=0;i<dependentRuleGroupsList.size();i++)
+		{
+			dependentRuleGroups.append("[" + dependentRuleGroupsList.get(i).name +"]");
+			if(i<dependentRuleGroupsList.size()-1)
+			{
+				dependentRuleGroups.append(", ");
+			}
+		}
+		this.dependentRuleGroups = dependentRuleGroups.toString();
+	}
+	
+	public void loadDependentRuleGroup() throws Exception
+	{
+		dependentRuleGroup = new RuleGroup();
+		dependentRuleGroup.setId(dependentRuleGroupId);
+		dependentRuleGroup.setConnection(getConnection());
+		dependentRuleGroup.load();
 	}
 	
 	private ResultSet selectRecordById(PreparedStatement p) throws Exception
@@ -159,8 +194,10 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		p.setString(4,validUntil);
 		p.setLong(5,projectId);
 		p.setLong(6,lastUpdateUser.getId());
+		p.setLong(7, dependentRuleGroupId);
+		p.setString(8, dependentRuleGroupExecuteIf);
 		
-		p.setLong(7,getId());
+		p.setLong(9,getId());
 
 		try
 		{
@@ -188,6 +225,8 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		p.setString(4,validUntil);
 		p.setLong(5,projectId);
 		p.setLong(6,lastUpdateUser.getId());
+		p.setLong(7, dependentRuleGroupId);
+		p.setString(8, dependentRuleGroupExecuteIf);
 		
 		try
 		{
@@ -366,6 +405,41 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	public void setLastUpdateUser(User user) 
 	{
 		this.lastUpdateUser = user;
+	}
+
+	public RuleGroup getDependentRuleGroup()
+	{
+		return dependentRuleGroup;
+	}
+	
+	public void setDependentRuleGroup(RuleGroup dependentRuleGroup)
+	{
+		this.dependentRuleGroup = dependentRuleGroup;
+	}
+
+	public long getDependentRuleGroupId()
+	{
+		return dependentRuleGroupId;
+	}
+
+	public void setDependentRuleGroupId(long dependentRuleGroupId)
+	{
+		this.dependentRuleGroupId = dependentRuleGroupId;
+	}
+
+	public String getDependentRuleGroupExecuteIf()
+	{
+		return dependentRuleGroupExecuteIf;
+	}
+
+	public void setDependentRuleGroupExecuteIf(String dependentRuleGroupExecuteIf)
+	{
+		this.dependentRuleGroupExecuteIf = dependentRuleGroupExecuteIf;
+	}
+
+	public String getDependentRuleGroups()
+	{
+		return dependentRuleGroups;
 	}
 
 }

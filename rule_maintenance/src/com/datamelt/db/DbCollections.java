@@ -75,10 +75,100 @@ public class DbCollections
         	rulegroup.setConnection(connection);
         	rulegroup.setId(rs.getLong("id"));
         	rulegroup.load();
+        	rulegroup.loadDependentRuleGroup();
             list.add(rulegroup);
         }
         rs.close();
         return list;
+    }
+    
+    
+    // method will check which are the possible dependent rulegroups for the given rulegroup
+    public static ArrayList<RuleGroup> getAllPossibleDependentRuleGroups(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
+    {
+    	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
+    	
+    	// check how many rulegroups depend on the given rulegroup
+    	long counterGroupsDependingOnThisGroup = getCountGroupsDependingOnThisGroup(connection,projectId,rulegroupId);
+
+    	// if other groups depend on this rulegroup it is not allowed to make this rulegroup dependent on other rulegroups
+    	// to avoid circular references
+        if(counterGroupsDependingOnThisGroup==0)
+        {
+	    	String sql="select id from rulegroup where (dependent_rulegroup_id is null or dependent_rulegroup_id=0) and id!=" + rulegroupId + " and project_id=" + projectId +
+	        	" order by id";
+	        ResultSet rs = connection.getResultSet(sql);
+	        
+	        while(rs.next())
+	        {
+	        	RuleGroup rulegroup = new RuleGroup();
+	        	rulegroup.setConnection(connection);
+	        	rulegroup.setId(rs.getLong("id"));
+	        	rulegroup.load();
+	        	rulegroup.loadDependentRuleGroup();
+	            list.add(rulegroup);
+	        }
+	        rs.close();
+        }
+        return list;
+    }
+    
+    // all rulegroups that have a dependency to another group
+    public static ArrayList<RuleGroup> getAllDependentRuleGroups(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
+    {
+    	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
+    	
+    	String sql="select id from rulegroup where dependent_rulegroup_id =" + rulegroupId 
+    			+ " and project_id=" + projectId
+    			+ " order by id";
+        ResultSet rs = connection.getResultSet(sql);
+        
+        while(rs.next())
+        {
+        	RuleGroup rulegroup = new RuleGroup();
+        	rulegroup.setConnection(connection);
+        	rulegroup.setId(rs.getLong("id"));
+        	rulegroup.load();
+            list.add(rulegroup);
+        }
+        rs.close();
+        return list;
+    }
+    
+    // all rulegroups that other groups in the project depend on
+    public static ArrayList<RuleGroup> getAllDependentRuleGroups(MySqlConnection connection, long projectId) throws Exception
+    {
+    	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
+    	
+    	String sql="select distinct dependent_rulegroup_id as id from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id>0"
+    			+ " and project_id=" + projectId
+    			+ " order by id";
+        ResultSet rs = connection.getResultSet(sql);
+        
+        while(rs.next())
+        {
+        	RuleGroup rulegroup = new RuleGroup();
+        	rulegroup.setConnection(connection);
+        	rulegroup.setId(rs.getLong("id"));
+        	rulegroup.load();
+            list.add(rulegroup);
+        }
+        rs.close();
+        return list;
+    }
+    
+    public static long getCountGroupsDependingOnThisGroup(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
+    {
+    	// check how many rulegroups depend on the given rulegroup
+    	String sql="select count(1) as counter from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id=" + rulegroupId + " and project_id=" + projectId;
+        ResultSet rs = connection.getResultSet(sql);
+    	long counterGroupsDependingOnThisGroup = 0;
+        if(rs.next())
+    	{
+        	counterGroupsDependingOnThisGroup = rs.getLong("counter");
+    	}
+        rs.close();
+        return counterGroupsDependingOnThisGroup;
     }
     
     public static ArrayList<RuleGroup> getAllRuleGroupsSubgroupsActions(MySqlConnection connection, long projectId) throws Exception
@@ -93,8 +183,11 @@ public class DbCollections
         	rulegroup.setConnection(connection);
         	rulegroup.setId(rs.getLong("id"));
         	rulegroup.load();
+        	rulegroup.loadDependentRuleGroup();
         	rulegroup.loadRuleSubgroups();
         	rulegroup.loadRuleGroupActions();
+        	rulegroup.loadDependentRuleGroup();
+	        rulegroup.loadDependentRuleGroupsList();
             list.add(rulegroup);
         }
         rs.close();
@@ -387,7 +480,7 @@ public class DbCollections
     
     public static ArrayList <CheckMethod> getAllCheckMethods(MySqlConnection connection, long checkId) throws Exception
     {
-        String sql="select id from check_method where check_id=" + checkId ;
+    	String sql="select id from check_method where check_id=" + checkId ;
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <CheckMethod> list = new ArrayList<CheckMethod>();
         while(rs.next())
@@ -400,6 +493,39 @@ public class DbCollections
         }
         rs.close();
         return list;
+    }
+    
+    public static boolean getCheckMethodExists(MySqlConnection connection, long checkId, String compareType, String compareToType) throws Exception
+    {
+    	String compareTypeSql;
+        if(compareType==null)
+        {
+        	compareTypeSql = "compare is null";
+        }
+        else
+        {
+        	compareTypeSql = "compare = '" + compareType + "'";
+        }
+        String compareToTypeSql;
+        if(compareToType==null)
+        {
+        	compareToTypeSql = "compare_to is null";
+        }
+        else
+        {
+        	compareToTypeSql = "compare_to = '" + compareToType + "'";
+        }
+        String sql="select count(1) as counter from check_method where check_id=" + checkId +
+        		" and " + compareTypeSql + " and " + compareToTypeSql;
+        		
+        ResultSet rs = connection.getResultSet(sql);
+        long numberOfMethods=0;
+        if(rs.next())
+        {
+        	numberOfMethods = rs.getLong("counter");
+        }
+        rs.close();
+        return numberOfMethods==1;
     }
     
     public static ArrayList <ActionMethod> getAllActionMethods(MySqlConnection connection, long actionId) throws Exception
