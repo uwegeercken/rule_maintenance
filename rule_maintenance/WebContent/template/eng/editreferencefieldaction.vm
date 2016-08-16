@@ -44,6 +44,11 @@
 			#else
 				<option value="failed">Rule Group failed</option>
 			#end
+			#if(${action.executeIf}=="always")
+				<option selected value="always">Rule Group passed or failed (always)</option>
+			#else
+				<option value="always">Rule Group passed or failed</option>
+			#end
     		</select>
 		</td>
 	</tr>

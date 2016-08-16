@@ -9,7 +9,7 @@
 	<p>Define the messages to be used in case the rule passes or fails. You can use the variable $1 which contains the data from the field to check and $0 which contains the value or field to check against.</p> 
 </div>
 <div class="formbox">
-#if($mode=="add")
+#if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editrule&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}&transformationrule=1"> 
 	
 #else
@@ -68,7 +68,7 @@
 			<select id="object2_parameter" name="object2_parameter" size="1">
 			<option value=""></option>
 			#foreach($field in $project.fields)
-				#if(${rule.object2Parameter}==${field.name})
+				#if(${rule.object2Parameter} && ${rule.object2Parameter}==${field.name})
 					<option selected value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>
 				#else
 					<option value="${field.id}">${field.nameDescriptive} (${field.type.name})</option>

@@ -61,6 +61,9 @@
 				#end
 			#end
     		</select>
+    		<img id="popup" src="img/help_black.png" height="22" width="22" title="display check methods">
+    		<p id="popupurl">listcheckmethods_popup</p>
+    		<div id="element_to_pop_up"></div>
 		</td>		
 	</tr>
 	<tr>
