@@ -27,8 +27,11 @@
 #set($counter=0)
 #foreach($rulegroup in $rulegroups)
 	<div class="unit" tag="$!{rulegroup.name.toLowerCase()}">
-			<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="rulegrouplogic" height="22px" width="22px" src="img/document.png" title="rulegroup logic"></a>
+			<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="rulegrouplogic" height="22px" width="22px" src="img/document.png" title="generate rulegroup logic"></a>
 		#if($user.canUpdateProject($project)==true)
+			#if($rulegroup.dependentRuleGroupId && $rulegroup.dependentRuleGroupId>0)
+				<a href=""><img class="dependent" height="22px" width="22px" src="img/connect.png" title="depending on: ${rulegroup.dependentRuleGroup.name} (${rulegroup.dependentRuleGroupExecuteIf})"></a>
+			#end
 			<a href="process?action=bsh&ro=1&scriptname=selectdeleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete rulegroup"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit rulegroup"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&mode=copy&projectid=${project.id}"><img class="copy" height="22px" width="22px" src="img/copy.png" title="copy rulegroup"></a>

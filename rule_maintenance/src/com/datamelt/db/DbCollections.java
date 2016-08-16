@@ -46,6 +46,7 @@ public class DbCollections
         	project.load();
         	project.loadRuleGroupsCount();
         	project.loadRulesCount();
+        	project.loadFields();
         	if(project.getPrivateProject()==1) 
         	{
         		if(user.canUpdateProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())

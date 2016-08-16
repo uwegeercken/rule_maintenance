@@ -226,7 +226,7 @@ img.delete
 {
 	position:absolute;
 	margin-top: 6px;
-	margin-left: 250px;
+	margin-left: 255px;
 	border: none;
 }
 
@@ -234,7 +234,15 @@ img.rulegrouplogic
 {
 	position:absolute;
 	margin-top: 6px;
-	margin-left: 220px;
+	margin-left: 205px;
+	border: none;
+}
+
+img.dependent 
+{
+	position:absolute;
+	margin-top: 6px;
+	margin-left: 230px;
 	border: none;
 }
 
@@ -242,7 +250,7 @@ img.testimg
 {
 	position:absolute;
 	margin-top: 6px;
-	margin-left: 250px;
+	margin-left: 255px;
 	border: none;
 }
 
@@ -250,7 +258,7 @@ img.teststopimg
 {
 	position:absolute;
 	margin-top: 6px;
-	margin-left: 220px;
+	margin-left: 230px;
 	border: none;
 }
 
@@ -258,7 +266,7 @@ img.edit
 {
 	position:absolute;
 	margin-top: 150px;
-	margin-left: 250px;
+	margin-left: 255px;
 	border: none;
 }
 
@@ -266,7 +274,7 @@ img.copy
 {
 	position:absolute;
 	margin-top: 150px;
-	margin-left: 220px;
+	margin-left: 230px;
 	border: none;
 }
 
@@ -274,7 +282,7 @@ img.copyproject
 {
 	position:absolute;
 	margin-top: 150px;
-	margin-left: 220px;
+	margin-left: 230px;
 	border: none;
 }
 
@@ -282,7 +290,7 @@ img.attach
 {
 	position:absolute;
 	margin-top: 150px;
-	margin-left: 190px;
+	margin-left: 205px;
 	border: none;
 }
 
@@ -291,7 +299,7 @@ img.add
 {
 	position:absolute;
 	margin-top: 150px;
-	margin-left: 190px;
+	margin-left: 205px;
 	border: none;
 }
 
