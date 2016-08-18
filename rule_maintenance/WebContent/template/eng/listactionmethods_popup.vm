@@ -4,11 +4,11 @@
 
 <table border="0" width="100%">
 	<tr class="light">
-		<td width="30%">Field or Parameters</td>
+		<td width="27%">Mandatory: Field or Parameter(s)</td>
 		<td width="20%">optional Parameter</td>
 		<td width="20%">optional Parameter</td>
 		<td width="20%">optional Parameter</td>
-		<td width="10%">Returns</td>
+		<td width="13%">Field to update</td>
 	<tr>
 	#set($counter=0)
 	#foreach($method in $methods)

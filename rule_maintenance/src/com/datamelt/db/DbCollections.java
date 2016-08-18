@@ -529,6 +529,101 @@ public class DbCollections
         return numberOfMethods==1;
     }
     
+    public static boolean getActionMethodExists(MySqlConnection connection, long actionId, String methodTypes, String object2Type) throws Exception
+    {
+    	// array of types the method received
+    	String[] methodType;
+    	int numberOfTypes = 0;
+    	if(!methodTypes.equals(""))
+    	{
+    		// split into types
+    		methodType = methodTypes.toLowerCase().split(",");
+    		numberOfTypes = methodType.length;
+    	}
+    	
+    	// get all methods for the selected action
+    	String sql = "select * from action_method where action_id=" + actionId;
+    	
+    	ResultSet rs = connection.getResultSet(sql);
+    	int found = 0;
+
+    	// loop over all methods from the database
+    	while(rs.next())
+    	{
+    		String actionMethodTypes = rs.getString("method_types");
+    		String[] actionMethodType = actionMethodTypes.split(",");
+    		
+    		String actionParameter1Type =  rs.getString("optional_type1");
+    		String actionParameter2Type =  rs.getString("optional_type2");
+    		String actionParameter3Type =  rs.getString("optional_type3");
+
+    		String actionReturnType =  rs.getString("return_type");
+    		
+    		// buffer to contain the types from the database
+    		// the buffer is filled until the number of parameters the user has entered is specified
+    		StringBuffer buffer = new StringBuffer();
+    		int typesCount = 0;
+    		// if [empty], we ignore the method_types field from the database
+    		if(!actionMethodTypes.equals("[empty]"))
+    		{
+    			for(int i=0;i<actionMethodType.length;i++)
+    			{
+    				typesCount++;
+    				if(buffer.length()>0)
+    				{
+    					buffer.append(", ");
+    				}
+    				buffer.append(actionMethodType[0]);
+    			}
+    		}
+    		if(typesCount<numberOfTypes)
+    		{
+    			if(actionParameter1Type!=null)
+    			{
+    				typesCount++;
+    				if(buffer.length()>0)
+    				{
+    					buffer.append(", ");
+    				}
+    				buffer.append(actionParameter1Type);
+    			}
+    		}
+    		if(typesCount<numberOfTypes)
+    		{
+    			if(actionParameter2Type!=null)
+    			{
+    				typesCount++;
+    				if(buffer.length()>0)
+    				{
+    					buffer.append(", ");
+    				}
+    				buffer.append(actionParameter2Type);
+    			}
+    		}
+    		if(typesCount<numberOfTypes)
+    		{
+    			if(actionParameter3Type!=null)
+    			{
+    				typesCount++;
+    				if(buffer.length()>0)
+    				{
+    					buffer.append(", ");
+    				}
+    				buffer.append(actionParameter3Type);
+    			}
+    		}
+    		// check if a method from the db equals to the method specified by the user
+    		// and if the return type is the same
+    		if(methodTypes.equals(buffer.toString().toLowerCase()) && actionReturnType.toLowerCase().equals(object2Type.toLowerCase()))
+    		{
+    			found++;
+    			break;
+    		}
+    	}
+    	
+        return found>0;
+    }
+    
     public static ArrayList <ActionMethod> getAllActionMethods(MySqlConnection connection, long actionId) throws Exception
     {
         String sql="select id from action_method where action_id=" + actionId ;

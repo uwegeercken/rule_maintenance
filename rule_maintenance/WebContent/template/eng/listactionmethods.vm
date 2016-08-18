@@ -3,9 +3,9 @@
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listactions"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Actions"></a></p>
 <div id="help">
 	<p>List of methods for the selected Action</p>
-	<p>The Action usually updates one field from another one or updates the field from a given fixed value.</p>
-	<p>The listed methods can be invoked using the rule engine and show which data types can be used. Additionally some methods allow the user to specify additional (optional) parameters.</p>
-	<p>Important: The first value for the methods is the field from which the data is retrieved. If not specified it is the value of the first parameter.</p>
+	<p>The listed methods show which data types can be used. Some methods allow the user to specify additional (sometimes optional) parameters.</p>
+	<p>An Action usually updates one field from another one or updates the field from a given fixed value (parameter). Specify additional parameters as required by the method. </p>
+	<p>Important: The first value for the methods (displayed below) is the value of the field from which the data is retrieved. If this field is not specified then it is the value of the first parameter. The type of the field to update must correspond to the return type (displayed below) of the method.</p>
 </div>
 <p>Filter: <input id="search" searchtype="methods" type="text"></p>
 #foreach($method in $methods)
