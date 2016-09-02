@@ -329,15 +329,14 @@ public class DbCollections
     }
     
     /**
-     * get all valid rulegroups for a given project compare to a specified date
+     * get all valid rulegroups for a given project that are valid on the specified date or that are valid in the future
      */
     public static ArrayList<RuleGroup> getAllValidRuleGroups(MySqlConnection connection, long projectId, String selectedDate) throws Exception
     {
         // select all rulegroups that are valid at the moment or that are
     	// valid in the future
     	String sql= "select id from rulegroup where project_id=" + projectId 
-    			+   " and ((valid_from <='" + selectedDate + "' and valid_until>='" + selectedDate + ")'"
-    			+   " or valid_from > '" + selectedDate + "')"
+    			+   " and ((valid_from <= '" + selectedDate + "' and valid_until >= '" + selectedDate + "') or valid_from > '" + selectedDate + "')"
     			+   " order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
