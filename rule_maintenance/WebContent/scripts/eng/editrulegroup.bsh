@@ -5,6 +5,7 @@ import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.Rule;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
+import com.datamelt.util.DateUtility;
 import java.text.ParseException;
 
 writeaction="true"; 
@@ -43,6 +44,7 @@ else
 		if(request.getParameter("dependentgroupid")!=null)
 		{
 			rulegroupNew.dependentRuleGroupId = Long.parseLong(request.getParameter("dependentgroupid"));
+			rulegroupNew.loadDependentRuleGroup();
 		}
 		if(request.getParameter("dependentgroupexecuteif")!=null)
 		{
@@ -81,6 +83,7 @@ else
 			rulegroupNew.setId(id);			
 			rulegroupNew.lastUpdateUser = rulegroup.lastUpdateUser;
 			rulegroupNew.lastUpdate = rulegroup.lastUpdate;
+			ArrayList ruleGroupsDependingWithInvalidFromUntil = DbCollections.getRuleGroupsDependingWithInvalidFromUntil(connection, project.id, rulegroupNew);
 			if(rulegroupNew.name.length()==0 )
 			{
 				infomessage.type="error";
@@ -106,15 +109,31 @@ else
 				infomessage.type="error";
 				infomessage.text="Valid Until format invalid.";
 			}
+			else if(!DateUtility.isValidFromBeforeValidUntil(rulegroupNew))
+			{
+				infomessage.type="error";
+				infomessage.text="Valid until can not be before valid from.";
+			}
 			else if(rulegroupNew.dependentRuleGroupId!=0 && rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
 				infomessage.type="error";
-				infomessage.text="Select which result the dependent rulegroup must have";
+				infomessage.text="Select the required result of the dependent rulegroup";
 			}
 			else if(rulegroupNew.dependentRuleGroupId==0 && rulegroupNew.dependentRuleGroupExecuteIf !=null && !rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
 				infomessage.type="error";
 				infomessage.text="Select the dependent rulegroup";
+			}
+			else if(rulegroupNew.dependentRuleGroup!= null && !DateUtility.isWithinValidFromUntil(rulegroupNew,rulegroupNew.dependentRuleGroup))
+			{
+				infomessage.type="error";
+				infomessage.text="Valid from and until is not within " + rulegroupNew.dependentRuleGroup.validFrom + "/" + rulegroupNew.dependentRuleGroup.validUntil + "  of rulegroup [" + rulegroupNew.dependentRuleGroup.name + "]";
+			}
+			else if(rulegroupNew.dependentRuleGroup== null && ruleGroupsDependingWithInvalidFromUntil.size()>0)
+			{
+				String minmaxDates = DbCollections.getRuleGroupsDependingMinMaxValidDates(ruleGroupsDependingWithInvalidFromUntil);
+				infomessage.type="error";
+				infomessage.text="Other rulegroups depend on this rulegroup. Valid from/until must extend at least: " + minmaxDates;
 			}
 			else 
 			{
@@ -241,7 +260,6 @@ else
 				
 				rulegroupNew.load();
 			}
-			
 		}
 		
 		context.put("rulegroup",rulegroupNew);

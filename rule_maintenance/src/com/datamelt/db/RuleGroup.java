@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -13,7 +12,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
-
 
 public class RuleGroup extends DatabaseRecord implements Loadable
 {
@@ -158,8 +156,6 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	public boolean isValid() throws Exception
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateFrom = sdf.parse(validFrom);
-		Date dateUntil = sdf.parse(validUntil);
 		
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.HOUR_OF_DAY, 0);
@@ -168,22 +164,25 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		today.set(Calendar.MILLISECOND, 0);
 
 		Calendar from = Calendar.getInstance();
-		from.setTime(dateFrom);
+		from.setTime(sdf.parse(validFrom));
 		from.set(Calendar.HOUR_OF_DAY, 0);
 		from.set(Calendar.MINUTE, 0);
 		from.set(Calendar.SECOND, 0);
 		from.set(Calendar.MILLISECOND, 0);
 		
 		Calendar until = Calendar.getInstance();
-		until.setTime(dateUntil);
+		until.setTime(sdf.parse(validUntil));
 		until.set(Calendar.HOUR_OF_DAY, 0);
 		until.set(Calendar.MINUTE, 0);
 		until.set(Calendar.SECOND, 0);
 		until.set(Calendar.MILLISECOND, 0);
 
-		
-		boolean valid = today.compareTo(from)>=0 && today.compareTo(until)<=0;
-		return valid;  
+		// from javadoc:
+		// ... the value 0 if the time represented by the argument is equal to the time represented by this Calendar
+		// a value less than 0 if the time of this Calendar is before the time represented by the argument
+		// and a value greater than 0 if the time of this Calendar is after the time represented by the argument.
+		//
+		return today.compareTo(from)>=0 && today.compareTo(until)<=0;
 	}
 	
 	public void update(PreparedStatement p, Project project, User user) throws Exception

@@ -6,13 +6,18 @@ package com.datamelt.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.datamelt.db.Project;
+import com.datamelt.util.DateUtility;
 
 public class DbCollections
 {
-    
+	/**
+	 * get a list of all projects 
+	 */
     public static ArrayList<Project> getAllProjects(MySqlConnection connection) throws Exception
     {
         String sql="select id from project" +
@@ -32,6 +37,9 @@ public class DbCollections
         return list;
     }
     
+	/**
+	 * get a list of all projects for a given user 
+	 */
     public static ArrayList<Project> getAllProjects(MySqlConnection connection, User user) throws Exception
     {
         String sql="select id as id from project" +
@@ -63,7 +71,9 @@ public class DbCollections
         return list;
     }
     
-    
+	/**
+	 * get a list of all rulegroups for a given project 
+	 */
     public static ArrayList<RuleGroup> getAllRuleGroups(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select id from rulegroup where project_id=" + projectId +
@@ -84,7 +94,9 @@ public class DbCollections
     }
     
     
-    // method will check which are the possible dependent rulegroups for the given rulegroup
+    /**
+     *  get a list of possible dependent rulegroups for the given rulegroup
+     */
     public static ArrayList<RuleGroup> getAllPossibleDependentRuleGroups(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
     {
     	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -114,7 +126,9 @@ public class DbCollections
         return list;
     }
     
-    // all rulegroups that have a dependency to another group
+    /**
+     * get a list of rulegroups that have a dependency to the specified group
+     */
     public static ArrayList<RuleGroup> getAllDependentRuleGroups(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
     {
     	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -136,7 +150,9 @@ public class DbCollections
         return list;
     }
     
-    // all rulegroups that other groups in the project depend on
+    /**
+     *  get a list of all rulegroups that other groups in the project depend on
+     */
     public static ArrayList<RuleGroup> getAllDependentRuleGroups(MySqlConnection connection, long projectId) throws Exception
     {
     	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -158,6 +174,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a count of how many rulegroups have a dependancy on the given rulegroup 
+     */
     public static long getCountGroupsDependingOnThisGroup(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
     {
     	// check how many rulegroups depend on the given rulegroup
@@ -170,6 +189,77 @@ public class DbCollections
     	}
         rs.close();
         return counterGroupsDependingOnThisGroup;
+    }
+    
+    /**
+     * get all rulegroups which have a valid from or valid until setting that is not within the boundaries of the
+     * provided rulegroup valid from and valid until 
+     */
+    public static ArrayList<RuleGroup> getRuleGroupsDependingWithInvalidFromUntil(MySqlConnection connection, long projectId, RuleGroup dependentRulegroup) throws Exception
+    {
+    	// check how many rulegroups depend on the given rulegroup and that have an
+    	// invalid from/until validity (outside the validity of the rulegroup)
+    	String sql="select id from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id=" + dependentRulegroup.getId() + " and project_id=" + projectId;
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<RuleGroup> invalidRulegroups = new ArrayList<RuleGroup>();
+        while(rs.next())
+    	{
+        	RuleGroup rulegroup = new RuleGroup();
+        	rulegroup.setConnection(connection);
+        	rulegroup.setId(rs.getLong("id"));
+        	rulegroup.load();
+        	
+        	rulegroup.setDependentRuleGroup(dependentRulegroup);
+        	
+        	if(!DateUtility.isWithinValidFromUntil(rulegroup,dependentRulegroup))
+        	{
+        		invalidRulegroups.add(rulegroup);
+        	}
+    	}
+        rs.close();
+        return invalidRulegroups;
+    }
+
+    /**
+     * if one or multiple rulegroups depend on another rulegroup, then get the minimum and maximun valid from
+     * and valid until dates of those rulegroups 
+     */
+    public static String getRuleGroupsDependingMinMaxValidDates(ArrayList<RuleGroup> rulegroups) throws Exception
+    {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    	Calendar minimumDate=null;
+		Calendar maximumDate=null;
+		
+    	for(int i=0;i<rulegroups.size();i++)
+    	{
+    		RuleGroup ruleGroup = rulegroups.get(i);
+    		
+    		Calendar ruleGroupDateFrom = Calendar.getInstance();
+    		ruleGroupDateFrom.setTime(sdf.parse(ruleGroup.getValidFrom()));
+    		ruleGroupDateFrom.set(Calendar.HOUR_OF_DAY, 0);
+    		ruleGroupDateFrom.set(Calendar.MINUTE, 0);
+    		ruleGroupDateFrom.set(Calendar.SECOND, 0);
+    		ruleGroupDateFrom.set(Calendar.MILLISECOND, 0);
+    		
+    		Calendar ruleGroupDateUntil = Calendar.getInstance();
+    		ruleGroupDateUntil.setTime(sdf.parse(ruleGroup.getValidUntil()));
+    		ruleGroupDateUntil.set(Calendar.HOUR_OF_DAY, 0);
+    		ruleGroupDateUntil.set(Calendar.MINUTE, 0);
+    		ruleGroupDateUntil.set(Calendar.SECOND, 0);
+    		ruleGroupDateUntil.set(Calendar.MILLISECOND, 0);
+    		
+    		if (minimumDate==null || ruleGroupDateFrom.before(minimumDate))
+    		{
+    			minimumDate = ruleGroupDateFrom;
+    		}
+    		if (maximumDate==null || ruleGroupDateUntil.after(maximumDate))
+    		{
+    			maximumDate = ruleGroupDateUntil;
+    		}
+    	}
+    	
+    	return sdf.format(minimumDate.getTime()) + "/" + sdf.format(maximumDate.getTime());
     }
     
     public static ArrayList<RuleGroup> getAllRuleGroupsSubgroupsActions(MySqlConnection connection, long projectId) throws Exception
@@ -195,6 +285,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a count of all rulegroups for a given project 
+     */
     public static long getAllRuleGroupsCount(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select count(1) as counter from rulegroup where project_id=" + projectId;
@@ -209,11 +302,43 @@ public class DbCollections
         }
     }
     
+    /**
+     * get a rulegroup by providing it's name
+     */
+    public RuleGroup getRuleGroupByName(MySqlConnection connection, long projectId, String groupName) throws Exception
+    {
+    	ArrayList <RuleGroup>list = getAllRuleGroups(connection, projectId);
+    	int found=-1;
+    	for(int i=0;i<list.size();i++)
+    	{
+    		RuleGroup group = list.get(i);
+    		if(group.getName().equals(groupName))
+    		{
+    			found=i;
+    			break;
+    		}
+    	}
+    	if(found>-1)
+    	{
+    		return list.get(found);
+    	}
+    	else
+    	{
+    		return null;
+    	}
+    }
+    
+    /**
+     * get all valid rulegroups for a given project compare to a specified date
+     */
     public static ArrayList<RuleGroup> getAllValidRuleGroups(MySqlConnection connection, long projectId, String selectedDate) throws Exception
     {
-        
-    	String sql="select id from rulegroup where project_id=" + projectId + " and valid_from <='" + selectedDate + "' and valid_until>='" + selectedDate + "'" +
-        	" order by id";
+        // select all rulegroups that are valid at the moment or that are
+    	// valid in the future
+    	String sql= "select id from rulegroup where project_id=" + projectId 
+    			+   " and ((valid_from <='" + selectedDate + "' and valid_until>='" + selectedDate + ")'"
+    			+   " or valid_from > '" + selectedDate + "')"
+    			+   " order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
         while(rs.next())
@@ -228,6 +353,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all subgroups for a given rulegroup 
+     */
     public static ArrayList<RuleSubgroup> getAllRuleSubgroups(MySqlConnection connection, long rulegroupId) throws Exception
     {
         String sql="select id from rulesubgroup where rulegroup_id=" + rulegroupId +
@@ -246,6 +374,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all actions for a given rulegroup 
+     */
     public static ArrayList<RuleGroupAction> getAllRuleGroupActions(MySqlConnection connection, long rulegroupId) throws Exception
     {
         String sql="select id from rulegroupaction where rulegroup_id=" + rulegroupId +
@@ -264,6 +395,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all reference fields for a given project
+     */
     public static ArrayList<Field> getAllFields(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select id from reference_fields where project_id=" + projectId +
@@ -282,6 +416,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all users that are assigned to a given group 
+     */
     public static ArrayList<User> getAllGroupUsers(MySqlConnection connection, String groupName) throws Exception
     {
         String sql="select user_id from groups, groupuser" + 
@@ -301,6 +438,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all users that are assigned to a given group 
+     */
     public static ArrayList<User> getAllGroupUsers(MySqlConnection connection, long groupId) throws Exception
     {
         String sql="select user_id from groups, groupuser" + 
@@ -320,6 +460,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all groups that the given user is assigned to 
+     */
     public static ArrayList<Group> getAllGroups(MySqlConnection connection, User user) throws Exception
     {
         String sql="select id from groups order by name";	
@@ -344,6 +487,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of rules according to a specified search term and date (if specified) 
+     */
     public static ArrayList<Rule> getSearchRules(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
     {
         String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
@@ -386,6 +532,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of actions according to a specified search term 
+     */
     public static ArrayList<RuleGroupAction> getSearchActions(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
     {
         String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
@@ -425,6 +574,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all users 
+     */
     public static ArrayList <User> getAllUsers(MySqlConnection connection) throws Exception
     {
         String sql="select id from user where deactivated=0" + 
@@ -443,6 +595,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all deactivated users 
+     */
     public static ArrayList <User> getAllDeactivatedUsers(MySqlConnection connection) throws Exception
     {
         String sql="select id from user where deactivated=1" + 
@@ -461,6 +616,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of all checks available 
+     */
     public static ArrayList <Check> getAllChecks(MySqlConnection connection) throws Exception
     {
         String sql="select id from `check`" + 
@@ -479,6 +637,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * retrieve a list of methods available for a given check 
+     */
     public static ArrayList <CheckMethod> getAllCheckMethods(MySqlConnection connection, long checkId) throws Exception
     {
     	String sql="select id from check_method where check_id=" + checkId ;
@@ -496,6 +657,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * determine if a method exists for a given check 
+     */
     public static boolean getCheckMethodExists(MySqlConnection connection, long checkId, String compareType, String compareToType) throws Exception
     {
     	String compareTypeSql;
@@ -529,6 +693,9 @@ public class DbCollections
         return numberOfMethods==1;
     }
     
+    /**
+     * determine if a specified method of an action exists 
+     */
     public static boolean getActionMethodExists(MySqlConnection connection, long actionId, String methodTypes, String object2Type) throws Exception
     {
     	// array of types the method received
@@ -624,6 +791,9 @@ public class DbCollections
         return found>0;
     }
     
+    /**
+     * get a list of methods that exist for a given action 
+     */
     public static ArrayList <ActionMethod> getAllActionMethods(MySqlConnection connection, long actionId) throws Exception
     {
         String sql="select id from action_method where action_id=" + actionId ;
@@ -641,6 +811,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of actions that exist 
+     */
     public static ArrayList <Action> getAllActions(MySqlConnection connection) throws Exception
     {
         String sql="select id from action" + 
@@ -659,6 +832,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of types that exist 
+     */
     public static ArrayList <Type> getAllTypes(MySqlConnection connection) throws Exception
     {
         String sql="select id from types order by id";
@@ -676,6 +852,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a list of activities that have occurred 
+     */
     public static ArrayList <Activity> getActivities(MySqlConnection connection) throws Exception
     {
         String sql="select id from activity_log order by last_update desc limit 40";
@@ -693,6 +872,9 @@ public class DbCollections
         return list;
     }
     
+    /**
+     * get a count of all rules over all projects
+     */
     public static long getRulesCount(MySqlConnection connection) throws Exception
     {
         String sql="select count(1) as numberofrules from rule";
@@ -706,6 +888,9 @@ public class DbCollections
         return numberOfRules;
     }
     
+    /**
+     * get a count of all rules for a given project
+     */
     public static long getRulesCount(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="SELECT count(rule.id) as numberOfRules"
@@ -724,6 +909,9 @@ public class DbCollections
         return numberOfRules;
     }
     
+    /**
+     * get a count of all actions over all projects and rulegroups
+     */
     public static long getActionsCount(MySqlConnection connection) throws Exception
     {
         String sql="select count(1) as numberofactions from rulegroupaction";
@@ -737,6 +925,9 @@ public class DbCollections
         return numberOfActions;
     }
     
+    /**
+     * get a count of all projects
+     */
     public static long getProjectsCount(MySqlConnection connection) throws Exception
     {
         String sql="select count(1) as numberofprojects from project";
@@ -750,6 +941,9 @@ public class DbCollections
         return numberOfActions;
     }
 
+    /**
+     * get a count of all users
+     */
     public static long getUsersCount(MySqlConnection connection) throws Exception
     {
         String sql="select count(1) as numberofusers from user where deactivated=0";
@@ -763,6 +957,9 @@ public class DbCollections
         return numberOfRules;
     }
 
+    /**
+     * delete the history of a given user and a given type
+     */
     public static void deleteUserHistory(MySqlConnection connection, String type, long typeId, User user) throws Exception
     {
     	String deleteSql = "delete from history where type=? and type_id=? and user_id=?";
@@ -774,6 +971,9 @@ public class DbCollections
     	psHistory.executeUpdate();    			
     }
     
+    /**
+     * delete the complete history of a given user
+     */
     public static void deleteUserHistory(MySqlConnection connection, User user) throws Exception
     {
     	String deleteSql = "delete from history where user_id=?";
@@ -783,6 +983,9 @@ public class DbCollections
     	psHistory.executeUpdate();    			
     }
     
+    /**
+     * delete the reference fields for a given project
+     */
     public static void deleteReferenceFields(MySqlConnection connection, long projectId) throws Exception
     {
     	String deleteSql = "delete from reference_fields where project_id=?";
@@ -792,11 +995,14 @@ public class DbCollections
     	psFields.executeUpdate();    			
     }
     
-    public static ArrayList <Object> getUserHistory(MySqlConnection connection, User user) throws Exception
+    /**
+     * get a list of history entries for a given user
+     */
+    public static ArrayList <History> getUserHistory(MySqlConnection connection, User user) throws Exception
     {
         String sql="select max(id) as id from history where user_id=" + user.getId() + " group by type,type_id order by max(last_update) desc limit 20";
         ResultSet rs = connection.getResultSet(sql);
-        ArrayList <Object> list = new ArrayList<Object>();
+        ArrayList <History> list = new ArrayList<History>();
         while(rs.next())
         {
         	History history = new History();
