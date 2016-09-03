@@ -1,6 +1,9 @@
 #set($pagetitle='Deactivated User List')
 <p class="heading">Deactivated User List ($users.size())</p>
-<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<p>
+	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
+	<a href="process?action=bsh&ro=1&scriptname=listusers"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Users List"></a>
+</p>
 <div id="help">
 	<p class="helptitle">List of deactivated users</p>
 	<p>You may re-activate users. If the user is deleted, then all references to this users are completely removed; this can not be undone.</p>
