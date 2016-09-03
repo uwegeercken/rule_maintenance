@@ -9,7 +9,7 @@
 	<li><a target="_external" href="documents/ruleengine_real-life_sample_rent-a-ferrari.pdf">Sample: Business logic for &quot;How to rent a Ferrari&quot;</a></li>		
 </ul>
 <br>
-<p>Below are the external links to my GitHub repositories where the documentation, source code, libraries and other tools are available. You will always find the latest versions of the tools there.</p>
+<p>Below are the external links to the GitHub repositories where the documentation, source code, libraries and other tools are available. You will always find the latest versions of the tools there.</p>
 <ul>
 	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_documentation">Business Rules Maintenance Tool Documentation</a></li>
 	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_war">Business Rules Maintenance Tool Web archive (war file)</a></li>

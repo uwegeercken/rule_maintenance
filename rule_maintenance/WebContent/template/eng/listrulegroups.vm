@@ -11,7 +11,7 @@
 	<p>A Rule Group is a collection of subgroups and rules that belong together to define certain checks and actions.</p>
 	<p>Rule groups have a from/to date when they are valid. Rule groups may be copied - including subgroups, rules and actions.</p>
 	<p>Click on the name of the rule group to get a list of subgroups, rules and actions.</p>
-	<p><img height="22" width="22" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="22" width="22" src="img/group_add2.png">&nbsp;add rule group&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule group&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;rule group logic</p>
+	<p><img height="22" width="22" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="22" width="22" src="img/group_add2.png">&nbsp;add rule group&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule group&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;rule group logic&nbsp;<img height="22" width="22" src="img/connect.png">&nbsp;dependent on a rule group</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="rulegroups" type="text"></p>

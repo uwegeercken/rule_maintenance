@@ -5,6 +5,7 @@ import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.Rule;
 import com.datamelt.db.Activity;
+import com.datamelt.db.DbCollections;
 
 writeaction="true"; 
 cancelled= request.getParameter("submit");
@@ -60,6 +61,7 @@ if(cancelled.equals("delete project"))
 		rulegroup.delete(ps,project,user);
 		
 		DbCollections.deleteUserHistory(connection, "rulegroup", rulegroup.id, user);
+		DbCollections.deleteReferenceFields(connection, project.id);
 		
 		Activity activity = new Activity();
 		activity.connection = connection;

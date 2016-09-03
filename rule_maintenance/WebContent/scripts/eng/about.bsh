@@ -1,8 +1,8 @@
 import com.datamelt.rules.engine.BusinessRulesEngine;
 import com.datamelt.db.DbCollections;
 
-context.put("version","1.9.2");
-context.put("lastupdate","2016-08-16");
+context.put("version","1.9.3");
+context.put("lastupdate","2016-09-03");
 
 long numberOfProjects = DbCollections.getProjectsCount(connection);
 context.put("numberofprojects",numberOfProjects);
