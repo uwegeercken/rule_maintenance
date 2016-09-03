@@ -1,8 +1,13 @@
 #set($pagetitle='Edit file')
 
 <p class="heading">Edit file</p>
-<p>This page allows you to edit the currently selected file.</p>
-<br>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p class="helptitle">#if($mode=="add")Add File #else Edit File#end</p>
+	<p>You can dynamically add funtionality to this web application by creating a script file and a corresponding template file.</p>
+	<p>Specify a unique filename and select if a template or script file is created. Next, write the relevant code. To link the new files to the existing functionality, edit the menu if applicable or edit the existing files.</p>
+</div>
+
 #if($mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editfile"> 
 	

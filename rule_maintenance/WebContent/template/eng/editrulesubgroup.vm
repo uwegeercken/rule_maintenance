@@ -2,7 +2,7 @@
 <p class="heading">#if($mode && $mode=="add")Add Subgroup #else Edit Subgroup#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
-	<p class="helptitle">Edit the selected subgroup</p>
+	<p class="helptitle">#if($mode=="add")Add Subgroup #else Edit Subgroup#end</p>
 	<p>Enter the name and description of the subgroup.</p> 
 	<p>Specify the operator indicating how the subgroup is connected to the <b>previous</b> subgroup.</p>
 	<p>Specify the operator indicating how the rules in the subgroup are connected to each other.</p>

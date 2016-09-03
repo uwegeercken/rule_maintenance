@@ -1,15 +1,22 @@
-#set($pagetitle='Edit menu')
+#set($pagetitle='Edit Menu')
 
-<p class="heading">Edit menu</p>
-<p>This page allows you to edit the menu.</p>
-<br>
+<p class="heading">Edit Menu</p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p class="helptitle">Edit Menu</p>
+	<p>Alter the code shown below to change the main menu of this web application.</p>
+</div>
 <form method="POST" action="process?action=bsh&scriptname=editmenu&name=${filename}"> 
 <table width="95%" border="0">
 	<tr> 
 		<td>Filename: $!{filename}</td>
 	</tr>
 	<tr> 
-		<td>Code:<br /><textarea name="code" cols="120" rows="20">$!{filecode}</textarea></td>
+		<td>Code:<br />
+		<div class="containerForTextarea">
+			<textarea class="textareaContainer" name="code" rows="32">$!{filecode}</textarea></td>
+		</div>
+		</td>
 	</tr>
 	<tr>
 		<td align="center">

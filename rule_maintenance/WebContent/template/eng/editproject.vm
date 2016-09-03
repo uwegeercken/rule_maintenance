@@ -2,7 +2,7 @@
 <p class="heading">#if($mode!="add")Edit Project: ${project.name}#else Add Project#end</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Project List"></a></p>
 <div id="help">
-	<p class="helptitle">Edit the selected project</p>
+	<p class="helptitle">#if($mode=="add")Add project #else Edit project#end</p>
 	<p>Enter the name and description of the project. The name will be used as the zip file name containing all rules, so it's better to not use special characters and spaces.</p>
 	<p>The group field defines to which group the project belongs. Only members of the group have write access to the project. Mark the group as private so that users outside the group do not see the project.</p>
 	<p>Field Getter/Setter Classname: The name of the Java class that will be used, to handle the data retrieval.</p>
