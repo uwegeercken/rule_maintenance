@@ -18,13 +18,12 @@
 		</tr>
 		<tr>
 			<td width="25%"></td>
-			<td class="printheading" width="75%">depends on: #if($rulegroup.dependentRuleGroup.id>0)[$!{rulegroup.dependentRuleGroup.name}]#else [none]#end</td>
+			<td class="printheading" width="75%">depends on: #if($rulegroup.dependentRuleGroup.id>0)[$!{rulegroup.dependentRuleGroup.name}] - condition: [$!{rulegroup.dependentRuleGroupExecuteIf}]#else [none]#end</td>
 		</tr>
 		<tr>
 			<td width="25%"></td>
 			<td class="printheading" width="75%">rule groups depending: #if($!{rulegroup.dependentRuleGroups}!="")$!{rulegroup.dependentRuleGroups}#else [none]#end</td>
 		</tr>
-		DependentRuleGroupsList
 	</table>
 	#set($subgroupcounter=0)
 	#foreach($rulesubgroup in $rulegroup.ruleSubgroups)
