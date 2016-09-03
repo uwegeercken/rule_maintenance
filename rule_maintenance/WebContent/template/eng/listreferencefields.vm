@@ -5,7 +5,7 @@
 <a href="process?action=bsh&ro=1&scriptname=selectloadreferencefields&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/csv.png" title="import reference fields from a CSV file"></a>
 </p>
 <div id="help">
-	<p>List of reference fields</p>
+	<p class="helptitle">List of reference fields</p>
 	<p>When reference fields are defined, then this allows the user to simply select the fields from a drop-down list when defining rules or actions, instead of having to type in field names and types.</p>
 	<p>Instead of manually defining the reference fields, you may also import them from a CSV file.</p> 
 	<p>Attention: If the fields change, then you might need to adjust the rules and actions according to the new situation.</p>

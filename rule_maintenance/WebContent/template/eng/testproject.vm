@@ -2,7 +2,7 @@
 <p class="heading">Test Project Rule File</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p>Test Project against the rules of a selected project.</p>
+	<p class="helptitle">Test Project against the rules of a selected project</p>
 	<p>Select the project and input a validity date. Only rule groups which are valid on the given date are considered.</p>
 	<p>Choose the output type and the numbers of rows that shall be tested.</p>
 </div>

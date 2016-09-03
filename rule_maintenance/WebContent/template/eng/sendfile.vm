@@ -2,7 +2,7 @@
 <p class="heading">Export Rule Maintanance Project Zip File</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p>Export Project Zip file</p>
+	<p class="helptitle">Export Project Zip file</p>
 	<p>Export a Zip file containing all rules, rulegroups, subgroups and actions of a selected project. Only rule groups that are valid on the selected Validity Date below will be included.</p>
 	<p>You will be prompted to save the Zip file in the location of your choice.</p>
 </div>

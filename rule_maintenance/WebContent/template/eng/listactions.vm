@@ -2,7 +2,7 @@
 <p class="heading">List of Actions ($actions.size())</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a target="_external" href="documents/ruleengine_actions.pdf"><img id="docimg" height="22" width="22" src="img/pdf.png" title="documentation"></a></p>
 <div id="help">
-	<p>List of Actions</p>
+	<p class="helptitle">List of Actions</p>
 	<p>An action is used to update data or to execute other actions based on if a rulegroup passed or failed. An action can use the data of another field or a fixed value to update another field.</p>
 </div>
 <p>Filter: <input id="search" searchtype="actions" type="text"></p>

@@ -2,7 +2,8 @@
 <p class="heading">Import Rule Maintanance Project Zip file</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p>Import an existing (and previously exported) Project Zip file into a new project</p>
+	<p class="helptitle">Import a project</p>
+	<p>Imports an existing (previously exported) Project Zip file into a new project.</p>
 	<p>Enter the name and description of the project to be created. Select the Project Zip file to import into the project.</p>
 	<p>Define the group that the project belongs to. Members of this group have write access to the project - others have read-only access. Mark the project as private, so that users outside the group do not see the project.</p>
 </div>

@@ -1,9 +1,8 @@
 #set($pagetitle='Rule Maintenance')
 <p class="heading">#if($mode && $mode=="add")Add Rule #else Edit Rule#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a> - Rule Subgroup: ${rulesubgroup.name}</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
-
 <div id="help">
-	<p>Add or update the selected rule.</p>
+	<p class="helptitle">Add or update the selected rule</p>
 	<p>Enter a name and description for the rule and specify the field to check and the type (the data type of the field). The rule engine will retrieve the data from this field.</p>
 	<p>Specify which type of check should be applied by the rule engine.</p>
 	<p>Specify either the field to check against and its type or a value to check against and its type. The rule engine will compare the data to what was retrieved from the field to check. An additional parameter to the check may optionally be specified.</p>

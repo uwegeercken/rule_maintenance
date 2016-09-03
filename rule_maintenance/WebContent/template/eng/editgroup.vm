@@ -2,7 +2,7 @@
 <p class="heading">#if($mode!="add")Edit Group: $!{group.name}#else Add Group#end</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listgroups"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: List of groups"></a></p>
 <div id="help">
-	<p>Edit the selected group.</p>
+	<p class="helptitle">Edit the selected group</p>
 	<p>Enter the group name and description.</p> 
 	<p>Users are members of one or multiple groups. Group membership gives write access for projects to users that belong to the group.</p>
 </div>

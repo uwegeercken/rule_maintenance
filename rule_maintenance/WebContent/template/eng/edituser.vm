@@ -2,7 +2,7 @@
 <p class="heading">#if($mode!="add")Edit user: <b>$!{dbuser.name}</b>#else Add user#end</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listusers"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: List of users"></a></p>
 <div id="help">
-	<p>Edit the selected user.</p>
+	<p class="helptitle">Edit the selected user</p>
 	<p>Enter the userid and name of the user.</p> 
 	<p>Members of the admin group have full access to all parts of the application. Members of a group will have read and write access to projects, that belong to this group. Projects which belong to a group that the user is not a member of will be visible but the user can not change the project, groups, rules or actions. If a project is marked as private, users who are not a member of the group that the project belongs to, can not see the project.</p>
 </div>

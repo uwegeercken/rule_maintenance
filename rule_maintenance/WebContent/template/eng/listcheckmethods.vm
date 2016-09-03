@@ -2,7 +2,7 @@
 <p class="heading">List of Methods ($methods.size()) for Check: ${check.name}</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listchecks"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Checks"></a></p>
 <div id="help">
-	<p>List of methods for the selected Check</p>
+	<p class="helptitle">List of methods for the selected Check</p>
 	<p>The Check usually compares one field against another one or one field against a given fixed value. Some checks only check the state of a given field, like e.g. CheckIsNull.</p>
 	<p>The listed methods can be invoked using the rule engine and show which data types can be used. Additionally some methods allow the user to specify additional (optional) parameters.</p>
 	<p>Important: The first parameter of the methods is always the value that shall be evaluated (from a file, database or other data).</p>

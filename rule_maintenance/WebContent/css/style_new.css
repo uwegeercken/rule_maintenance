@@ -81,6 +81,14 @@ p.smallred
 	color: red;
 }
 
+p.helptitle
+{
+	margin:3px;
+	padding:3px;
+	font: normal 9pt/1.4 verdana, sans-serif;
+	font-weight: bold;
+}
+
 .hiddenrow
 {
 	display: none;
