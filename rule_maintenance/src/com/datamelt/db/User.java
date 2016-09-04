@@ -268,8 +268,9 @@ public class User extends DatabaseRecord implements Loadable
 		p.setString(1,userid);
 		p.setString(2,name);
 		p.setString(3,email);
-		p.setLong(4,getId());
-		p.setString(5, generatedCode);
+		p.setString(4, generatedCode);
+		p.setLong(5,getId());
+		
 		try
 		{
 			if(user.isInGroup(User.ADMINISTRATOR))

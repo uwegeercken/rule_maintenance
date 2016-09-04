@@ -6,7 +6,7 @@
 </p>
 <div id="help">
 	<p class="helptitle">History</p>
-	<p>List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated. Click on the link to update the item again.</p>
+	<p>List Projects, Rulegroups, Subgroups, Rules and Actions that recently have been updated by you. Other users will not see your hisotry entries. Click on the link to update the item again.</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="history" type="text"></p>

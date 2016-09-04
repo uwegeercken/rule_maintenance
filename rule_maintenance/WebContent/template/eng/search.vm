@@ -2,7 +2,7 @@
 <p class="heading">Search Rules and Actions</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p class="helptitle">Search for rules and/or actions</p>
+	<p class="helptitle">Search for Rules and Actions</p>
 	<p>The search will return rules and/or actions that match the search term somewhere in either the name or description.</p>
 	<p>Provide a date if you want to search for items changed on or after this date. Select if you want to search rules or actions or both.</p>
 	<p>When the result is displayed and you click on the name of the rule or action, you will be forwarded to the project and rulegroup where the rule or action is defined.</p>
