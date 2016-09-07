@@ -115,6 +115,9 @@ else
 		ArrayList list = DbCollections.getAllRuleSubgroups(connection,rulegroupid);
 		context.put("rulesubgroups",list);
 
+		ArrayList actions = DbCollections.getAllRuleGroupActions(connection,rulegroupId);
+		context.put("rulegroupactions",actions);
+		
 		RuleGroup rulegroup = new RuleGroup();
         rulegroup.setConnection(connection);
         rulegroup.setId(rulegroupId);
