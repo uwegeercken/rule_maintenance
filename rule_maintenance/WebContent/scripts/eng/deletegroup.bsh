@@ -15,10 +15,10 @@ if(cancelled.equals("delete group"))
 	group.id= groupid;
 
 	PreparedStatement ps2 = connection.getPreparedStatement(Group.REMOVE_ALL_ASSIGNED_USERS_SQL);
-	group.removeAllAssignedUsers(ps2);
+	group.removeAllAssignedUsers(ps2, user);
 	
 	PreparedStatement ps = connection.getPreparedStatement(Group.DELETE_SQL);
-	group.delete(ps);
+	group.delete(ps, user);
 	
 	
 	

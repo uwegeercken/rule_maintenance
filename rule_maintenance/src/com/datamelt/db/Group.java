@@ -91,37 +91,87 @@ public class Group extends DatabaseRecord implements Loadable
         return exists;
     }
     
-    public void insert(PreparedStatement p) throws Exception
+    public void insert(PreparedStatement p, User user) throws Exception
     {
         p.setString(1,name);
         p.setString(2,description);
-        p.execute();
-        
-        setId(getConnection().getLastInsertId());
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.executeUpdate();
+				setId(getConnection().getLastInsertId());
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to insert the user");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
 
-    public void delete(PreparedStatement p) throws Exception
+    public void delete(PreparedStatement p, User user) throws Exception
     {
         p.setLong(1,getId());
-        p.execute();
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.executeUpdate();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to delete the group");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
         
     }
 
-    public void removeAllAssignedUsers(PreparedStatement p) throws Exception
+    public void removeAllAssignedUsers(PreparedStatement p, User user) throws Exception
     {
         p.setLong(1,getId());
-        p.execute();
+        try
+		{
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to remove users from the group");	
+			}
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
     }
 
-	public void update(PreparedStatement p) throws Exception
+	public void update(PreparedStatement p, User user) throws Exception
 	{
 		p.setString(1,name);
 		p.setString(2,description);
 		p.setLong(3,getId());
-
 		try
 		{
-			p.executeUpdate();
+			if(user.isInGroup(User.ADMINISTRATOR))
+			{
+				p.execute();
+			}
+			else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowed to update the group");	
+			}
 			
 		}
 		catch (Exception ex)
@@ -130,22 +180,6 @@ public class Group extends DatabaseRecord implements Loadable
 		}
 	}
 
-	public void updatePagesForRemovedGroup(PreparedStatement p,long newGroupsId) throws Exception
-	{
-		p.setLong(1,newGroupsId);
-		p.setLong(2,getId());
-
-		try
-		{
-			p.executeUpdate();
-			
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
 	public String getName()
     {
         return name;

@@ -27,7 +27,7 @@ else
 			{
 				group.setName(name);
 				group.setDescription(description);
-				group.update(connection.getPreparedStatement(Group.UPDATE_SQL));
+				group.update(connection.getPreparedStatement(Group.UPDATE_SQL),user);
 				context.put("mode","updated");
 				group.load();
 				infomessage.text="Group updated.";
@@ -53,7 +53,7 @@ else
 			{
 				group.setName(name);
 				group.setDescription(description);
-				group.insert(connection.getPreparedStatement(Group.INSERT_SQL));
+				group.insert(connection.getPreparedStatement(Group.INSERT_SQL),user);
 				context.put("mode","inserted");
 				group.load();
 				infomessage.text="Group added.";
