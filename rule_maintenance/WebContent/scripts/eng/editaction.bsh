@@ -342,24 +342,104 @@ else
 			}
 			else
 			{
-				actionNew.lastUpdateUser.id = user.id;
-				actionNew.lastUpdateUser.connection = connection;
-				actionNew.lastUpdateUser.load();
-				actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL), project, user);
-				context.put("mode","inserted");
+				// the return type of the method
+				Type object2Type = new Type();;
+				object2Type.connection = connection;
+				if(actionNew.object2Type.id!=0)
+				{
+				 	object2Type.id = actionNew.object2Type.id;
+				 	object2Type.load();
+				}
 				
-				History history = new History();
-				history.connection = connection;
-				history.user = user;
-				history.type = "action";
-				history.typeId = actionNew.id;
-				history.parent1 = rulegroup.id;
-				history.parent2 = project.id;
-				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+				// the field to retrieve the data
+				Type object1Type = new Type();
+				object1Type.connection = connection;
 				
-				actionNew.load();
+				Type parameter1Type = new Type();;
+				parameter1Type.connection = connection;
 				
-				infomessage.text="Action added.";
+				Type parameter2Type = new Type();;
+				parameter2Type.connection = connection;
+				
+				Type parameter3Type = new Type();;
+				parameter3Type.connection = connection;
+				
+				if(actionNew.object1Type.id!=0)
+				{
+					object1Type.id = actionNew.object1Type.id;
+					object1Type.load();
+
+				}
+				if(actionNew.parameter1Type.id!=0)
+				{
+					parameter1Type.id = actionNew.parameter1Type.id;
+					parameter1Type.load();
+				}	
+				if(actionNew.parameter2Type.id!=0)
+				{
+				 	parameter2Type.id = actionNew.parameter2Type.id;
+				 	parameter2Type.load();
+				}
+				
+				if(actionNew.parameter3Type.id!=0)
+				{
+				 	parameter3Type.id = actionNew.parameter3Type.id;
+				 	parameter3Type.load();
+				}				
+				
+		    	String methodTypes="";
+		    	
+		    	if(object1Type.name!=null)
+		    	{
+		    		methodTypes = object1Type.name;
+		    	}
+		    	if(parameter1Type.name!=null)
+		    	{
+		    		if(methodTypes.equals(""))
+		    		{
+		    			methodTypes = parameter1Type.name;
+		    		}
+		    		else
+		    		{
+		    			methodTypes = methodTypes + ", " + parameter1Type.name;
+		    		}
+		    	}
+		    	if(parameter2Type.name!=null)
+		    	{
+		    		methodTypes = methodTypes + ", " + parameter2Type.name;
+		    	}
+		    	if(parameter3Type.name!=null)
+		    	{
+		    		methodTypes = methodTypes + ", " + parameter3Type.name;
+		    	}
+				
+				boolean exists = DbCollections.getActionMethodExists(connection,actionNew.action.id,methodTypes,object2Type.name);
+				if(!exists)
+				{
+					infomessage.type="error";
+					infomessage.text="Method to execute [" + methodTypes + "] and Field to update [" + object2Type.name + "] does not exist for action [" + actionNew.action.getMethoddisplayname()  + "]";
+				}
+				else
+				{
+					actionNew.lastUpdateUser.id = user.id;
+					actionNew.lastUpdateUser.connection = connection;
+					actionNew.lastUpdateUser.load();
+					actionNew.insert(connection.getPreparedStatement(RuleGroupAction.INSERT_SQL), project, user);
+					context.put("mode","inserted");
+					
+					History history = new History();
+					history.connection = connection;
+					history.user = user;
+					history.type = "action";
+					history.typeId = actionNew.id;
+					history.parent1 = rulegroup.id;
+					history.parent2 = project.id;
+					history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+					
+					actionNew.load();
+					
+					infomessage.text="Action added.";
+				}
 			}
 		}
 		
