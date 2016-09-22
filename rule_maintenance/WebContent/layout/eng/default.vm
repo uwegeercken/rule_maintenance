@@ -192,7 +192,8 @@ $(document).ready(function() {
 	});
 	$(function() {
 		$( ".datepicker" ).datepicker({
-				dateFormat: "yy-mm-dd",
+				dateFormat: "yy-mm-dd ",
+				constrainInput: false,
 				changeMonth: true,
 				changeYear: true,
 				firstDay: 1

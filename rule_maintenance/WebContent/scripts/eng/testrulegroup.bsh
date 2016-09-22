@@ -42,6 +42,7 @@ else
 	if(cancelled!=null && cancelled.equals("test data"))
 	{
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String realPath = request.getSession().getServletContext().getRealPath("/");
      	if(id >0)
      	{
@@ -82,8 +83,16 @@ else
 			    		{
 			    			if(value!=null && value!="")
 			    			{
-			    				Date date = dateformat.parse (value); 
-			    				rowFieldCollection.addField(new RowField(field.name,date));
+			    				try
+			    				{
+			    					Date date = datetimeformat.parse (value); 
+			    					rowFieldCollection.addField(new RowField(field.name,date));
+			    				}
+			    				catch(Exception parseexception)
+			    				{
+			    					Date date = dateformat.parse (value); 
+			    					rowFieldCollection.addField(new RowField(field.name,date));
+			    				}
 			    			}
 			    			else
 			    			{
@@ -174,10 +183,10 @@ else
 			    	}
 			    	else if(field.type.name.equals("double"))
 			    	{
-					try
-					{
-						if(value!=null && value!="")
+						try
 						{
+							if(value!=null && value!="")
+							{
 			    				rowFieldCollection.addField(new RowField(field.name,Double.parseDouble(value)));
 			    			}
 			    			else
