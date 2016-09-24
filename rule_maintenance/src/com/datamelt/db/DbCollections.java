@@ -689,7 +689,7 @@ public class DbCollections
         	numberOfMethods = rs.getLong("counter");
         }
         rs.close();
-        return numberOfMethods==1;
+        return numberOfMethods>=1;
     }
     
     /**
