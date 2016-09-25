@@ -4,7 +4,10 @@
 <div id="help">
 	<p class="helptitle">#if($mode=="add")Add Rulegroup #else Edit Rulegroup#end</p>
 	<p>Enter the name and description of the rule group. Specify from and until date for the validity of the group.</p>
-	<p>Select a rulegroup that this rulegroup depends on and which result the dependent rulegroup must have. The valid from and valid must lie within the valid from and until of the dependent rulegroup. This rulegroup - and all rules and actions - will only be executed if the result of the dependent rulegroup is corresponding.</p>
+	#if($mode && $mode!="copy" && $mode!="add")
+		<p>Select a rulegroup that this rulegroup depends on and which result the dependent rulegroup must have. The valid from and valid must lie within the valid from and until of the dependent rulegroup.</p>
+		<p>This rulegroup - and all rules and actions - will only be executed if the result of the dependent rulegroup is corresponding.</p>
+	#end
 </div>
 <div class="formbox">
 #if($mode && $mode=="add")
