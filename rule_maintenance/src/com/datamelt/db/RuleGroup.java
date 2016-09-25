@@ -25,6 +25,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private long dependentRuleGroupId;
 	private String dependentRuleGroupExecuteIf; 
 	private String dependentRuleGroups;
+	private long numberOfRuleGroupsDependingOnThisRuleGroup;
 	
 	private User lastUpdateUser = new User();
 	
@@ -132,6 +133,11 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		dependentRuleGroup.setId(dependentRuleGroupId);
 		dependentRuleGroup.setConnection(getConnection());
 		dependentRuleGroup.load();
+	}
+	
+	public void loadNumberOfRuleGroupsDependingOnThisRuleGroup() throws Exception
+	{
+		numberOfRuleGroupsDependingOnThisRuleGroup = DbCollections.getCountGroupsDependingOnThisGroup(getConnection(), projectId, getId());
 	}
 	
 	private ResultSet selectRecordById(PreparedStatement p) throws Exception
@@ -439,6 +445,11 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	public String getDependentRuleGroups()
 	{
 		return dependentRuleGroups;
+	}
+
+	public long getNumberOfRuleGroupsDependingOnThisRuleGroup()
+	{
+		return numberOfRuleGroupsDependingOnThisRuleGroup;
 	}
 
 }

@@ -87,6 +87,7 @@ public class DbCollections
         	rulegroup.setId(rs.getLong("id"));
         	rulegroup.load();
         	rulegroup.loadDependentRuleGroup();
+        	rulegroup.loadNumberOfRuleGroupsDependingOnThisRuleGroup();
             list.add(rulegroup);
         }
         rs.close();

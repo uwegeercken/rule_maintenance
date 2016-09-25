@@ -1,6 +1,6 @@
 #set($pagetitle='About')
 <p class="heading">About Business Rules Maintenance Tool</p>
-<p>Web application version: ${version} (${lastupdate}) - Ruleengine version: ${ruleengineversion}</p>
+<p>Web application version: ${version} (${lastupdate}) - Ruleengine version: ${ruleengineversion} (${ruleenginelastupdate})</p>
 <p>Total number of projects: $numberofprojects - number of rules: $numberofrules - number of actions: $numberofactions</p>
 <p>This web application uses modern, state-of-the-art technologies to present the content to the user. on the other hand the application can be rapidly updated and maintained. this is achieved by using a MVC (Model-View-Controller) paradigm and by implementing an advanced template engine (Velocity).</p>
 <p>Given these advantages, paired with a high-speed quality database, RAD (Rapid Application Development) is indeed possible.</p>

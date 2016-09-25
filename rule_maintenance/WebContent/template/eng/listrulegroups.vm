@@ -32,7 +32,9 @@
 			#if($rulegroup.dependentRuleGroupId && $rulegroup.dependentRuleGroupId>0)
 				<img class="dependent" height="22px" width="22px" src="img/connect.png" title="depending on: ${rulegroup.dependentRuleGroup.name} (${rulegroup.dependentRuleGroupExecuteIf})">
 			#end
+			#if(${rulegroup.numberOfRuleGroupsDependingOnThisRuleGroup}==0)
 			<a href="process?action=bsh&ro=1&scriptname=selectdeleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete rulegroup"></a>
+			#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit rulegroup"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&mode=copy&projectid=${project.id}"><img class="copy" height="22px" width="22px" src="img/copy.png" title="copy rulegroup"></a>
 		#end
