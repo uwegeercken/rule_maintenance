@@ -117,19 +117,19 @@ else
 			else if(rulegroupNew.dependentRuleGroupId!=0 && rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
 				infomessage.type="error";
-				infomessage.text="Select the required result of the dependent rulegroup";
+				infomessage.text="Select the required result of the rulegroup that this rulegroup depends on";
 			}
 			else if(rulegroupNew.dependentRuleGroupId==0 && rulegroupNew.dependentRuleGroupExecuteIf !=null && !rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
 				infomessage.type="error";
 				infomessage.text="Select the dependent rulegroup";
 			}
-			else if(rulegroupNew.dependentRuleGroup!= null && !DateUtility.isWithinValidFromUntil(rulegroupNew,rulegroupNew.dependentRuleGroup))
+			else if(rulegroupNew.dependentRuleGroup!= null && rulegroupNew.dependentRuleGroup.id>0 && !DateUtility.isWithinValidFromUntil(rulegroupNew,rulegroupNew.dependentRuleGroup))
 			{
 				infomessage.type="error";
 				infomessage.text="Valid from and until is not within " + rulegroupNew.dependentRuleGroup.validFrom + "/" + rulegroupNew.dependentRuleGroup.validUntil + "  of rulegroup [" + rulegroupNew.dependentRuleGroup.name + "]";
 			}
-			else if(rulegroupNew.dependentRuleGroup== null && ruleGroupsDependingWithInvalidFromUntil.size()>0)
+			else if((rulegroupNew.dependentRuleGroup== null || rulegroupNew.dependentRuleGroup.id==0) && ruleGroupsDependingWithInvalidFromUntil.size()>0)
 			{
 				String minmaxDates = DbCollections.getRuleGroupsDependingMinMaxValidDates(ruleGroupsDependingWithInvalidFromUntil);
 				infomessage.type="error";
@@ -183,7 +183,7 @@ else
 			else if(rulegroupNew.dependentRuleGroupId!=0 && rulegroupNew.dependentRuleGroupExecuteIf!=null && rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
 				infomessage.type="error";
-				infomessage.text="Select which result the dependent rulegroup must have";
+				infomessage.text="Select the required result of the rulegroup that this rulegroup depends on";
 			}
 			else if(rulegroupNew.dependentRuleGroupId==0 && rulegroupNew.dependentRuleGroupExecuteIf!=null && !rulegroupNew.dependentRuleGroupExecuteIf.equals(""))
 			{
