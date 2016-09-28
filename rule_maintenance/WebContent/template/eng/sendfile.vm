@@ -31,6 +31,20 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Environment:</td>
+		<td>
+		<select name="environment" size="1">
+				#if($environment=="prod")
+					<option value="dev">Development</option>
+					<option selected value="prod">Production</option>
+				#else
+					<option selected value="dev">Development</option>
+					<option value="prod">Production</option>
+				#end
+    		</select>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="generate" name="submit">
 		</td>

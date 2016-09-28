@@ -15,16 +15,17 @@ import com.datamelt.db.RuleGroup;
 
 public class RuleGroupFileCreator {
 
-	public String projectName=null;
-	public String templatePath=null;
-	public String templateName=null;
-	public String outputPath=null;
-	public String selectedDate=null;
-	public String dbServerHostname=null;
-	public int dbServerPort;
-	public String dbName=null;
-	public String dbUser=null;
-	public String dbPassword=null;
+	private String projectName=null;
+	private String templatePath=null;
+	private String templateName=null;
+	private String outputPath=null;
+	private String environment="";
+	private String selectedDate=null;
+	private String dbServerHostname=null;
+	private int dbServerPort;
+	private String dbName=null;
+	private String dbUser=null;
+	private String dbPassword=null;
 
 	private static final String FILE_EXTENSION = ".xml";
 	private static final String ZIP_EXTENSION = ".zip";
@@ -86,6 +87,10 @@ public class RuleGroupFileCreator {
 	    		else if (args[i].startsWith("-w="))
 	    		{
 	    			fileCreator.dbPassword = args[i].substring(3);
+	    		}
+	    		else if (args[i].startsWith("-e="))
+	    		{
+	    			fileCreator.environment = args[i].substring(3);
 	    		}
 	    	}
 			
@@ -171,7 +176,12 @@ public class RuleGroupFileCreator {
 
 	private String getTempfolder(Project project)
 	{
-		return outputPath + "/" + project.getName() + "_" + selectedDate;
+		String tempfolder = outputPath + "/" + project.getName();
+		if(environment!=null && !environment.trim().equals(""))
+		{
+			tempfolder = tempfolder + "_" + environment;
+		}
+		return tempfolder;
 	}
 	
 	public void writeFiles(Project project) throws Exception
@@ -193,7 +203,12 @@ public class RuleGroupFileCreator {
 	
 	public String zipFiles(Project project) throws Exception
 	{
-		String zipfilename=outputPath +"/" + project.getName().toLowerCase() + "_" + selectedDate + RuleGroupFileCreator.ZIP_EXTENSION;
+		String zipfilename=outputPath +"/" + project.getName().toLowerCase().trim();
+		if(environment!=null && !environment.trim().equals(""))
+		{
+			zipfilename = zipfilename + "_" + environment;
+		}
+		zipfilename = zipfilename + RuleGroupFileCreator.ZIP_EXTENSION;
 
 		byte[] buffer = new byte[1024];
 		File folder = new File(getTempfolder(project));
@@ -236,8 +251,9 @@ public class RuleGroupFileCreator {
     	System.out.println("Only Rule Groups which are valid for the given date are output.");
     	System.out.println();
     	System.out.println();
-    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder]-v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password]");
+    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder]-v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment]");
     	System.out.println("where [project name]     : optional. name of the project for which files shall be generated.");
+    	System.out.println("      [environment]      : optional. the environment the file is targeted for");
     	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
     	System.out.println("      [template name]    : required. filename of the template.");
     	System.out.println("      [output folder]    : required. path to the output folder where files are created.");
@@ -248,7 +264,7 @@ public class RuleGroupFileCreator {
     	System.out.println("      [db user]          : required. user to access the database");
     	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev");
     	System.out.println();
     	System.out.println("published as open source under the GPL3.");
     	System.out.println("all code by uwe geercken, 2014-2016. uwe.geercken@web.de");
@@ -319,4 +335,30 @@ public class RuleGroupFileCreator {
 	{
 		this.dbPassword = dbPassword;
 	}
+
+	public String getEnvironment()
+	{
+		return environment;
+	}
+
+	public void setEnvironment(String environment)
+	{
+		this.environment = environment;
+	}
+
+	public String getDbServerHostname()
+	{
+		return dbServerHostname;
+	}
+
+	public int getDbServerPort()
+	{
+		return dbServerPort;
+	}
+
+	public String getDbName()
+	{
+		return dbName;
+	}
+	
 }

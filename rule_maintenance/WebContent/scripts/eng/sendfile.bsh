@@ -4,6 +4,8 @@ import com.datamelt.db.Activity;
 import com.datamelt.util.RuleGroupFileCreator;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 cancelled= request.getParameter("submit");
 
@@ -15,10 +17,17 @@ else
 {
 	if(cancelled!=null && cancelled.equals("generate"))
 	{
-		String realPath = request.getSession().getServletContext().getRealPath("/");
-		
+		FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
+		Properties configuration = new Properties();
+		configuration.load(fis);
+		fis.close();
+			
+		String exportpath = configuration.getProperty("export_path");
+			
 		id=Long.parseLong(request.getParameter("id"));
 		selecteddate=request.getParameter("selecteddate");
+		environment=request.getParameter("environment");
+		context.put("environment",environment);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -48,8 +57,16 @@ else
 			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
 		
 			fileCreator.projectName = project.name;
-			fileCreator.templatePath = realPath + "template";
-			fileCreator.outputPath = realPath + "tmp";
+			fileCreator.templatePath = contextpath + "template";
+			fileCreator.environment = environment;
+			if(exportpath!=null && exportpath.trim()!="")
+			{
+				fileCreator.outputPath = exportpath;
+			}
+			else
+			{
+				fileCreator.outputPath = contextpath + "tmp";
+			}
 			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
@@ -59,22 +76,38 @@ else
 			Activity activity = new Activity();
 			activity.connection = connection;
 			activity.user = user;
-			activity.message = "Exported project [" + project.name + "]";
-			activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 			
-			response.setContentType("application/zip");  
-		    response.setHeader("Content-Disposition","attachment;filename=\"" + project.name + ".zip\"");
+			FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
+			Properties p = new Properties();
+			p.load(fis);
+			fis.close();
 			
-			File f = new File(fileName);  
-		    byte[] arBytes = new byte[(int)f.length()];  
-		    FileInputStream is = new FileInputStream(f);  
-		    is.read(arBytes); 
-		    
-		    op = response.getOutputStream();  
-		    op.write(arBytes);  
-		    op.flush();
-		    //op.close();  
-
+			if(exportpath==null || exportpath=="")
+			{
+				activity.message = "Exported project [" + project.name + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				
+				response.setContentType("application/zip");  
+			    response.setHeader("Content-Disposition","attachment;filename=\"" + project.name +  "_" + environment + ".zip\"");
+				
+				File f = new File(fileName);  
+			    byte[] arBytes = new byte[(int)f.length()];  
+			    FileInputStream is = new FileInputStream(f);  
+			    is.read(arBytes); 
+			    
+			    op = response.getOutputStream();  
+			    op.write(arBytes);  
+			    op.flush();
+			    //op.close();
+			}
+			else
+			{
+				activity.message = "Exported project [" + project.name + "] to [" + fileName + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				
+				infomessage.type="info";
+				infomessage.text="Project exported to file: [" + fileName + "]";
+			}
 		}
 		else if(id==0 || validselecteddate==false)
 		{

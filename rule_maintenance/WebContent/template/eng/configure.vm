@@ -1,6 +1,7 @@
 #set($pagetitle='Configuration')
 <p class="heading">Configuration of the Rules Maintenance Tool</p>
 <p>The Business Rule Maintenance tool uses a MySQL/MariaDb database for data storage. Specify the database hostname/IP address and port, database name and a user who has read and write access privileges to the database.</p>
+<p>When a Project Export Folder is specified, then exporting a project will store the resulting file there. Otherwise the user can select the location through the Web Browser.</p>
 <p>Optionally you can specify the LDAP server details below, to authenticate a user login against the LDAP server. Provide the LDAP server hostname (without domain name) or IP address, the port and the domain name of the server (e.g. mydomain.com).</p>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=configure"> 
@@ -36,6 +37,12 @@
 		<td>Database User Password:</td>
 		<td>
 			<input name="db_userpassword" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("db_userpassword")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>Project Export Folder:</td>
+		<td>
+			<input name="export_path" type="text" size="40" maxlength="255" value="$!{configuration.getProperty("export_path")}">
 		</td>
 	</tr>
 	<tr> 

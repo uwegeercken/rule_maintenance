@@ -19,6 +19,9 @@ p.put("db_userpassword",request.getParameter("db_userpassword"));
 p.put("ldap_hostname",request.getParameter("ldap_hostname"));
 p.put("ldap_port",request.getParameter("ldap_port"));
 p.put("ldap_domain",request.getParameter("ldap_domain"));
+
+p.put("export_path",request.getParameter("export_path"));
+
 context.put("configuration",p);
 
 if(cancelled.equals("save"))
