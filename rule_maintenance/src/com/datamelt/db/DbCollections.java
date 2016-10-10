@@ -740,7 +740,7 @@ public class DbCollections
     				{
     					buffer.append(", ");
     				}
-    				buffer.append(actionMethodType[0]);
+    				buffer.append(actionMethodType[i].trim());
     			}
     		}
     		if(typesCount<numberOfTypes)
