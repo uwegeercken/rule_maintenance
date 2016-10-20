@@ -1,6 +1,11 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, July 2016
+last update: Uwe Geercken, October 2016
+
+version 1.8.1
+=============
+- new feature: dependant rulegroups
+- actions can be executed independent of the rulegroup result (passed/failed)
 
 version 1.8
 ===========
