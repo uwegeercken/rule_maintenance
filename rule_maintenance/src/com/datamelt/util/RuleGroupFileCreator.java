@@ -203,7 +203,12 @@ public class RuleGroupFileCreator {
 	
 	public String zipFiles(Project project) throws Exception
 	{
-		String zipfilename=outputPath +"/" + project.getName().toLowerCase().trim();
+		String filename = project.getExportFilename();
+		if(filename==null || filename.trim().equals(""))
+		{
+			filename = project.getName().toLowerCase().trim();
+		}
+		String zipfilename=outputPath +"/" + filename;
 		if(environment!=null && !environment.trim().equals(""))
 		{
 			zipfilename = zipfilename + "_" + environment;

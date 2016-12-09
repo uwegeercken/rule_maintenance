@@ -1,6 +1,6 @@
 #set($pagetitle='Rule Group Action Maintenance')
 <p class="heading">Rule Group Action maintenance: #if($mode=="add")add action #else edit action#end - Project: ${project.name} - Rule Group: ${rulegroup.name}</p>
-<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a>&nbsp;<img height="22" width="22" src="img/field_add.png" title="add field">&nbsp;<img height="22" width="22" src="img/parameter_add.png" title="add parameter"></p>
 <div id="help">
 	<p class="helptitle">Add or update the selected action</p>
 	<p>Enter the name and description of the action. Specify under which condition the action shall be executed.</p> 

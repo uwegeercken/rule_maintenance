@@ -19,6 +19,7 @@ public class Project extends DatabaseRecord implements Loadable
 {
 	private String name;
 	private String description;
+	private String exportFilename;
 	private String databaseHostname;
 	private String databaseName;
 	private String databaseTableName;
@@ -41,8 +42,8 @@ public class Project extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL						= "select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL				= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, object_classname,object_method_getter,object_method_setter) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, object_classname=?, object_method_getter=?, object_method_setter=? where id=?";
+	public static final String INSERT_SQL 						= "insert into " + TABLENAME + " (name, description, export_filename, database_hostname, database_name, database_tablename, database_userid, database_user_password, last_update_user_id,owner_user_id, group_id,is_private, object_classname,object_method_getter,object_method_setter) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 						= "update " + TABLENAME + " set name=?, description=?, export_filename=?, database_hostname=?, database_name=?, database_tablename=?, database_userid=?, database_user_password=?, last_update_user_id=?, owner_user_id=?, group_id=?, is_private=?, object_classname=?, object_method_getter=?, object_method_setter=? where id=?";
     public static final String EXIST_SQL  						= "select id from  " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL 						= "delete from " + TABLENAME + " where id=?";
 	
@@ -68,6 +69,7 @@ public class Project extends DatabaseRecord implements Loadable
 		{
 	        this.name = rs.getString("name");
 	        this.description = rs.getString("description");
+	        this.exportFilename = rs.getString("export_filename");
 	        this.privateProject = rs.getInt("is_private");
 	        this.objectClassname = rs.getString("object_classname");
 	        this.objectMethodGetter = rs.getString("object_method_getter");
@@ -102,6 +104,7 @@ public class Project extends DatabaseRecord implements Loadable
 		{
 	        this.setId(rs.getLong("id"));
 	        this.description = rs.getString("description");
+	        this.exportFilename = rs.getString("export_filename");
 	        this.privateProject = rs.getInt("is_private");
 	        this.objectClassname = rs.getString("object_classname");
 	        this.objectMethodGetter = rs.getString("object_method_getter");
@@ -208,20 +211,21 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		p.setString(1,name);
 		p.setString(2,description);
-		p.setString(3,databaseHostname);
-		p.setString(4,databaseName);
-		p.setString(5,databaseTableName);
-		p.setString(6,databaseUserid);
-		p.setString(7,databaseUserPassword);
-		p.setLong(8,lastUpdateUser.getId());
-		p.setLong(9,ownerUser.getId());
-		p.setLong(10,group.getId());
-		p.setLong(11,privateProject);
-		p.setString(12,objectClassname);
-		p.setString(13,objectMethodGetter);
-		p.setString(14,objectMethodSetter);
+		p.setString(3,exportFilename);
+		p.setString(4,databaseHostname);
+		p.setString(5,databaseName);
+		p.setString(6,databaseTableName);
+		p.setString(7,databaseUserid);
+		p.setString(8,databaseUserPassword);
+		p.setLong(9,lastUpdateUser.getId());
+		p.setLong(10,ownerUser.getId());
+		p.setLong(11,group.getId());
+		p.setLong(12,privateProject);
+		p.setString(13,objectClassname);
+		p.setString(14,objectMethodGetter);
+		p.setString(15,objectMethodSetter);
 		
-		p.setLong(15,getId());
+		p.setLong(16,getId());
 
 		try
 		{
@@ -245,18 +249,19 @@ public class Project extends DatabaseRecord implements Loadable
     {
         p.setString(1,name);
 		p.setString(2,description);
-		p.setString(3,databaseHostname);
-		p.setString(4,databaseName);
-		p.setString(5,databaseTableName);
-		p.setString(6,databaseUserid);
-		p.setString(7,databaseUserPassword);
-		p.setLong(8,lastUpdateUser.getId());
-		p.setLong(9,ownerUser.getId());
-		p.setLong(10,group.getId());
-		p.setLong(11,privateProject);
-		p.setString(12,objectClassname);
-		p.setString(13,objectMethodGetter);
-		p.setString(14,objectMethodSetter);
+		p.setString(3,exportFilename);
+		p.setString(4,databaseHostname);
+		p.setString(5,databaseName);
+		p.setString(6,databaseTableName);
+		p.setString(7,databaseUserid);
+		p.setString(8,databaseUserPassword);
+		p.setLong(9,lastUpdateUser.getId());
+		p.setLong(10,ownerUser.getId());
+		p.setLong(11,group.getId());
+		p.setLong(12,privateProject);
+		p.setString(13,objectClassname);
+		p.setString(14,objectMethodGetter);
+		p.setString(15,objectMethodSetter);
 		
 		try
 		{
@@ -425,6 +430,16 @@ public class Project extends DatabaseRecord implements Loadable
 		this.databaseTableName = databaseTableName;
 	}
 	
+	public String getExportFilename()
+	{
+		return exportFilename;
+	}
+
+	public void setExportFilename(String exportFilename)
+	{
+		this.exportFilename = exportFilename;
+	}
+
 	/**
 	 * import a set of rulegroups, subgroups, rules and actions
 	 * from a zipfile into the database

@@ -52,11 +52,21 @@ else
 		}
      	context.put("selectedproject",project);
      	
+     	if(project.exportFilename!=null && !project.exportFilename.equals(""))
+		{
+			exportFilename = project.exportFilename;			
+		}
+		else
+		{
+			exportFilename = project.name;
+		}
+		
      	if(validselecteddate && id >0)
      	{
 			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
 		
-			fileCreator.projectName = project.name;
+			
+			fileCreator.projectName = exportFilename;
 			fileCreator.templatePath = contextpath + "template";
 			fileCreator.environment = environment;
 			if(exportpath!=null && exportpath.trim()!="")
@@ -88,7 +98,7 @@ else
 				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 				
 				response.setContentType("application/zip");  
-			    response.setHeader("Content-Disposition","attachment;filename=\"" + project.name +  "_" + environment + ".zip\"");
+			    response.setHeader("Content-Disposition","attachment;filename=\"" + exportFilename +  "_" + environment + ".zip\"");
 				
 				File f = new File(fileName);  
 			    byte[] arBytes = new byte[(int)f.length()];  
