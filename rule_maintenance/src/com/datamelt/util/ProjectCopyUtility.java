@@ -10,6 +10,7 @@ import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleGroupAction;
 import com.datamelt.db.RuleSubgroup;
 import com.datamelt.db.User;
+import com.datamelt.db.Field;
 
 public class ProjectCopyUtility 
 {
@@ -17,6 +18,16 @@ public class ProjectCopyUtility
 	{
 		ArrayList <RuleGroup>ruleGroups = DbCollections.getAllRuleGroups(connection,originalProject.getId());
 		newProject.setRulegroups(ruleGroups);
+		
+		originalProject.loadFields();
+		
+		for(int i=0;i<originalProject.getFields().size();i++)
+		{
+			Field field = originalProject.getFields().get(i);
+			field.setProjectId(newProject.getId());
+			field.setConnection(connection);
+			field.insert(connection.getPreparedStatement(Field.INSERT_SQL));
+		}
 		
 		for(int i=0;i<ruleGroups.size();i++)
 		{
