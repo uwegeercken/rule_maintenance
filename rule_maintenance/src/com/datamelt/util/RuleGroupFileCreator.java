@@ -27,8 +27,12 @@ public class RuleGroupFileCreator {
 	private String dbUser=null;
 	private String dbPassword=null;
 
-	private static final String FILE_EXTENSION = ".xml";
-	private static final String ZIP_EXTENSION = ".zip";
+	private static final String FILE_EXTENSION 			= ".xml";
+	
+	public static final String ZIP_EXTENSION 			= ".zip";
+	
+	public static final String ENVIRONMENT_DEVELOPMENT 	= "dev";
+	public static final String ENVIRONMENT_PRODUCTION  	= "prod";
 	
 	public RuleGroupFileCreator()
 	{
@@ -201,7 +205,7 @@ public class RuleGroupFileCreator {
 		}
 	}
 	
-	public String zipFiles(Project project) throws Exception
+	public String getZipFileName(Project project)
 	{
 		String filename = project.getExportFilename();
 		if(filename==null || filename.trim().equals(""))
@@ -214,14 +218,20 @@ public class RuleGroupFileCreator {
 			zipfilename = zipfilename + "_" + environment;
 		}
 		zipfilename = zipfilename + RuleGroupFileCreator.ZIP_EXTENSION;
+		return zipfilename;
+	}
+	
+	public String zipFiles(Project project) throws Exception
+	{
+		String zipFileName = getZipFileName(project);
 
 		byte[] buffer = new byte[1024];
 		File folder = new File(getTempfolder(project));
 		
-		File toDelete = new File(zipfilename);
+		File toDelete = new File(zipFileName);
 		toDelete.delete();
 		
-		FileOutputStream fos = new FileOutputStream(zipfilename);
+		FileOutputStream fos = new FileOutputStream(zipFileName);
 		ZipOutputStream zos = new ZipOutputStream(fos);
 		
 		File[] files = folder.listFiles();
@@ -246,7 +256,7 @@ public class RuleGroupFileCreator {
 			file.delete();
 		}
 		folder.delete();
-		return zipfilename;
+		return zipFileName;
 	}
 	
 	public static void help()

@@ -4,7 +4,7 @@
 <div id="help">
 	<p class="helptitle">Export Project Zip file</p>
 	<p>Export a Zip file containing all rules, rulegroups, subgroups and actions of a selected project. Only rule groups that are valid on or after the selected Validity Date below are included.</p>
-	<p>You will be prompted by your web browser to save the Zip file in a location of your choice.</p>
+	<p>You will be prompted by your web browser to save the Zip file in a location of your choice, if no default export folder is defined.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=sendfile"> 
@@ -36,10 +36,10 @@
 		<select name="environment" size="1">
 				#if($environment=="prod")
 					<option value="dev">Development</option>
-					<option selected value="prod">Production</option>
+					<option selected value="prod">Production and Development</option>
 				#else
 					<option selected value="dev">Development</option>
-					<option value="prod">Production</option>
+					<option value="prod">Production and Development</option>
 				#end
     		</select>
 		</td>

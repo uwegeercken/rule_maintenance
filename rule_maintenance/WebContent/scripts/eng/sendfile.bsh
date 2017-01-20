@@ -2,6 +2,7 @@ import java.io.*;
 import com.datamelt.db.Project;
 import com.datamelt.db.Activity;
 import com.datamelt.util.RuleGroupFileCreator;
+import com.datamelt.util.FileUtility;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.io.FileInputStream;
@@ -80,8 +81,17 @@ else
 			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
+			FileUtility.backupFile(fileCreator.getZipFileName(project));
 			fileCreator.writeFiles(project);
 			String fileName = fileCreator.zipFiles(project);
+
+			// create a project file copy for the development environment
+			if(environment.equals(RuleGroupFileCreator.ENVIRONMENT_PRODUCTION))
+			{
+				fileCreator.environment = RuleGroupFileCreator.ENVIRONMENT_DEVELOPMENT;
+				FileUtility.backupFile(fileCreator.getZipFileName(project));
+				FileUtility.copyFile(fileName,fileCreator.getZipFileName(project));
+			}
 
 			Activity activity = new Activity();
 			activity.connection = connection;
