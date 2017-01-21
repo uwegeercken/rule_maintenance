@@ -1,0 +1,22 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Check;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		projectId=Long.parseLong(request.getParameter("id"));
+
+		Project project = new Project();
+        project.setConnection(connection);
+        project.setId(projectId);
+        project.load();
+        project.loadFields();
+		
+		context.put("project",project);
+
+	
+		templatename="listreferencefields_popup.vm";
+}

@@ -1,5 +1,7 @@
 import com.datamelt.db.DbCollections;
 import java.text.SimpleDateFormat;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 if(user==null)
 {
@@ -10,6 +12,13 @@ else
 		ArrayList list = DbCollections.getAllProjects(connection,user);
 		context.put("projects",list);
 		
+		FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
+		Properties p = new Properties();
+		p.load(fis);
+		fis.close();
+		
+		context.put("configuration",p);
+			
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		context.put("today",sdf.format(new Date()));
 	

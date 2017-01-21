@@ -4,7 +4,8 @@
 <div id="help">
 	<p class="helptitle">Export Project Zip file</p>
 	<p>Export a Zip file containing all rules, rulegroups, subgroups and actions of a selected project. Only rule groups that are valid on or after the selected Validity Date below are included.</p>
-	<p>You will be prompted by your web browser to save the Zip file in a location of your choice, if no default export folder is defined.</p>
+	<p>The export filename is either defined in the projects configuration or the name of the project is used as the filename.</p>
+	<p>You will be prompted by your web browser to save the Zip file in a location of your choice, if no default export folder is defined in the configuration.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=sendfile"> 
@@ -44,12 +45,19 @@
     		</select>
 		</td>
 	</tr>
+	#if($configuration.get("export_path") && !$configuration.get("export_path").equals(""))
+	<tr>
+		<td>Export folder:</td>
+		<td>
+			<p>$configuration.get("export_path")</p>
+		</td>
+	</tr>
+	#end
 	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="generate" name="submit">
 		</td>
 	</tr>
-	
 </table>
 </form>
 </div>

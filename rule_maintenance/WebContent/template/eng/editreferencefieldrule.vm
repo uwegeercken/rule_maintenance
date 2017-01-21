@@ -42,6 +42,9 @@
 				#end
 			#end
     		</select>
+    		<img id="popup2" src="img/help_black.png" height="22" width="22" title="display reference fields">
+    		<p id="popupurl2">listreferencefields_popup&id=${project.id}</p>
+    		<div id="element_to_pop_up2"></div>
 		</td>
 	</tr>
 	<tr>

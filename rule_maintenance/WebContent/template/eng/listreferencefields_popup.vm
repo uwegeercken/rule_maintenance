@@ -1,0 +1,26 @@
+#set($pagetitle='List of Reference Fields')
+#set($layout="eng/layout_logic.vm")
+<p class="heading">List of Reference Fields ($project.fields.size()) for Project: ${project.name}</p>
+
+<table border="0" width="100%">
+	<tr class="light">
+		<td width="20%">Name Descriptive</td>
+		<td width="20%">Name</td>
+		<td width="40%">Description</td>
+		<td width="20%">Type</td>
+	<tr>
+	#set($counter=0)
+	#foreach($field in $project.fields)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>${field.nameDescriptive}</td>
+		<td>$!{field.name}</td>
+		<td>$!field.description</td>
+		<td>$!field.type.name</td>
+		</tr>
+		#set($counter=$counter +1)
+	#end
+</table>

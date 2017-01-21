@@ -17,7 +17,7 @@
 <input type="hidden" name="id" value="${project.id}">
 <table align="center" width="95%" border="0">
 	<tr>
-		<td>File to Import:</td>
+		<td>CSV File to Import:</td>
 		<td>
 			<input name="csvfile" type="file" size="40" maxlength="255" accept=".csv">
 		</td>

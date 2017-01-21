@@ -150,6 +150,21 @@ $(document).ready(function() {
 	        })
 	        }
 	    });
+	    
+	    $('#popup2').on('click', function(e) {
+			var baseurl="process?action=bsh&ro=1&scriptname=";
+			var url= $("#popupurl2").text();
+	        // Prevents the default action to be triggered. 
+	        e.preventDefault();
+	
+	        // Triggering bPopup when click event is fired
+	        $('#element_to_pop_up2').bPopup({
+	        		loadUrl: baseurl + url,
+	        		transitionClose: true,
+	        		transition: 'fadeln',
+	        		speed: 700
+	        })
+	    });
   });
   
   $( "#helpimg" ).click(function() {
