@@ -35,6 +35,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	private static final String DIRECTORY_MESSAGES                 = "message";
     private static final String DB_HOSTNAME					       = "db_hostname";
     private static final String DB_PORT					       	   = "db_port";
+    private static final String PROJECT_EXPORT_FOLDER	       	   = "export_path";
+    private static final String PROJECT_BACKUP_FOLDER	       	   = "backup_path";
     
     private static final String LDAP_HOSTNAME					   = "ldap_hostname";
     private static final String LDAP_DOMAIN						   = "ldap_domain";
@@ -67,6 +69,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static String dbUser;
     private static String dbUserPassword;
     private static String dbHostname;
+    private static String exportPath;
+    private static String backupPath;
     private static int dbPort;
     private static String dbName;
     private boolean dbConnectionOk;
@@ -180,6 +184,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			dbName = p.getProperty(DB_NAME);
 			dbUser=p.getProperty(DB_USER);
 			dbUserPassword=p.getProperty(DB_USERPASSWORD);
+			exportPath=p.getProperty(PROJECT_EXPORT_FOLDER);
+			backupPath=p.getProperty(PROJECT_BACKUP_FOLDER);
 			
 			ldap = new Ldap();
 	        ldap.setHost(p.getProperty(LDAP_HOSTNAME));

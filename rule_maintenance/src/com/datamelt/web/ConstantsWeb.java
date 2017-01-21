@@ -8,5 +8,4 @@ public class ConstantsWeb
 	public static final String CONFIG_FILE					= "config.properties";
 	public static final String SELECTCONFIG_SCRIPT			= "selectconfigure";
 	public static final String CONFIG_SCRIPT				= "configure";
-	public static final String KETTLE_PLUGIN_BASE_FOLDERS	= "KETTLE_PLUGIN_BASE_FOLDERS";
 }

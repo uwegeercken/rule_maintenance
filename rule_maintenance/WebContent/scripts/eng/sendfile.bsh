@@ -22,8 +22,10 @@ else
 		Properties configuration = new Properties();
 		configuration.load(fis);
 		fis.close();
+		context.put("configuration",configuration);
 			
 		String exportpath = configuration.getProperty("export_path");
+		String backuppath = configuration.getProperty("backup_path");
 			
 		id=Long.parseLong(request.getParameter("id"));
 		selecteddate=request.getParameter("selecteddate");
@@ -64,45 +66,48 @@ else
 		
      	if(validselecteddate && id >0)
      	{
-			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
-		
-			
-			fileCreator.projectName = exportFilename;
-			fileCreator.templatePath = contextpath + "template";
-			fileCreator.environment = environment;
-			if(exportpath!=null && exportpath.trim()!="")
-			{
-				fileCreator.outputPath = exportpath;
-			}
-			else
-			{
-				fileCreator.outputPath = contextpath + "tmp";
-			}
-			fileCreator.templateName = "ruleengine.vm";
-			fileCreator.selectedDate = selecteddate;
-			
-			FileUtility.backupFile(fileCreator.getZipFileName(project));
-			fileCreator.writeFiles(project);
-			String fileName = fileCreator.zipFiles(project);
-
-			// create a project file copy for the development environment
-			if(environment.equals(RuleGroupFileCreator.ENVIRONMENT_PRODUCTION))
-			{
-				fileCreator.environment = RuleGroupFileCreator.ENVIRONMENT_DEVELOPMENT;
-				FileUtility.backupFile(fileCreator.getZipFileName(project));
-				FileUtility.copyFile(fileName,fileCreator.getZipFileName(project));
-			}
-
 			Activity activity = new Activity();
 			activity.connection = connection;
 			activity.user = user;
 			
-			FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
-			Properties p = new Properties();
-			p.load(fis);
-			fis.close();
+			RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
+		
+			fileCreator.projectName = exportFilename;
+			fileCreator.templatePath = contextpath + "template";
+			fileCreator.environment = environment;
+			fileCreator.temporaryPath = contextpath + "tmp";
+			fileCreator.templateName = "ruleengine.vm";
+			fileCreator.selectedDate = selecteddate;
 			
-			if(exportpath==null || exportpath=="")
+			if(exportpath!=null && exportpath.trim()!="")
+			{
+				fileCreator.outputPath = exportpath;
+				
+				if(backuppath!=null && !backuppath.trim().equals(""))
+				{
+					fileCreator.backupPath = backuppath;
+				}
+				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath); 
+				String tempPath = fileCreator.writeFiles(project);
+				String fileName = fileCreator.zipFiles(project, tempPath);
+				
+				// create a project file copy for the development environment
+				if(environment.equals(RuleGroupFileCreator.ENVIRONMENT_PRODUCTION))
+				{
+					fileCreator.environment = RuleGroupFileCreator.ENVIRONMENT_DEVELOPMENT;
+					FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath);
+					//FileUtility.copyFile(fileName,fileCreator.getZipFileName(project));
+					String tempPath2=fileCreator.writeFiles(project);
+					fileCreator.zipFiles(project, tempPath2);
+				}
+				
+				activity.message = "Exported project [" + project.name + "] to [" + fileName + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
+				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				
+				infomessage.type="info";
+				infomessage.text="Project exported to file: [" + fileName + "]";
+			}
+			else
 			{
 				activity.message = "Exported project [" + project.name + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
 				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
@@ -119,14 +124,6 @@ else
 			    op.write(arBytes);  
 			    op.flush();
 			    //op.close();
-			}
-			else
-			{
-				activity.message = "Exported project [" + project.name + "] to [" + fileName + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
-				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
-				
-				infomessage.type="info";
-				infomessage.text="Project exported to file: [" + fileName + "]";
 			}
 		}
 		else if(id==0 || validselecteddate==false)

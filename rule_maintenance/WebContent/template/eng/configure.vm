@@ -46,6 +46,12 @@
 		</td>
 	</tr>
 	<tr> 
+		<td>Project Backup Folder:</td>
+		<td>
+			<input name="backup_path" type="text" size="40" maxlength="255" value="$!{configuration.getProperty("backup_path")}">
+		</td>
+	</tr>
+	<tr> 
 		<td>LDAP Server Hostname or IP Address:</td>
 		<td>
 			<input name="ldap_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_hostname")}">

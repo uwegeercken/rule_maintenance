@@ -38,14 +38,22 @@ public class FileUtility
         return value;
     }
     
-    public static void backupFile(String filename)
+    public static void backupFile(String fileFolder, String filename, String backupFolder)
     {
     	final SimpleDateFormat sdf = new SimpleDateFormat(BACKUPFILE_DATEFORMAT);
-    			
+    	
+    	if(backupFolder==null || backupFolder.trim().equals(""))
+    	{
+    		backupFolder = fileFolder;
+    	}
+    	
+    	File destinationPath = new File(backupFolder);
+    	destinationPath.mkdirs();
+    	
     	String backupFilename = filename + BACKUPFILE_PREFIX + sdf.format(new Date());
     	
-    	File file = new File(filename);
-    	File backupFile = new File(backupFilename);
+    	File file = new File(addTrailingSlash(fileFolder) + filename);
+    	File backupFile = new File(addTrailingSlash(backupFolder) + backupFilename);
     	
     	if(file.exists())
     	{

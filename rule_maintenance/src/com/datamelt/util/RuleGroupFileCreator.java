@@ -19,6 +19,8 @@ public class RuleGroupFileCreator {
 	private String templatePath=null;
 	private String templateName=null;
 	private String outputPath=null;
+	private String backupPath=null;
+	private String temporaryPath=null;
 	private String environment="";
 	private String selectedDate=null;
 	private String dbServerHostname=null;
@@ -68,6 +70,10 @@ public class RuleGroupFileCreator {
 	    		{
 	    			fileCreator.outputPath = args[i].substring(3);
 	    		}
+	    		else if (args[i].startsWith("-y="))
+	    		{
+	    			fileCreator.temporaryPath = args[i].substring(3);
+	    		}
 	    		else if (args[i].startsWith("-v="))
 	    		{
 	    			fileCreator.selectedDate = args[i].substring(3);
@@ -109,6 +115,10 @@ public class RuleGroupFileCreator {
 			if(fileCreator.outputPath==null)
 	    	{
 	    		throw new Exception("parameter -o: path to the output folder must be specified");
+	    	}
+			if(fileCreator.temporaryPath==null)
+	    	{
+	    		throw new Exception("parameter -y: path to the temporary folder must be specified");
 	    	}
 			if(fileCreator.selectedDate==null)
 	    	{
@@ -166,43 +176,34 @@ public class RuleGroupFileCreator {
 				if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
 				{
 					System.out.println("writing files");
-					fileCreator.writeFiles(project);
+					String tempPath = fileCreator.writeFiles(project);
 					
-					System.out.println("creating zip file: " + fileCreator.getTempfolder(project) + "/" + project.getName().toLowerCase() + "_" + fileCreator.selectedDate + RuleGroupFileCreator.ZIP_EXTENSION);
-					fileCreator.zipFiles(project);
-					
-					System.out.println("deleting temp folder and files: " + fileCreator.getTempfolder(project));
+					System.out.println("creating zip file: " + fileCreator.getOutputPath() + "/" + project.getName().toLowerCase() + "_" + fileCreator.selectedDate + RuleGroupFileCreator.ZIP_EXTENSION);
+					fileCreator.zipFiles(project,tempPath);
 				}
 			}
 			System.out.println("end of program.");
         }		
 	}
 
-	private String getTempfolder(Project project)
+	public String writeFiles(Project project) throws Exception
 	{
-		String tempfolder = outputPath + "/" + project.getName();
-		if(environment!=null && !environment.trim().equals(""))
-		{
-			tempfolder = tempfolder + "_" + environment;
-		}
-		return tempfolder;
-	}
-	
-	public void writeFiles(Project project) throws Exception
-	{
-		File folder = new File(getTempfolder(project));
+		String tempPath = FileUtility.addTrailingSlash(getTemporaryPath()) + project.getName();
+		File folder = new File(tempPath);
 		folder.mkdirs();
+		
 		for (int i=0;i<project.getRulegroups().size();i++)
 		{
 			RuleGroup rulegroup = project.getRulegroups().get(i);
 			rulegroup.loadRuleGroupActions();
 			rulegroup.loadDependentRuleGroup();
-			String fileName=getTempfolder(project) + "/" + rulegroup.getName() + RuleGroupFileCreator.FILE_EXTENSION;
+			String fileName=FileUtility.addTrailingSlash(tempPath) + rulegroup.getName() + RuleGroupFileCreator.FILE_EXTENSION;
 			File file = new File(fileName);
 			FileWriter fw = new FileWriter(file);
 			fw.write(project.mergeWithTemplate(rulegroup, templatePath, templateName));
 			fw.close();
 		}
+		return tempPath;
 	}
 	
 	public String getZipFileName(Project project)
@@ -212,29 +213,30 @@ public class RuleGroupFileCreator {
 		{
 			filename = project.getName().toLowerCase().trim();
 		}
-		String zipfilename=outputPath +"/" + filename;
 		if(environment!=null && !environment.trim().equals(""))
 		{
-			zipfilename = zipfilename + "_" + environment;
+			filename = filename + "_" + environment;
 		}
-		zipfilename = zipfilename + RuleGroupFileCreator.ZIP_EXTENSION;
-		return zipfilename;
+		filename = filename + RuleGroupFileCreator.ZIP_EXTENSION;
+		return filename;
 	}
 	
-	public String zipFiles(Project project) throws Exception
+	public String zipFiles(Project project, String temporaryFolder) throws Exception
 	{
 		String zipFileName = getZipFileName(project);
-
-		byte[] buffer = new byte[1024];
-		File folder = new File(getTempfolder(project));
+		String fullZipFileName = FileUtility.addTrailingSlash(outputPath) + zipFileName;
 		
-		File toDelete = new File(zipFileName);
+		byte[] buffer = new byte[1024];
+		
+		File toDelete = new File(fullZipFileName);
 		toDelete.delete();
 		
-		FileOutputStream fos = new FileOutputStream(zipFileName);
+		File tempFolder = new File(temporaryFolder);
+		
+		FileOutputStream fos = new FileOutputStream(new File(fullZipFileName));
 		ZipOutputStream zos = new ZipOutputStream(fos);
 		
-		File[] files = folder.listFiles();
+		File[] files = tempFolder.listFiles();
 		for (int i = 0; i < files.length; i++) 
 		{
 			FileInputStream fis = new FileInputStream(files[i]);
@@ -250,12 +252,12 @@ public class RuleGroupFileCreator {
 		zos.close();
 		fos.close();
 		
-		File[] filesToDelete = folder.listFiles();
+		File[] filesToDelete = tempFolder.listFiles();
 		for(File file : filesToDelete)
 		{
 			file.delete();
 		}
-		folder.delete();
+		tempFolder.delete();
 		return zipFileName;
 	}
 	
@@ -374,6 +376,26 @@ public class RuleGroupFileCreator {
 	public String getDbName()
 	{
 		return dbName;
+	}
+
+	public String getBackupPath()
+	{
+		return backupPath;
+	}
+
+	public void setBackupPath(String backupPath)
+	{
+		this.backupPath = backupPath;
+	}
+
+	public String getTemporaryPath()
+	{
+		return temporaryPath;
+	}
+
+	public void setTemporaryPath(String temporaryPath)
+	{
+		this.temporaryPath = temporaryPath;
 	}
 	
 }

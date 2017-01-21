@@ -21,6 +21,7 @@ p.put("ldap_port",request.getParameter("ldap_port"));
 p.put("ldap_domain",request.getParameter("ldap_domain"));
 
 p.put("export_path",request.getParameter("export_path"));
+p.put("backup_path",request.getParameter("backup_path"));
 
 context.put("configuration",p);
 

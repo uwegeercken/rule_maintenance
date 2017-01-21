@@ -16,7 +16,6 @@ else
 		Properties p = new Properties();
 		p.load(fis);
 		fis.close();
-		
 		context.put("configuration",p);
 			
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
