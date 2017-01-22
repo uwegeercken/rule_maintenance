@@ -54,7 +54,7 @@ public class FileUtility
     	File file = new File(addTrailingSlash(fileFolder) + filename);
     	File backupFile = new File(fullBackupFilename);
     	
-    	String fullBackupFilenamePath = backupFile.getAbsolutePath();
+    	String fullBackupFilenamePath = backupFile.getAbsolutePath().substring(0,backupFile.getAbsolutePath().lastIndexOf(File.separator));
     	File destinationPath = new File(fullBackupFilenamePath);
     	destinationPath.mkdirs();
     	

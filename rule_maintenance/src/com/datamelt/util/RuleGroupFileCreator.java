@@ -235,7 +235,7 @@ public class RuleGroupFileCreator {
 		}
 		
 		File zipFile = new File(fullZipFileName);
-		String zipFileAbsolutePath = zipFile.getAbsolutePath();
+		String zipFileAbsolutePath = zipFile.getAbsolutePath().substring(0,zipFile.getAbsolutePath().lastIndexOf(File.separator));
 		
 		File zipFilePath = new File(zipFileAbsolutePath);
 		zipFilePath.mkdirs();
