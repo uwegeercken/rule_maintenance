@@ -224,8 +224,15 @@ public class RuleGroupFileCreator {
 	public String zipFiles(Project project, String temporaryFolder) throws Exception
 	{
 		String zipFileName = getZipFileName(project);
-		String fullZipFileName = FileUtility.addTrailingSlash(outputPath) + zipFileName;
-		
+		String fullZipFileName = null;
+		if(outputPath!=null && !outputPath.trim().equals(""))
+		{
+			fullZipFileName = FileUtility.addTrailingSlash(outputPath) + zipFileName;
+		}
+		else
+		{
+			fullZipFileName = FileUtility.addTrailingSlash(temporaryPath) + zipFileName;
+		}
 		byte[] buffer = new byte[1024];
 		
 		File toDelete = new File(fullZipFileName);
@@ -240,13 +247,16 @@ public class RuleGroupFileCreator {
 		for (int i = 0; i < files.length; i++) 
 		{
 			FileInputStream fis = new FileInputStream(files[i]);
-			zos.putNextEntry(new ZipEntry(files[i].getName()));
-			int length;
-			while ((length = fis.read(buffer)) > 0) 
-			{	
-				zos.write(buffer, 0, length);
+			if(files[i].isFile()&& files[i].getName().endsWith(".xml"))
+			{
+				zos.putNextEntry(new ZipEntry(files[i].getName()));
+				int length;
+				while ((length = fis.read(buffer)) > 0) 
+				{	
+					zos.write(buffer, 0, length);
+				}
+				zos.closeEntry();
 			}
-			zos.closeEntry();
 			fis.close();
 		}
 		zos.close();
@@ -258,7 +268,7 @@ public class RuleGroupFileCreator {
 			file.delete();
 		}
 		tempFolder.delete();
-		return zipFileName;
+		return fullZipFileName;
 	}
 	
 	public static void help()

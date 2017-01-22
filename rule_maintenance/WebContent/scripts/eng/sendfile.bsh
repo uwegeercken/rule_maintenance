@@ -79,7 +79,7 @@ else
 			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
-			if(exportpath!=null && exportpath.trim()!="")
+			if(exportpath!=null && !exportpath.trim().equals(""))
 			{
 				fileCreator.outputPath = exportpath;
 				
@@ -109,6 +109,9 @@ else
 			}
 			else
 			{
+				String tempPath = fileCreator.writeFiles(project);
+				String fileName = fileCreator.zipFiles(project, tempPath);
+				
 				activity.message = "Exported project [" + project.name + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
 				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 				
