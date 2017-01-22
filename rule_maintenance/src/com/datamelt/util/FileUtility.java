@@ -47,13 +47,16 @@ public class FileUtility
     		backupFolder = fileFolder;
     	}
     	
-    	File destinationPath = new File(backupFolder);
-    	destinationPath.mkdirs();
-    	
     	String backupFilename = filename + BACKUPFILE_PREFIX + sdf.format(new Date());
+    	String fullBackupFilename = addTrailingSlash(backupFolder) + backupFilename;
+    	
     	
     	File file = new File(addTrailingSlash(fileFolder) + filename);
-    	File backupFile = new File(addTrailingSlash(backupFolder) + backupFilename);
+    	File backupFile = new File(fullBackupFilename);
+    	
+    	String fullBackupFilenamePath = backupFile.getAbsolutePath();
+    	File destinationPath = new File(fullBackupFilenamePath);
+    	destinationPath.mkdirs();
     	
     	if(file.exists())
     	{

@@ -233,6 +233,13 @@ public class RuleGroupFileCreator {
 		{
 			fullZipFileName = FileUtility.addTrailingSlash(temporaryPath) + zipFileName;
 		}
+		
+		File zipFile = new File(fullZipFileName);
+		String zipFileAbsolutePath = zipFile.getAbsolutePath();
+		
+		File zipFilePath = new File(zipFileAbsolutePath);
+		zipFilePath.mkdirs();
+		
 		byte[] buffer = new byte[1024];
 		
 		File toDelete = new File(fullZipFileName);
@@ -240,7 +247,7 @@ public class RuleGroupFileCreator {
 		
 		File tempFolder = new File(temporaryFolder);
 		
-		FileOutputStream fos = new FileOutputStream(new File(fullZipFileName));
+		FileOutputStream fos = new FileOutputStream(zipFile);
 		ZipOutputStream zos = new ZipOutputStream(fos);
 		
 		File[] files = tempFolder.listFiles();
