@@ -5,7 +5,7 @@
 </p>
 <div id="help">
 	<p class="helptitle">Activities</p>
-	<p>List the recent activities - such as deleting projects, import/export projects, deactivate/delete users, etc - in descending ordered by date.</p>
+	<p>List the recent activities - such as deleting projects, import/export projects, deactivate/delete users, etc - in descending order by date.</p>
 </div>
 <table border="0" width="98%" align="center">
 	<tr class="light">
