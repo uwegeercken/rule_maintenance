@@ -13,6 +13,16 @@ import com.datamelt.db.MySqlConnection;
 import com.datamelt.db.Project;
 import com.datamelt.db.RuleGroup;
 
+/**
+* RuleGroupFileCreator. Program to generate a zip file for the JaRe - Java Ruleengine - from the database of the Business Rules Maintenance Tool.
+* An XML File is generated for each rulegroup and written to the temporary folder. Then the files are put/compressed into a single zip file.
+* If no project name is specified, then zip files for all projects will be created.
+* Only Rule Groups which are valid for the given date are considered for the output.
+*
+*
+* all code by uwe geercken - 2014-2017
+*/
+
 public class RuleGroupFileCreator {
 
 	private String projectName=null;
@@ -280,28 +290,30 @@ public class RuleGroupFileCreator {
 	
 	public static void help()
     {
-    	System.out.println("RuleGroupFileCreator. program to generate rules files in xml format for the JaRe - Java Ruleengine - from a MySql database.");
-    	System.out.println("At the end of the process the files are be put/compressed into a zip file.");
-    	System.out.println("Only Rule Groups which are valid for the given date are output.");
+    	System.out.println("RuleGroupFileCreator. Program to generate a zip file for the JaRe - Java Ruleengine - from the database of the Business Rules Maintenance Tool.");
+    	System.out.println("An XML File is generated for each rulegroup and written to the temporary folder. Then the files are put/compressed into a single zip file.");
+    	System.out.println("If no project name is specified, then zip files for all projects will be created.");
+    	System.out.println("Only Rule Groups which are valid for the given date are considered for the output.");
     	System.out.println();
     	System.out.println();
-    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder]-v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment]");
-    	System.out.println("where [project name]     : optional. name of the project for which files shall be generated.");
+    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder] -y=[temporary folder] -v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment]");
+    	System.out.println("where [project name]     : optional. name of the project for which files shall be generated. If no name is specified then zip files for all projects are generated.");
     	System.out.println("      [environment]      : optional. the environment the file is targeted for");
     	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
     	System.out.println("      [template name]    : required. filename of the template.");
-    	System.out.println("      [output folder]    : required. path to the output folder where files are created.");
+    	System.out.println("      [output folder]    : required. path to the output folder where the zip file is created.");
+    	System.out.println("      [temporary folder] : required. path to the temporary folder where rulegroup files are temporarily created.");
     	System.out.println("      [validity date]    : required. validity date for the rule groups.");
     	System.out.println("      [db server hostname: required. hostname or IP adress of the database server");
-    	System.out.println("      [db server port]   : required. port the database server is listening");
+    	System.out.println("      [db server port]   : required. port on which the database server is listening");
     	System.out.println("      [db name]          : required. name of the database");
     	System.out.println("      [db user]          : required. user to access the database");
     	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -v=2014-02-28 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -y=/home/user/temp -v=2017-01-15 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev");
     	System.out.println();
     	System.out.println("published as open source under the GPL3.");
-    	System.out.println("all code by uwe geercken, 2014-2016. uwe.geercken@web.de");
+    	System.out.println("all code by uwe geercken, 2014-2017. uwe.geercken@web.de");
     	System.out.println();
     }
 
@@ -414,5 +426,4 @@ public class RuleGroupFileCreator {
 	{
 		this.temporaryPath = temporaryPath;
 	}
-	
 }

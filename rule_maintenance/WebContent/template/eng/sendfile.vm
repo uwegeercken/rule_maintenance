@@ -6,6 +6,7 @@
 	<p>Export a Zip file containing all rules, rulegroups, subgroups and actions of a selected project. Only rule groups that are valid on or after the selected Validity Date below are included.</p>
 	<p>The export filename is either defined in the projects configuration or the name of the project is used as the filename.</p>
 	<p>You will be prompted by your web browser to save the Zip file in a location of your choice, if no default export folder is defined in the configuration.</p>
+	<p>When you select &quot;Production and Development&quot; as environment, the project is exported into two identical files - one for the development environment and one from the production environment. This way there is always a development version of the production project available.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=sendfile"> 

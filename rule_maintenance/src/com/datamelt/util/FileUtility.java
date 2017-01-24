@@ -1,6 +1,6 @@
 /*
  *
- * all code by uwe geercken - 2014
+ * all code by uwe geercken - 2014-2017
  */
 package com.datamelt.util;
 
