@@ -27,6 +27,7 @@ public class Project extends DatabaseRecord implements Loadable
 	private String databaseUserPassword;
 	private long numberOfRuleGroups;
 	private long numberOfRules;
+	private long numberOfFields;
 	private int privateProject;
 	private String objectClassname;
 	private String objectMethodGetter;
@@ -171,6 +172,11 @@ public class Project extends DatabaseRecord implements Loadable
 	{
 		fields = new ArrayList<Field>();
 		fields = DbCollections.getAllFields(getConnection(), this.getId());
+	}
+	
+	public void loadFieldsCount() throws Exception
+	{
+		numberOfFields = DbCollections.getAllReferenceFieldsCount(getConnection(), this.getId());
 	}
 	
 	public String mergeWithTemplate(RuleGroup rulegroup,String templatePath, String templateName) throws Exception
@@ -358,6 +364,11 @@ public class Project extends DatabaseRecord implements Loadable
 	public long getNumberOfRules()
 	{
 		return numberOfRules;
+	}
+	
+	public long getNumberOfFields()
+	{
+		return numberOfFields;
 	}
 
 	public User getLastUpdateUser()

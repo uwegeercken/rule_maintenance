@@ -54,7 +54,7 @@ public class DbCollections
         	project.load();
         	project.loadRuleGroupsCount();
         	project.loadRulesCount();
-        	project.loadFields();
+        	project.loadFieldsCount();
         	if(project.getPrivateProject()==1) 
         	{
         		if(user.canUpdateProject(project)|| user.isInGroup(User.ADMINISTRATOR)|| user.getId()==project.getOwnerUser().getId())
@@ -292,6 +292,23 @@ public class DbCollections
     public static long getAllRuleGroupsCount(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select count(1) as counter from rulegroup where project_id=" + projectId;
+        ResultSet rs = connection.getResultSet(sql);
+        if(rs.next())
+        {
+        	return rs.getLong("counter");
+        }
+        else
+        {
+        	return 0;
+        }
+    }
+    
+    /**
+     * get a count of all reference fields for a given project 
+     */
+    public static long getAllReferenceFieldsCount(MySqlConnection connection, long projectId) throws Exception
+    {
+        String sql="select count(1) as counter from reference_fields where project_id=" + projectId;
         ResultSet rs = connection.getResultSet(sql);
         if(rs.next())
         {
