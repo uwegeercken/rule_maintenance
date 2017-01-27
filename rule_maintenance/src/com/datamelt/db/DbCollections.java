@@ -31,6 +31,8 @@ public class DbCollections
         	project.setId(rs.getLong("id"));
         	project.load();
         	project.loadRuleGroupsCount();
+        	project.loadRulesCount();
+        	project.loadFieldsCount();
             list.add(project);
         }
         rs.close();
@@ -949,13 +951,13 @@ public class DbCollections
     {
         String sql="select count(1) as numberofprojects from project";
         ResultSet rs = connection.getResultSet(sql);
-        long numberOfActions=0;
+        long numberOfProjects=0;
         if(rs.next())
         {
-        	numberOfActions= rs.getLong("numberofprojects");
+        	numberOfProjects= rs.getLong("numberofprojects");
         }
         rs.close();
-        return numberOfActions;
+        return numberOfProjects;
     }
 
     /**
