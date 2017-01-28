@@ -52,6 +52,7 @@ else
 			fileCreator.templatePath = realPath + "template";
 			fileCreator.outputPath = realPath + "tmp";
 			fileCreator.templateName = "ruleengine.vm";
+			fileCreator.temporaryPath = contextpath + "tmp";
 			fileCreator.selectedDate = selecteddate;
 			
 			project.loadRuleGroup(rulegroupid);
@@ -59,8 +60,8 @@ else
 			// contains all the field from actions that shqall be updated
 			Set fieldsToUpdate = rulegroup.getReferencedFieldsToUpdate();
 			
-			fileCreator.writeFiles(project);
-			String fileName = fileCreator.zipFiles(project);
+			String tempPath = fileCreator.writeFiles(project);
+			String fileName = fileCreator.zipFiles(project, tempPath);
 
 			BusinessRulesEngine ruleEngine = new BusinessRulesEngine(new ZipFile(fileName));
 
