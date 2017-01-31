@@ -48,6 +48,8 @@ else
 			project.load();
 			if((project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0)) && projectgroupid>0)
 			{
+				name = name.replaceAll("/"," ");
+				name = name.replaceAll("\\\\"," ");
 				project.setName(name);
 				project.setDescription(description);
 				project.setExportFilename(exportfilename);
