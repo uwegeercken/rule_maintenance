@@ -37,6 +37,8 @@ public class ProjectCopyUtility
 			dbRuleGroup.setConnection(connection);
 			dbRuleGroup.setProjectId(newProject.getId());
 			dbRuleGroup.loadRuleGroupActions();
+			dbRuleGroup.setDependentRuleGroupExecuteIf(null);
+			dbRuleGroup.setDependentRuleGroupId(0);
 			
 			dbRuleGroup.insert(connection.getPreparedStatement(RuleGroup.INSERT_SQL),newProject,user);
 			
