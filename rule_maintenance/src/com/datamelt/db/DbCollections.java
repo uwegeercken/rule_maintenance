@@ -594,6 +594,93 @@ public class DbCollections
     }
     
     /**
+     * get a list of fields (contained in a rule) according to a specified search term and date (if specified) 
+     */
+    public static ArrayList<Rule> getSearchFieldsRules(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
+    {
+        String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
+        		+ " from rule, rulesubgroup, rulegroup"
+        		+ " where rule.rulesubgroup_id = rulesubgroup.id and rulesubgroup.rulegroup_id = rulegroup.id"
+        		+ " and (rule.object1_parameter like " + "'%" + searchTerm + "%'"
+        		+ " or rule.object2_parameter like "+ "'%" + searchTerm + "%')";
+        
+        if(searchDate!=null && !searchDate.trim().equals(""))
+        {
+        	sql = sql + " and rule.last_update >= '" + searchDate + "'";
+        }
+        
+        sql = sql + " order by rule.name";
+        
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<Rule> list = new ArrayList<Rule>();
+        while(rs.next())
+        {
+        	Project project = new Project();
+        	project.setConnection(connection);
+        	project.setId(rs.getLong("projectid"));
+        	project.load();
+        	
+        	if(project.getPrivateProject()==1 && user.isInProjectGroup(project.getGroup()) || project.getPrivateProject()==0)
+        	{
+        	
+	        	Rule rule = new Rule();
+	        	rule.setConnection(connection);
+	        	rule.setId(rs.getLong("ruleid"));
+	        	rule.load();
+	        	rule.setProject(project);
+        	
+	        	rule.setRuleGroupId(rs.getLong("rulegroupid"));
+        	
+	        	list.add(rule);
+        	}
+        }
+        rs.close();
+        return list;
+    }
+
+    /**
+     * get a list of fields (contained in an action) according to a specified search term and date (if specified) 
+     */
+    public static ArrayList<RuleGroupAction> getSearchFieldsActions(MySqlConnection connection, User user, String searchTerm, String searchDate) throws Exception
+    {
+        String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
+        		+ " from rulegroupaction, rulegroup"
+        		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
+        		+ " and (rulegroupaction.object1_parameter like " + "'%" + searchTerm + "%'"
+        		+ " or rulegroupaction.object2_parameter like "+ "'%" + searchTerm + "%')";
+        		
+        if(searchDate!=null && !searchDate.trim().equals(""))
+        {
+        	sql = sql + " and rulegroupaction.last_update >= '" + searchDate + "'";
+        }
+        
+        sql = sql + " order by rulegroupaction.name";		
+
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList<RuleGroupAction> list = new ArrayList<RuleGroupAction>();
+        while(rs.next())
+        {
+        	Project project = new Project();
+        	project.setConnection(connection);
+        	project.setId(rs.getLong("projectid"));
+        	project.load();
+        	
+        	if(project.getPrivateProject()==1 && user.isInProjectGroup(project.getGroup()) || project.getPrivateProject()==0)
+        	{
+	        	RuleGroupAction action = new RuleGroupAction();
+	        	action.setConnection(connection);
+	        	action.setId(rs.getLong("rulegroupactionid"));
+	        	action.load();
+	        	action.setProject(project);
+	        	
+	       		list.add(action);
+        	}
+        }
+        rs.close();
+        return list;
+    }
+    
+    /**
      * get a list of all users 
      */
     public static ArrayList <User> getAllUsers(MySqlConnection connection) throws Exception

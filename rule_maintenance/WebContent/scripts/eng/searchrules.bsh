@@ -1,5 +1,6 @@
 import java.io.*;
 import com.datamelt.db.Project;
+import com.datamelt.db.DbCollections;
 
 writeaction="false";
 
@@ -12,7 +13,7 @@ else
 	searchterm=request.getParameter("searchterm");
 	searchdate=request.getParameter("searchdate");
 	String[] options = request.getParameterValues("options");
-	if(options.length >0)
+	if(options!=null && options.length >0)
 	{
 		for(int i=0;i<options.length;i++)
 		{
@@ -28,6 +29,18 @@ else
 				ArrayList list = DbCollections.getSearchActions(connection, user, searchterm,searchdate);
 				context.put("actions",list);
 				context.put("searchactions","searchactions");
+			}
+			if(option.equals("searchfieldsrules"))
+			{
+				ArrayList list = DbCollections.getSearchFieldsRules(connection, user, searchterm,searchdate);
+				context.put("fieldsrules",list);
+				context.put("searchfieldsrules","searchfieldsrules");
+			}
+			if(option.equals("searchfieldsactions"))
+			{
+				ArrayList list = DbCollections.getSearchFieldsActions(connection, user, searchterm,searchdate);
+				context.put("fieldsactions",list);
+				context.put("searchfieldsactions","searchfieldsactions");
 			}
 		}
 	}

@@ -1,11 +1,11 @@
-#set($pagetitle='Search Rules and Actions')
-<p class="heading">Search Rules and Actions</p>
+#set($pagetitle='Search Rules, Actions and Fields')
+<p class="heading">Search Rules, Actions and Fields</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
 <div id="help">
-	<p class="helptitle">Search for Rules and Actions</p>
-	<p>The search will return rules and/or actions that match the search term somewhere in either the name or description.</p>
-	<p>Provide a date if you want to search for items changed on or after this date. Select if you want to search rules or actions or both.</p>
-	<p>When the result is displayed and you click on the name of the rule or action, you will be forwarded to the project and rulegroup where the rule or action is defined.</p>
+	<p class="helptitle">Search for Rules, Actions and Fields</p>
+	<p>The search will return rules and actions that match the search term somewhere in either the name or description or fields that match the search term in their name. Select if you want to search rules, actions or fields.</p>
+	<p>Provide a date if you want to search for rules or actions changed on or after this date.</p>
+	<p>When the result is displayed and you click on the name of the rule, action or field, you will be forwarded to the project and rulegroup where the rule, action or field is defined.</p>
 </div>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=searchrules&userid=${user.userid}"> 
@@ -17,7 +17,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Items changed on or after:</td>
+		<td>Rule or Action changed on or after:</td>
 		<td>
 			<input id="datepicker1" name="searchdate" type="text" size="20" maxlength="10" value="$!{searchdate}"> (format: YYYY-MM-DD)
 		</td>
@@ -35,6 +35,18 @@
 		</td>
 	</tr>
 	<tr>
+		<td>search rule fields</td>
+		<td>
+			<input type="checkbox" name="options" value="searchfieldsrules" #if(${searchfieldsrules})checked#end>
+		</td>
+	</tr>
+	<tr>
+		<td>search action fields</td>
+		<td>
+			<input type="checkbox" name="options" value="searchfieldsactions" #if(${searchfieldsactions})checked#end>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="search" name="submit">
 		</td>
@@ -42,7 +54,7 @@
 </table>
 </form>
 </div>
-<p>number of rules: #if($rules)${rules.size()}#else 0 #end - number of actions: #if($actions)${actions.size()} #else 0 #end</p>
+<p>rules: #if($rules)${rules.size()}#else 0 #end - actions: #if($actions)${actions.size()} #else 0 #end - rule fields: #if($fieldsrules)${fieldsrules.size()} #else 0 #end - action fields: #if($fieldsactions)${fieldsactions.size()} #else 0 #end</p>
 #if($rules)
 	#foreach($rule in $rules)
 		<div class="unit" tag="$!rule.name">
@@ -66,6 +78,36 @@
 				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${action.ruleGroupId}&searchid=${action.id}">${action.name}</a></p>
 				<p class="normal">$action.description</p>
 				<p class="normal">$action.actionLogic</p>
+			</div>
+			<div>
+				<p class="small">project: ${action.project.name}</p>
+			</div>
+		</div>
+	#end
+#end
+#if($fieldsrules)
+	#foreach($rule in $fieldsrules)
+		<div class="unit" tag="$!rule.name">
+			<div class="grouptop">
+				<p class="small">field (rule)</p>
+				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rule.ruleGroupId}&searchid=${rule.id}">${rule.name}</a></p>
+				<p class="normal">${rule.description}</p>
+				<p class="normal">$!{rule.ruleLogic}</p>
+			</div>
+			<div>
+				<p class="small">project: ${rule.project.name}</p>
+			</div>
+		</div>
+	#end
+#end
+#if($fieldsactions)
+	#foreach($action in $fieldsactions)
+		<div class="unit" tag="$!action.name">
+			<div class="grouptop">
+				<p class="small">field (action)</p>
+				<p class="big"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${action.ruleGroupId}&searchid=${action.id}">${action.name}</a></p>
+				<p class="normal">${action.description}</p>
+				<p class="normal">$!{action.actionLogic}</p>
 			</div>
 			<div>
 				<p class="small">project: ${action.project.name}</p>
