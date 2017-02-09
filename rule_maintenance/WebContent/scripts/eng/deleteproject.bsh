@@ -62,14 +62,13 @@ if(cancelled.equals("delete project"))
 		
 		DbCollections.deleteUserHistory(connection, "rulegroup", rulegroup.id, user);
 		DbCollections.deleteReferenceFields(connection, project.id);
-		
-		Activity activity = new Activity();
-		activity.connection = connection;
-		activity.user = user;
-		activity.message = "Deleted project [" + project.name +"], description [" + project.description +"] and all related items";
-		activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 	}
-	
+
+	Activity activity = new Activity();
+	activity.connection = connection;
+	activity.user = user;
+	activity.message = "Deleted project [" + project.name +"], description [" + project.description +"] and all related items";
+	activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 }
 		
 ArrayList list = DbCollections.getAllProjects(connection,user);
