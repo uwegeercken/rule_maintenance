@@ -53,7 +53,6 @@ public class RuleGroupFileCreator {
 	
 	public static void main(String[] args) throws Exception
 	{
-		
 		RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
 		
 		if (args.length<6)
@@ -111,6 +110,10 @@ public class RuleGroupFileCreator {
 	    		else if (args[i].startsWith("-e="))
 	    		{
 	    			fileCreator.environment = args[i].substring(3);
+	    		}
+	    		else if (args[i].startsWith("-l="))
+	    		{
+	    			fileCreator.backupPath = args[i].substring(3);
 	    		}
 	    	}
 			
@@ -181,14 +184,24 @@ public class RuleGroupFileCreator {
 				System.out.println("processing project: " + project.getName());
 				System.out.println("loading valid rule groups for date: " + fileCreator.selectedDate);
 				project.loadRuleGroups(fileCreator.selectedDate);
-				System.out.println("found rule groups: " + project.getRulegroups().size());
+					
+				if(fileCreator.backupPath!=null && !fileCreator.backupPath.equals(""))
+				{
+					System.out.println("backing up project zip file to: " + fileCreator.backupPath);
+				}
+				else
+				{
+					System.out.println("backing up project zip file to: " + fileCreator.outputPath);
+				}
+				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath);				
 				
+				System.out.println("found rule groups: " + project.getRulegroups().size());
 				if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
 				{
 					System.out.println("writing files");
 					String tempPath = fileCreator.writeFiles(project);
 					
-					System.out.println("creating zip file: " + fileCreator.getOutputPath() + "/" + project.getName().toLowerCase() + "_" + fileCreator.selectedDate + RuleGroupFileCreator.ZIP_EXTENSION);
+					System.out.println("creating zip file: " + fileCreator.getZipFileName(project));
 					fileCreator.zipFiles(project,tempPath);
 				}
 			}
@@ -296,21 +309,22 @@ public class RuleGroupFileCreator {
     	System.out.println("Only Rule Groups which are valid for the given date are considered for the output.");
     	System.out.println();
     	System.out.println();
-    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder] -y=[temporary folder] -v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment]");
+    	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder] -y=[temporary folder] -v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment] -l=[backup folder]");
     	System.out.println("where [project name]     : optional. name of the project for which files shall be generated. If no name is specified then zip files for all projects are generated.");
     	System.out.println("      [environment]      : optional. the environment the file is targeted for");
+    	System.out.println("      [backup folder]    : optional. path to folder where copies of the project zip files are created.");
     	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
     	System.out.println("      [template name]    : required. filename of the template.");
     	System.out.println("      [output folder]    : required. path to the output folder where the zip file is created.");
     	System.out.println("      [temporary folder] : required. path to the temporary folder where rulegroup files are temporarily created.");
-    	System.out.println("      [validity date]    : required. validity date for the rule groups.");
+    	System.out.println("      [validity date]    : required. validity date - determines which rule groups to be included.");
     	System.out.println("      [db server hostname: required. hostname or IP adress of the database server");
     	System.out.println("      [db server port]   : required. port on which the database server is listening");
     	System.out.println("      [db name]          : required. name of the database");
-    	System.out.println("      [db user]          : required. user to access the database");
+    	System.out.println("      [db user]          : required. user with read access the database");
     	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -y=/home/user/temp -v=2017-01-15 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -y=/home/user/temp -v=2017-01-15 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev -l=/home/user/testoutput/backup");
     	System.out.println();
     	System.out.println("published as open source under the GPL3.");
     	System.out.println("all code by uwe geercken, 2014-2017. uwe.geercken@web.de");
