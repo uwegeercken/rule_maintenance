@@ -53,7 +53,19 @@ else
 			if(transformationaction==null)
 			{
 				actionNew.object1Parameter = request.getParameter("object1_parameter");
-				actionNew.object1Parametertype.id = 1;
+				try
+				{
+					// test if the field to check is an integer so the field value will be
+					// retrieved using this integer like e.g. getField(0)
+					int typeId = Integer.parseInt(actionNew.object1Parameter);
+					actionNew.object1Parametertype.id = 2;
+				}
+				catch(Exception ex)
+				{
+					// if the test above fails, it is not an integer then the field value
+					// will be retrieved as a string e.g. getField("somename")
+					actionNew.object1Parametertype.id = 1;
+				}
 				actionNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id"));
 			}
 			else
@@ -79,7 +91,19 @@ else
 			if(transformationaction==null)
 			{
 				actionNew.object2Parameter = request.getParameter("object2_parameter");
-				actionNew.object2Parametertype.id = 1;
+				try
+				{
+					// test if the field to check is an integer so the field value will be
+					// retrieved using this integer like e.g. getField(0)
+					int typeId = Integer.parseInt(actionNew.object2Parameter);
+					actionNew.object2Parametertype.id = 2;
+				}
+				catch(Exception ex)
+				{
+					// if the test above fails, it is not an integer then the field value
+					// will be retrieved as a string e.g. getField("somename")
+					actionNew.object2Parametertype.id = 1;
+				}
 				actionNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
 			}
 			else
