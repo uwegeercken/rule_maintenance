@@ -1,0 +1,31 @@
+#set($pagetitle='Registration Page')
+<p class="heading">Registration Page</p>
+<p>To be able to use the Business Rules Maintenance Tool, you need to be registered. Enter all details below and send them to receive an email to complete the registration.</p>
+<p>Once you received the email, click on the link in the email and your account will be activated.</p>
+<br/>
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=register"> 
+<table style="width:30%;margin-left:auto;margin-right:auto;" align="center" border="0" cellpadding="2" cellspacing="4">
+	<tr> 
+		<td>Userid:</td>
+		<td><input type="text" id="userid" name="userid" size="20" maxlength="20" value="$!{dbuser.userid}"></td>
+	</tr>
+	<tr>
+		<td>Name:</td> 
+		<td><input type="text" name="name" size="20" maxlength="40" value="$!{dbuser.name}"></td>
+	</tr>
+	<tr>
+		<td>Email:</td> 
+		<td><input type="text" name="email" size="20" maxlength="40" value="$!{dbuser.email}"></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><input type="submit" value="Send Registration Request" name="submit"></td>
+	</tr>
+</table>
+</form>
+</div>
+#insert_focus_scriptcode("userid")
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

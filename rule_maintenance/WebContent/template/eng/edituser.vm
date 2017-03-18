@@ -27,6 +27,12 @@
 			<input name="name" type="text" size="40" maxlength="80" value="$!{dbuser.name}">
 		</td>
 	</tr>
+	<tr> 
+		<td>Email:</td>
+		<td>
+			<input name="email" type="text" size="40" maxlength="80" value="$!{dbuser.email}">
+		</td>
+	</tr>
 	<tr><td colspan="2"></br><hr></td></tr>
 	<tr><td colspan="2">Group Membership:</td></tr>
 	#foreach($group in $groups)

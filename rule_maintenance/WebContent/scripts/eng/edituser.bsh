@@ -2,6 +2,7 @@ import com.datamelt.db.User;
 import com.datamelt.db.Activity;
 import com.datamelt.db.DbCollections;
 import com.datamelt.util.PasswordUtility;
+import com.datamelt.util.Email;
  
 adminaction="true";
 if(user==null)
@@ -17,6 +18,7 @@ else
 		id=Long.parseLong(request.getParameter("id"));
 		name=request.getParameter("name");
 		userid=request.getParameter("userid");
+		email=request.getParameter("email");
 		String[] groups = request.getParameterValues("groups");
 	
 		User dbUser = new User();
@@ -29,6 +31,7 @@ else
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
+				dbUser.setEmail(email);
 				dbUser.deleteAllGroupMemberships(connection.getPreparedStatement(User.DELETE_ALL_GROUP_MEMBERSHIPS), user);
 				if(groups!=null)
 				{
@@ -47,6 +50,7 @@ else
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
+				dbUser.setEmail(email);
 				infomessage.type="error";
 				infomessage.text="User already exists.";
 			}
@@ -60,35 +64,56 @@ else
 		}
 		else
 		{
-			if(!dbUser.exist(userid) && userid.length()>0 && name.length()>0)
+			if(!dbUser.exist(userid) && userid.length()>0 && name.length()>0 && email.length()>0)
 			{
-				dbUser.setName(name);
-				dbUser.setUserid(userid);
-				
-				String password=PasswordUtility.generateRandomPassword();
-				dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password, user);
-				context.put("mode","inserted");
-				if(groups!=null)
+				try
 				{
-					for(int i=0;i<groups.length;i++)
-					{
-						long groupId = Long.parseLong(groups[i]);
-						dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId, user);
-					}
-				}
-				dbUser.loadGroups();
-				infomessage.text="User added. Password: " + password;
+					FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
+					Properties p = new Properties();
+					p.load(fis);
+					context.put("configuration",p);
+					fis.close();
 				
-				Activity activity = new Activity();
-				activity.connection = connection;
-				activity.user = user;
-				activity.message = "Added user [" + name +"], userid [" + userid +"]";
-				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+					dbUser.setName(name);
+					dbUser.setUserid(userid);
+					dbUser.setEmail(email);
+					
+					Email mail = new Email(p.get("smtp_hostname"),p.get("smtp_from_address"),p.get("smtp_user"),p.get("smtp_user_password"));
+	    		   	mail.setRecipient(email);
+	    			mail.setRecipientUserid(userid);
+	    	
+	    			mail.send();
+					
+					dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),mail.getRecipientHash(), user);
+					context.put("mode","inserted");
+					if(groups!=null)
+					{
+						for(int i=0;i<groups.length;i++)
+						{
+							long groupId = Long.parseLong(groups[i]);
+							dbUser.addGroupMembership(connection.getPreparedStatement(User.ADD_GROUP_MEMBERSHIP),groupId, user);
+						}
+					}
+					dbUser.loadGroups();
+					infomessage.text="User added. Password: " + password;
+					
+					Activity activity = new Activity();
+					activity.connection = connection;
+					activity.user = user;
+					activity.message = "Added user [" + name +"], userid [" + userid +"]";
+					activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				}
+				catch(Exception ex)
+				{
+					infomessage.type="error";
+					infomessage.text="Error sending email to User.";
+				}
 			}
-			else if(dbUser.exist(userid)&& userid.length()>0)
+			else if(dbUser.exist(userid)&& userid.length()>0 && email.length()>0)
 			{
 				dbUser.setName(name);
 				dbUser.setUserid(userid);
+				dbUser.setEmail(email);
 				infomessage.type="error";
 				infomessage.text="User already exists.";
 			}
@@ -96,8 +121,9 @@ else
 			{
 				dbUser.setName(name); 
 				dbUser.setUserid(userid);
+				dbUser.setEmail(email);
 				infomessage.type="error";
-				infomessage.text="Userid and name must be specified.";
+				infomessage.text="Userid,name and email must be specified.";
 			}
 		}
 		dbUser.load();

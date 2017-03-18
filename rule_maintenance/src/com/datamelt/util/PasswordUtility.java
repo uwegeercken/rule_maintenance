@@ -18,13 +18,16 @@
  */ 
 package com.datamelt.util;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Random;
 
 public class PasswordUtility 
 {
 	private static final Random RANDOM = new SecureRandom();
-	public static final int PASSWORD_LENGTH = 10;
+	public static final int PASSWORD_LENGTH = 12;
 
 	/**
 	* Generate a random String suitable for use as a temporary password.
@@ -35,7 +38,7 @@ public class PasswordUtility
 	    // Pick from some letters that won't be easily mistaken for each
 	    // other. So, for example, omit o O and 0, 1 l and L.
 
-	    String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789+";
+	    String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789+-_#=!";
 	    String pw = "";
 
 	    for (int i=0; i<PASSWORD_LENGTH; i++)
@@ -45,4 +48,13 @@ public class PasswordUtility
 	    }
 	    return pw;
 	}
+	
+	// generate a hash that is sent to the user
+	public static String generateHash(String message) throws Exception
+	{
+		MessageDigest md5 = MessageDigest.getInstance("MD5");
+		md5.update(StandardCharsets.UTF_8.encode(message));
+		return String.format("%032x", new BigInteger(1, md5.digest()));
+	}
+	
 }

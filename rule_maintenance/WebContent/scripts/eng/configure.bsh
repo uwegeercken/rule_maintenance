@@ -23,6 +23,12 @@ p.put("ldap_domain",request.getParameter("ldap_domain"));
 p.put("export_path",request.getParameter("export_path"));
 p.put("backup_path",request.getParameter("backup_path"));
 
+p.put("smtp_hostname",request.getParameter("smtp_hostname"));
+p.put("smtp_port",request.getParameter("smtp_port"));
+p.put("smtp_user",request.getParameter("smtp_user"));
+p.put("smtp_user_password",request.getParameter("smtp_user_password"));
+p.put("smtp_from_address",request.getParameter("smtp_from_address"));
+
 context.put("configuration",p);
 
 if(cancelled.equals("save"))

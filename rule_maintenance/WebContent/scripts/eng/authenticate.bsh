@@ -46,6 +46,7 @@ else
 		PreparedStatement ps = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
 		user.updateLastLogin(ps,dateTime.format(new Date()));
 		
+		// for the random picture on the welcome screen
 		Random rand= new Random();
 		int min=1;
 		int max=2;

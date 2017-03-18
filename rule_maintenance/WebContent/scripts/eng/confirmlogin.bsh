@@ -1,0 +1,76 @@
+import java.sql.PreparedStatement;
+import com.datamelt.db.User;
+import com.datamelt.db.Activity;
+import com.datamelt.util.Message;
+import java.text.SimpleDateFormat;
+import java.util.Random;
+
+id=Long.parseLong(request.getParameter("id"));
+code=request.getParameter("code");
+
+User dbuser = new User();
+dbuser.connection = connection;
+dbuser.id=id;
+dbuser.load();
+
+String passwordNew = request.getParameter("password");
+String passwordNewRepeated = request.getParameter("password_repeated");
+
+templatename="confirmlogin.vm";
+error=false;
+// check if we are using ldap
+if(ldap.getHost()==null || ldap.getDomain()==null || ldap.getHost().trim().equals("") || ldap.getDomain().trim().equals(""))
+{
+	if(!passwordNew.equals(passwordNewRepeated))
+	{
+	    infomessage.type="error";
+		infomessage.text="Error: The Password and the repeated Password are not equal.";
+		context.put("dbuser", dbuser);
+		error=true;
+	}
+	else if(passwordNew.length()<8)
+	{
+	    infomessage.type="error";
+		infomessage.text="Error: Password must be at least 8 characters long.";
+		context.put("dbuser", dbuser);
+		error=true;
+	}
+}
+else
+{
+	passwordNew = null;	
+}
+
+if(error==false)
+{
+	PreparedStatement ps = connection.getPreparedStatement(User.ACTIVATE_REGISTRATION_SQL);
+	dbuser.activateRegistration(ps,passwordNew);
+	
+	User user = new User();
+	user.id=0;
+	
+	Activity activity = new Activity();
+	activity.connection = connection;
+	activity.user = user;
+	activity.message = "Confirmed registration for user [" + dbuser.name +"], userid [" + dbuser.userid +"], email [" + dbuser.email +"]";
+	activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+
+   	request.getSession().setAttribute("authenticated","true");
+    request.getSession().setAttribute("user",dbuser);
+	context.put("user",dbuser);
+	
+	SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	PreparedStatement psUpdateLogin = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
+	dbuser.updateLastLogin(psUpdateLogin,dateTime.format(new Date()));
+
+	// for the random picture on the welcome screen
+	Random rand= new Random();
+	int min=1;
+	int max=2;
+	int randomNum = rand.nextInt((max - min) + 1) + min;	
+	
+	context.put("shotnumber",randomNum);
+	
+	templatename="welcome.vm";    
+}
+

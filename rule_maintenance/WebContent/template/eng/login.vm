@@ -1,6 +1,7 @@
 #set($pagetitle='Login Page')
 <p class="heading">Login Page</p>
 <p>To be able to use the Business Rules Maintenance Tool, you need to authenticate to the application. Please use your personal userid and password.</p>
+<p>If you do not have a login yet, you can <a href="process?action=bsh&scriptname=selectregister">Register</a> for one</p>
 <br/>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=authenticate"> 

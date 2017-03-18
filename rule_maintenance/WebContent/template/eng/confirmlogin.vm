@@ -1,0 +1,65 @@
+#set($pagetitle='User Registration - Create Password')
+#if (!${infomessage.type.equals("error")})
+	#if(!${ldap.host} || !${ldap.domain} || ${ldap.host.length()}==0 || ${ldap.domain.length()}==0)
+		<p class="heading">User Registration - Create Password for userid: $!{dbuser.userid} - name: $!{dbuser.name}</p>
+		<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+		<div id="help">
+			<p class="helptitle">User Registration - Create password</p>
+			<p>Entering your desired password will complete the registration process. For security reasons make sure that the password is sufficient in length (minimum 8 characters) and contains a mixture of characters, special characters and numbers.</p>
+		</div>
+	#else
+		<p class="heading">User Registration - Confirm login for userid: $!{dbuser.userid} - name: $!{dbuser.name}</p>
+		<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+		<div id="help">
+			<p class="helptitle">User Registration - Confirm login</p>
+			<p>Click to confirm your login. You do not need to provide a password, as LDAP is configured for this server.</p>
+		</div>
+	#end
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=confirmlogin&id=$!{dbuser.id}">
+    <table align="center" border="0">
+		<tr>
+			<td width="10%">Userid:</td>
+			<td>$!{dbuser.userid}</td>
+		</tr>
+		<tr>
+			<td width="10%">Name:</td>
+			<td>$!{dbuser.name}</td>
+		</tr>
+		#if(!${ldap.host} || !${ldap.domain} || ${ldap.host.length()}==0 || ${ldap.domain.length()}==0)
+		<tr>
+			<td width="10%">Password:</td>
+			<td><input type="password" name="password" size="40" maxlength="255" value=""></td>
+		</tr>
+		<tr>
+			<td width="10%">Password (repeated):</td>
+			<td><input type="password" name="password_repeated" size="40" maxlength="255" value=""></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="create Password" name="create">
+			</td>
+		</tr>
+		#else
+		<tr>
+			<td colspan="2" align="center">
+				<input type="submit" value="confirm Registration" name="create">
+			</td>
+		</tr>
+		#end
+    </table>
+</form>
+#insert_focus_scriptcode("password")
+</div>
+#else
+<p class="heading">User Registration Error</p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"></p>
+<div id="help">
+	<p class="helptitle">User Registration Error</p>
+	<p>The registration can not be completed, because of an error. Contact the responsible IT person.</p>
+</div>
+
+#end
+#if (${infomessage})
+	<p class="errormessage" align="center">$infomessage.text</p>
+#end

@@ -21,7 +21,7 @@
 			<tr class="light2">
 		#end
 		<td>$!{activity.date}</td>
-		<td>$!{activity.user.name} ($!{activity.user.userid})</td>
+		<td>$!{activity.user.name} #if($!{activity.user.userid})($!{activity.user.userid})#end</td>
 		<td>$!{activity.message}</td>				
 		</tr>
 		#set($counter=$counter +1)

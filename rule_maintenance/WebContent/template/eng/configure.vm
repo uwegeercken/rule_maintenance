@@ -8,16 +8,9 @@
 <form method="POST" action="process?action=bsh&scriptname=configure"> 
 <table align="center" width="95%" border="0">
 	<tr> 
-		<td>Database Server Hostname or IP Adress:</td>
+		<td>Database Server Hostname or IP Address and Port:</td>
 		<td>
-			<input name="db_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_hostname")}">
-		</td>
-		
-	</tr>
-	<tr>
-		<td>Database Server Port:</td>
-		<td>
-			<input name="db_port" type="text" size="40" maxlength="5" value="$!{configuration.getProperty("db_port")}">
+			<input name="db_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_hostname")}"><input name="db_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("db_port")}">
 		</td>
 	</tr>
 	<tr> 
@@ -53,15 +46,9 @@
 		</td>
 	</tr>
 	<tr> 
-		<td>LDAP Server Hostname or IP Address:</td>
+		<td>LDAP Server Hostname or IP Address and Port:</td>
 		<td>
-			<input name="ldap_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_hostname")}">
-		</td>
-	</tr>
-	<tr> 
-		<td>LDAP Server Port:</td>
-		<td>
-			<input name="ldap_port" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_port")}">
+			<input name="ldap_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_hostname")}"><input name="ldap_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("ldap_port")}">
 		</td>
 	</tr>
 	<tr> 
@@ -70,7 +57,30 @@
 			<input name="ldap_domain" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_domain")}">
 		</td>
 	</tr>
-
+	<tr> 
+		<td>SMTP Hostname and Port:</td>
+		<td>
+			<input name="smtp_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_hostname")}"><input name="smtp_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("smtp_port")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>SMTP From Address:</td>
+		<td>
+			<input name="smtp_from_address" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_from_address")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>SMTP Autentication User:</td>
+		<td>
+			<input name="smtp_user" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_user")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>SMTP Authentication Password:</td>
+		<td>
+			<input name="smtp_user_password" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_user_password")}">
+		</td>
+	</tr>
 	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
