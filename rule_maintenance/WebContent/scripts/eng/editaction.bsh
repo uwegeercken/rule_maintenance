@@ -86,6 +86,44 @@ else
 			actionNew.object1Parametertype.id = 0;
 			actionNew.object1Type.id = 0;
 		}
+		if(request.getParameter("object3_parameter")!=null && !request.getParameter("object3_parameter").trim().equals(""))
+		{
+			if(transformationaction==null)
+			{
+				actionNew.object3Parameter = request.getParameter("object3_parameter");
+				try
+				{
+					// test if the field to check is an integer so the field value will be
+					// retrieved using this integer like e.g. getField(0)
+					int typeId = Integer.parseInt(actionNew.object3Parameter);
+					actionNew.object3Parametertype.id = 2;
+				}
+				catch(Exception ex)
+				{
+					// if the test above fails, it is not an integer then the field value
+					// will be retrieved as a string e.g. getField("somename")
+					actionNew.object3Parametertype.id = 1;
+				}
+				actionNew.object3Type.id = Long.parseLong(request.getParameter("object3_type_id"));
+			}
+			else
+			{
+				if(!request.getParameter("object3_parameter").equals(""))
+				{
+					Field field = project.getField(Long.parseLong(request.getParameter("object3_parameter")));
+					actionNew.object3Type.id = field.javaTypeId;
+					
+					actionNew.object3Parameter = field.name;
+					actionNew.object3Parametertype.id = 1;
+				}
+			} 
+		}
+		else
+		{
+			actionNew.object3Parameter = null;
+			actionNew.object3Parametertype.id = 0;
+			actionNew.object3Type.id = 0;
+		}
 		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
 		{
 			if(transformationaction==null)
@@ -170,6 +208,16 @@ else
 				infomessage.type="error";
 				infomessage.text="Field must be specified when Field Type is specified";
 			}
+			else if(actionNew.object3Parameter!=null && actionNew.object3Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field Type must be selected when Field is specified";
+			}
+			else if(actionNew.object3Parameter==null && actionNew.object3Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field must be specified when Field Type is specified";
+			}
 			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
 			{
 				infomessage.type="error";
@@ -215,6 +263,10 @@ else
 				Type object1Type = new Type();
 				object1Type.connection = connection;
 				
+				// the second field to retrieve the data
+				Type object3Type = new Type();
+				object3Type.connection = connection;
+
 				Type parameter1Type = new Type();;
 				parameter1Type.connection = connection;
 				
@@ -228,6 +280,12 @@ else
 				{
 					object1Type.id = actionNew.object1Type.id;
 					object1Type.load();
+
+				}
+				if(actionNew.object3Type.id!=0)
+				{
+					object3Type.id = actionNew.object3Type.id;
+					object3Type.load();
 
 				}
 				if(actionNew.parameter1Type.id!=0)
@@ -252,6 +310,17 @@ else
 		    	if(object1Type.name!=null)
 		    	{
 		    		methodTypes = object1Type.name;
+		    	}
+		    	if(object3Type.name!=null)
+		    	{
+		    		if(methodTypes.equals(""))
+		    		{
+		    			methodTypes = object3Type.name;
+		    		}
+		    		else
+		    		{
+		    			methodTypes = methodTypes + ", " + object3Type.name;
+		    		}
 		    	}
 		    	if(parameter1Type.name!=null)
 		    	{
@@ -334,6 +403,16 @@ else
 				infomessage.type="error";
 				infomessage.text="Field must be specified when Field Type is specified";
 			}
+			else if(actionNew.object3Parameter!=null && actionNew.object3Type.id==0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field Type must be selected when Field is specified";
+			}
+			else if(actionNew.object3Parameter==null && actionNew.object3Type.id>0)
+			{
+				infomessage.type="error";
+				infomessage.text="Field must be specified when Field Type is specified";
+			}
 			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
 			{
 				infomessage.type="error";
@@ -379,6 +458,10 @@ else
 				Type object1Type = new Type();
 				object1Type.connection = connection;
 				
+				// the second field to retrieve the data
+				Type object3Type = new Type();
+				object3Type.connection = connection;
+
 				Type parameter1Type = new Type();;
 				parameter1Type.connection = connection;
 				
@@ -392,7 +475,11 @@ else
 				{
 					object1Type.id = actionNew.object1Type.id;
 					object1Type.load();
-
+				}
+				if(actionNew.object3Type.id!=0)
+				{
+					object3Type.id = actionNew.object3Type.id;
+					object3Type.load();
 				}
 				if(actionNew.parameter1Type.id!=0)
 				{
@@ -416,6 +503,17 @@ else
 		    	if(object1Type.name!=null)
 		    	{
 		    		methodTypes = object1Type.name;
+		    	}
+		    	if(object3Type.name!=null)
+		    	{
+		    		if(methodTypes.equals(""))
+		    		{
+		    			methodTypes = object3Type.name;
+		    		}
+		    		else
+		    		{
+		    			methodTypes = methodTypes + ", " + object3Type.name;
+		    		}
 		    	}
 		    	if(parameter1Type.name!=null)
 		    	{
@@ -503,6 +601,4 @@ else
 
 		templatename="listrulesubgroups.vm";
 	}
-	
-
 }
