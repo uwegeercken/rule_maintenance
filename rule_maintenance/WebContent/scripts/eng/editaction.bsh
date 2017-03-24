@@ -201,22 +201,22 @@ else
 			else if(actionNew.object1Parameter!=null && actionNew.object1Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field Type must be selected when Field is specified";
+				infomessage.text="Field Type must be selected when Field to retrieve data is specified";
 			}
 			else if(actionNew.object1Parameter==null && actionNew.object1Type.id>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field must be specified when Field Type is specified";
+				infomessage.text="Field to retrieve data must be specified when Field Type is specified";
 			}
 			else if(actionNew.object3Parameter!=null && actionNew.object3Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field Type must be selected when Field is specified";
+				infomessage.text="Field Type must be selected when 2nd Field to retrieve data is specified";
 			}
 			else if(actionNew.object3Parameter==null && actionNew.object3Type.id>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field must be specified when Field Type is specified";
+				infomessage.text="2nd Field to retrieve data must be specified when Field Type is specified";
 			}
 			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
 			{
@@ -396,22 +396,22 @@ else
 			else if(actionNew.object1Parameter!=null && actionNew.object1Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field Type must be selected when Field is specified";
+				infomessage.text="Field Type must be selected when Field to retrieve data is specified";
 			}
 			else if(actionNew.object1Parameter==null && actionNew.object1Type.id>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field must be specified when Field Type is specified";
+				infomessage.text="Field to retrieve data must be specified when Field Type is specified";
 			}
 			else if(actionNew.object3Parameter!=null && actionNew.object3Type.id==0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field Type must be selected when Field is specified";
+				infomessage.text="Field Type must be selected when 2nd Field to retrieve data is specified";
 			}
 			else if(actionNew.object3Parameter==null && actionNew.object3Type.id>0)
 			{
 				infomessage.type="error";
-				infomessage.text="Field must be specified when Field Type is specified";
+				infomessage.text="2nd Field to retrieve data must be specified when Field Type is specified";
 			}
 			else if((actionNew.parameter1==null || actionNew.parameter1.length()==0) && actionNew.parameter1Type.id>0)
 			{

@@ -99,9 +99,22 @@
 				#end
 			#end
     		</select>
-			
 		</td>
 	</tr>
+	<td>2nd Field to retrieve data:</td>
+		<td>
+			<input name="object3_parameter" type="text" size="40" maxlength="255" value="$!{action.object3Parameter}">
+			Type: <select name="object3_type_id" size="1">
+			<option value="0"></option>
+			#foreach($type in $types)
+				#if(${action.object3Type.id}==${type.id})
+					<option selected value="$type.id">${type.name}</option>
+				#else
+					<option value="$type.id">${type.name}</option>
+				#end
+			#end
+    		</select>
+		</td>
 	<tr>
 		<td>Parameter 1:</td>
 		<td>
