@@ -661,7 +661,8 @@ public class DbCollections
         		+ " from rulegroupaction, rulegroup"
         		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
         		+ " and (rulegroupaction.object1_parameter like " + "'%" + searchTerm + "%'"
-        		+ " or rulegroupaction.object2_parameter like "+ "'%" + searchTerm + "%')";
+        		+ " or rulegroupaction.object2_parameter like "+ "'%" + searchTerm + "%'"
+        		+ " or rulegroupaction.object3_parameter like "+ "'%" + searchTerm + "%')";
         		
         if(searchDate!=null && !searchDate.trim().equals(""))
         {

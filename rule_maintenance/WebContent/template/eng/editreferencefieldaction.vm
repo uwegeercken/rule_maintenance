@@ -5,7 +5,7 @@
 	<p class="helptitle">Add or update the selected action</p>
 	<p>Enter the name and description of the action. Specify under which condition the action shall be executed.</p> 
 	<p>Define the field which shall be updated and an action that shall be executed.</p>
-	<p>Specify a field from which data is used for the selected action, or leave it blank and define a value as a parameter.</p>
+	<p>Specify a field and/or a second field from which data is used for the selected action, or leave it (them) blank and define a value as a fixed parameter.</p>
 	<p>An action may have optional or additionally required parameters. Specify the parameters and their types.</p>
 </div>
 <div class="formbox">

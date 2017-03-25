@@ -364,7 +364,15 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		}
 		if(object3Parameter!=null && !object3Parameter.trim().equals(""))
 		{
-			buffer.append("from: field [" + object3Parameter + "] ");
+			if(object1Parameter!=null && !object1Parameter.trim().equals(""))
+			{
+				buffer.append("and: ");
+			}
+			else
+			{
+				buffer.append("from: ");
+			}
+			buffer.append("field [" + object3Parameter + "] ");
 		}
 		if((object1Parameter==null || object1Parameter.trim().equals("")) && (object3Parameter==null || object3Parameter.trim().equals("")))
 		{
