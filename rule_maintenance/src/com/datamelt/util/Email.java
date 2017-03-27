@@ -20,6 +20,7 @@ public class Email
     private String smtpAddressFrom;
     
     private String subject = "Login confirmation for the Business Rules Maintenance Tool";
+    private String subjectResetPassword = "Business Rules Maintenance Tool - Password reset";
     private String body;
     private String recipient;
     private String recipientUserid;
@@ -37,7 +38,7 @@ public class Email
     	this.smtpUserPassword = smtpUserPassword;
     }
     
-    private String getHostname()
+    public String getHostname()
     {
     	 InetAddress ip;
          String hostname="";
@@ -78,12 +79,23 @@ public class Email
     	
     	buffer.append("<p>You have registered for a login to the Business Rules Maintenance Tool. To be able to use the tool your account needs to be activated.</p>");
     	buffer.append("<p>Please click on the link below to confirm your login and activate the account as user: " + recipientUserid + "</p>");
-    	buffer.append("<p>Click to <a href=\"" + url + "?action=bsh&scriptname=selectconfirmlogin&code=" + recipientHash +"\">confirm your login</a></p>");
+    	buffer.append("<p>Click to <a href=\"" + url + "?action=bsh&scriptname=selectconfirmregistration&code=" + recipientHash +"\">confirm your login</a></p>");
     	buffer.append("<p>Your IT Support for the Business Rules Maintenance Tool.</p>");
     	
     	return buffer.toString();
     }
     
+    private String getMessageBodyPasswordReset() throws Exception
+    {
+    	StringBuffer buffer = new StringBuffer();
+    	
+    	buffer.append("<p>You have requested a password reset for the Business Rules Maintenance Tool.</p>");
+    	buffer.append("<p>Please click on the link below to confirm the reset of your password as user: " + recipientUserid + "</p>");
+    	buffer.append("<p>Click to <a href=\"" + url + "?action=bsh&scriptname=selectconfirmpasswordreset&code=" + recipientHash +"\">reset your password</a></p>");
+    	buffer.append("<p>Your IT Support for the Business Rules Maintenance Tool.</p>");
+    	
+    	return buffer.toString();
+    }
     
 	public void send()
 	{
@@ -113,6 +125,48 @@ public class Email
 	        message.setSentDate(new Date());
 
 	        String htmlText = getMessageBody();
+	        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
+	        
+	        Transport transport = mailSession.getTransport();
+	        transport.connect(smtpHost,smtpUser,smtpUserPassword);
+	        transport.sendMessage(message, message.getAllRecipients());
+	        transport.close();			
+	        
+	    }
+		catch (Exception ex) 
+		{
+			ex.printStackTrace();
+	    }
+	}
+	
+	public void sendResetPassword()
+	{
+		try 
+		{
+			generateRecipientHash();
+			
+			Properties properties = new Properties();
+			
+			properties.put("mail.smtp.port", smtpPort);
+			properties.put("mail.transport.protocol", SMTP_TRANSPORT_PROTOCOL);
+			properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
+	        
+	        Session mailSession = Session.getDefaultInstance(properties, null);
+	        
+	        if(debugMode)
+	        {
+	        	mailSession.setDebug(true);
+	        }
+			
+	        MimeMessage message = new MimeMessage(mailSession);
+	        
+	        message.setFrom(new InternetAddress(smtpAddressFrom));
+	        message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(recipient));
+	        message.setSubject(subjectResetPassword);
+	        message.setSentDate(new Date());
+
+	        String htmlText = getMessageBodyPasswordReset();
 	        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
 	        
 	        Transport transport = mailSession.getTransport();

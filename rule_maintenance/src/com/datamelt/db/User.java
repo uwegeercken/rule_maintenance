@@ -53,6 +53,7 @@ public class User extends DatabaseRecord implements Loadable
     public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from " + TABLENAME_GROUPUSER + " where user_id=?";
     public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, email, generated_code) values (?,?,?,?)";
     public static final String REGISTER_SQL       		    = "insert into " + TABLENAME + " (userid, name, email, generated_code, deactivated, deactivated_date) values (?,?,?,?,?,?)";
+    public static final String RESETPASSWORD_SQL   		    = "update " + TABLENAME + " set deactivated=?, deactivated_date=?, password=?, generated_code=? where id=?";
     public static final String ACTIVATE_REGISTRATION_SQL    = "update " + TABLENAME + " set password=password(?), deactivated=?, deactivated_date=?, generated_code=?, password_update_date=? where id =?";
     public static final String ADMINISTRATOR                = "admin";
 
@@ -165,6 +166,18 @@ public class User extends DatabaseRecord implements Loadable
 		setId(getConnection().getLastInsertId());
     }
     
+    public void resetPassword(PreparedStatement p, String generatedHash) throws Exception
+    {
+        p.setInt(1,deactivated);
+        p.setString(2,deactivatedDate);
+        p.setString(3, null);
+        p.setString(4, generatedHash);
+        p.setLong(5, getId());
+        
+        p.executeUpdate();
+		setId(getConnection().getLastInsertId());
+    }
+    
     public void activateRegistration(PreparedStatement p, String password) throws Exception
     {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -271,6 +284,33 @@ public class User extends DatabaseRecord implements Loadable
     public void loadByUserid() throws Exception
     {
         String sql="select * from user where userid='" + getUserid() +"' and deactivated=0";
+        ResultSet rs = getConnection().getResultSet(sql);
+		if(rs.next())
+		{
+	        this.setId(rs.getLong("id"));
+		    this.userid = rs.getString("userid");
+	        this.name = rs.getString("name");
+	        this.password = rs.getString("password");
+	        this.email= rs.getString("email");
+	        this.lastLogin = rs.getString("lastlogin");
+	        this.hash = rs.getString("generated_code");
+	        setLastUpdate(rs.getString("last_update"));
+	        try
+	        {
+	            loadGroups();
+	        }
+	        catch(Exception ex)
+	        {
+            
+	        }
+	        
+		}
+        rs.close();
+    }
+    
+    public void loadByEmail() throws Exception
+    {
+        String sql="select * from user where email='" + getEmail() +"' and deactivated=0";
         ResultSet rs = getConnection().getResultSet(sql);
 		if(rs.next())
 		{
@@ -456,6 +496,32 @@ public class User extends DatabaseRecord implements Loadable
     public boolean exist(String uid) throws Exception
     {
         String sql="select id from user where userid ='" + uid + "' and deactivated=0";
+        ResultSet rs = getConnection().getResultSet(sql);
+		boolean exists=false;
+        if(rs.next())
+		{
+	        exists = true;
+		}
+        rs.close();
+        return exists;
+    }
+    
+    public boolean existAny(String uid) throws Exception
+    {
+        String sql="select id from user where userid ='" + uid + "'";
+        ResultSet rs = getConnection().getResultSet(sql);
+		boolean exists=false;
+        if(rs.next())
+		{
+	        exists = true;
+		}
+        rs.close();
+        return exists;
+    }
+    
+    public boolean existEmail(String email) throws Exception
+    {
+        String sql="select id from user where email ='" + email + "'";
         ResultSet rs = getConnection().getResultSet(sql);
 		boolean exists=false;
         if(rs.next())

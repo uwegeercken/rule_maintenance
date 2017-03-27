@@ -16,7 +16,7 @@ dbuser.load();
 String passwordNew = request.getParameter("password");
 String passwordNewRepeated = request.getParameter("password_repeated");
 
-templatename="confirmlogin.vm";
+templatename="confirmregistration.vm";
 error=false;
 // check if we are using ldap
 if(ldap.getHost()==null || ldap.getDomain()==null || ldap.getHost().trim().equals("") || ldap.getDomain().trim().equals(""))
