@@ -19,7 +19,7 @@ public class Email
     private String smtpUserPassword;
     private String smtpAddressFrom;
     
-    private String subject = "Login confirmation for the Business Rules Maintenance Tool";
+    private String subject = "Registration for the Business Rules Maintenance Tool";
     private String subjectResetPassword = "Business Rules Maintenance Tool - Password reset";
     private String body;
     private String recipient;
@@ -105,9 +105,13 @@ public class Email
 			
 			Properties properties = new Properties();
 			
+			properties.put("mail.smtp.host", smtpHost);
 			properties.put("mail.smtp.port", smtpPort);
 			properties.put("mail.transport.protocol", SMTP_TRANSPORT_PROTOCOL);
-			properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
+			{
+				properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			}
 			properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
 	        
 	        Session mailSession = Session.getDefaultInstance(properties, null);
@@ -128,7 +132,14 @@ public class Email
 	        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
 	        
 	        Transport transport = mailSession.getTransport();
-	        transport.connect(smtpHost,smtpUser,smtpUserPassword);
+	        if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
+			{
+	        	transport.connect(smtpUser,smtpUserPassword);
+			}
+	        else
+	        {
+	        	transport.connect();
+	        }
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();			
 	        
@@ -147,9 +158,13 @@ public class Email
 			
 			Properties properties = new Properties();
 			
+			properties.put("mail.smtp.host", smtpHost);
 			properties.put("mail.smtp.port", smtpPort);
 			properties.put("mail.transport.protocol", SMTP_TRANSPORT_PROTOCOL);
-			properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
+			{
+				properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			}
 			properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
 	        
 	        Session mailSession = Session.getDefaultInstance(properties, null);
@@ -170,7 +185,14 @@ public class Email
 	        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
 	        
 	        Transport transport = mailSession.getTransport();
-	        transport.connect(smtpHost,smtpUser,smtpUserPassword);
+	        if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
+			{
+	        	transport.connect(smtpUser,smtpUserPassword);
+			}
+	        else
+	        {
+	        	transport.connect();
+	        }
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();			
 	        
