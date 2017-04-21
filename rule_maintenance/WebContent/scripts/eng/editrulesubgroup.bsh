@@ -1,6 +1,7 @@
 import com.datamelt.db.Project;
 import com.datamelt.db.RuleGroup;
 import com.datamelt.db.RuleSubgroup;
+import com.datamelt.db.Rule;
 import com.datamelt.db.History;
 import com.datamelt.db.DbCollections;
 
@@ -14,6 +15,17 @@ else
 	cancelled = request.getParameter("submit");
 	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 	rulesubgroupid=Long.parseLong(request.getParameter("rulesubgroupid"));
+	
+	id=Long.parseLong(request.getParameter("id"));
+	mode = request.getParameter("mode");
+	context.put("mode", mode);
+	if(mode!=null && mode.equals("copy"))
+	{
+		copyFromId=Long.parseLong(request.getParameter("copyid"));
+		context.put("copyid", copyFromId);
+	}
+	
+	
 	if(cancelled.equals("save"))
 	{
 		RuleGroup rulegroup = new RuleGroup();
@@ -80,6 +92,23 @@ else
 				rulesubgroupNew.lastUpdateUser.id = user.id;
 				rulesubgroupNew.insert(connection.getPreparedStatement(RuleSubgroup.INSERT_SQL),project,user);
 				context.put("mode","inserted");
+				infomessage.text="Rule Subgroup added.";
+								
+				if(mode.equals("copy"))
+				{
+					RuleSubgroup rulesubgroupCopy = new RuleSubgroup();
+					rulesubgroupCopy.connection = connection;
+					rulesubgroupCopy.id = copyFromId;
+					rulesubgroupCopy.load();
+					for(int f=0;f<rulesubgroupCopy.rules.size();f++)
+					{
+						Rule rule = rulesubgroupCopy.rules.get(f);
+						rule.ruleSubgroupId = rulesubgroupNew.id;
+						rule.lastUpdateUser.id = user.id;
+						rule.insert(connection.getPreparedStatement(Rule.INSERT_SQL),project,user);
+					}
+					infomessage.text="Rule Subgroup added. Rules copied.";	
+				}
 				
 				History history = new History();
 				history.connection = connection;
@@ -90,7 +119,6 @@ else
 				history.parent2 = project.id;
 				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
 				
-				infomessage.text="Rule Subgroup added.";
 			}
 			else if(rulesubgroupNew.exist(rulesubgroupNew.name) && rulesubgroupNew.name.length()>0)
 			{

@@ -1,5 +1,5 @@
 #set($pagetitle='Rule Subgroup Maintenance')
-<p class="heading">#if($mode && $mode=="add")Add Subgroup #else Edit Subgroup#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
+<p class="heading">#if($mode && $mode=="add")Add Subgroup #elseif($mode && $mode=="copy")Copy Subgroup #else Edit Subgroup#end - Project: <a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}">${project.name}</a> - Rule Group: <a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}">${rulegroup.name}</a></p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
 <div id="help">
 	<p class="helptitle">#if($mode=="add")Add Subgroup #else Edit Subgroup#end</p>
@@ -10,6 +10,8 @@
 <div class="formbox">
 #if($mode && $mode=="add")
 	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulegroupid=${rulegroup.id}&rulesubgroupid=0"> 
+#elseif($mode && $mode=="copy")
+	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulesubgroupid=0&rulegroupid=${rulegroup.id}&mode=${mode}&copyid=${copyid}"> 
 #else
 	<form method="POST" action="process?action=bsh&scriptname=editrulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}"> 
 #end

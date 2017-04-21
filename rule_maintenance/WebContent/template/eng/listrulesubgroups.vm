@@ -12,7 +12,8 @@
 	<p class="helptitle">List of Subgroups, Rules and Actions</p>
 	<p>Subgroups are connected to the previous subgroup by [and] or [or]. Rules in a subgroup are connected by [and] or [or]. Actions apply to the whole rule group.</p>
 	<p>You can test the rules of a rulegroup by providing sample data for the fields involved in the rules. Run the test and you receive a visual indication if the group and the rules passed or failed. Also the rule message is displayed. If no fields are defined for the selected project, you won't be able to run tests on the rulegroup.</p> 
-	<p><img height="22" width="22" src="img/subgroup_add.png">&nbsp;add subgroup&nbsp;<img height="22" width="22" src="img/action_add.png">&nbsp;add action &nbsp;<img height="22" width="22" src="img/rule_add2.png">&nbsp;add rule&nbsp;<img height="22" width="22" src="img/test.png">&nbsp;test rule group&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule/action</p>
+	<p><img height="22" width="22" src="img/subgroup_add.png">&nbsp;add subgroup&nbsp;<img height="22" width="22" src="img/action_add.png">&nbsp;add action &nbsp;<img height="22" width="22" src="img/rule_add2.png">&nbsp;add rule&nbsp;<img height="22" width="22" src="img/test.png">&nbsp;test rule group&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete subgroup/rule/action&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit subgroup/rule/action&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy subgroup/rule/action</p>
+
 </div>
 <div id="listrulegroup">
 <div class="unitsmall">
@@ -50,6 +51,7 @@
 			#if($user.canUpdateProject($project)==true)
 				<a href="process?action=bsh&ro=1&scriptname=selectdeleterulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete subgroup"></a>
 				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit subgroup"></a>
+				<a href="process?action=bsh&ro=1&scriptname=selecteditrulesubgroup&rulesubgroupid=${rulesubgroup.id}&rulegroupid=${rulegroup.id}&mode=copy"><img class="copy" height="22px" width="22px" src="img/copy.png" title="copy subgroup"></a>
 				<a href="process?action=bsh&ro=1&scriptname=selecteditrule&mode=add&id=0&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="add" height="22px" width="22px" src="img/rule_add2.png" title="add rule"></a>
 			#end
 			#if($counter %2==0)

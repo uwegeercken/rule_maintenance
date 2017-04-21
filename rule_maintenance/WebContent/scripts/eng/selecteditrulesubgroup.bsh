@@ -14,7 +14,8 @@ else
 	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 	mode=request.getParameter("mode");
 	context.put("mode",mode);
-	if(mode!=null && !mode.equals("add"))
+	RuleSubgroup rulesubgroup = new RuleSubgroup();
+	if(mode!=null && !mode.equals("add") && !mode.equals("copy"))
 	{
 		RuleSubgroup rulesubgroup = new RuleSubgroup();
 		rulesubgroup.connection = connection;
@@ -24,8 +25,19 @@ else
 	}
 	else
 	{
-		RuleSubgroup rulesubgroup = new RuleSubgroup();
+		if(id>0)
+		{
+			rulesubgroup.connection = connection;
+			rulesubgroup.id=id;
+			rulesubgroup.load();
+			rulesubgroup.id=0;
+		}
 		context.put("rulesubgroup",rulesubgroup);
+		
+		if(mode!=null && mode.equals("copy"))
+		{
+			context.put("copyid",id);
+		}
 	}
 	
 	RuleGroup rulegroup = new RuleGroup();
