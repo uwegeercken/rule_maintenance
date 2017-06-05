@@ -11,10 +11,12 @@ public class Email
     private static final String SMTP_TRANSPORT_PROTOCOL			= "smtp";
     private static final String SMTP_AUTHENTICATION				= "true";
     private static final String SMTP_STARTTLS_ENABLE			= "true";
+    //private static final String SMTP_STARTTLS_ENABLE			= "false";
     private static final String SMTP_MESSAGE_MIME_TYPE			= "text/html; charset=utf-8";
     
     private String smtpHost = "localhost";
     private String smtpPort = "587";
+    //private String smtpPort = "25";
     private String smtpUser;
     private String smtpUserPassword;
     private String smtpAddressFrom;
@@ -111,6 +113,10 @@ public class Email
 			if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
 			{
 				properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+			}
+			else
+			{
+				properties.put("mail.smtp.auth", false);
 			}
 			properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
 	        

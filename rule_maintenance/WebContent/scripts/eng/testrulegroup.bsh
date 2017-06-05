@@ -57,7 +57,7 @@ else
 			
 			project.loadRuleGroup(rulegroupid);
 			
-			// contains all the field from actions that shqall be updated
+			// contains all the field from actions that shall be updated
 			Set fieldsToUpdate = rulegroup.getReferencedFieldsToUpdate();
 			
 			String tempPath = fileCreator.writeFiles(project);

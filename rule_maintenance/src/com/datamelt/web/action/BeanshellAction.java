@@ -58,6 +58,7 @@ public class BeanshellAction extends Action
             if(Controller.getLdap()!=null)
             {
             	interpreter.set("ldap",Controller.getLdap());
+            	context.put("ldap",Controller.getLdap());
             }
             
             interpreter.set("connection",getConnection());

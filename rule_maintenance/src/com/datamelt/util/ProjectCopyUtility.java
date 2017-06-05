@@ -20,7 +20,6 @@ package com.datamelt.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.MySqlConnection;

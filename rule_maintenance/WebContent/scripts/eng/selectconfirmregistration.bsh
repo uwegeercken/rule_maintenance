@@ -13,7 +13,6 @@ if(dbuser.id==0 || !dbuser.hash.equals(code) || code.trim().equals(""))
 }
 else
 {
-	context.put("ldap", ldap);
 	context.put("dbuser",dbuser);
 }
 templatename="confirmregistration.vm";
