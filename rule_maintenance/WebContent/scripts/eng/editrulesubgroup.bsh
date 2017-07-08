@@ -94,7 +94,7 @@ else
 				context.put("mode","inserted");
 				infomessage.text="Rule Subgroup added.";
 								
-				if(mode.equals("copy"))
+				if(mode!=null && mode.equals("copy"))
 				{
 					RuleSubgroup rulesubgroupCopy = new RuleSubgroup();
 					rulesubgroupCopy.connection = connection;
