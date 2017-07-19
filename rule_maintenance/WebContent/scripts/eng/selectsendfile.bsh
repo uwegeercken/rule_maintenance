@@ -9,15 +9,18 @@ if(user==null)
 }
 else
 {
-		projectId=Long.parseLong(request.getParameter("projectid"));
+		if(request.getParameter("projectid")!=null)
+		{
+			projectId=Long.parseLong(request.getParameter("projectid"));
 		
-		Project project = new Project();
-        project.setConnection(connection);
-        project.setId(projectId);
-        project.load();
-        
-		context.put("selectedproject",project);
-		
+			Project project = new Project();
+	        project.setConnection(connection);
+	        project.setId(projectId);
+	        project.load();
+	        
+			context.put("selectedproject",project);
+		}		
+
 		ArrayList list = DbCollections.getAllProjects(connection,user);
 		context.put("projects",list);
 		
