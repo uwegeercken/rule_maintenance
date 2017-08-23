@@ -469,5 +469,15 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	{
 		return numberOfRuleGroupsDependingOnThisRuleGroup;
 	}
-
+	
+	public long getNumberOfRules()
+	{
+		int totalNumberOfRules=0;
+		for (int i=0;i<getRuleSubgroups().size();i++)
+		{
+			RuleSubgroup subGroup = getRuleSubgroups().get(i);
+			totalNumberOfRules = totalNumberOfRules + subGroup.getRules().size();
+		}
+		return totalNumberOfRules;
+	}
 }

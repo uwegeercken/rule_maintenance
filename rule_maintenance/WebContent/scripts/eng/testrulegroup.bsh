@@ -225,11 +225,16 @@ else
 			if(error==0)
 			{
 				int rowFailed=0;
+				if(rulegroup.numberOfRules == 0)
+				{
+					rowFailed = 2;
+				}
 		        try
 				{
 		        	ruleEngine.run("row: " + counter, rowFieldCollection);
 					RuleExecutionCollection results = ruleEngine.getRuleExecutionCollection();
 					context.put("results",results);
+					
 					
 					if(ruleEngine.getNumberOfGroupsFailed()>0)
 	    	    	{
