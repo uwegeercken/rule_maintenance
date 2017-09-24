@@ -205,6 +205,13 @@ public class Project extends DatabaseRecord implements Loadable
 		return dataWriter.merge();
 	}
 	
+	public String mergeWithReferenceFieldTemplate(String templatePath, String templateName) throws Exception
+	{
+		VelocityDataWriter dataWriter = new VelocityDataWriter(templatePath, templateName);
+		dataWriter.addObject("project", this);
+		return dataWriter.merge();
+	}
+	
 	private ResultSet selectRecordById(PreparedStatement p) throws Exception
 	{
 		p.setLong(1,getId());

@@ -192,7 +192,7 @@ public class RuleGroupFileCreator {
 			}
 			else
 			{
-				System.out.println("retrieving the list of project");
+				System.out.println("retrieving the list of projects");
 				projects = DbCollections.getAllProjects(connection);
 			}
 			
