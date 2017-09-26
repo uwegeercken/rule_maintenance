@@ -17,6 +17,7 @@ if(user==null)
 }
 else
 {
+	templatename="sendfile.vm";
 	if(cancelled!=null && cancelled.equals("generate"))
 	{
 		FileInputStream fis = new FileInputStream(contextpath + "/" + configfile);
@@ -118,6 +119,9 @@ else
 				String tempPath = fileCreator.writeFiles(project);
 				String fileName = fileCreator.zipFiles(project, tempPath);
 				
+				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, "referencefields.vm");
+				referenceFieldFileCreator.writeFile();
+				
 				activity.message = "Exported project [" + project.name + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
 				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
 				
@@ -125,14 +129,24 @@ else
 			    response.setHeader("Content-Disposition","attachment;filename=\"" + exportFilename +  "_" + environment + ".zip\"");
 				
 				File f = new File(fileName);  
-			    byte[] arBytes = new byte[(int)f.length()];  
 			    FileInputStream is = new FileInputStream(f);  
-			    is.read(arBytes); 
 			    
-			    op = response.getOutputStream();  
-			    op.write(arBytes);  
-			    op.flush();
-			    //op.close();
+				int c;
+            	try 
+            	{
+	            	while ((c = is.read()) != -1) 
+	            	{
+	            		response.getWriter().write(c);
+	            	}
+	            }
+	            finally
+	            {
+                	if (inputStream != null)
+                	{
+                		is.close();
+                	}
+                	response.getWriter().close();
+                }
 			}
 		}
 		else if(id==0 || validselecteddate==false)
@@ -153,7 +167,7 @@ else
 		
 		ArrayList list = DbCollections.getAllProjects(connection,user);
 		context.put("projects",list);
-		templatename="sendfile.vm";
+		
 	}
 	
 }

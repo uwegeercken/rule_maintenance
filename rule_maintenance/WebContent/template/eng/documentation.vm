@@ -12,6 +12,7 @@
 <p>Below are the external links to the GitHub repositories where the documentation, source code, libraries and other tools are available. You will always find the latest versions of the tools there.</p>
 <ul>
 	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_documentation">Business Rules Maintenance Tool Documentation</a></li>
+	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_documentation">Getting started: Real Life Sample</a></li>
 	<li><a target="_external" href="https://github.com/uwegeercken/rule_maintenance_war">Business Rules Maintenance Tool Web archive (war file)</a></li>
 	<li><a target="_external" href="https://github.com/uwegeercken/jare">JaRE - Java Rule Engine</a></li>
 	<li><a target="_external" href="https://github.com/uwegeercken/jareplugin">Pentaho PDI Ruleengine Step (plugin)</a></li>
