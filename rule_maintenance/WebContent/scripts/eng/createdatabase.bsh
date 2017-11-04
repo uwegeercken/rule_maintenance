@@ -1,0 +1,10 @@
+import com.datamelt.rules.engine.BusinessRulesEngine;
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.DatabaseCreator;
+
+filename = contextpath + "/database/ruleengine_rules.sql";
+databasename="test5";
+
+DatabaseCreator.createDatabase(connection,databasename,filename);
+
+templatename="about.vm";

@@ -27,6 +27,7 @@ import java.util.zip.ZipFile;
 
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
+import com.datamelt.rules.core.ReferenceField;
 import com.datamelt.rules.engine.BusinessRulesEngine;
 import com.datamelt.util.ProjectCopyUtility;
 import com.datamelt.util.ProjectMappingUtility;
@@ -69,6 +70,10 @@ public class Project extends DatabaseRecord implements Loadable
     public static final String OBJECT_CLASSNAME					= "com.datamelt.util.RowFieldCollection";
     public static final String OBJECT_METHOD_GETTER				= "getFieldValue";
     public static final String OBJECT_METHOD_SETTER				= "setFieldValue";
+    
+    private static final String DEFAULT_DATE_FROM				= "1970-01-01";
+    private static final String DEFAULT_DATE_UNTIL				= "2099-12-31";
+    
     
 	public Project()
 	{
@@ -491,6 +496,28 @@ public class Project extends DatabaseRecord implements Loadable
 		BusinessRulesEngine ruleEngine = new BusinessRulesEngine(zipFile);
 		ArrayList <com.datamelt.rules.core.RuleGroup>groups = ruleEngine.getGroups();
 		
+		// import the reference fields
+		ArrayList <ReferenceField> fields = ruleEngine.getReferenceFields();
+		if(fields!=null && fields.size()>0)
+		{
+			this.fields = new ArrayList<Field>();
+			for(int i=0;i< fields.size();i++)
+			{
+				ReferenceField field = fields.get(i);
+				Field projectField = new Field();
+				projectField.setProjectId(this.getId());
+				projectField.setName(field.getName());
+				projectField.setDescription(field.getDescription());
+				projectField.setJavaTypeId(field.getJavaTypeId());
+				projectField.setNameDescriptive(field.getNameDescriptive());
+				projectField.setConnection(getConnection());
+				projectField.setLastUpdateUser(lastUpdateUser);
+				projectField.insert(getConnection().getPreparedStatement(Field.INSERT_SQL));
+				
+				// add field to the project
+				this.getFields().add(projectField);
+			}
+		}		
 		// create a map of groups to dependent groups 
 		// the dependencies will be generated after all groups have been imported
 		Map<String, com.datamelt.rules.core.RuleGroup> dependantGroups = new HashMap<String, com.datamelt.rules.core.RuleGroup>();
@@ -504,7 +531,7 @@ public class Project extends DatabaseRecord implements Loadable
 			dbRuleGroup.setDescription(group.getDescription());
 			if(group.getValidFrom()==null)
 			{
-				dbRuleGroup.setValidFrom("2014-01-01");
+				dbRuleGroup.setValidFrom(DEFAULT_DATE_FROM);
 			}
 			else
 			{
@@ -512,8 +539,7 @@ public class Project extends DatabaseRecord implements Loadable
 			}
 			if(group.getValidUntil()==null)
 			{
-				dbRuleGroup.setValidUntil("2014-12-31");
-				
+				dbRuleGroup.setValidUntil(DEFAULT_DATE_UNTIL);
 			}
 			else
 			{
