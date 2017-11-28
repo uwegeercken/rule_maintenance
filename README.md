@@ -13,7 +13,7 @@ The application allows to use LDAP for authentication. Projects can be private o
 
 The latest version has enhanced user support: filtering on pages, storing filters and a calendar widget. New is also a project copy function and a search function for rules and actions.
 
-Note 1: make sure that you have imported the database schema before you run the web application.
+Make sure you have a MySQL or Mariadb server running. You will need a user and user password which allows to create the database, tables and some initial data.
 
 
     Copyright (C) 2008-2017  Uwe Geercken
@@ -36,4 +36,4 @@ Note 1: make sure that you have imported the database schema before you run the 
  under the License.
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2017-03-24
+last update: 2017-11-28
