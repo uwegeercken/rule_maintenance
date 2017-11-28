@@ -1,10 +1,56 @@
-import com.datamelt.rules.engine.BusinessRulesEngine;
-import com.datamelt.db.DbCollections;
+import com.datamelt.db.MySqlConnection;
 import com.datamelt.db.DatabaseCreator;
+import com.datamelt.db.Activity;
+import com.datamelt.web.Controller;
 
-filename = contextpath + "/database/ruleengine_rules.sql";
-databasename="test5";
-
-DatabaseCreator.createDatabase(connection,databasename,filename);
-
-templatename="about.vm";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	adminaction="true";
+	cancelled= request.getParameter("submit");
+	
+	if(cancelled.equals("yes"))
+	{
+		MySqlConnection con = null;
+		try
+		{
+			// check without specifying the database name
+			con = new MySqlConnection(request.getParameter("db_hostname"),Integer.parseInt(request.getParameter("db_port")),request.getParameter("db_user"),request.getParameter("db_userpassword"));
+			
+			boolean databaseExists = DatabaseCreator.checkExistDatabase(con,request.getParameter("db_name"));
+			if(databaseExists==false)
+			{
+				DatabaseCreator.createDatabase(con,request.getParameter("db_name"));
+				infomessage.text="Created database: [" + request.getParameter("db_name") +"], server [" + request.getParameter("db_hostname")+ "], port ["+ request.getParameter("db_port")+ "]";
+				
+				Activity activity = new Activity();
+				activity.connection = con;
+				activity.user = user;
+				activity.message = "Created database: [" + request.getParameter("db_name") +"], server [" + request.getParameter("db_hostname")+ "], port ["+ request.getParameter("db_port")+ "], with userid [" + request.getParameter("db_user") +"]";
+				activity.insert(con.getPreparedStatement(Activity.INSERT_SQL));
+			}
+			else
+			{
+				infomessage.type = "info";
+				infomessage.text="Database [" + request.getParameter("db_name") + "] already exists on the server [" + request.getParameter("db_hostname") + "] on port [" + request.getParameter("db_port") + "]";				
+			}
+			if(con!=null)
+			{
+				con.close();
+			}
+			request.getRequestDispatcher("process?action=bsh&scriptname=connectionok").forward(request, response);
+		}
+		catch(Exception ex)
+		{
+				infomessage.type = "error";
+				infomessage.text = " Error connecting: " + ex.getMessage();
+		}
+	}
+	else
+	{
+		request.getRequestDispatcher("process?action=bsh&scriptname=selectconfiguredatabase").forward(request, response);
+	}
+}

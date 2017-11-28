@@ -1,18 +1,35 @@
 import com.datamelt.db.Field;
 
-adminaction="true";
 if(user==null)
 {
 	templatename="login.vm";
 }
 else
 {
+
 	Field field = new Field();
 	field.connection = connection;
-	field.id = Long.parseLong(request.getParameter("fieldid"));;
+	field.id = Long.parseLong(request.getParameter("fieldid"));
 	field.load();
 	context.put("field",field);
-		
-
-	templatename="deletereferencefield.vm";
+	
+	Project project = new Project();
+	project.connection = connection;
+	project.id = field.projectId;
+	project.load();
+	context.put("project",project);
+	
+	if(user.isInGroup("Admin") || user.isProjectOwner(project))
+	{
+		templatename="deletereferencefield.vm";
+	}
+	else
+	{
+		project.loadFields();
+		infomessage.type = "error";
+		infomessage.text="the requested action may only be executed by a person who is in the Admin group or the owner of the project.";				
+	
+		templatename="listreferencefields.vm";
+	
+	}
 }

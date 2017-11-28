@@ -1,0 +1,23 @@
+import java.io.FileInputStream;
+import java.util.Properties;
+
+if(user!=null)
+{
+	adminaction="true";
+}
+
+try
+{
+	FileInputStream fis = new FileInputStream(contextpath + "/" + databasefile);
+	Properties p = new Properties();
+	p.load(fis);
+	context.put("configuration",p);
+	fis.close();
+}
+catch(Exception ex)
+{
+	ex.printStackTrace();
+}
+
+
+templatename="configuredatabase.vm";

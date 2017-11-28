@@ -102,6 +102,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static String smtpUserPassword;
     private static String smtpFromAddress;
     private boolean dbConnectionOk;
+    private boolean hostConnectionOk;
     private static Ldap ldap;
     
     private static Interpreter interpreter=null;
@@ -115,6 +116,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
         properties.put(CONTEXT_PATH, realPath);
 		
 		readConfigFile(realPath);
+		readDatabaseFile(realPath);
+		hostConnectionOk = hostConnectionOk();
 		dbConnectionOk = databaseConnectionOk();
 		
 		interpreter = new Interpreter();
@@ -199,6 +202,13 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	    }
     }	
 	
+	private void reloadConfig()
+	{
+		readConfigFile(properties.getProperty(CONTEXT_PATH));
+		readDatabaseFile(properties.getProperty(CONTEXT_PATH));
+		hostConnectionOk = hostConnectionOk();	
+	}
+	
 	private void readConfigFile(String realPath)
 	{
 		try
@@ -207,11 +217,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			Properties p = new Properties();
 			p.load(fis);
 			fis.close();
-			dbHostname = p.getProperty(DB_HOSTNAME);
-			dbPort = Integer.parseInt(p.getProperty(DB_PORT));
-			dbName = p.getProperty(DB_NAME);
-			dbUser=p.getProperty(DB_USER);
-			dbUserPassword=p.getProperty(DB_USERPASSWORD);
+
 			exportPath=p.getProperty(PROJECT_EXPORT_FOLDER);
 			backupPath=p.getProperty(PROJECT_BACKUP_FOLDER);
 			
@@ -240,11 +246,46 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		}
 	}
 	
-	public boolean databaseConnectionOk()
+	private void readDatabaseFile(String realPath)
 	{
 		try
 		{
-			MySqlConnection con = getConnection(dbHostname,dbPort,dbName,dbUser,dbUserPassword);
+			FileInputStream fis = new FileInputStream(realPath + "/" + ConstantsWeb.DATABASE_FILE);
+			Properties p = new Properties();
+			p.load(fis);
+			fis.close();
+			dbHostname = p.getProperty(DB_HOSTNAME);
+			dbPort = Integer.parseInt(p.getProperty(DB_PORT));
+			dbName = p.getProperty(DB_NAME);
+			dbUser=p.getProperty(DB_USER);
+			dbUserPassword=p.getProperty(DB_USERPASSWORD);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	private boolean databaseConnectionOk()
+	{
+		try
+		{
+			MySqlConnection con = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
+			con.close();
+			return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+        
+	}
+	
+	private boolean hostConnectionOk()
+	{
+		try
+		{
+			MySqlConnection con = getHostConnection(dbHostname,dbPort, dbUser,dbUserPassword);
 			con.close();
 			return true;
 		}
@@ -275,12 +316,20 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		        action = (Action)c.newInstance();
 		        MySqlConnection con=null;
 		        
-		        if(!dbConnectionOk && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
+		        if(!hostConnectionOk)
 		        {
-		        	scriptName = ConstantsWeb.SELECTCONFIG_SCRIPT;
+		        	action.setHostConnectionOk(false);
+		        	action.setDatabaseConnectionOk(false);
 		        }
-		        else if(dbConnectionOk && !scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
+		        else if(hostConnectionOk && !dbConnectionOk)
 		        {
+		        	action.setHostConnectionOk(true);
+		        	action.setDatabaseConnectionOk(false);
+		        }
+		        else 
+		        {
+		        	action.setHostConnectionOk(true);
+		        	action.setDatabaseConnectionOk(true);
 		        	con = getConnection(dbHostname,dbPort,dbName,dbUser,dbUserPassword);
 			        if(getProperty(AUTO_ADD_PLUGINS_WEBINF_ATTRIBUTE).equals("true"))
 			        {
@@ -289,11 +338,16 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			        }
 			        action.setConnection(con);
 		        }
-			    actionTemplate = action.execute(request, response, context, interpreter, scriptName, pluginLoader.getPlugins());
-			    if(scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
+		        actionTemplate = action.execute(request, response, context, interpreter, scriptName, pluginLoader.getPlugins());
+		        if(scriptName.equals(ConstantsWeb.CONFIG_SCRIPT))
 		        {
-		        	readConfigFile((String)properties.get(CONTEXT_PATH));
-		        	dbConnectionOk = databaseConnectionOk();
+		        	readConfigFile(properties.getProperty(CONTEXT_PATH));
+		        }
+		        if(scriptName.equals(ConstantsWeb.CONFIG_DATABASE_SCRIPT)|| scriptName.equals(ConstantsWeb.CREATE_DATABASE_SCRIPT))
+		        {
+		        	readDatabaseFile(properties.getProperty(CONTEXT_PATH));
+		        	hostConnectionOk = hostConnectionOk();
+		    		dbConnectionOk = databaseConnectionOk();
 		        }
 			    if(con!=null)
 			    {
@@ -320,6 +374,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	        }
 		    catch (Exception ex)
 		    {
+		    	hostConnectionOk = hostConnectionOk();
+	    		dbConnectionOk = databaseConnectionOk();
 		    	context.put("error_cause",ex);
 		    	template = getTemplate(language + "/" +  ConstantsWeb.PAGE_ERROR);
 		    }
@@ -332,9 +388,14 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		return template;
     }
 	
-	public static MySqlConnection getConnection(String hostname, int port, String databasename,String dbUser, String dbPassword) throws Exception
+	public static MySqlConnection getHostConnection(String hostname, int port, String dbUser, String dbPassword) throws Exception
 	{
-	    return new MySqlConnection(hostname,port,databasename,dbUser,dbUserPassword);
+	    return new MySqlConnection(hostname,port,dbUser,dbUserPassword);
+	}
+	
+	public static MySqlConnection getConnection(String hostname, int port, String databaseName, String dbUser, String dbPassword) throws Exception
+	{
+	    return new MySqlConnection(hostname,port,databaseName, dbUser,dbUserPassword);
 	}
 	
 	public static String getMessage(String message)
@@ -374,7 +435,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
         }
         catch (Exception ex)
         {
-            System.out.println("messages file: " + messagesFile + " could not be found or could nor be read");
+            System.out.println("messages file: " + messagesFile + " could not be found or could not be read");
         }
         finally
         {

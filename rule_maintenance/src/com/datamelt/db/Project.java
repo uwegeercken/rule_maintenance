@@ -74,7 +74,6 @@ public class Project extends DatabaseRecord implements Loadable
     private static final String DEFAULT_DATE_FROM				= "1970-01-01";
     private static final String DEFAULT_DATE_UNTIL				= "2099-12-31";
     
-    
 	public Project()
 	{
 		

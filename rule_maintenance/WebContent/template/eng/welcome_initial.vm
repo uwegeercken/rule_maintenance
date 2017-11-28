@@ -1,0 +1,20 @@
+#set($pagetitle='Initial setup and configuration')
+<p class="heading">Initial setup and configuration</p>
+#if(${request.session.getAttribute("user")})
+	<p>Welcome to the Business Rule Maintenance Tool <b>$!{request.session.getAttribute("user").name}</b>!</p>
+#else
+	<p>Welcome to the Business Rules Maintenance Tool.</p>
+#end
+</p>
+<p>This application is used for the orchestration of Business Rules and Actions for the Java Rule Engine &quot;Jare&quot;. Once a group of rules and/or actions are defined, the relevant project can be exported to a single zip file and used with the Business Rule Engine and any Java application (also Web application). The Pentaho Data Integration tool (PDI or also called Kettle) can use the zip file through a plugin to filter data, to update data or to check data.</p>
+</br>
+<p class="helptitle">Your next administrative Tasks:</p>
+<p>Use the menu on the left and select the desired functions.</p> 
+<ul>
+	<li>The first step is to configure the database details by clicking on: &quot;Configure Database&quot;.</li>
+	<li>Second, you may optionally configure additional details using &quot;Configuration&quot;</li>
+	<li>After the configuration is done and access to the database is available, you should change the administrators password.</li>
+	<li>Start to define groups (roles) and user accounts, so that users can start working with the tool.</li>
+</ul>
+</br>
+</br>

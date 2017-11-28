@@ -1,0 +1,54 @@
+#set($pagetitle='Configure Database')
+
+<p class="heading">Configure Database</p>
+<p>The tool uses a MySQL/MariaDb database for data storage. Specify the database hostname or IP address and port, database name and a user who has read and write access privileges to the specified database.</p>
+<p>After all details below are specified, the connection to the database server is checked and if successful, the database and tables as well as the base data required for the Business Rules Maintenance Tool is created. If the database already exists on the given database server, then this database is defined to be used with the Business Rules Maintenance Tool. Choose a different (non-existant) database name, if you want to create a new database.</p>
+
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=configuredatabase"> 
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td>Database Server Hostname or IP Address:</td>
+		<td>
+			<input name="db_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_hostname")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>Database Server Port:</td>
+		<td>
+			<input name="db_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("db_port")}">
+		</td>
+	</tr>
+
+	<tr>
+		<td>Database Name:</td>
+		<td>
+			<input name="db_name" type="text" size="40" maxlength="120" value="$!{configuration.getProperty("db_name")}">
+		</td>
+	</tr>
+	<tr> 
+		<td>Database User:</td>
+		<td>
+			<input name="db_user" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_user")}">
+		</td>
+		
+	</tr>
+	<tr> 
+		<td>Database User Password:</td>
+		<td>
+			<input name="db_userpassword" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("db_userpassword")}">
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="save" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

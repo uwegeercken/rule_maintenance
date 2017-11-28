@@ -1,6 +1,0 @@
-import com.datamelt.db.User;
-
-User dbUser = new User();
-context.put("dbuser",dbUser);
-
-templatename="register.vm";

@@ -51,10 +51,7 @@ public class User extends DatabaseRecord implements Loadable
     public static final String ADD_GROUP_MEMBERSHIP  	    = "insert into " + TABLENAME_GROUPUSER + " (groups_id,user_id) values (?,?)";
     public static final String DELETE_GROUP_MEMBERSHIP	    = "delete from " + TABLENAME_GROUPUSER + " where groups_id=? and user_id=?";
     public static final String DELETE_ALL_GROUP_MEMBERSHIPS = "delete from " + TABLENAME_GROUPUSER + " where user_id=?";
-    public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, email, generated_code) values (?,?,?,?)";
-    public static final String REGISTER_SQL       		    = "insert into " + TABLENAME + " (userid, name, email, generated_code, deactivated, deactivated_date) values (?,?,?,?,?,?)";
-    public static final String RESETPASSWORD_SQL   		    = "update " + TABLENAME + " set deactivated=?, deactivated_date=?, password=?, generated_code=? where id=?";
-    public static final String ACTIVATE_REGISTRATION_SQL    = "update " + TABLENAME + " set password=password(?), deactivated=?, deactivated_date=?, generated_code=?, password_update_date=? where id =?";
+    public static final String INSERT_SQL       		    = "insert into " + TABLENAME + " (userid, name, email, password) values (?,?,?,password(?))";
     public static final String ADMINISTRATOR                = "admin";
 
     public void load() throws Exception
@@ -128,12 +125,12 @@ public class User extends DatabaseRecord implements Loadable
     	return buffer.toString();
     }
     
-    public void insert(PreparedStatement p, String generatedHash, User user) throws Exception
+    public void insert(PreparedStatement p, String userPassword, User user) throws Exception
     {
         p.setString(1,userid);
         p.setString(2,name);
         p.setString(3, email);
-        p.setString(4, generatedHash);
+        p.setString(4, userPassword);
         try
 		{
 			if(user.isInGroup(User.ADMINISTRATOR))
@@ -153,45 +150,6 @@ public class User extends DatabaseRecord implements Loadable
 		}
     }
     
-    public void register(PreparedStatement p, String generatedHash) throws Exception
-    {
-        p.setString(1,userid);
-        p.setString(2,name);
-        p.setString(3, email);
-        p.setString(4, generatedHash);
-        p.setInt(5, deactivated);
-        p.setString(6,deactivatedDate);
-        
-        p.executeUpdate();
-		setId(getConnection().getLastInsertId());
-    }
-    
-    public void resetPassword(PreparedStatement p, String generatedHash) throws Exception
-    {
-        p.setInt(1,deactivated);
-        p.setString(2,deactivatedDate);
-        p.setString(3, null);
-        p.setString(4, generatedHash);
-        p.setLong(5, getId());
-        
-        p.executeUpdate();
-		setId(getConnection().getLastInsertId());
-    }
-    
-    public void activateRegistration(PreparedStatement p, String password) throws Exception
-    {
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    	
-    	p.setString(1,password);
-    	p.setInt(2,0);
-        p.setString(3,null);
-        p.setString(4,null);
-        p.setString(5,sdf.format(new Date()));
-        p.setLong(6,getId());
-        
-        p.executeUpdate();
-    }
-
     public void delete(PreparedStatement p, User user) throws Exception
     {
     	p.setLong(1,getId());
@@ -283,7 +241,7 @@ public class User extends DatabaseRecord implements Loadable
 
     public void loadByUserid() throws Exception
     {
-        String sql="select * from user where userid='" + getUserid() +"' and deactivated=0";
+        String sql="select * from user where userid='" + getUserid() +"'";
         ResultSet rs = getConnection().getResultSet(sql);
 		if(rs.next())
 		{
@@ -295,6 +253,11 @@ public class User extends DatabaseRecord implements Loadable
 	        this.lastLogin = rs.getString("lastlogin");
 	        this.hash = rs.getString("generated_code");
 	        setLastUpdate(rs.getString("last_update"));
+	        this.deactivated = rs.getInt("deactivated");
+	        if(deactivated==1)
+	        {
+	            this.deactivatedDate = rs.getString("deactivated_date");
+	        }
 	        try
 	        {
 	            loadGroups();
@@ -334,35 +297,7 @@ public class User extends DatabaseRecord implements Loadable
 		}
         rs.close();
     }
-    
-    public void loadByGeneratedCode(String generatedCode) throws Exception
-    {
-        String sql="select * from user where generated_code='" + generatedCode +"' and deactivated=1";
-        ResultSet rs = getConnection().getResultSet(sql);
-		if(rs.next())
-		{
-	        this.setId(rs.getLong("id"));
-		    this.userid = rs.getString("userid");
-	        this.name = rs.getString("name");
-	        this.deactivated = rs.getInt("deactivated");
-	        this.deactivatedDate = rs.getString("deactivated_date");
-	        this.password = rs.getString("password");
-	        this.email= rs.getString("email");
-	        this.lastLogin = rs.getString("lastlogin");
-	        this.hash = rs.getString("generated_code");
-	        setLastUpdate(rs.getString("last_update"));
-	        try
-	        {
-	            loadGroups();
-	        }
-	        catch(Exception ex)
-	        {
-            
-	        }
-		}
-        rs.close();
-    }
-
+        
 	public void updateLastLogin(PreparedStatement p, String date) throws Exception
 	{
 		p.setString(1,date);
@@ -588,6 +523,15 @@ public class User extends DatabaseRecord implements Loadable
     public boolean canDeleteProject(Project project)
 	{
 		if(this.isInGroup(User.ADMINISTRATOR) || project.getOwnerUser().getId()==this.getId())
+    	{
+    		return true;
+    	}
+		return false;
+	}
+    
+    public boolean isProjectOwner(Project project)
+	{
+		if(project.getOwnerUser().getId()==this.getId())
     	{
     		return true;
     	}

@@ -45,7 +45,6 @@ public class ActionMethod extends DatabaseRecord implements Loadable
     public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, return_type=?, value=?, note=?, optionalType1=?, optionalType1_explanation=?, optionalType2=?, optionalType2_explanation=?, optionalType3=?, optionalType3_explanation=? where id =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
-	
 	public ActionMethod()
 	{
 		

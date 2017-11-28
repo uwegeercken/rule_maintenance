@@ -1,8 +1,10 @@
 #set($pagetitle='List of Reference Fields')
-<p class="heading">Reference Fields ($project.fields.size()) for Project: ${project.name}</p>
+<p class="heading">Reference Fields ($!project.fields.size()) for Project: ${project.name}</p>
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Project List"></a>
-<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&fieldid=0&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/field_add.png" title="add reference field"></a>
-<a href="process?action=bsh&ro=1&scriptname=selectloadreferencefields&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/csv.png" title="import reference fields from a CSV file"></a>
+#if($user.isInGroup("Admin")|| ${user.isProjectOwner($project)})
+	<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&fieldid=0&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/field_add.png" title="add reference field"></a>
+	<a href="process?action=bsh&ro=1&scriptname=selectloadreferencefields&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/csv.png" title="import reference fields from a CSV file"></a>
+#end
 </p>
 <div id="help">
 	<p class="helptitle">List of reference fields</p>
@@ -15,8 +17,10 @@
 <p>Filter: <input id="search" searchtype="methods" type="text"></p>
 #foreach($field in $project.fields)
 	<div class="unit" tag="${field.name.toLowerCase()}">
-		<a href="process?action=bsh&ro=1&scriptname=selectdeletereferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete reference field"></a>
-		<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit reference field"></a>
+		#if($user.isInGroup("Admin")|| ${user.isProjectOwner($project)})
+			<a href="process?action=bsh&ro=1&scriptname=selectdeletereferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete reference field"></a>
+			<a href="process?action=bsh&ro=1&scriptname=selecteditreferencefield&projectid=${project.id}&fieldid=${field.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit reference field"></a>
+		#end
 		<div class="grouptop">
 			<p class="small">reference field</p>
 			<p class="big">$!{field.nameDescriptive}</p>
@@ -28,3 +32,11 @@
 		</div>
 	</div>
 #end
+<br />
+<br />
+<div class="unitclear">
+#if (${infomessage})
+	<br />
+	<p align="center">#insert_message($infomessage)</p>
+#end
+</div>

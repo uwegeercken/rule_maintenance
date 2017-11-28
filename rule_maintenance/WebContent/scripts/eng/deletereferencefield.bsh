@@ -2,21 +2,10 @@ import java.sql.PreparedStatement;
 import com.datamelt.db.Project;
 import com.datamelt.db.Field;
 
-adminaction="true";
 cancelled= request.getParameter("submit");
 
 id=Long.parseLong(request.getParameter("id"));
 projectid=Long.parseLong(request.getParameter("projectid"));
-
-if(cancelled.equals("delete field"))
-{
-	Field field = new Field();
-	field.connection = connection;
-	field.id= id;
-	
-	PreparedStatement ps = connection.getPreparedStatement(Field.DELETE_SQL);
-	field.delete(ps);
-}
 
 Project project = new Project();
 project.id = projectid;
@@ -24,5 +13,23 @@ project.connection = connection;
 project.load();
 project.loadFields();
 context.put("project", project);
+
+if(user.isInGroup("Admin") || user.isProjectOwner(project))
+{	
+	if(cancelled.equals("delete field"))
+	{
+		Field field = new Field();
+		field.connection = connection;
+		field.id= id;
+		
+		PreparedStatement ps = connection.getPreparedStatement(Field.DELETE_SQL);
+		field.delete(ps);
+	}
+}
+else
+{
+	infomessage.type = "error";
+	infomessage.text="the requested action may only be executed by a person who is in the Admin group or the owner of the project.";				
+}
 
 templatename="listreferencefields.vm";

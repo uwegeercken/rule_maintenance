@@ -30,16 +30,15 @@ public class Type extends DatabaseRecord implements Loadable
 {
 	private String name;
 	
-	private static final String TABLENAME="types";
-	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
-	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
+	private static final String TABLENAME = "types";
+	private static final String SELECT_SQL = "select * from " + TABLENAME + " where id=?";
+	private static final String SELECT_BY_NAME_SQL = "select * from " + TABLENAME + " where name=?";
 	
 	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(name) values (?)";
     public static final String UPDATE_SQL = "update " + TABLENAME + " + set name=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
-	
 	public Type()
 	{
 		

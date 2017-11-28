@@ -50,6 +50,11 @@ public class BeanshellAction extends Action
             interpreter.unset("plugins");
             interpreter.unset("buffer");
 
+            interpreter.set("hostconnectionok", getHostConnectionOk());
+            interpreter.set("databaseconnectionok", getDatabaseConnectionOk());
+            context.put("hostconnectionok", getHostConnectionOk());
+            context.put("databaseconnectionok", getDatabaseConnectionOk());
+            
             interpreter.set("user", request.getSession().getAttribute("user"));
             interpreter.set("context",context);
             interpreter.set("request",request);
@@ -69,6 +74,7 @@ public class BeanshellAction extends Action
             interpreter.set("menupath",Controller.getProperty(Controller.CONTEXT_PATH) + Controller.getProperty(Controller.MENU_PATH) + "/" +  Controller.getLanguage());
             interpreter.set("contextpath",Controller.getProperty(Controller.CONTEXT_PATH));
             interpreter.set("configfile",ConstantsWeb.CONFIG_FILE);
+            interpreter.set("databasefile",ConstantsWeb.DATABASE_FILE);
             
             Message message = new Message();
             interpreter.set("infomessage",message); 

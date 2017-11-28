@@ -59,7 +59,6 @@ public class RuleGroup extends DatabaseRecord implements Loadable
     public static final String EXIST_SQL  = "select id from " + TABLENAME + " where name =? and project_id=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
-	
 	public RuleGroup()
 	{
 		

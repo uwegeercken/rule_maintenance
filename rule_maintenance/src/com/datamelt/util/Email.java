@@ -99,61 +99,53 @@ public class Email
     	return buffer.toString();
     }
     
-	public void send()
+	public void send() throws Exception
 	{
-		try 
+		generateRecipientHash();
+		
+		Properties properties = new Properties();
+		
+		properties.put("mail.smtp.host", smtpHost);
+		properties.put("mail.smtp.port", smtpPort);
+		properties.put("mail.transport.protocol", SMTP_TRANSPORT_PROTOCOL);
+		if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
 		{
-			generateRecipientHash();
-			
-			Properties properties = new Properties();
-			
-			properties.put("mail.smtp.host", smtpHost);
-			properties.put("mail.smtp.port", smtpPort);
-			properties.put("mail.transport.protocol", SMTP_TRANSPORT_PROTOCOL);
-			if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
-			{
-				properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
-			}
-			else
-			{
-				properties.put("mail.smtp.auth", false);
-			}
-			properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
-	        
-	        Session mailSession = Session.getDefaultInstance(properties, null);
-	        
-	        if(debugMode)
-	        {
-	        	mailSession.setDebug(true);
-	        }
-			
-	        MimeMessage message = new MimeMessage(mailSession);
-	        
-	        message.setFrom(new InternetAddress(smtpAddressFrom));
-	        message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(recipient));
-	        message.setSubject(subject);
-	        message.setSentDate(new Date());
+			properties.put("mail.smtp.auth", SMTP_AUTHENTICATION);
+		}
+		else
+		{
+			properties.put("mail.smtp.auth", false);
+		}
+		properties.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
+        
+        Session mailSession = Session.getDefaultInstance(properties, null);
+        
+        if(debugMode)
+        {
+        	mailSession.setDebug(true);
+        }
+		
+        MimeMessage message = new MimeMessage(mailSession);
+        
+        message.setFrom(new InternetAddress(smtpAddressFrom));
+        message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(recipient));
+        message.setSubject(subject);
+        message.setSentDate(new Date());
 
-	        String htmlText = getMessageBody();
-	        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
-	        
-	        Transport transport = mailSession.getTransport();
-	        if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
-			{
-	        	transport.connect(smtpUser,smtpUserPassword);
-			}
-	        else
-	        {
-	        	transport.connect();
-	        }
-	        transport.sendMessage(message, message.getAllRecipients());
-	        transport.close();			
-	        
-	    }
-		catch (Exception ex) 
+        String htmlText = getMessageBody();
+        message.setContent(htmlText, SMTP_MESSAGE_MIME_TYPE);
+        
+        Transport transport = mailSession.getTransport();
+        if(smtpUser!=null && !smtpUser.equals("") && smtpUserPassword !=null && !smtpUserPassword.equals(""))
 		{
-			ex.printStackTrace();
-	    }
+        	transport.connect(smtpUser,smtpUserPassword);
+		}
+        else
+        {
+        	transport.connect();
+        }
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();			
 	}
 	
 	public void sendResetPassword()

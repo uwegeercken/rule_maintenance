@@ -450,6 +450,25 @@ public class DbCollections
     }
     
     /**
+     * get a list of all databases
+     */
+    public static boolean getCheckDatabaseExists(MySqlConnection connection, String databaseName) throws Exception
+    {
+    	ResultSet resultSet = connection.getMetaData().getCatalogs();
+    	boolean exists = false;
+    	while(resultSet.next())
+        {
+    		String name = resultSet.getString(1);
+    		if(name.trim().toLowerCase().equals(databaseName.trim().toLowerCase()))
+    		{
+    			exists = true;
+    		}
+        }
+    	resultSet.close();
+        return exists;
+    }
+    
+    /**
      * get a list of all users that are assigned to a given group 
      */
     public static ArrayList<User> getAllGroupUsers(MySqlConnection connection, String groupName) throws Exception

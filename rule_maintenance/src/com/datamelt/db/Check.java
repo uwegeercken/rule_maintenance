@@ -44,7 +44,6 @@ public class Check extends DatabaseRecord implements Loadable
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
-	
 	public Check()
 	{
 		

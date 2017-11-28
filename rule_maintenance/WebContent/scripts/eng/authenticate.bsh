@@ -1,4 +1,5 @@
 import com.datamelt.db.User;
+import com.datamelt.db.Group;
 import com.datamelt.util.Message;
 import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
@@ -7,62 +8,92 @@ import java.util.Random;
 userid = request.getParameter("userid");
 password = request.getParameter("password");
 
-user = new User();
-user.setUserid(userid);
-user.setConnection(connection);
-user.loadByUserid();
-
-if(!user.exist(userid) || userid==null || password==null || userid.trim().equals("") || password.trim().equals("") || user.deactivated==1)
+if(databaseconnectionok)
 {
-	infomessage.type="error";
-	if(!user.exist(userid)&& userid!=null && !userid.equals(""))
+	user = new User();
+	user.setUserid(userid);
+	user.setConnection(connection);
+	user.loadByUserid();
+
+	if(!user.exist(userid) || userid==null || password==null || userid.trim().equals("") || password.trim().equals("") || user.deactivated==1)
 	{
-		infomessage.text="Unknown Userid";
-	}
-	else if(user.deactivated==1)
-	{
-		infomessage.text="User is deactivated";
+		infomessage.type="error";
+		if(user.deactivated==1)
+		{
+			infomessage.text="User is deactivated";
+		}
+		else if(!user.exist(userid)&& userid!=null && !userid.equals(""))
+		{
+			infomessage.text="Unknown Userid";
+		}
+		else
+		{
+			infomessage.text="Login invalid";
+		}
+		templatename="login.vm";
 	}
 	else
 	{
-		infomessage.text="Login invalid";
+	   	if(user.isPasswordOk(password, ldap))
+	   	{
+		   	File avatar = new File(contextpath + "/img/users/" + user.userid);
+		   	if(avatar.exists())
+		   	{
+		   		user.setHasAvatar(true);
+		   	}
+		   	request.getSession().setAttribute("authenticated","true");
+		    request.getSession().setAttribute("user",user);
+			context.put("user",user);
+			
+			SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			PreparedStatement ps = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
+			user.updateLastLogin(ps,dateTime.format(new Date()));
+			
+			// for the random picture on the welcome screen
+			Random rand= new Random();
+			int min=1;
+			int max=2;
+			int randomNum = rand.nextInt((max - min) + 1) + min;	
+	
+			context.put("shotnumber",randomNum);
+	
+			templatename="welcome.vm";
+		}
+		else
+		{
+			infomessage.type="error";
+			infomessage.text="password invalid";
+			
+			templatename="login.vm";
+		}
 	}
-	templatename="login.vm";
 }
 else
 {
-   	if(user.isPasswordOk(password, ldap))
-   	{
-	   	File avatar = new File(contextpath + "/img/users/" + user.userid);
-	   	if(avatar.exists())
-	   	{
-	   		user.setHasAvatar(true);
-	   	}
-	   	request.getSession().setAttribute("authenticated","true");
-	    request.getSession().setAttribute("user",user);
-		context.put("user",user);
+	if(userid.equals("admin") && password.equals("admin"))
+	{
+		context.put("databaseconnectionok",false);
 		
-		SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		PreparedStatement ps = connection.getPreparedStatement(User.UPDATE_LASTLOGIN_SQL);
-		user.updateLastLogin(ps,dateTime.format(new Date()));
+		user = new User();
+		user.setUserid(userid);
+		user.setName(userid);
 		
-		// for the random picture on the welcome screen
-		Random rand= new Random();
-		int min=1;
-		int max=2;
-		int randomNum = rand.nextInt((max - min) + 1) + min;	
-
-		context.put("shotnumber",randomNum);
-
-		templatename="welcome.vm";
+		group = new Group();
+		group.setName("Admin");
+		user.getGroups().add(group);
+		
+		request.getSession().setAttribute("authenticated","true");
+		request.getSession().setAttribute("user",user);
+		context.put("user",user);		
+		
+		templatename="welcome_initial.vm";
+		
 	}
 	else
 	{
 		infomessage.type="error";
-		infomessage.text="password invalid";
-		
+		infomessage.text="Currently only the Administrator User can log in to the application";
 		templatename="login.vm";
-	
 	}
-
+	
 }

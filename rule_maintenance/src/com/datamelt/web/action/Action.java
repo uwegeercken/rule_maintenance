@@ -33,6 +33,8 @@ import bsh.Interpreter;
 public abstract class Action  
 {
     private MySqlConnection connection;
+    private boolean databaseConnectionOk = false;
+    private boolean hostConnectionOk = false;
     public static final String DEFAULT_VELOCITY_OBJECT = "dbObject";
     
     public abstract String execute(HttpServletRequest request, HttpServletResponse response, Context context, Interpreter interpreter,String scriptName, ArrayList<BeanshellPlugin> plugins );
@@ -56,6 +58,26 @@ public abstract class Action
 	protected MySqlConnection getConnection()
 	{
 	    return connection;
+	}
+	
+	protected boolean getDatabaseConnectionOk()
+	{
+		return databaseConnectionOk;
+	}
+	
+	public void setDatabaseConnectionOk(boolean databaseConnectionOk)
+	{
+		this.databaseConnectionOk = databaseConnectionOk;
+	}
+	
+	protected boolean getHostConnectionOk()
+	{
+		return hostConnectionOk;
+	}
+	
+	public void setHostConnectionOk(boolean hostConnectionOk)
+	{
+		this.hostConnectionOk = hostConnectionOk;
 	}
 
 }

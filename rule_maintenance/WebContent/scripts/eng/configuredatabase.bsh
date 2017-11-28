@@ -1,0 +1,102 @@
+import java.io.FileOutputStream;
+import java.util.Properties;
+import com.datamelt.db.MySqlConnection;
+import com.datamelt.db.DatabaseCreator;
+import com.datamelt.db.Activity;
+import com.datamelt.web.Controller;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	adminaction="true";
+	cancelled= request.getParameter("submit");
+	
+	Properties p = new Properties();
+	if(request.getParameter("db_hostname")!=null)
+	{
+		p.put("db_hostname",request.getParameter("db_hostname"));
+	}
+	if(request.getParameter("db_port")!=null)
+	{
+		p.put("db_port",request.getParameter("db_port"));
+	}
+	if(request.getParameter("db_name")!=null)
+	{
+		p.put("db_name",request.getParameter("db_name"));
+	}
+	if(request.getParameter("db_user")!=null)
+	{
+		p.put("db_user",request.getParameter("db_user"));
+	}
+	if(request.getParameter("db_userpassword")!=null)
+	{
+		p.put("db_userpassword",request.getParameter("db_userpassword"));
+	}
+
+	context.put("configuration",p);
+	templatename="configuredatabase.vm";
+		
+	if(cancelled.equals("save"))
+	{
+		if(request.getParameter("db_hostname")==null || request.getParameter("db_hostname").equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Database Server Hostname must be entered.";
+		}
+		else if(request.getParameter("db_port")==null || request.getParameter("db_port").equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Database Server Port must be entered.";
+		}
+		else if(request.getParameter("db_name")==null || request.getParameter("db_name").equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Database Name must be entered.";
+		}
+		else if(request.getParameter("db_user")==null || request.getParameter("db_user").equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Database User must be entered.";
+		}
+		else if(request.getParameter("db_userpassword")==null || request.getParameter("db_userpassword").equals(""))
+		{
+			infomessage.type="error";
+			infomessage.text="Database User Password must be entered.";
+		}
+		else
+		{	
+			FileOutputStream fileOut = new FileOutputStream(contextpath + "/" + databasefile);
+			p.store(fileOut, "database configuration updated using Business Rule Maintenance Tool.");
+			fileOut.close();
+			
+			MySqlConnection con = null;
+			try
+			{
+				// check without specifying the database name
+				con = new MySqlConnection(request.getParameter("db_hostname"),Integer.parseInt(request.getParameter("db_port")),request.getParameter("db_user"),request.getParameter("db_userpassword"));
+				
+				boolean databaseExists = DatabaseCreator.checkExistDatabase(con,request.getParameter("db_name"));
+				if(databaseExists==false)
+				{
+					context.put("databaseconnectionok", false);
+					templatename="createdatabase.vm";
+				}
+				else
+				{
+					infomessage.type = "info";
+					infomessage.text="Using Database [" + request.getParameter("db_name") + "] on the server [" + request.getParameter("db_hostname") + "] on port [" + request.getParameter("db_port") + "]";				
+				}
+				connection = con;
+				//con.close();
+			}
+			catch(Exception ex)
+			{
+					infomessage.type = "error";
+					infomessage.text = " Error connecting: " + ex.getMessage();
+			}
+		}	
+	}
+}

@@ -19,6 +19,7 @@ else
 		name=request.getParameter("name");
 		userid=request.getParameter("userid");
 		email=request.getParameter("email");
+		password=request.getParameter("password");
 		String[] groups = request.getParameterValues("groups");
 	
 		User dbUser = new User();
@@ -64,7 +65,8 @@ else
 		}
 		else
 		{
-			if(!dbUser.exist(userid) && userid.length()>0 && name.length()>0 && email.length()>0)
+			context.put("mode","add");
+			if(!dbUser.exist(userid) && userid.length()>0 && name.length()>0 && email.length()>0 && password.length()>=8)
 			{
 				try
 				{
@@ -78,13 +80,7 @@ else
 					dbUser.setUserid(userid);
 					dbUser.setEmail(email);
 					
-					Email mail = new Email(p.get("smtp_hostname"),p.get("smtp_from_address"),p.get("smtp_user"),p.get("smtp_user_password"));
-	    		   	mail.setRecipient(email);
-	    			mail.setRecipientUserid(userid);
-	    	
-	    			mail.send();
-					
-					dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),mail.getRecipientHash(), user);
+					dbUser.insert(connection.getPreparedStatement(User.INSERT_SQL),password, user);
 					context.put("mode","inserted");
 					if(groups!=null)
 					{
@@ -95,7 +91,7 @@ else
 						}
 					}
 					dbUser.loadGroups();
-					infomessage.text="User added. Password: " + password;
+					infomessage.text="User:[" + userid +"] added";
 					
 					Activity activity = new Activity();
 					activity.connection = connection;
@@ -123,7 +119,7 @@ else
 				dbUser.setUserid(userid);
 				dbUser.setEmail(email);
 				infomessage.type="error";
-				infomessage.text="Userid,name and email must be specified.";
+				infomessage.text="Userid, name, email and password (at least 8 characters) must be specified.";
 			}
 		}
 		dbUser.load();

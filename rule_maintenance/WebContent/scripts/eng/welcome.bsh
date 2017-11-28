@@ -9,5 +9,5 @@ int randomNum = rand.nextInt((max - min) + 1) + min;
 
 context.put("shotnumber",randomNum);
 
-
 templatename="welcome.vm";
+

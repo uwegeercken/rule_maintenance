@@ -3,15 +3,17 @@ import com.datamelt.db.DbCollections;
 
 context.put("version","2.0.1");
 context.put("lastupdate","2017-04-26");
-
-long numberOfProjects = DbCollections.getProjectsCount(connection);
-context.put("numberofprojects",numberOfProjects);
-
-long numberOfActions = DbCollections.getActionsCount(connection);
-context.put("numberofactions",numberOfActions);
-
-long numberOfRules = DbCollections.getRulesCount(connection);
-context.put("numberofrules",numberOfRules);
+if(connection!=null)
+{
+	long numberOfProjects = DbCollections.getProjectsCount(connection);
+	context.put("numberofprojects",numberOfProjects);
+	
+	long numberOfActions = DbCollections.getActionsCount(connection);
+	context.put("numberofactions",numberOfActions);
+	
+	long numberOfRules = DbCollections.getRulesCount(connection);
+	context.put("numberofrules",numberOfRules);
+}
 
 String ruleengineVersion = BusinessRulesEngine.getVersion();
 context.put("ruleengineversion",ruleengineVersion);

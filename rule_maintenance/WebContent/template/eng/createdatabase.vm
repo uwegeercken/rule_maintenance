@@ -1,0 +1,30 @@
+#set($pagetitle='Create Database')
+<p class="heading">Create Database</p>
+<p>The database specified in the configuration does not exist. You can create the database, tables and the required base data.</p>
+
+<div class="formbox">
+<form method="POST" action="process?action=bsh&scriptname=createdatabase"> 
+<input type="hidden" name="db_hostname" value="${configuration.db_hostname}">
+<input type="hidden" name="db_port" value="${configuration.db_port}">
+<input type="hidden" name="db_name" value="${configuration.db_name}">
+<input type="hidden" name="db_user" value="${configuration.db_user}">
+<input type="hidden" name="db_userpassword" value="${configuration.db_userpassword}">
+<table align="center" width="95%" border="0">
+	<tr> 
+		<td align="center">
+			<p>Do you want to create the database [${configuration.db_name}]?</p>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center"><br />
+			<input type="submit" value="yes" name="submit">
+			<input type="submit" value="no" name="submit">
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+
+#if (${infomessage})
+	<p align="center">#insert_message($infomessage)</p>
+#end

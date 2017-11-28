@@ -23,6 +23,8 @@ import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Properties;
 
+import java.sql.DatabaseMetaData;
+
 public class MySqlConnection 
 {
     private final String connect       = "jdbc:mysql://";
@@ -55,6 +57,15 @@ public class MySqlConnection
 		this.password = password;
 		this.hostname = hostname;
 		this.databaseName = databaseName;
+		this.port = port;
+		connect();
+	}
+	
+	public MySqlConnection(String hostname, int port, String username, String password) throws Exception
+	{
+		this.username = username;
+		this.password = password;
+		this.hostname = hostname;
 		this.port = port;
 		connect();
 	}
@@ -169,9 +180,25 @@ public class MySqlConnection
     private Connection getConnection() throws Exception
     {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        return DriverManager.getConnection(connect + hostname + ":" + port + "/" + databaseName + "?useUnicode=false&characterEncoding=UTF-8", username,password);
-        //return DriverManager.getConnection(connect + hostname + "/" + databaseName, username,password);
+        Connection con;
+        if(databaseName!=null)
+        {
+        	con = DriverManager.getConnection(connect + hostname + ":" + port + "/" + databaseName + "?useUnicode=false&characterEncoding=UTF-8", username,password);
+        }
+        else
+        {
+        	con = DriverManager.getConnection(connect + hostname + ":" + port, username,password);
+        }
+        
+        return con;
+        
     }
+    
+    public DatabaseMetaData getMetaData() throws Exception
+    {
+    	return getConnection().getMetaData();
+    }
+    
     
     public static String formatDbDate(String dbDate)
     {

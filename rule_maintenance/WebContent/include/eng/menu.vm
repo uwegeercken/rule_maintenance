@@ -1,45 +1,66 @@
 
 <div id='cssmenu'>
-	<ul>
-		<li><a href="process?action=bsh&scriptname=welcome">start page</a></li>
-		#if(!$user)
-			<li><a href="process?action=bsh&scriptname=login">login</a></li>
-		#else
-			#if(!${user.ldapUser})
-				<li><a href="process?action=bsh&scriptname=selectupdatepassword">password</a></li>
+	#if(${databaseconnectionok}==true)
+		<ul>
+			<li><a href="process?action=bsh&scriptname=welcome">start page</a></li>
+			#if(!$user)
+				<li><a href="process?action=bsh&scriptname=login">login</a></li>
+			#else
+				#if(!${user.ldapUser})
+					<li><a href="process?action=bsh&scriptname=selectupdatepassword">password</a></li>
+				#end
+				<li><a href="process?action=bsh&scriptname=logout">logout</a></li>
 			#end
-			<li><a href="process?action=bsh&scriptname=logout">logout</a></li>
+		</ul>
+		#if($user)
+		<ul>	
+			<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=listhistory">history</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=listactivity">activity</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectsearch">search</a></li>
+		</ul>
+		<ul>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import</a></li>
+		</ul>
+		<ul>	
+			<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=listactions">actions</a></li>
+		</ul>
 		#end
-	</ul>
-#if($user)
-	<ul>	
-		<li><a href="process?action=bsh&ro=1&scriptname=listprojects">projects</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listhistory">history</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listactivity">activity</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectsearch">search</a></li>
-	</ul>
-	<ul>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectsendfile">export</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectimportfile">import</a></li>
-	</ul>
-	<ul>	
-		<li><a href="process?action=bsh&ro=1&scriptname=listchecks">checks</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listactions">actions</a></li>
-	</ul>
-#end
-#if($user.isInGroup("Admin"))
-	<ul>
-		
-		<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listgroups">groups</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
-		<li><a href="process?action=bsh&ro=1&scriptname=selectconfigure">configuration</a></li>
-	</ul>
-#end
-
-	<ul>
-		<li><a href="process?action=bsh&scriptname=documentation">documentation</a></li>
-		<li><a href="process?action=bsh&scriptname=about">about</a></li>
-	</ul>
+		#if($user.isInGroup("Admin"))
+		<ul>
+			
+			<li><a href="process?action=bsh&scriptname=listfiles">files</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=listgroups">groups</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=listusers">users</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectconfigure">configuration</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectconfiguredatabase">configure database</a></li>
+		</ul>
+		#end
+		<ul>
+			<li><a href="process?action=bsh&scriptname=documentation">documentation</a></li>
+			<li><a href="process?action=bsh&scriptname=about">about</a></li>
+		</ul>
+	#else
+		<ul>
+			<li><a href="process?action=bsh&scriptname=welcome">start page</a></li>
+			#if(!$user)
+				<li><a href="process?action=bsh&scriptname=login">login</a></li>
+			#else
+				<li><a href="process?action=bsh&scriptname=logout">logout</a></li>
+			#end
+		</ul>
+		#if($user.isInGroup("Admin"))
+		<ul>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectconfiguredatabase">configure database</a></li>
+			<li><a href="process?action=bsh&ro=1&scriptname=selectconfigure">configuration</a></li>
+		</ul>
+		#end
+		<ul>
+			<li><a href="process?action=bsh&scriptname=documentation">documentation</a></li>
+			<li><a href="process?action=bsh&scriptname=about">about</a></li>
+		</ul>
+	#end
 </div>
 

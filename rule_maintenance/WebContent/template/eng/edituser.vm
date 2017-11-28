@@ -33,6 +33,15 @@
 			<input name="email" type="text" size="40" maxlength="80" value="$!{dbuser.email}">
 		</td>
 	</tr>
+	#if($mode=="add")
+	<tr> 
+		<td>Password:</td>
+		<td>
+			<input name="password" type="password" size="40" maxlength="40" value="">
+		</td>
+	</tr>
+	
+	#end
 	<tr><td colspan="2"></br><hr></td></tr>
 	<tr><td colspan="2">Group Membership:</td></tr>
 	#foreach($group in $groups)

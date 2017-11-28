@@ -1,38 +1,11 @@
 #set($pagetitle='Configuration')
 <p class="heading">Configuration of the Rules Maintenance Tool</p>
-<p>The Business Rule Maintenance tool uses a MySQL/MariaDb database for data storage. Specify the database hostname/IP address and port, database name and a user who has read and write access privileges to the database.</p>
 <p>When a Project Export Folder is specified, then exporting a project will store the resulting file there. Otherwise the user can select the location through the Web Browser.</p>
 <p>If a backup folder is specified, then backups will be put in that folder. Otherwise they are put in the project export folder. If no project export folder is defined there will be no automatic backup of the project files.</p>
 <p>Optionally you can specify the LDAP server details below, to authenticate a user login against the LDAP server. Provide the LDAP server hostname (without domain name) or IP address, the port and the domain name of the server (e.g. mydomain.com).</p>
 <div class="formbox">
 <form method="POST" action="process?action=bsh&scriptname=configure"> 
 <table align="center" width="95%" border="0">
-	<tr> 
-		<td>Database Server Hostname or IP Address and Port:</td>
-		<td>
-			<input name="db_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_hostname")}"><input name="db_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("db_port")}">
-		</td>
-	</tr>
-	<tr> 
-		<td>Database Name:</td>
-		<td>
-			<input name="db_name" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_name")}">
-		</td>
-		
-	</tr>
-	<tr> 
-		<td>Database User:</td>
-		<td>
-			<input name="db_user" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("db_user")}">
-		</td>
-		
-	</tr>
-	<tr> 
-		<td>Database User Password:</td>
-		<td>
-			<input name="db_userpassword" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("db_userpassword")}">
-		</td>
-	</tr>
 	<tr> 
 		<td>Project Export Folder:</td>
 		<td>
@@ -57,30 +30,6 @@
 			<input name="ldap_domain" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("ldap_domain")}">
 		</td>
 	</tr>
-	<tr> 
-		<td>SMTP Hostname and Port:</td>
-		<td>
-			<input name="smtp_hostname" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_hostname")}"><input name="smtp_port" type="text" size="5" maxlength="5" value="$!{configuration.getProperty("smtp_port")}">
-		</td>
-	</tr>
-	<tr> 
-		<td>SMTP From Address:</td>
-		<td>
-			<input name="smtp_from_address" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_from_address")}">
-		</td>
-	</tr>
-	<tr> 
-		<td>SMTP Autentication User:</td>
-		<td>
-			<input name="smtp_user" type="text" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_user")}">
-		</td>
-	</tr>
-	<tr> 
-		<td>SMTP Authentication Password:</td>
-		<td>
-			<input name="smtp_user_password" type="password" size="40" maxlength="80" value="$!{configuration.getProperty("smtp_user_password")}">
-		</td>
-	</tr>
 	<tr>
 		<td colspan="2" align="center"><br />
 			<input type="submit" value="save" name="submit">
@@ -94,9 +43,3 @@
 #if (${infomessage})
 	<p align="center">#insert_message($infomessage)</p>
 #end
-
-
-
-
-
-
