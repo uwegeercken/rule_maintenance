@@ -18,7 +18,7 @@
 		<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&projectid=${project.id}"><img class="rulegrouplogic" height="22px" width="22px" src="img/document.png" title="generate project logic"></a>
 		#if($user.canUpdateProject($project)==true)
 			#if($user.canDeleteProject($project)==true)<a href="process?action=bsh&ro=1&scriptname=selectdeleteproject&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete project"></a>#end
-			<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit project"></a>
+			#if($user.isInGroup("Admin") || $user.isProjectOwner($project))<a href="process?action=bsh&ro=1&scriptname=selecteditproject&id=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit project"></a>#end
 			<a href="process?action=bsh&ro=1&scriptname=listreferencefields&id=${project.id}&mode=change">#if($project.numberOfFields>0)<img class="attach" height="22px" width="22px" src="img/reference_fields.png" title="reference fields ($project.numberOfFields)">#else<img class="attach" height="22px" width="22px" src="img/reference_fields_undefined.png" title="define reference fields">#end</a>
 			<a href="process?action=bsh&ro=1&scriptname=selectcopyproject&projectid=${project.id}"><img class="copyproject" height="22px" width="22px" src="img/copy.png" title="copy project"></a>
 		#end
@@ -33,3 +33,9 @@
 		</div>
 	</div>
 #end
+<div class="unitclear">
+#if (${infomessage})
+	<br />
+	<p align="center">#insert_message($infomessage)</p>
+#end
+</div>

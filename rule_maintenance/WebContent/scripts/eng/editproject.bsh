@@ -13,7 +13,11 @@ else
 {
 	cancelled= request.getParameter("submit");
 	stepsOk=true;
-	if(cancelled.equals("save"))
+
+	Project project = new Project();
+	project.connection = connection;
+	
+	if(cancelled!=null && cancelled.equals("save"))
 	{
 		id=Long.parseLong(request.getParameter("id"));
 		name=request.getParameter("name");
@@ -40,62 +44,74 @@ else
 		objectMethodGetter = request.getParameter("objectmethodgetter");
 		objectMethodSetter = request.getParameter("objectmethodsetter");
 		
-		Project project = new Project();
-		project.connection = connection;
 		if(id>0)
 		{
 			project.setId(id);
 			project.load();
-			if((project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0)) && projectgroupid>0)
+			if(user.isInGroup("Admin") || user.isProjectOwner(project))
 			{
-				name = name.replaceAll("/"," ");
-				name = name.replaceAll("\\\\"," ");
-				project.setName(name);
-				project.setDescription(description);
-				project.setExportFilename(exportfilename);
-				project.setPrivateProject(isprivate);
-				project.lastUpdateUser.id = user.id;
-				project.group.id = projectgroupid;
-				project.objectClassname = objectClassname;
-				project.objectMethodGetter = objectMethodGetter;
-				project.objectMethodSetter = objectMethodSetter;
-				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
-				context.put("mode","updated");
-				project.load();
-				
-				History history = new History();
-				history.connection = connection;
-				history.user = user;
-				history.type = "project";
-				history.typeId = project.id;
-				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
-				
-				infomessage.text="Project updated.";
-			}
-			else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
-			{
-				project.setName(name);
-				project.setDescription(description);
-				project.setExportFilename(exportfilename);
-				project.setPrivateProject(isprivate);
-				project.objectClassname = objectClassname;
-				project.objectMethodGetter = objectMethodGetter;
-				project.objectMethodSetter = objectMethodSetter;
-				infomessage.type="error";
-				infomessage.text="Project already exists.";
+
+				if((project.name.equals(name) || (!project.name.equals(name) && !project.exist(name) && name.length()>0)) && projectgroupid>0)
+				{
+					name = name.replaceAll("/"," ");
+					name = name.replaceAll("\\\\"," ");
+					project.setName(name);
+					project.setDescription(description);
+					project.setExportFilename(exportfilename);
+					project.setPrivateProject(isprivate);
+					project.lastUpdateUser.id = user.id;
+					project.group.id = projectgroupid;
+					project.objectClassname = objectClassname;
+					project.objectMethodGetter = objectMethodGetter;
+					project.objectMethodSetter = objectMethodSetter;
+					project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+					context.put("mode","updated");
+					project.load();
+					
+					History history = new History();
+					history.connection = connection;
+					history.user = user;
+					history.type = "project";
+					history.typeId = project.id;
+					history.insert(connection.getPreparedStatement(History.INSERT_SQL));
+					
+					infomessage.text="Project updated.";
+				}
+				else if(!project.name.equals(name) && project.exist(name) && name.length()>0)
+				{
+					project.setName(name);
+					project.setDescription(description);
+					project.setExportFilename(exportfilename);
+					project.setPrivateProject(isprivate);
+					project.objectClassname = objectClassname;
+					project.objectMethodGetter = objectMethodGetter;
+					project.objectMethodSetter = objectMethodSetter;
+					infomessage.type="error";
+					infomessage.text="Project already exists.";
+				}
+				else
+				{
+					project.setName(name);
+					project.setDescription(description);
+					project.setExportFilename(exportfilename);
+					project.setPrivateProject(isprivate);
+					project.objectClassname = objectClassname;
+					project.objectMethodGetter = objectMethodGetter;
+					project.objectMethodSetter = objectMethodSetter;
+					project.setGroup(new Group());
+					infomessage.type="error";
+					infomessage.text="Project name and group must be specified.";
+				}
 			}
 			else
 			{
-				project.setName(name);
-				project.setDescription(description);
-				project.setExportFilename(exportfilename);
-				project.setPrivateProject(isprivate);
-				project.objectClassname = objectClassname;
-				project.objectMethodGetter = objectMethodGetter;
-				project.objectMethodSetter = objectMethodSetter;
-				project.setGroup(new Group());
-				infomessage.type="error";
-				infomessage.text="Project name and group must be specified.";
+				ArrayList list;
+				list = DbCollections.getAllProjects(connection, user);
+				context.put("projects",list);
+				infomessage.type = "error";
+				infomessage.text="the requested action may only be executed by a person who is in the Admin group or the owner of the project.";				
+				
+				templatename="listprojects.vm";
 			}
 		}
 		else
@@ -172,6 +188,4 @@ else
 		context.put("projects",list);
 		templatename="listprojects.vm";
 	}
-	
-
 }

@@ -59,12 +59,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static final String LDAP_DOMAIN						   = "ldap_domain";
     private static final String LDAP_PORT						   = "ldap_port";
     
-    private static final String SMTP_HOSTNAME					   = "smtp_hostname";
-    private static final String SMTP_PORT						   = "smtp_port";
-    private static final String SMTP_USER						   = "smtp_user";
-    private static final String SMTP_USER_PASSWORD				   = "smtp_user_password";
-    private static final String SMTP_FROM_ADDRESS				   = "smtp_from_address";
-    
     private static final long serialVersionUID=300000;
 
 	public static final String PLUGIN_PATH_WEBINF_ATTRIBUTE		  = "pluginpath";
@@ -96,11 +90,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static String backupPath;
     private static int dbPort;
     private static String dbName;
-    private static String smtpHostname;
-    private static String smtpPort;
-    private static String smtpUser;
-    private static String smtpUserPassword;
-    private static String smtpFromAddress;
     private boolean dbConnectionOk;
     private boolean hostConnectionOk;
     private static Ldap ldap;
@@ -232,13 +221,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	        {
 	        	ldap.setPort(ConstantsWeb.LDAP_DEFAULT_PORT);
 	        }
-	        
-	        smtpHostname = p.getProperty(SMTP_HOSTNAME);
-	        smtpPort = p.getProperty(SMTP_PORT);
-	        smtpUser = p.getProperty(SMTP_USER);
-	        smtpUserPassword = p.getProperty(SMTP_USER_PASSWORD);
-	        smtpFromAddress = p.getProperty(SMTP_FROM_ADDRESS);
-	        
 		}
 		catch(Exception ex)
 		{

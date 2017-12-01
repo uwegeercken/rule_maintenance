@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import com.datamelt.db.Project;
 
 writeaction="true";
@@ -11,26 +12,44 @@ else
 	id=Long.parseLong(request.getParameter("id"));
 	mode=request.getParameter("mode");
 	context.put("mode",mode);
+
+	Project project = new Project();
+
 	if(mode!=null && !mode.equals("add"))
 	{
-		Project project = new Project();
 		project.connection = connection;
 		project.id=id;
 		project.load();
+
+		if(user.isInGroup("Admin") || user.isProjectOwner(project))
+		{
+			ArrayList list = DbCollections.getAllGroups(connection, user);
+			context.put("groups",list);
+			
+			context.put("project",project);
+			templatename="editproject.vm";
+		}
+		else
+		{
+			ArrayList list;
+			list = DbCollections.getAllProjects(connection, user);
+			context.put("projects",list);
+			infomessage.type = "error";
+			infomessage.text="the requested action may only be executed by a person who is in the Admin group or the owner of the project.";				
 		
-		context.put("project",project);
+			templatename="listprojects.vm";
+		}
 	}
 	else
 	{
-		Project project = new Project();
-		project.objectClassname= Project.OBJECT_CLASSNAME;
-		project.objectMethodGetter= Project.OBJECT_METHOD_GETTER;
-		project.objectMethodSetter= Project.OBJECT_METHOD_SETTER;
-		context.put("project",project);
+			project.objectClassname= Project.OBJECT_CLASSNAME;
+			project.objectMethodGetter= Project.OBJECT_METHOD_GETTER;
+			project.objectMethodSetter= Project.OBJECT_METHOD_SETTER;
+			context.put("project",project);
+	
+			ArrayList list = DbCollections.getAllGroups(connection, user);
+			context.put("groups",list);
+			
+			templatename="editproject.vm";
 	}
-	
-	ArrayList list = DbCollections.getAllGroups(connection, user);
-	context.put("groups",list);
-	
-	templatename="editproject.vm";
 }

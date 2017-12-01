@@ -29,7 +29,7 @@ else
 				Activity activity = new Activity();
 				activity.connection = con;
 				activity.user = user;
-				activity.message = "Created database: [" + request.getParameter("db_name") +"], server [" + request.getParameter("db_hostname")+ "], port ["+ request.getParameter("db_port")+ "], with userid [" + request.getParameter("db_user") +"]";
+				activity.message = "Created database: [" + request.getParameter("db_name") +"], server [" + request.getParameter("db_hostname")+ "], port ["+ request.getParameter("db_port")+ "], using db user [" + request.getParameter("db_user") +"]";
 				activity.insert(con.getPreparedStatement(Activity.INSERT_SQL));
 			}
 			else
