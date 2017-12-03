@@ -86,6 +86,7 @@ else
 				}
 				else
 				{
+					context.put("databaseconnectionok", true);
 					infomessage.type = "info";
 					infomessage.text="Using Database [" + request.getParameter("db_name") + "] on the server [" + request.getParameter("db_hostname") + "] on port [" + request.getParameter("db_port") + "]";				
 				}

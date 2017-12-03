@@ -1,8 +1,14 @@
 #set($pagetitle='Database Connection')
 <p class="heading">Database Connection</p>
-<p>The database connection is correctly configured, the database was created and the Business Rules Maintenance Tool is now ready to be used.</p>
+</br>
+</br>
 <form method="POST" action="process?action=bsh&scriptname=welcome"> 
 <table align="center" width="95%" border="0">
+	<tr>
+		<td align="center">
+			<p>The database connection is correctly configured, the database was created and the Business Rules Maintenance Tool is now ready to be used.</p>
+		</td>
+	</tr>
 	<tr>
 		<td align="center">
 			<input type="submit" value="Ok" name="submit">

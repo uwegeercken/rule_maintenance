@@ -7,7 +7,6 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.BufferedReader;
 
-adminaction="true";
 writeaction="true"; 
 if(user==null)
 {
@@ -24,93 +23,114 @@ else
 	project.load();
 	project.loadFields();
 	
-	if(cancelled.equals("load"))
-	{
-		Part filePart;
-		filePart = request.getPart("csvfile");
-		String fileName;
-		String contentDisp = filePart.getHeader("content-disposition");
-		String[] items = contentDisp.split(";");
-		for (int i=0;i<items.length;i++) 
-		{	
-			String s = items[i];
-	    	if (s.trim().startsWith("filename")) 
-	    	{
-	        	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
-	    	}
-		}
-		
-		String fullfilename = uploadspath + "/" + project.id + "/referencefields.csv";
-		
-		if(filePart!=null && fileName!=null && !fileName.equals(""))
+	if(user.isInGroup("Admin") || user.isProjectOwner(project))
+	{	
+		if(cancelled.equals("load"))
 		{
-			File dir = new File(uploadspath + "/" + project.id);
-			dir.mkdirs();
-			
-			File file = new File(fullfilename);
-			if(file.exists())
-			{
-				file.delete();
+			Part filePart;
+			filePart = request.getPart("csvfile");
+			String fileName;
+			String contentDisp = filePart.getHeader("content-disposition");
+			String[] items = contentDisp.split(";");
+			for (int i=0;i<items.length;i++) 
+			{	
+				String s = items[i];
+		    	if (s.trim().startsWith("filename")) 
+		    	{
+		        	fileName= s.substring(s.indexOf("=") + 2, s.length()-1);
+		    	}
 			}
-		
-			filePart.write(fullfilename);
 			
-			DbCollections.deleteReferenceFields(connection, id);
+			String fullfilename = uploadspath + "/" + project.id + "/referencefields.csv";
 			
-			BufferedReader br = new BufferedReader(new FileReader(fullfilename));
-			int counter=0;
-			while ((line = br.readLine()) != null) 
+			if(filePart!=null && fileName!=null && !fileName.equals(""))
 			{
-				if(!line.trim().equals("") && !line.startsWith("#"))
+				File dir = new File(uploadspath + "/" + project.id);
+				dir.mkdirs();
+				
+				File file = new File(fullfilename);
+				if(file.exists())
 				{
-					counter++;
-					String[] row = line.split(";");
-					
-					if(row.length>=2)
+					file.delete();
+				}
+			
+				filePart.write(fullfilename);
+				
+				DbCollections.deleteReferenceFields(connection, id);
+				
+				BufferedReader br = new BufferedReader(new FileReader(fullfilename));
+				int counter=0;
+				while ((line = br.readLine()) != null) 
+				{
+					if(!line.trim().equals("") && !line.startsWith("#"))
 					{
-						Field field = new Field();	
-						field.connection = connection;
-						field.projectId = id;
-						field.name=row[0].trim();
-						field.nameDescriptive=row[1].trim();
-						field.description=row[2].trim();
+						counter++;
+						String[] row = line.split(";");
 						
-						Type type = new Type();
-						type.connection = connection;
-						type.name = row[3].toLowerCase().trim();
-						type.loadByName();
-						
-						field.javaTypeId= type.getId();
-						field.lastUpdateUser.id = user.id;
-						
-						field.insert(connection.getPreparedStatement(Field.INSERT_SQL));
-						context.put("mode", "inserted");
+						if(row.length>=4)
+						{
+							Field field = new Field();	
+							field.connection = connection;
+							field.projectId = id;
+							field.name=row[0].trim();
+							field.nameDescriptive=row[1].trim();
+							field.description=row[2].trim();
+							
+							Type type = new Type();
+							type.connection = connection;
+							type.name = row[3].toLowerCase().trim();
+							type.loadByName();
+							
+							field.javaTypeId= type.getId();
+							field.lastUpdateUser.id = user.id;
+							
+							field.insert(connection.getPreparedStatement(Field.INSERT_SQL));
+							context.put("mode", "inserted");
+						}
 					}
 				}
+				
+				if(counter>0)
+				{
+					project.lastUpdateUser.id = user.id;
+					project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
+					project.load();
+					project.loadFields();
+					infomessage.text="Number of reference fields imported for the project: " +counter;
+					
+					Activity activity = new Activity();
+					activity.connection = connection;
+					activity.user = user;
+					activity.message = "Reference fields imported for project [" + project.name +"], description [" + project.description +"]";
+					activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
+				}			
 			}
-			
-			if(counter>0)
+			else
 			{
-				project.lastUpdateUser.id = user.id;
-				project.update(connection.getPreparedStatement(Project.UPDATE_SQL),user);
-				project.load();
-				project.loadFields();
-				infomessage.text="Imported reference fields for the project: " +counter;
-			}			
+				infomessage.type = "error";
+				infomessage.text="no file selected to import reference fields.";				
+	
+			}
+			project.loadFields();
+			context.put("project",project);
+			templatename="loadreferencefields.vm";
 		}
-
-		Activity activity = new Activity();
-		activity.connection = connection;
-		activity.user = user;
-		activity.message = "Reference fields imported for project [" + project.name +"], description [" + project.description +"]";
-		activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
-		
-		context.put("project",project);
-		templatename="loadreferencefields.vm";
+		else
+		{
+			project.loadFields();
+			context.put("project",project);
+			templatename="listreferencefields.vm";
+		}
 	}
 	else
 	{
-		context.put("project",project);
+		project.loadFields();
+		context.put("project", project);
+		
+		infomessage.type = "error";
+		infomessage.text="the requested action may only be executed by a person who is in the Admin group or the owner of the project.";				
+	
 		templatename="listreferencefields.vm";
-	}
+	}	
+	
 }
