@@ -20,6 +20,7 @@ package com.datamelt.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
@@ -30,6 +31,7 @@ import java.util.Properties;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
 
 
  /** 
@@ -57,8 +59,19 @@ public class VelocityDataWriter
     {
         this.templatePath = templatePath;
         this.templateName = templateName;
-		Properties properties = new Properties();
+		
+        // Alternatively the properties may be read from the properties file
+        //InputStream in = null;
+        //in = getServletContext().getResourceAsStream("/WEB-INF/velocity.properties");
+        //properties.load(in);
+        //engine.init(properties);
+        
+        Properties properties = new Properties();
         properties.setProperty(RESOURCE_PATH, templatePath);
+        
+        properties.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,"org.apache.velocity.runtime.log.Log4JLogChute" );
+        properties.setProperty("runtime.log.logsystem.log4j.logger","velocity");
+        
         VelocityEngine ve = new VelocityEngine();
         ve.init(properties);
         t = ve.getTemplate(templateName);
@@ -70,6 +83,10 @@ public class VelocityDataWriter
         this.templateName = templateName;
 		Properties properties = new Properties();
         properties.setProperty(RESOURCE_PATH, templatePath);
+        
+        properties.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,"org.apache.velocity.runtime.log.Log4JLogChute" );
+        properties.setProperty("runtime.log.logsystem.log4j.logger","velocity");
+        
         VelocityEngine ve = new VelocityEngine();
         ve.init(properties);
         t = ve.getTemplate(templateName);
