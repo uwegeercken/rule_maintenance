@@ -85,7 +85,7 @@
 	<tr>
 		<td>Value to check against:</td>
 		<td>
-			<input id="expectedvalue" name="expectedvalue" type="text" size="40" maxlength="255" value="$!{rule.expectedValue}">
+			<input id="expectedvalue" name="expectedvalue" type="text" size="40" maxlength="4096" value="$!{rule.expectedValue}">
 			Type: <select name="expectedvalue_type_id" size="1">
 			<option value="0"></option>
 			#foreach($type in $types)

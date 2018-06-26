@@ -404,6 +404,11 @@ public class Rule extends DatabaseRecord implements Loadable
 	{
 		return object1Parameter;
 	}
+	
+	public String getObject1ParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(object1Parameter);
+	}
 
 	public void setObject1Parameter(String object1Parameter) 
 	{
@@ -434,6 +439,11 @@ public class Rule extends DatabaseRecord implements Loadable
 	{
 		return object2Parameter;
 	}
+	
+	public String getObject2ParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(object2Parameter);
+	}
 
 	public void setObject2Parameter(String object2Parameter) 
 	{
@@ -453,6 +463,11 @@ public class Rule extends DatabaseRecord implements Loadable
 	public String getExpectedValue() 
 	{
 		return expectedValue;
+	}
+	
+	public String getExpectedValueXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(expectedValue);
 	}
 
 	public void setExpectedValue(String expectedValue) 
@@ -525,6 +540,11 @@ public class Rule extends DatabaseRecord implements Loadable
 		return additionalParameter;
 	}
 
+	public String getAdditionalParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(additionalParameter);
+	}
+	
 	public void setAdditionalParameter(String additionalParameter)
 	{
 		this.additionalParameter = additionalParameter;

@@ -30,12 +30,12 @@ public class Ldap
 	private String domain;
     private int port;
     
-    private final String LDAP_INITIAL_CONTEXT_FACTORY 	= "com.sun.jndi.ldap.LdapCtxFactory";
-    private final String SECURITY_TYPE					= "simple";
+    private static final String LDAP_INITIAL_CONTEXT_FACTORY 	= "com.sun.jndi.ldap.LdapCtxFactory";
+    private static final String SECURITY_TYPE					= "simple";
     
     private String getUrlDc()
     {
-    	return "ldap://" + host + "." + domain + ":" + port +"/";
+    	return "ldap://" + host + ":" + port +"/";
     }
     
     public boolean authenticate(String userid, String password)
@@ -54,12 +54,19 @@ public class Ldap
 		    ctx.close();
 		    loginOk=true;
 		}
-		catch (Exception e)
-		{
-		    //e.printStackTrace();
-		    // do nothing for the moment
-		}
-		
+		catch (AuthenticationNotSupportedException exception) 
+        {
+            System.out.println("The authentication is not supported by the server");
+        }
+        catch (AuthenticationException exception)
+        {
+            System.out.println("Incorrect password or username");
+        }
+
+        catch (NamingException exception)
+        {
+            System.out.println("Error when trying to create the context");
+        }
 		return loginOk;
     }
     

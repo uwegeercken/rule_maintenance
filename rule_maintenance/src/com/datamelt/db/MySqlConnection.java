@@ -27,7 +27,9 @@ import java.sql.DatabaseMetaData;
 
 public class MySqlConnection 
 {
-    private final String connect       = "jdbc:mysql://";
+    private static final String connect    			= "jdbc:mysql://";
+    private static final String connectParameters 	= "useUnicode=false&characterEncoding=UTF-8";
+    private final String jdbcDriver					= "com.mysql.jdbc.Driver";
     private String hostname;
     private String databaseName;
 	private Connection connection;
@@ -179,11 +181,11 @@ public class MySqlConnection
     
     private Connection getConnection() throws Exception
     {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Class.forName(jdbcDriver).newInstance();
         Connection con;
         if(databaseName!=null)
         {
-        	con = DriverManager.getConnection(connect + hostname + ":" + port + "/" + databaseName + "?useUnicode=false&characterEncoding=UTF-8", username,password);
+        	con = DriverManager.getConnection(connect + hostname + ":" + port + "/" + databaseName + "?" + connectParameters, username,password);
         }
         else
         {

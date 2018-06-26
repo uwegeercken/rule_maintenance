@@ -19,17 +19,9 @@
 package com.datamelt.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
-import com.datamelt.db.DbCollections;
-import com.datamelt.db.MySqlConnection;
 import com.datamelt.db.Project;
-import com.datamelt.db.RuleGroup;
 
 /**
 * ReferenceFieldsFileCreator. Program to generate a zip file for the JaRe - Java Ruleengine - from the database of the Business Rules Maintenance Tool.

@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import com.datamelt.db.DatabaseRecord;
 import com.datamelt.db.Loadable;
 
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class RuleGroupAction extends DatabaseRecord implements Loadable
 {
@@ -442,6 +443,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	{
 		return object1Parameter;
 	}
+	
+	public String getObject1ParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(object1Parameter);
+	}
 
 	public void setObject1Parameter(String object1Parameter) 
 	{
@@ -473,6 +479,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		return object2Parameter;
 	}
 
+	public String getObject2ParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(object2Parameter);
+	}
+	
 	public void setObject2Parameter(String object2Parameter) 
 	{
 		this.object2Parameter = object2Parameter;
@@ -503,6 +514,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		return object3Parameter;
 	}
 
+	public String getObject3ParameterXMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(object3Parameter);
+	}
+	
 	public void setObject3Parameter(String object3Parameter) 
 	{
 		this.object3Parameter = object3Parameter;
@@ -521,6 +537,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	public String getParameter1()
 	{
 		return parameter1;
+	}
+	
+	public String getParameter1XMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(parameter1);
 	}
 
 	public void setParameter1(String parameter1) 
@@ -543,6 +564,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 		return parameter2;
 	}
 
+	public String getParameter2XMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(parameter2);
+	}
+
 	public void setParameter2(String parameter2) 
 	{
 		this.parameter2 = parameter2;
@@ -561,6 +587,11 @@ public class RuleGroupAction extends DatabaseRecord implements Loadable
 	public String getParameter3() 
 	{
 		return parameter3;
+	}
+
+	public String getParameter3XMLEscaped() 
+	{
+		return StringEscapeUtils.escapeXml(parameter3);
 	}
 
 	public void setParameter3(String parameter3) 
