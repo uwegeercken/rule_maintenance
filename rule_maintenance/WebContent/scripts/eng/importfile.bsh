@@ -67,7 +67,7 @@ else
 				z = new ZipFile(zipfile);
 				project.insert(connection.getPreparedStatement(Project.INSERT_SQL),user);
 				project.importProject(z, user);
-				infomessage.text="Project added - rulegroups, subgroups, rules and actions imported";
+				infomessage.text="Project added - reference fields, rulegroups, subgroups, rules and actions imported";
 				
 				f.delete();
 				

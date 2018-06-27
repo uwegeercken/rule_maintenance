@@ -14,7 +14,6 @@ if(user==null)
 else
 {
 	cancelled = request.getParameter("submit");
-	transformationrule=request.getParameter("transformationrule");
 	
 	RuleSubgroup ruleSubgroup = new RuleSubgroup();
 	ruleSubgroup.connection = connection;
@@ -53,35 +52,14 @@ else
 		ruleNew.check.load();
 		if(request.getParameter("object1_parameter")!=null && !request.getParameter("object1_parameter").trim().equals(""))
 		{
-			if(transformationrule==null)
+			if(!request.getParameter("object1_parameter").equals(""))
 			{
-				ruleNew.object1Parameter = request.getParameter("object1_parameter");
-				try
-				{
-					// test if the field to check is an integer so the field value will be
-					// retrieved using this integer like e.g. getField(0)
-					int typeId = Integer.parseInt(ruleNew.object1Parameter);
-					ruleNew.object1Parametertype.id = 2;
-				}
-				catch(Exception ex)
-				{
-					// if the test above fails, it is not an integer then the field value
-					// will be retrieved as a string e.g. getField("somename")
-					ruleNew.object1Parametertype.id = 1;
-				}
-				ruleNew.object1Type.id = Long.parseLong(request.getParameter("object1_type_id")); 
-			}
-			else
-			{
-				if(!request.getParameter("object1_parameter").equals(""))
-				{
-					Field field = project.getField(Long.parseLong(request.getParameter("object1_parameter")));
-					ruleNew.object1Type.id = field.javaTypeId;
-					
-					ruleNew.object1Parameter = field.name;
-					ruleNew.object1Parametertype.id = 1;
-					
-				}
+				Field field = project.getField(Long.parseLong(request.getParameter("object1_parameter")));
+				ruleNew.object1Type.id = field.javaTypeId;
+				
+				ruleNew.object1Parameter = field.name;
+				ruleNew.object1Parametertype.id = 1;
+				
 			}
 		}
 		else
@@ -92,35 +70,14 @@ else
 		}
 		if(request.getParameter("object2_parameter")!=null && !request.getParameter("object2_parameter").trim().equals(""))
 		{
-			if(transformationrule==null)
+			if(!request.getParameter("object2_parameter").equals(""))
 			{
-				ruleNew.object2Parameter = request.getParameter("object2_parameter");
-				try
-				{
-					// test if the field to check is an integer so the field value will be
-					// retrieved using this integer like e.g. getField(0)
-					int typeId = Integer.parseInt(ruleNew.object2Parameter);
-					ruleNew.object2Parametertype.id = 2;
-				}
-				catch(Exception ex)
-				{
-					// if the test above fails, it is not an integer then the field value
-					// will be retrieved as a string e.g. getField("somename")
-					ruleNew.object2Parametertype.id = 1;
-				}
-				ruleNew.object2Type.id = Long.parseLong(request.getParameter("object2_type_id"));
-			}
-			else
-			{
-				if(!request.getParameter("object2_parameter").equals(""))
-				{
-					Field field = project.getField(Long.parseLong(request.getParameter("object2_parameter")));
-					ruleNew.object2Type.id = field.javaTypeId;
-					
-					ruleNew.object2Parameter = field.name;
-					ruleNew.object2Parametertype.id = 1;
-					
-				}
+				Field field = project.getField(Long.parseLong(request.getParameter("object2_parameter")));
+				ruleNew.object2Type.id = field.javaTypeId;
+				
+				ruleNew.object2Parameter = field.name;
+				ruleNew.object2Parametertype.id = 1;
+				
 			}
 		}
 		else
@@ -368,14 +325,7 @@ else
 		}
 		
 		context.put("rule",ruleNew);
-		if(transformationrule==null)
-		{
-			templatename="editrule.vm";
-		}
-		else
-		{
-			templatename="editreferencefieldrule.vm";
-		}
+		templatename="editreferencefieldrule.vm";
 		
 		ArrayList checks = DbCollections.getAllChecks(connection);
 		context.put("checks",checks);

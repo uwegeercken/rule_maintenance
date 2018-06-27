@@ -72,7 +72,11 @@
 					$!{item.historyEntry.name}
 				#end
 				<p class="normal">${item.historyEntry.description}</p>
-				<p class="normal">$!{item.historyEntry.ruleLogic}</p>
+				#if($!{item.historyEntry.ruleLogic.length()}>75)
+					<p class="normal">$!{item.historyEntry.ruleLogic.substring(0,75)} ...</p>
+				#else
+				 	<p class="normal">$!{item.historyEntry.ruleLogic}</p>
+				#end
 			</div>
 			<div>
 				<p class="small">last update: $item.historyEntry.lastUpdate</p>

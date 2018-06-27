@@ -10,10 +10,10 @@
 </div>
 <div class="formbox">
 #if($mode=="add")
-	<form method="POST" action="process?action=bsh&scriptname=editaction&rulegroupid=${rulegroup.id}&projectid=${project.id}&transformationaction=1"> 
+	<form method="POST" action="process?action=bsh&scriptname=editaction&rulegroupid=${rulegroup.id}&projectid=${project.id}"> 
 	
 #else
-	<form method="POST" action="process?action=bsh&scriptname=editaction&id=${action.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}&transformationaction=1"> 
+	<form method="POST" action="process?action=bsh&scriptname=editaction&id=${action.id}&rulegroupid=${rulegroup.id}&projectid=${project.id}"> 
 #end
 <input type="hidden" name="id" value="${action.id}">
 <table align="center" width="95%" border="0">

@@ -56,14 +56,7 @@ else
 		context.put("rule",rule);
 	}
 	
-	if(project.fields.size()>0)
-	{
-		templatename="editreferencefieldrule.vm";
-	}		
-	else
-	{
-		templatename="editrule.vm";
-	}
+	templatename="editreferencefieldrule.vm";
 	
 	ArrayList checks = DbCollections.getAllChecks(connection);
 	context.put("checks",checks);

@@ -145,7 +145,7 @@ else
 				history.typeId = project.id;
 				history.insert(connection.getPreparedStatement(History.INSERT_SQL));
 				
-				infomessage.text="Project added.";
+				infomessage.text="Project added. Add reference fields to the project.";
 			}
 			else if(project.exist(name) && name.length()>0)
 			{

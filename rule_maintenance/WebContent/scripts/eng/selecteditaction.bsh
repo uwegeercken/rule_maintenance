@@ -45,14 +45,7 @@ else
 		context.put("action",action);
 	}
 	
-	if(project.fields.size()>0)
-	{
-		templatename="editreferencefieldaction.vm";
-	}		
-	else
-	{
-		templatename="editaction.vm";
-	}
+	templatename="editreferencefieldaction.vm";
 	
 	ArrayList actions = DbCollections.getAllActions(connection);
 	context.put("actions",actions);
