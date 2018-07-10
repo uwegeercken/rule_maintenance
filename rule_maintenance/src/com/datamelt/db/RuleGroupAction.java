@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 public class RuleGroupAction extends DatabaseRecord implements Loadable
 {
-	private String name;
+    private String name;
 	private String description;
 	private long rulegroupId;
 	private Type object1Parametertype = new Type();

@@ -1,6 +1,8 @@
 import java.io.*;
 import com.datamelt.db.Project;
 import com.datamelt.db.RuleGroup;
+import com.datamelt.db.RuleGroupTestData;
+import com.datamelt.util.RuleGroupTestDataChecker;
 import com.datamelt.db.Field;
 import com.datamelt.util.RuleGroupFileCreator;
 import java.text.SimpleDateFormat;
@@ -11,6 +13,8 @@ import com.datamelt.util.RowFieldCollection;
 import com.datamelt.util.RowField;
 import java.util.zip.ZipFile;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 cancelled= request.getParameter("submit");
 
@@ -71,10 +75,21 @@ else
 	        
 	        int error=0;
 	        String errorField="";
+
+	    	RuleGroupTestData testData = new RuleGroupTestData();
+		    testData.setConnection(connection);
+		    testData.ruleGroupId = rulegroup.id;
+		    testData.user.id = user.id;
+	        
+	        Map keyValuePairs = new HashMap();
+	         
 	        for(int i=0;i< project.fields.size();i++)
 		    {
 		    	Field field = project.fields.get(i);
 		    	String value = request.getParameter("field_" + field.id);
+		    	
+		    	keyValuePairs.put(field.name, value);
+		    	
 		    	if(value!=null || fieldsToUpdate.contains(field.name))
 		    	{
 					field.testValue = value;
@@ -222,6 +237,18 @@ else
 			    	}
 		    	}
 		    }
+		    
+			ArrayList existingTestData = DbCollections.getAllRuleGroupTestData(connection, rulegroup.id, user.id);
+			RuleGroupTestDataChecker testDataChecker = new RuleGroupTestDataChecker();
+			boolean equalTestData = testDataChecker.compareTestData(keyValuePairs,existingTestData);
+			
+			if(!equalTestData)
+			{
+				testData.keyValuePairs = keyValuePairs;
+	    		testData.insert(connection.getPreparedStatement(RuleGroupTestData.INSERT_SQL));
+	    	}
+		    
+		    
 			if(error==0)
 			{
 				int rowFailed=0;
