@@ -241,6 +241,16 @@ public class CreateDatabase
     		+ " KEY `idx_group` (`groups_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
+    public static final String CREATE_TABLE_RULEGROUP_TESTDATA = "CREATE TABLE IF NOT EXISTS `rulegroup_testdata` ("
+    		  +" `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
+    		  +" `rulegroup_id` int(10) unsigned NOT NULL,"
+    		  +" `user_id` int(10) unsigned NOT NULL,"
+    		  +" `value` varchar(255) DEFAULT NULL,"
+    		  +" `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),"
+    		  +" PRIMARY KEY (`id`),"
+    		  +" KEY `idx_rulegroup_id` (`rulegroup_id`,`user_id`)"
+    		  +") ENGINE=MyISAM DEFAULT CHARSET=utf8";
+    
     public static final String CREATE_GROUPS = "INSERT INTO `groups` VALUES (1,'Admin','Admin Group',now())";
     
     public static final String CREATE_USERS = "INSERT INTO `user` VALUES "

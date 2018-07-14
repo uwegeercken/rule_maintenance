@@ -1,0 +1,49 @@
+#set($pagetitle='Rule Group Test Data Maintenance')
+<p class="heading">Rule Groups Test Data ($testdata.size()) - Project: ${project.name}</p>
+<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Rule Groups List"></a></p>
+<div id="help">
+	<p class="helptitle">Maintenance of Test Data</p>
+	<p>Allows to do maintenance on the collected test data.</p>
+</div> 
+<form method="POST" action="process?action=bsh&scriptname=deletetestdata">
+<input type="hidden" name="projectid" value="${project.id}">
+<input type="hidden" name="rulegroupid" value="${rulegroup.id}">
+<fieldset> 
+<table border="0" width="100%">
+	<tr class="light">
+		<td width="5%"></td>		
+
+		<td width="95%">data</td>
+	</tr>
+	#set($counter=0)
+	#foreach($row in $testdata)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>
+			#if($counter==0)
+				<input type="radio" id="testdataid" name="testdataid" value="$row.id" checked="checked"> 
+			#else
+				<input type="radio" id="testdataid" name="testdataid" value="$row.id">
+			#end
+		</td>
+		#set($value=${row.getValue()})
+		<td id="testdatavalue">${value}</td>
+		</tr>
+		#set($counter=$counter +1)
+	#end
+	<tr>
+		<td colspan="2" align="center"><br />
+			#if($testdata.size()>0)
+				<input type="submit" value="delete" name="submit">
+			#else
+				<input type="submit" value="delete" name="submit" disabled>
+			#end
+			<input type="submit" value="cancel" name="submit">
+		</td>
+	</tr>
+</table>
+</fieldset> 
+</form>

@@ -78,7 +78,13 @@ public class RuleGroupTestData extends DatabaseRecord implements Loadable
 		{
 			String keyValue= values[i];
 			String[] parts = keyValue.split("=");
-			keyValuePairs.put(parts[0].trim(), parts[1].trim());
+			String pairKey = parts[0].trim();
+			String pairValue="";
+			if(parts.length>1)
+			{
+				pairValue = parts[1].trim();
+			}
+			keyValuePairs.put(pairKey, pairValue);
 		}
 	}
 	
@@ -118,7 +124,7 @@ public class RuleGroupTestData extends DatabaseRecord implements Loadable
         setId(getConnection().getLastInsertId());
     }
 	
-	public void delete(PreparedStatement p, Project project, User user) throws Exception
+	public void delete(PreparedStatement p) throws Exception
 	{
 		p.setLong(1,getId());
 		p.executeUpdate();
@@ -168,5 +174,10 @@ public class RuleGroupTestData extends DatabaseRecord implements Loadable
 	public void setKeyValuePairs(Map<String, String> keyValuePairs)
 	{
 		this.keyValuePairs = keyValuePairs;
+	}
+	
+	public String getKeyValuePair(String key)
+	{
+		return keyValuePairs.get(key);
 	}
 }

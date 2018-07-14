@@ -1,0 +1,45 @@
+#set($pagetitle='Rule Group Test Data')
+#set($layout="eng/layout_testdata.vm")
+<p class="heading">Rule Group Test Data - rows: $testdata.size()</p>
+<p>Select one of the previously entered test data. Make sure that values for the required fields are defined.</p>  
+<form method="POST" action="process?action=bsh&scriptname=testrulegroup">
+<input type="hidden" name="id" value="${projectid}">
+<input type="hidden" name="rulegroupid" value="${rulegroupid}">
+<fieldset> 
+<table border="0" width="100%">
+	<tr class="light">
+		<td width="5%"></td>		
+
+		<td width="95%">data</td>
+	</tr>
+	#set($counter=0)
+	#foreach($row in $testdata)
+		#if($counter %2 ==0)
+			<tr>
+		#else
+			<tr class="light2">
+		#end
+		<td>
+			#if($counter==0)
+				<input type="radio" id="testdataid" name="testdataid" value="$row.id" checked="checked"> 
+			#else
+				<input type="radio" id="testdataid" name="testdataid" value="$row.id">
+			#end
+		</td>
+		#set($value=${row.getValue()})
+		<td id="testdatavalue">${value}</td>
+		</tr>
+		#set($counter=$counter +1)
+	#end
+	<tr>
+		<td colspan="2" align="center"><br />
+			#if($testdata.size()>0)
+				<input type="submit" value="test" name="submit">
+			#else
+				<input type="submit" value="test" name="submit" disabled>
+			#end
+		</td>
+	</tr>
+</table>
+</fieldset> 
+</form>

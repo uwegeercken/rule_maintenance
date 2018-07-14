@@ -27,7 +27,12 @@ else
 	id=Long.parseLong(request.getParameter("id"));
 	rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
 	selecteddate=request.getParameter("selecteddate");
-	
+	long testdataId = -1;
+	if(request.getParameter("testdataid")!=null)
+	{
+		testdataId=Long.parseLong(request.getParameter("testdataid"));
+	}
+
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	Project project = new Project();
@@ -42,8 +47,8 @@ else
     rulegroup.load();
     rulegroup.loadRuleSubgroups();
 	rulegroup.loadRuleGroupActions();
-    
-	if(cancelled!=null && cancelled.equals("test data"))
+
+	if(cancelled!=null && cancelled.equals("test"))
 	{
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -80,18 +85,40 @@ else
 		    testData.setConnection(connection);
 		    testData.ruleGroupId = rulegroup.id;
 		    testData.user.id = user.id;
-	        
-	        Map keyValuePairs = new HashMap();
-	         
+
+			Map keyValuePairs; 
+	    	if(testdataId>-1)
+	    	{
+				testData.setId(testdataId);
+				testData.load();
+				keyValuePairs = testData.getKeyValuePairs();  	
+	    	}
+	    	else
+	    	{
+	    		keyValuePairs = new HashMap(); 
+	    	}
+         
 	        for(int i=0;i< project.fields.size();i++)
 		    {
 		    	Field field = project.fields.get(i);
-		    	String value = request.getParameter("field_" + field.id);
-		    	
-		    	keyValuePairs.put(field.name, value);
-		    	
-		    	if(value!=null || fieldsToUpdate.contains(field.name))
+		    	String value;
+		    	if(testdataId==-1)
 		    	{
+		    		value = request.getParameter("field_" + field.id);
+		    		keyValuePairs.put(field.name, value);
+		    	}
+		    	else
+		    	{
+		    		value = testData.getKeyValuePair(field.name);
+		    		
+		    		if(value!=null && value.toLowerCase().trim().equals("null"))
+		    		{
+		    			value = null;
+		    		}
+		    	}
+		    	
+		    	//if(value!=null || fieldsToUpdate.contains(field.name))
+		    	//{
 					field.testValue = value;
 			    	if(field.type.name.equals("date"))
 			    	{
@@ -117,8 +144,8 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
-			    			error = 1;
+			    			errorField = field.name + "value=[" + value + "] (date conversion)";
+			    			error = 1; 
 			    		}
 			    	}
 			    	else if(field.type.name.equals("integer") )
@@ -136,7 +163,7 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (integer conversion)";
 			    			error = 1;
 			    		}
 			    	}
@@ -155,7 +182,7 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (boolean conversion)";
 			    			error = 1;
 			    		}
 			    	}
@@ -174,7 +201,7 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (long conversion)";
 			    			error = 1;
 			    		}
 			    	}
@@ -193,7 +220,7 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (float conversion)";
 			    			error = 1;
 			    		}
 			    	}
@@ -212,7 +239,7 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (double conversion)";
 			    			error = 1;
 			    		}
 			    	}
@@ -231,11 +258,11 @@ else
 			    		}
 			    		catch(Exception ex)
 			    		{
-			    			errorField = field.name;
+			    			errorField = "[" + field.name + "], value=[" + value + "] (string conversion)";
 			    			error = 1;
 			    		}
 			    	}
-		    	}
+		    	//}
 		    }
 		    
 			ArrayList existingTestData = DbCollections.getAllRuleGroupTestData(connection, rulegroup.id, user.id);

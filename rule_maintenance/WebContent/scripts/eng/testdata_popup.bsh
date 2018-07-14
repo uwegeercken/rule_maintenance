@@ -1,0 +1,20 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Check;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+		projectId=Long.parseLong(request.getParameter("id"));
+		rulegroupId=Long.parseLong(request.getParameter("rulegroupid"));
+		
+		ArrayList testData = DbCollections.getAllRuleGroupTestData(connection, rulegroupId, user.id);
+		context.put("testdata",testData);
+		context.put("rulegroupid",rulegroupId);
+		context.put("projectid",projectId);
+		
+		templatename="testdata_popup.vm";
+		
+}

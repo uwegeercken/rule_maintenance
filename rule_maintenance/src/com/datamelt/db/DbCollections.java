@@ -116,7 +116,7 @@ public class DbCollections
     public static ArrayList<RuleGroupTestData> getAllRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception
     {
         String sql="select id from rulegroup_testdata where rulegroup_id=" + ruleGroupId +
-        	" and user_id= " + userId + " order by id";
+        	" and user_id= " + userId + " order by id desc";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroupTestData>list = new ArrayList<RuleGroupTestData>();
         while(rs.next())
@@ -129,6 +129,23 @@ public class DbCollections
         }
         rs.close();
         return list;
+    }
+    
+    /**
+	 * get a list of all testdata for a given rulegroup 
+	 */
+    public static long getCountRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception
+    {
+        String sql="select count(id) as counter from rulegroup_testdata where rulegroup_id=" + ruleGroupId +
+        	" and user_id= " + userId;
+        ResultSet rs = connection.getResultSet(sql);
+        long counter = 0;
+        if(rs.next())
+        {
+        	counter = rs.getLong("counter");
+        }
+        rs.close();
+        return counter;
     }
     
     /**

@@ -1,0 +1,47 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
+import java.sql.PreparedStatement;
+
+cancelled= request.getParameter("submit");
+
+if(request.getParameter("testdataid")!=null)
+{
+	id=Long.parseLong(request.getParameter("testdataid"));
+}
+rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+projectid=Long.parseLong(request.getParameter("projectid"));
+
+RuleGroup rulegroup = new RuleGroup();
+rulegroup.setConnection(connection);
+rulegroup.setId(rulegroupid);
+rulegroup.load();
+context.put("rulegroup",rulegroup);
+
+Project project = new Project();
+project.setConnection(connection);
+project.setId(projectid);
+project.load();
+context.put("project",project);
+
+if(cancelled.equals("delete"))
+{
+	RuleGroupTestData singleTestData = new RuleGroupTestData();
+	singleTestData.setConnection(connection);
+	singleTestData.setId(id);
+
+	PreparedStatement ps = connection.getPreparedStatement(RuleGroupTestData.DELETE_SQL);
+	singleTestData.delete(ps);
+
+	ArrayList testData = DbCollections.getAllRuleGroupTestData(connection, rulegroupid, user.id);
+	context.put("testdata",testData);
+	templatename="loadtestdata.vm";
+	
+}
+else
+{
+	ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
+	context.put("rulegroups",list);
+	templatename="listrulegroups.vm";
+}
+

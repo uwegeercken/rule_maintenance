@@ -1,0 +1,31 @@
+import com.datamelt.db.DbCollections;
+import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
+
+writeaction="true";
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	id=Long.parseLong(request.getParameter("id"));
+	projectid=Long.parseLong(request.getParameter("projectid"));
+
+	RuleGroup rulegroup = new RuleGroup();
+    rulegroup.setConnection(connection);
+    rulegroup.setId(id);
+    rulegroup.load();
+	context.put("rulegroup",rulegroup);
+
+	Project project = new Project();
+    project.setConnection(connection);
+    project.setId(projectid);
+    project.load();
+	context.put("project",project);
+				
+	ArrayList testData = DbCollections.getAllRuleGroupTestData(connection, id, user.id);
+	context.put("testdata",testData);
+		
+	templatename="loadtestdata.vm";
+}

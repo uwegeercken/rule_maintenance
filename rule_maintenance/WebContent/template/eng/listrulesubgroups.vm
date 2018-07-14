@@ -135,9 +135,9 @@
 				#end
 				<div class="grouptopaction">
 					<p class="small">action</p>
-					<p class="big">$action.name #if($results && $action.executeIfInteger==$rulegroupfailed)<img height="22" width="22" src="img/passed.png" title="action executed">#elseif($results && $action.executeIfInteger!=$rulegroupfailed)<img height="22" width="22" src="img/failed.png" title="action not executed">#end</p>
+					<p class="big">$action.name #if($results && ($action.executeIfInteger==2 || $action.executeIfInteger==$rulegroupfailed))<img height="22" width="22" src="img/passed.png" title="action executed">#elseif($results && $action.executeIfInteger!=$rulegroupfailed)<img height="22" width="22" src="img/failed.png" title="action not executed">#end</p>
 					<p class="normal">$action.description</p>
-					#if($ruleresult && $action.executeIfInteger==$rulegroupfailed)
+					#if($ruleresult && ($action.executeIfInteger==2 || $action.executeIfInteger==$rulegroupfailed))
 						<p class="normal">field: [$action.object2Parameter] updated to: [$row.getFieldValue($action.object2Parameter)]</p>
 					#else
 						<p class="normal">$action.actionLogic</p>
@@ -156,12 +156,19 @@
 	</div>
 </div>
 <div id="testrulegroup">
-<p>Below find a list of all fields that are referenced in rules of this rule group. Fields not used by any of the rules are not shown. To test the rule group, enter test values for the displayed fields.</p>
+<p>Below find a list of all fields that are referenced in rules of this rule group. Fields not used by any of the rules are not shown. To test the rule group, enter test values for the displayed fields. Or select the test data that was previously entered.</p>
 <div class="formbox">
 	<form method="POST" action="process?action=bsh&scriptname=testrulegroup"> 
 	<input type="hidden" name="id" value="${project.id}">
 	<input type="hidden" name="rulegroupid" value="${rulegroup.id}">
 	<table align="center" width="95%" border="0">
+			<tr>
+				<td colspan="2" align="right">
+				<img id="popup" src="img/data.png" height="22" width="22" title="select test data">
+			    <p id="popupurl">testdata_popup&rulegroupid=${rulegroup.id}&id=${project.id}</p>
+			    <div id="element_to_pop_up"></div>
+				</td>
+			</tr>
 			#foreach($field in $project.fields)
 			#if($usedfields.contains($field.name))
 			<tr>
@@ -188,7 +195,7 @@
 			#end	
 		<tr>
 			<td colspan="2" align="center"><br />
-				<input type="submit" value="test data" name="submit">
+				<input type="submit" value="test" name="submit">
 				<input type="submit" value="cancel" name="submit">
 			</td>
 		</tr>

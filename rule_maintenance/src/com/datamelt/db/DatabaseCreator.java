@@ -52,6 +52,7 @@ public class DatabaseCreator
         statement.execute(CreateDatabase.CREATE_TABLE_RULESUBGROUP_SQL);
         statement.execute(CreateDatabase.CREATE_TABLE_TYPES_SQL);
         statement.execute(CreateDatabase.CREATE_TABLE_USER_SQL);
+        statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_TESTDATA);
         
         // create all required base data
         statement.execute(CreateDatabase.CREATE_GROUPS);
