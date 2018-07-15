@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import bsh.Interpreter;
 
+import com.datamelt.db.DatabaseCreator;
 import com.datamelt.db.MySqlConnection;
 import com.datamelt.plugin.BeanshellPlugin;
 import com.datamelt.plugin.PluginLoader;
@@ -108,6 +109,11 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		readDatabaseFile(realPath);
 		hostConnectionOk = hostConnectionOk();
 		dbConnectionOk = databaseConnectionOk();
+		
+		if(hostConnectionOk && dbConnectionOk)
+		{
+			checkAndCreateDatabaseTables();
+		}
 		
 		interpreter = new Interpreter();
 		
@@ -259,6 +265,32 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		catch(Exception ex)
 		{
 			return false;
+		}
+        
+	}
+	
+	/**
+	 * check if all required tables exit.
+	 * 
+	 * all executed sql queries have a "if not exist" statement, so if the table already
+	 * exists, nothing will happen. if it does not it will be created.
+	 * 
+	 * this method does not create any data in the tables.
+	 */
+	private void checkAndCreateDatabaseTables()
+	{
+		try
+		{
+			MySqlConnection con = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
+			
+			DatabaseCreator.createDatabaseTables(con,dbName);
+			
+			con.close();
+
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
 		}
         
 	}

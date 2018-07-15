@@ -245,7 +245,7 @@ public class CreateDatabase
     		  +" `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		  +" `rulegroup_id` int(10) unsigned NOT NULL,"
     		  +" `user_id` int(10) unsigned NOT NULL,"
-    		  +" `value` varchar(255) DEFAULT NULL,"
+    		  +" `value` mediumtext DEFAULT NULL,"
     		  +" `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),"
     		  +" PRIMARY KEY (`id`),"
     		  +" KEY `idx_rulegroup_id` (`rulegroup_id`,`user_id`)"

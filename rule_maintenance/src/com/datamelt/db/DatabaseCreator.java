@@ -21,6 +21,7 @@ public class DatabaseCreator
         statement.execute("create database if not exists " + databaseName);
         
         createDatabaseTables(connection, databaseName);
+        createDatabaseTablesData(connection, databaseName);
     }
     
 	/**
@@ -28,7 +29,7 @@ public class DatabaseCreator
 	 * 
 	 * create also all required basic data.
 	 */
-    private static void createDatabaseTables(MySqlConnection connection, String databaseName) throws Exception
+    public static void createDatabaseTables(MySqlConnection connection, String databaseName) throws Exception
     {
         Statement statement = connection.getStatement();
 
@@ -54,7 +55,18 @@ public class DatabaseCreator
         statement.execute(CreateDatabase.CREATE_TABLE_USER_SQL);
         statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_TESTDATA);
         
-        // create all required base data
+        statement.close();
+        
+    }
+    
+    public static void createDatabaseTablesData(MySqlConnection connection, String databaseName) throws Exception
+    {
+    	 Statement statement = connection.getStatement();
+
+         // use the given database
+     	statement.execute("use " + databaseName);
+     	
+    	// create all required base data
         statement.execute(CreateDatabase.CREATE_GROUPS);
         statement.execute(CreateDatabase.CREATE_USERS);
         statement.execute(CreateDatabase.CREATE_GROUPUSERS);
@@ -63,5 +75,7 @@ public class DatabaseCreator
         statement.execute(CreateDatabase.CREATE_CHECK_METHODS);
         statement.execute(CreateDatabase.CREATE_ACTIONS);
         statement.execute(CreateDatabase.CREATE_ACTION_METHODS);
+        
+        statement.close();
     }
 }
