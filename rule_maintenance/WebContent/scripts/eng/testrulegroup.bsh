@@ -105,7 +105,10 @@ else
 		    	if(testdataId==-1)
 		    	{
 		    		value = request.getParameter("field_" + field.id);
-		    		keyValuePairs.put(field.name, value);
+		    		if(rulegroup.referencedFields.contains(field.name))
+		    		{
+		    			keyValuePairs.put(field.name, value);
+		    		}
 		    	}
 		    	else
 		    	{

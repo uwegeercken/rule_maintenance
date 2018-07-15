@@ -44,6 +44,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private String dependentRuleGroupExecuteIf; 
 	private String dependentRuleGroups;
 	private long numberOfRuleGroupsDependingOnThisRuleGroup;
+	private long numberOfRuleGroupTestData;
 	
 	private User lastUpdateUser = new User();
 	
@@ -68,7 +69,6 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	{
 		this.setId(id);
 	}
-	
 	
 	public void load() throws Exception
 	{
@@ -479,4 +479,16 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		}
 		return totalNumberOfRules;
 	}
+
+	public long getNumberOfRuleGroupTestData()
+	{
+		return numberOfRuleGroupTestData;
+	}
+
+	public void setNumberOfRuleGroupTestData(long numberOfRuleGroupTestData)
+	{
+		this.numberOfRuleGroupTestData = numberOfRuleGroupTestData;
+	}
+	
+	
 }

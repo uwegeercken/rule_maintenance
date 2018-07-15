@@ -1,5 +1,6 @@
 import com.datamelt.db.DbCollections;
 import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
 
 if(user==null)
 {
@@ -9,6 +10,14 @@ else
 {
 		projectId=Long.parseLong(request.getParameter("projectid"));
 		ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
+		
+		for (int i=0;i<list.size();i++)
+		{
+			RuleGroup ruleGroup = list.get(i);
+			long numberOfRuleGroupTestData = DbCollections.getCountRuleGroupTestData(connection,ruleGroup.id,user.id);
+        	ruleGroup.setNumberOfRuleGroupTestData(numberOfRuleGroupTestData);
+		}
+		
 		context.put("rulegroups",list);
 
 		Project project = new Project();

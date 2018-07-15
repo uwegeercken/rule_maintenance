@@ -132,6 +132,27 @@ public class DbCollections
     }
     
     /**
+	 * get a list of only the latest testdata for a given rulegroup 
+	 */
+    public static ArrayList<RuleGroupTestData> getLatestRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception
+    {
+        String sql="select id from rulegroup_testdata where rulegroup_id=" + ruleGroupId +
+        	" and user_id= " + userId + " order by id desc limit 1";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <RuleGroupTestData>list = new ArrayList<RuleGroupTestData>();
+        while(rs.next())
+        {
+        	RuleGroupTestData testData = new RuleGroupTestData();
+        	testData.setConnection(connection);
+        	testData.setId(rs.getLong("id"));
+        	testData.load();
+            list.add(testData);
+        }
+        rs.close();
+        return list;
+    }
+    
+    /**
 	 * get a list of all testdata for a given rulegroup 
 	 */
     public static long getCountRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception

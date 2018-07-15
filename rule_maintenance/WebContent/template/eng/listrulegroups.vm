@@ -40,7 +40,9 @@
 			#end
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="edit" height="22px" width="22px" src="img/edit.png" title="edit rulegroup"></a>
 			<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=${rulegroup.id}&mode=copy&projectid=${project.id}"><img class="copy" height="22px" width="22px" src="img/copy.png" title="copy rulegroup"></a>
-			<a href="process?action=bsh&ro=1&scriptname=selectloadtestdata&id=${rulegroup.id}&projectid=${project.id}"><img class="data" height="22px" width="22px" src="img/data.png" title="edit test data"></a>
+			#if($rulegroup.getNumberOfRuleGroupTestData()>0)
+				<a href="process?action=bsh&ro=1&scriptname=selectloadtestdata&id=${rulegroup.id}&projectid=${project.id}"><img class="data" height="22px" width="22px" src="img/data.png" title="edit test data"></a>
+			#end
 		#end
 		<div class="grouptop">
 			<p class="small">rulegroup</p>

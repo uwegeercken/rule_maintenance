@@ -156,7 +156,7 @@
 	</div>
 </div>
 <div id="testrulegroup">
-<p>Below find a list of all fields that are referenced in rules of this rule group. Fields not used by any of the rules are not shown. To test the rule group, enter test values for the displayed fields. Or select the test data that was previously entered.</p>
+<p>Below find a list of all fields that are referenced in rules of this rule group. Fields not used by any of the rules or actions are not shown. To test the rule group, enter test values for the displayed fields. Or select the test data that was previously entered.</p>
 <div class="formbox">
 	<form method="POST" action="process?action=bsh&scriptname=testrulegroup"> 
 	<input type="hidden" name="id" value="${project.id}">
