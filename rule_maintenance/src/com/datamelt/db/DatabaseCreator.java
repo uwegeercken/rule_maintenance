@@ -27,7 +27,6 @@ public class DatabaseCreator
 	/**
 	 * create the database tables on the server - if they do not exist.
 	 * 
-	 * create also all required basic data.
 	 */
     public static void createDatabaseTables(MySqlConnection connection, String databaseName) throws Exception
     {
@@ -59,6 +58,10 @@ public class DatabaseCreator
         
     }
     
+	/**
+	 * create the database tables base data on the server.
+	 * 
+	 */
     public static void createDatabaseTablesData(MySqlConnection connection, String databaseName) throws Exception
     {
     	 Statement statement = connection.getStatement();
@@ -73,6 +76,9 @@ public class DatabaseCreator
         statement.execute(CreateDatabase.CREATE_TYPES);
         statement.execute(CreateDatabase.CREATE_CHECKS);
         statement.execute(CreateDatabase.CREATE_CHECK_METHODS);
+
+        String test = CreateDatabase.CREATE_ACTIONS;
+        
         statement.execute(CreateDatabase.CREATE_ACTIONS);
         statement.execute(CreateDatabase.CREATE_ACTION_METHODS);
         

@@ -593,11 +593,11 @@ public class CreateDatabase
     		+ "(124,4,'String','float, String',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(125,4,'String','long, String',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(130,47,'String','String, String',NULL,null,null,NULL,NULL,NULL,NULL,now()),"
-    		+ "(131,48,'String','integer, String',NULL,null,null,NULL,NULL,NULL,NULL,now())"
-    		+ "(132,49,'String','String, String, integer','second String is the mask to use. integer is start position',null,null,NULL,NULL,NULL,NULL,now())"
-    		+ "(133,49,'String','String, String, integer, integer','second String is the mask to use. integer is start position/end position',null,null,NULL,NULL,NULL,NULL,now())"
-    		+ "(134,49,'String','String, String','second String is the mask to use',null,null,NULL,NULL,NULL,NULL,now())"
-    		+ "(135,50,'String','String, String','second String is the encryption key to use',null,null,NULL,NULL,NULL,NULL,now())"
+    		+ "(131,48,'String','integer, String',NULL,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(132,49,'String','String, String, integer','second String is the mask to use. integer is start position',null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(133,49,'String','String, String, integer, integer','second String is the mask to use. integer is start position/end position',null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(134,49,'String','String, String','second String is the mask to use',null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(135,50,'String','String, String','second String is the encryption key to use',null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(136,51,'String','String, String','second String is the decryption key to use',null,null,NULL,NULL,NULL,NULL,now())";
     
     public static final String CREATE_ACTIONS = "INSERT INTO `action` VALUES (1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
@@ -647,8 +647,8 @@ public class CreateDatabase
     		+ "(45,'Subtract seconds from a date','com.datamelt.rules.core.action.DateAction','subtractSeconds','subtract seconds',now()),"
     		+ "(46,'Subtract days from a date','com.datamelt.rules.core.action.DateAction','subtractDays','subtract days',now()),"
     		+ "(47,'Replace value from mapping file','com.datamelt.rules.core.action.StringAction','replaceValueFromMap','replace value from map',now()),"
-    		+ "(48,'Replace value from a list of values','com.datamelt.rules.core.action.StringAction','replaceValueFromList','replace value from list',now())"
-    		+ "(49,'Replace value with a mask character','com.datamelt.rules.core.action.StringAction','maskValue','mask value',now())"
-    		+ "(50,'Encrypt value using a key','com.datamelt.rules.core.action.StringAction','encryptValue','encrypt value',now())"
+    		+ "(48,'Replace value from a list of values','com.datamelt.rules.core.action.StringAction','replaceValueFromList','replace value from list',now()),"
+    		+ "(49,'Replace value with a mask character','com.datamelt.rules.core.action.StringAction','maskValue','mask value',now()),"
+    		+ "(50,'Encrypt value using a key','com.datamelt.rules.core.action.StringAction','encryptValue','encrypt value',now()),"
     		+ "(51,'Decrypt value using a key','com.datamelt.rules.core.action.StringAction','decryptValue','decrypt value',now())";
     }
