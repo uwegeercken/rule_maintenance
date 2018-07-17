@@ -2,7 +2,25 @@ package com.datamelt.db;
 
 public class CreateDatabase
 {
-	public static final String CREATE_TABLE_ACTION_SQL = "CREATE TABLE IF NOT EXISTS `action` ("
+	public static final String TABLE_ACTION = "`action`";
+	public static final String TABLE_ACTION_METHOD = "`action_method`";
+	public static final String TABLE_CHECK = "`check`";
+	public static final String TABLE_CHECK_METHOD = "`check_method`";
+	public static final String TABLE_REFERENCE_FIELDS = "`reference_fields`";
+	public static final String TABLE_ACTIVITY_LOG = "`activity_log`";
+	public static final String TABLE_GROUPS = "`groups`";
+	public static final String TABLE_HISTORY = "`history`";
+	public static final String TABLE_PROJECT = "`project`";
+	public static final String TABLE_RULE = "`rule`";
+	public static final String TABLE_RULEGROUP = "`rulegroup`";
+	public static final String TABLE_RULEGROUPACTION = "`rulegroupaction`";
+	public static final String TABLE_RULESUBGROUP = "`rulesubgroup`";
+	public static final String TABLE_TYPES = "`types`";
+	public static final String TABLE_USER = "`user`";
+	public static final String TABLE_GROUPUSER= "`groupuser`";
+	public static final String TABLE_RULEGROUP_TESTDATA = "`rulegroup_testdata`";
+	
+	public static final String CREATE_TABLE_ACTION_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTION + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `description` varchar(255) DEFAULT NULL,"
     		+ " `classname` varchar(255) NOT NULL,"
@@ -12,7 +30,7 @@ public class CreateDatabase
     		+ " PRIMARY KEY (`id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 	
-	public static final String CREATE_TABLE_ACTION_METHOD_SQL = "CREATE TABLE IF NOT EXISTS `action_method` ("
+	public static final String CREATE_TABLE_ACTION_METHOD_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTION_METHOD + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `action_id` int(10) NOT NULL,"
     		+ " `return_type` varchar(80) CHARACTER SET latin1 DEFAULT NULL,"
@@ -29,7 +47,7 @@ public class CreateDatabase
     		+ " KEY `idx_actionid` (`action_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-    public static final String CREATE_TABLE_ACTIVITY_LOG_SQL = "CREATE TABLE IF NOT EXISTS `activity_log` ("
+    public static final String CREATE_TABLE_ACTIVITY_LOG_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITY_LOG + " ("
     		+ " `id` int(19) NOT NULL AUTO_INCREMENT,"
     		+ " `activity_date` datetime DEFAULT NULL,"
     		+ " `user_id` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -39,7 +57,7 @@ public class CreateDatabase
     		+ " KEY `idx_last_update` (`last_update`)"
     		+ ") ENGINE=MyISAM CHARSET=utf8";
     
-    public static final String CREATE_TABLE_CHECK_SQL = "CREATE TABLE IF NOT EXISTS `check` ("
+    public static final String CREATE_TABLE_CHECK_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_CHECK + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `name` varchar(80) NOT NULL,"
     		+ " `description` varchar(255) DEFAULT NULL,"
@@ -51,7 +69,7 @@ public class CreateDatabase
     		+ " PRIMARY KEY (`id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 	
-    public static final String CREATE_TABLE_CHECK_METHOD_SQL = "CREATE TABLE IF NOT EXISTS `check_method` ("
+    public static final String CREATE_TABLE_CHECK_METHOD_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_CHECK_METHOD + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `check_id` int(10) NOT NULL,"
     		+ " `compare` varchar(80) CHARACTER SET latin1 DEFAULT NULL,"
@@ -68,7 +86,7 @@ public class CreateDatabase
     		+ " KEY `idx_checkid` (`check_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_REFERENCE_FIELDS_SQL = "CREATE TABLE IF NOT EXISTS `reference_fields` ("
+    public static final String CREATE_TABLE_REFERENCE_FIELDS_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_REFERENCE_FIELDS + " ("
     		+ " `id` int(11) NOT NULL AUTO_INCREMENT,"
     		+ " `project_id` int(11) NOT NULL,"
     		+ " `name` varchar(80) DEFAULT NULL,"
@@ -82,7 +100,7 @@ public class CreateDatabase
     		+ " KEY `idx_project_id` (`project_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_GROUPS_SQL = "CREATE TABLE IF NOT EXISTS `groups` ("
+    public static final String CREATE_TABLE_GROUPS_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_GROUPS + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `name` varchar(45) NOT NULL DEFAULT '',"
     		+ " `description` varchar(255) NOT NULL DEFAULT '',"
@@ -91,7 +109,7 @@ public class CreateDatabase
     		+ " KEY `idx_name` (`name`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_HISTORY_SQL = "CREATE TABLE IF NOT EXISTS `history` ("
+    public static final String CREATE_TABLE_HISTORY_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_HISTORY + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `type` varchar(20) NOT NULL,"
     		+ " `type_id` int(10) unsigned NOT NULL,"
@@ -105,7 +123,7 @@ public class CreateDatabase
     		+ " KEY `idx_type_typeid_userid` (`type`,`type_id`,`user_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_PROJECT_SQL = "CREATE TABLE IF NOT EXISTS `project` ("
+    public static final String CREATE_TABLE_PROJECT_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_PROJECT + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `name` varchar(80) NOT NULL,"
     		+ " `description` varchar(255) DEFAULT NULL,"
@@ -126,7 +144,7 @@ public class CreateDatabase
     		+ " PRIMARY KEY (`id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_RULE_SQL = "CREATE TABLE IF NOT EXISTS `rule` ("
+    public static final String CREATE_TABLE_RULE_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_RULE + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `rulesubgroup_id` int(10) NOT NULL DEFAULT '0',"
     		+ " `check_id` int(10) DEFAULT NULL,"
@@ -150,7 +168,7 @@ public class CreateDatabase
     		+ " KEY `idx_rulesubgroup_id` (`rulesubgroup_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_RULEGROUP_SQL = "CREATE TABLE IF NOT EXISTS `rulegroup` ("
+    public static final String CREATE_TABLE_RULEGROUP_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_RULEGROUP + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `project_id` int(10) unsigned NOT NULL DEFAULT '0',"
     		+ " `last_update_user_id` int(10) DEFAULT NULL,"
@@ -165,7 +183,7 @@ public class CreateDatabase
     		+ " KEY `idx_project_id` (`project_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_RULEGROUPACTION_SQL = "CREATE TABLE IF NOT EXISTS `rulegroupaction` ("
+    public static final String CREATE_TABLE_RULEGROUPACTION_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_RULEGROUPACTION + " ("
     		+ " `id` int(10) NOT NULL AUTO_INCREMENT,"
     		+ " `rulegroup_id` int(10) NOT NULL DEFAULT '0',"
     		+ " `last_update_user_id` int(10) DEFAULT NULL,"
@@ -193,7 +211,7 @@ public class CreateDatabase
     		+ " KEY `idx_rulegroup_id` (`rulegroup_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-    public static final String CREATE_TABLE_RULESUBGROUP_SQL = "CREATE TABLE IF NOT EXISTS `rulesubgroup` ("
+    public static final String CREATE_TABLE_RULESUBGROUP_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_RULESUBGROUP + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `rulegroup_id` int(10) unsigned NOT NULL DEFAULT '0',"
     		+ " `last_update_user_id` int(10) DEFAULT NULL,"
@@ -206,14 +224,14 @@ public class CreateDatabase
     		+ " KEY `idx_rulegroup_id` (`rulegroup_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 	
-    public static final String CREATE_TABLE_TYPES_SQL = "CREATE TABLE IF NOT EXISTS `types` ("
+    public static final String CREATE_TABLE_TYPES_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_TYPES + " ("
 			+ " `id` int(19) NOT NULL AUTO_INCREMENT,"
 			+ " `name` varchar(20) DEFAULT NULL,"
 			+ " `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
 			+ " PRIMARY KEY (`id`)"
 			+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_USER_SQL = "CREATE TABLE IF NOT EXISTS `user` ("
+    public static final String CREATE_TABLE_USER_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `userid` varchar(25) NOT NULL,"
     		+ " `name` varchar(80) NOT NULL DEFAULT '',"
@@ -230,7 +248,7 @@ public class CreateDatabase
     		+ " KEY `idx_deactivated` (`deactivated`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-    public static final String CREATE_TABLE_GROUPUSER_SQL = "CREATE TABLE IF NOT EXISTS  `groupuser` ("
+    public static final String CREATE_TABLE_GROUPUSER_SQL = "CREATE TABLE IF NOT EXISTS " + TABLE_GROUPUSER + " ("
     		+ " `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		+ " `user_id` int(10) unsigned NOT NULL DEFAULT '0',"
     		+ " `groups_id` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -241,7 +259,7 @@ public class CreateDatabase
     		+ " KEY `idx_group` (`groups_id`)"
     		+ ") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_TABLE_RULEGROUP_TESTDATA = "CREATE TABLE IF NOT EXISTS `rulegroup_testdata` ("
+    public static final String CREATE_TABLE_RULEGROUP_TESTDATA = "CREATE TABLE IF NOT EXISTS " + TABLE_RULEGROUP_TESTDATA + " ("
     		  +" `id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
     		  +" `rulegroup_id` int(10) unsigned NOT NULL,"
     		  +" `user_id` int(10) unsigned NOT NULL,"
@@ -251,14 +269,14 @@ public class CreateDatabase
     		  +" KEY `idx_rulegroup_user_id` (`rulegroup_id`,`user_id`)"
     		  +") ENGINE=MyISAM DEFAULT CHARSET=utf8";
     
-    public static final String CREATE_GROUPS = "INSERT INTO `groups` VALUES (1,'Admin','Admin Group',now())";
+    public static final String CREATE_GROUPS = "INSERT INTO " + TABLE_GROUPS + " VALUES (1,'Admin','Admin Group',now())";
     
-    public static final String CREATE_USERS = "INSERT INTO `user` VALUES "
+    public static final String CREATE_USERS = "INSERT INTO " + TABLE_USER + " VALUES "
     		+ "(1,'admin','admin user','*4ACFE3202A5FF5CF467898FC58AAB1D615029441',NULL,NULL,'2000-01-01 00:00:00',0,NULL,'2000-01-01',now())";
     
-    public static final String CREATE_GROUPUSERS = "INSERT INTO `groupuser` VALUES (1,1,1,now())";
+    public static final String CREATE_GROUPUSERS = "INSERT INTO " + TABLE_GROUPUSER + " VALUES (1,1,1,now())";
     
-    public static final String CREATE_TYPES =  "INSERT INTO `types` VALUES (1,'string',now()),"
+    public static final String CREATE_TYPES =  "INSERT INTO " + TABLE_TYPES + " VALUES (1,'string',now()),"
     			+ "(2,'integer',now()),"
     			+ "(3,'float',now()),"
     			+ "(4,'double',now()),"
@@ -267,7 +285,7 @@ public class CreateDatabase
     			+ "(7,'bigdecimal',now()),"
     			+ "(8,'date',now())";
     
-    public static final String CREATE_CHECK_METHODS = "INSERT INTO `check_method` VALUES (1,1,'String','String','Without parameter Strings are compared case sensitive','boolean','Ignore case differences during comparison.',NULL,NULL,NULL,NULL,now()),"
+    public static final String CREATE_CHECK_METHODS = "INSERT INTO " + TABLE_CHECK_METHOD + " VALUES (1,1,'String','String','Without parameter Strings are compared case sensitive','boolean','Ignore case differences during comparison.',NULL,NULL,NULL,NULL,now()),"
     		+ "    		(2,1,'boolean','boolean',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "    		(3,1,'Date','Date',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "    		(6,1,'Date','String','Without parameter the String is converted to a Date using the format yyyy-MM-dd','String','Provide a date format different from the default.',NULL,NULL,NULL,NULL,now()),"
@@ -430,7 +448,7 @@ public class CreateDatabase
     		+ "    		(167,1,'boolean','String',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "    		(168,1,'String','boolean',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now())";
     
-    public static final String CREATE_CHECKS = "INSERT INTO `check` VALUES (1,'Check Is Equal','Check for equality of values','is equal to','com.datamelt.rules.implementation','CheckIsEqual',0,'2014-11-27 22:03:01'),"
+    public static final String CREATE_CHECKS = "INSERT INTO " + TABLE_CHECK + " VALUES (1,'Check Is Equal','Check for equality of values','is equal to','com.datamelt.rules.implementation','CheckIsEqual',0,'2014-11-27 22:03:01'),"
     		+ "(2,'Check Is Not Equal','Check if values are not equal','is not equal to','com.datamelt.rules.implementation','CheckIsNotEqual',0,'2014-11-27 20:35:35'),"
     		+ "(3,'Check Contains','Check if one String contains another String','contains','com.datamelt.rules.implementation','CheckContains',0,'2014-11-27 20:35:35'),"
     		+ "(4,'Check Not Contains','Check if one String does not contain another String','does not contain','com.datamelt.rules.implementation','CheckNotContains',0,'2014-11-27 20:35:35'),"
@@ -471,7 +489,7 @@ public class CreateDatabase
     		+ "(39,'Check Distance Is Smaller','Checks if the Levenshtein distance between two strings is smaller than a given value','is smaller than (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsSmaller',0,now()),"
     		+ "(40,'Check Distance Is Greater','Checks if the Levenshtein distance between two strings is greater than a given value','is greater than (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsGreater',0,now())";
 
-    public static final String CREATE_ACTION_METHODS = "INSERT INTO `action_method` VALUES (1,4,'String','String, double',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
+    public static final String CREATE_ACTION_METHODS = "INSERT INTO " + TABLE_ACTION_METHOD + " VALUES (1,4,'String','String, double',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(2,5,'String','String, integer','integer: maximum length of the String',NULL,'number of spaces to add at the begining',NULL,NULL,NULL,NULL,now()),"
     		+ "(3,3,'String','String, String',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(4,3,'String','String, integer','','String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
@@ -600,7 +618,7 @@ public class CreateDatabase
     		+ "(135,50,'String','String, String','second String is the encryption key to use',null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(136,51,'String','String, String','second String is the decryption key to use',null,null,NULL,NULL,NULL,NULL,now())";
     
-    public static final String CREATE_ACTIONS = "INSERT INTO `action` VALUES (1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
+    public static final String CREATE_ACTIONS = "INSERT INTO " + TABLE_ACTION + " VALUES (1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
     		+ "(2,'Add a value to the beginning of a value','com.datamelt.rules.core.action.StringAction','prependValue','prepend',now()),"
     		+ "(3,'Add a value to the end of a value','com.datamelt.rules.core.action.StringAction','appendValue','append',now()),"
     		+ "(4,'Concatenate two values','com.datamelt.rules.core.action.StringAction','concatValues','concat',now()),"

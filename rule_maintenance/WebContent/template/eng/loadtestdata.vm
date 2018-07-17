@@ -38,8 +38,10 @@
 		<td colspan="2" align="center"><br />
 			#if($testdata.size()>0)
 				<input type="submit" value="delete" name="submit">
+				<input type="submit" value="delete all" name="submit">
 			#else
 				<input type="submit" value="delete" name="submit" disabled>
+				<input type="submit" value="delete all" name="submit" disabled>
 			#end
 			<input type="submit" value="cancel" name="submit">
 		</td>

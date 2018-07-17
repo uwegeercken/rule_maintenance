@@ -39,6 +39,16 @@ if(cancelled.equals("delete"))
 	templatename="loadtestdata.vm";
 	
 }
+else if(cancelled.equals("delete all"))
+{
+	DbCollections.deleteUserRuleGroupTestData(connection,user);
+
+	ArrayList testData = DbCollections.getAllRuleGroupTestData(connection, rulegroupid, user.id);
+	
+	context.put("testdata",testData);
+	templatename="loadtestdata.vm";
+	
+}
 else
 {
 	ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);

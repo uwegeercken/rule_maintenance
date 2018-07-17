@@ -36,25 +36,148 @@ public class DatabaseCreator
     	statement.execute("use " + databaseName);
         
     	// create all required tables
-        statement.execute(CreateDatabase.CREATE_TABLE_ACTION_METHOD_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_ACTION_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_ACTIVITY_LOG_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_CHECK_METHOD_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_CHECK_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_GROUPS_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_GROUPUSER_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_HISTORY_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_PROJECT_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_REFERENCE_FIELDS_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_RULE_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUPACTION_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_RULESUBGROUP_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_TYPES_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_USER_SQL);
-        statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_TESTDATA);
-        
-        statement.close();
+
+    	try
+        {
+        	statement.execute(CreateDatabase.CREATE_TABLE_ACTION_METHOD_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_ACTION_METHOD);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_ACTION_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_ACTION);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_ACTIVITY_LOG_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_ACTIVITY_LOG);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_CHECK_METHOD_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_CHECK_METHOD);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_CHECK_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_CHECK);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_GROUPS_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_GROUPS);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_GROUPUSER_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_GROUPUSER);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_HISTORY_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_HISTORY);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_PROJECT_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_PROJECT);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_REFERENCE_FIELDS_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_REFERENCE_FIELDS);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_RULE_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_RULE);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_RULEGROUP);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUPACTION_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_RULEGROUPACTION);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_RULESUBGROUP_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_RULESUBGROUP);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_TYPES_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_TYPES);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_USER_SQL);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_USER);
+        }
+    	try
+    	{
+    		statement.execute(CreateDatabase.CREATE_TABLE_RULEGROUP_TESTDATA);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating table: " + CreateDatabase.TABLE_RULEGROUP_TESTDATA);
+        }
+
+    	finally
+    	{
+    		statement.close();
+    	}
         
     }
     
@@ -70,18 +193,74 @@ public class DatabaseCreator
      	statement.execute("use " + databaseName);
      	
     	// create all required base data
-        statement.execute(CreateDatabase.CREATE_GROUPS);
-        statement.execute(CreateDatabase.CREATE_USERS);
-        statement.execute(CreateDatabase.CREATE_GROUPUSERS);
-        statement.execute(CreateDatabase.CREATE_TYPES);
-        statement.execute(CreateDatabase.CREATE_CHECKS);
-        statement.execute(CreateDatabase.CREATE_CHECK_METHODS);
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_GROUPS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_GROUPS);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_USERS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_USER);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_GROUPUSERS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_GROUPUSER);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_TYPES);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_TYPES);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_CHECKS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_CHECK);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_CHECK_METHODS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_CHECK_METHOD);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_ACTIONS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_ACTION);
+        }
+        try
+        {
+        	statement.execute(CreateDatabase.CREATE_ACTION_METHODS);
+        }
+        catch(Exception ex)
+        {
+        	throw new Exception("error creating base data for table: " + CreateDatabase.TABLE_ACTION_METHOD);
+        }
 
-        String test = CreateDatabase.CREATE_ACTIONS;
-        
-        statement.execute(CreateDatabase.CREATE_ACTIONS);
-        statement.execute(CreateDatabase.CREATE_ACTION_METHODS);
-        
-        statement.close();
+        finally
+        {
+        	statement.close();
+        }
     }
 }

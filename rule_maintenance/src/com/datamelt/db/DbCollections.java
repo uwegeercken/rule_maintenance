@@ -1182,6 +1182,18 @@ public class DbCollections
     }
     
     /**
+     * delete the complete testdata of a given user
+     */
+    public static void deleteUserRuleGroupTestData(MySqlConnection connection, User user) throws Exception
+    {
+    	String deleteSql = "delete from rulegroup_testdata where user_id=?";
+    	PreparedStatement psTestData = connection.getPreparedStatement(deleteSql);
+    	
+    	psTestData.setLong(1, user.getId());
+    	psTestData.executeUpdate();    			
+    }
+    
+    /**
      * delete the reference fields for a given project
      */
     public static void deleteReferenceFields(MySqlConnection connection, long projectId) throws Exception
