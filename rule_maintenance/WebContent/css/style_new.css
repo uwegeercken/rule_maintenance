@@ -205,6 +205,13 @@ img.delete {
 	border: none;
 }
 
+img.disablerulegroup {
+	position: absolute;
+	margin-top: 6px;
+	margin-left: 180px;
+	border: none;
+}
+
 img.rulegrouplogic {
 	position: absolute;
 	margin-top: 6px;

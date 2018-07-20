@@ -1,0 +1,26 @@
+#set($pagetitle='Disabled Rule Groups')
+<p class="heading">Disabled Rule Groups ($rulegroups.size()) - Project: ${project.name}</p>
+<p>
+	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
+	<a href="process?action=bsh&ro=1&scriptname=listrulegroups&projectid=${project.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Users List"></a>
+</p>
+<div id="help">
+	<p class="helptitle">List of disabeld rulegroups</p>
+	<p>You may enable a disabled rulegroup. The rulegroup becomes an active rulegroup of the project again.</p>
+</div>
+<div id="filter">
+	<p>Filter: <input id="search" searchtype="deactivatedusers" type="text"></p>
+</div>
+#foreach($rulegroup in $rulegroups)
+	<div class="unit" tag="$!rulegroup.name.toLowerCase()">
+		<a href="process?action=bsh&ro=1&scriptname=enablerulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="edit" height="22px" width="22px" src="img/activate_user.png" title="enable rulegroup"></a>
+		<div class="grouptop">
+			<p class="small">rulegroup</p>
+			<p class="big">$!rulegroup.name</a></p>
+			<p class="normal">$!rulegroup.description</p>
+		</div>
+		<div>
+			#if(${rulegroup.isValid()}==true)<p class="small">#else<p class="smallred">#end valid: $!{rulegroup.validFrom}/$!{rulegroup.validUntil}</p>
+		</div>
+	</div>
+#end

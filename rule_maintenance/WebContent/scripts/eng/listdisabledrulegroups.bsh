@@ -1,0 +1,25 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
+import java.sql.PreparedStatement;
+import com.datamelt.db.DbCollections;
+
+if(user==null)
+{
+	templatename="login.vm";
+}
+else
+{
+	projectid=Long.parseLong(request.getParameter("projectid"));
+
+	Project project = new Project();
+	project.setConnection(connection);
+	project.setId(projectid);
+	project.load();
+	context.put("project",project);
+	
+	ArrayList list = DbCollections.getAllDisabledRuleGroups(connection,projectid);
+	context.put("rulegroups",list);
+
+	
+		templatename="listdisabledrulegroups.vm";
+}

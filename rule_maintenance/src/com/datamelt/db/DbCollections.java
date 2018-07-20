@@ -93,6 +93,7 @@ public class DbCollections
     public static ArrayList<RuleGroup> getAllRuleGroups(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select id from rulegroup where project_id=" + projectId +
+        	" and (disabled=0 or disabled is null)" +
         	" order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -110,13 +111,38 @@ public class DbCollections
         return list;
     }
     
+	/**
+	 * get a list of all disabled rulegroups for a given project 
+	 */
+    public static ArrayList<RuleGroup> getAllDisabledRuleGroups(MySqlConnection connection, long projectId) throws Exception
+    {
+        String sql="select id from rulegroup where project_id=" + projectId +
+        	" and disabled=1" +
+        	" order by id";
+        ResultSet rs = connection.getResultSet(sql);
+        ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
+        while(rs.next())
+        {
+        	RuleGroup rulegroup = new RuleGroup();
+        	rulegroup.setConnection(connection);
+        	rulegroup.setId(rs.getLong("id"));
+        	rulegroup.load();
+        	rulegroup.loadDependentRuleGroup();
+        	rulegroup.loadNumberOfRuleGroupsDependingOnThisRuleGroup();
+            list.add(rulegroup);
+        }
+        rs.close();
+        return list;
+    }
+
     /**
 	 * get a list of all testdata for a given rulegroup 
 	 */
     public static ArrayList<RuleGroupTestData> getAllRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception
     {
         String sql="select id from rulegroup_testdata where rulegroup_id=" + ruleGroupId +
-        	" and user_id= " + userId + " order by id desc";
+        		" and (disabled=0 or disabled is null)" +
+        		" and user_id= " + userId + " order by id desc";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroupTestData>list = new ArrayList<RuleGroupTestData>();
         while(rs.next())
@@ -184,7 +210,8 @@ public class DbCollections
         if(counterGroupsDependingOnThisGroup==0)
         {
 	    	String sql="select id from rulegroup where (dependent_rulegroup_id is null or dependent_rulegroup_id=0) and id!=" + rulegroupId + " and project_id=" + projectId +
-	        	" order by id";
+	        	" and (disabled=0 or disabled is null)" +
+	    		" order by id";
 	        ResultSet rs = connection.getResultSet(sql);
 	        
 	        while(rs.next())
@@ -340,6 +367,7 @@ public class DbCollections
     public static ArrayList<RuleGroup> getAllRuleGroupsSubgroupsActions(MySqlConnection connection, long projectId) throws Exception
     {
         String sql="select id from rulegroup where project_id=" + projectId +
+        	" and (disabled=0 or disabled is null)" +
         	" order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -365,7 +393,8 @@ public class DbCollections
      */
     public static long getAllRuleGroupsCount(MySqlConnection connection, long projectId) throws Exception
     {
-        String sql="select count(1) as counter from rulegroup where project_id=" + projectId;
+        String sql="select count(1) as counter from rulegroup where project_id=" + projectId +
+        		" and (disabled=0 or disabled is null)";
         ResultSet rs = connection.getResultSet(sql);
         if(rs.next())
         {
@@ -429,6 +458,7 @@ public class DbCollections
     	// valid in the future
     	String sql= "select id from rulegroup where project_id=" + projectId 
     			+   " and ((valid_from <= '" + selectedDate + "' and valid_until >= '" + selectedDate + "') or valid_from > '" + selectedDate + "')"
+    			+   " and (disabled=0 or disabled is null)"
     			+   " order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
@@ -650,6 +680,7 @@ public class DbCollections
         String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
         		+ " from rulegroupaction, rulegroup"
         		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
+        		+ " and (rulegroup.disabled=0 or rulegroup.disabled is null)"
         		+ " and (rulegroupaction.name like " + "'%" + searchTerm + "%'"
         		+ " or rulegroupaction.description like "+ "'%" + searchTerm + "%')";
         		
@@ -737,6 +768,7 @@ public class DbCollections
         String sql="select rulegroupaction.id as rulegroupactionid, rulegroup.project_id as projectid"
         		+ " from rulegroupaction, rulegroup"
         		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
+        		+ " and (rulegroup.disabled=0 or rulegroup.disabled is null)"
         		+ " and (rulegroupaction.object1_parameter like " + "'%" + searchTerm + "%'"
         		+ " or rulegroupaction.object2_parameter like "+ "'%" + searchTerm + "%'"
         		+ " or rulegroupaction.object3_parameter like "+ "'%" + searchTerm + "%')";
@@ -1112,7 +1144,10 @@ public class DbCollections
      */
     public static long getActionsCount(MySqlConnection connection) throws Exception
     {
-        String sql="select count(1) as numberofactions from rulegroupaction";
+        String sql="select count(1) as numberofactions"
+        		+ " from rulegroupaction,rulegroup"
+        		+ " where rulegroupaction.rulegroup_id = rulegroup.id"
+        		+ " and (rulegroup.disabled=0 or rulegroup.disabled is null)";
         ResultSet rs = connection.getResultSet(sql);
         long numberOfActions=0;
         if(rs.next())

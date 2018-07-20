@@ -38,6 +38,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private String validFrom;
 	private String validUntil;
 	private long projectId;
+	private int disabled;
 	
 	private RuleGroup dependentRuleGroup;
 	private long dependentRuleGroupId;
@@ -51,14 +52,15 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	private ArrayList<RuleSubgroup> ruleSubgroups;
 	private ArrayList<RuleGroupAction> actions;
 	
-	private static final String TABLENAME="rulegroup";
-	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
-	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
+	private static final String TABLENAME			= "rulegroup";
+	private static final String SELECT_SQL			= "select * from " + TABLENAME + " where id=?";
+	private static final String SELECT_BY_NAME_SQL	= "select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " (name, description, valid_from, valid_until, project_id, last_update_user_id,dependent_rulegroup_id,dependent_rulegroup_execute_if) values (?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " set name=?, description=?, valid_from=?, valid_until=?, project_id=?, last_update_user_id=?, dependent_rulegroup_id=?,dependent_rulegroup_execute_if=? where id =?";
-    public static final String EXIST_SQL  = "select id from " + TABLENAME + " where name =? and project_id=?";
-    public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
+	public static final String INSERT_SQL 			= "insert into " + TABLENAME + " (name, description, valid_from, valid_until, project_id, last_update_user_id,dependent_rulegroup_id,dependent_rulegroup_execute_if) values (?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL 			= "update " + TABLENAME + " set name=?, description=?, valid_from=?, valid_until=?, project_id=?, last_update_user_id=?, dependent_rulegroup_id=?,dependent_rulegroup_execute_if=? where id =?";
+    public static final String EXIST_SQL  			= "select id from " + TABLENAME + " where name =? and project_id=?";
+    public static final String DELETE_SQL 			= "delete from " + TABLENAME + " where id=?";
+    public static final String ENABLE_DISABLE_SQL	= "update " + TABLENAME + " set disabled=? where id =?";
 
 	public RuleGroup()
 	{
@@ -80,6 +82,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.projectId = rs.getLong("project_id");
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
+	        this.disabled = rs.getInt("disabled");
 	        
         	this.dependentRuleGroupId = rs.getLong("dependent_rulegroup_id");
 	        this.dependentRuleGroupExecuteIf = rs.getString("dependent_rulegroup_execute_if");
@@ -104,6 +107,7 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 	        this.projectId = rs.getLong("project_id");
 	        this.validFrom = rs.getString("valid_from");
 	        this.validUntil = rs.getString("valid_until");
+	        this.disabled = rs.getInt("disabled");
 	        
 	        this.dependentRuleGroupId = rs.getLong("dependent_rulegroup_id");
 	        this.dependentRuleGroupExecuteIf = rs.getString("dependent_rulegroup_execute_if");
@@ -490,5 +494,50 @@ public class RuleGroup extends DatabaseRecord implements Loadable
 		this.numberOfRuleGroupTestData = numberOfRuleGroupTestData;
 	}
 	
-	
+    public void enable(PreparedStatement p, Project project, User user) throws Exception
+    {
+        p.setInt(1,0);
+        p.setLong(2,getId());
+        try
+		{
+        	if(user.canUpdateProject(project))
+			{
+        		p.execute();
+			}
+    		else
+			{
+				throw new Exception("user " + user.getUserid() + " is not allowd to enable the rulegroup");	
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+    }
+    
+        public void disable(PreparedStatement p, Project project, User user) throws Exception
+        {
+            p.setInt(1,1);
+            p.setLong(2,getId());
+            try
+    		{
+            	if(user.canUpdateProject(project))
+    			{
+            		p.execute();
+    			}
+        		else
+    			{
+    				throw new Exception("user " + user.getUserid() + " is not allowd to disable the rulegroup");	
+    			}
+    		}
+    		catch (Exception ex)
+    		{
+    			ex.printStackTrace();
+    		}
+        }
+
+		public int getDisabled()
+		{
+			return disabled;
+		}
 }

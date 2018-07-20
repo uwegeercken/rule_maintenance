@@ -1,0 +1,31 @@
+import com.datamelt.db.Project;
+import com.datamelt.db.RuleGroup;
+import java.sql.PreparedStatement;
+import com.datamelt.db.DbCollections;
+
+rulegroupid=Long.parseLong(request.getParameter("rulegroupid"));
+projectid=Long.parseLong(request.getParameter("projectid"));
+
+Project project = new Project();
+project.setConnection(connection);
+project.setId(projectid);
+project.load();
+context.put("project",project);
+
+RuleGroup ruleGroup = new RuleGroup();
+ruleGroup.setConnection(connection);
+ruleGroup.setId(rulegroupid);
+
+PreparedStatement ps = connection.getPreparedStatement(RuleGroup.ENABLE_DISABLE_SQL);
+ruleGroup.disable(ps, project, user);
+
+ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
+for (int i=0;i<list.size();i++)
+{
+	RuleGroup ruleGroup = list.get(i);
+	long numberOfRuleGroupTestData = DbCollections.getCountRuleGroupTestData(connection,ruleGroup.id,user.id);
+	ruleGroup.setNumberOfRuleGroupTestData(numberOfRuleGroupTestData);
+}
+context.put("rulegroups",list);
+
+templatename="listrulegroups.vm";

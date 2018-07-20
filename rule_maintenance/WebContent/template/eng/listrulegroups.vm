@@ -4,15 +4,16 @@
 	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listprojects"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Project List"></a>
 	<a href="process?action=bsh&ro=1&scriptname=selectsendfile&projectid=${project.id}"><img class="add_external" height="22px" width="22px" src="img/export.png" title="export project"></a>
 	#if($user.canUpdateProject($project)==true)
+		<a href="process?action=bsh&ro=1&scriptname=listdisabledrulegroups&projectid=${project.id}"><img class="add_external" height="22px" width="22px" src="img/disabled_group.png" title="list disabled rulegroup"></a>
 		<a href="process?action=bsh&ro=1&scriptname=selecteditrulegroup&id=0&projectid=${project.id}&mode=add"><img class="add_external" height="22px" width="22px" src="img/group_add2.png" title="add rulegroup"></a>
 	#end
 </p>
 <div id="help">
 	<p class="helptitle">List of Rule Groups</p>
 	<p>A Rule Group is a collection of subgroups and rules that belong together to define certain checks and actions.</p>
-	<p>Rule groups have a from/to date when they are valid. Rule groups may be copied - including subgroups, rules and actions.</p>
+	<p>Rule groups have a from/to date when they are valid. Rule groups may be copied - including subgroups, rules and actions. A Rulegroup may be disabled - it won't be part of the project and won't be exported with the project until it is enabled again.</p>
 	<p>Click on the name of the rule group to get a list of subgroups, rules and actions.</p>
-	<p><img height="22" width="22" src="img/group_add2.png">&nbsp;add rule group&nbsp;<img height="22" width="22" src="img/export.png">&nbsp;export project&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule group&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;rule group logic&nbsp;<img height="22" width="22" src="img/connect.png">&nbsp;dependent on a rule group&nbsp;<img height="22" width="22" src="img/relation.png">&nbsp;rulegroups depend on this group</p>
+	<p><img height="22" width="22" src="img/group_add2.png">&nbsp;add rule group&nbsp;<img height="22" width="22" src="img/export.png">&nbsp;export project&nbsp;<img height="22" width="22" src="img/remove.png">&nbsp;delete rule group&nbsp;<img height="22" width="22" src="img/edit.png">&nbsp;edit rule group&nbsp;<img height="22" width="22" src="img/copy.png">&nbsp;copy rule group&nbsp;<img height="22" width="22" src="img/document.png">&nbsp;rule group logic&nbsp;<img height="22" width="22" src="img/connect.png">&nbsp;dependent on a rule group&nbsp;<img height="22" width="22" src="img/relation.png">&nbsp;rulegroups depend on this group&nbsp;<img height="22" width="22" src="img/disabled_group.png">&nbsp;disable group/list disabled rulegroups</p>
 </div>
 <div id="filter">
 	<p>Filter: <input id="search" searchtype="rulegroups" type="text"></p>
@@ -28,12 +29,13 @@
 #set($counter=0)
 #foreach($rulegroup in $rulegroups)
 	<div class="unit" tag="$!{rulegroup.name.toLowerCase()}">
-			<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="rulegrouplogic" height="22px" width="22px" src="img/document.png" title="generate rulegroup logic"></a>
+		<a target="_external" href="process?action=bsh&ro=1&scriptname=listrulegrouplogic&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="rulegrouplogic" height="22px" width="22px" src="img/document.png" title="generate rulegroup logic"></a>
 		#if($user.canUpdateProject($project)==true)
 			#if($rulegroup.dependentRuleGroupId && $rulegroup.dependentRuleGroupId>0)
 				<img class="dependent" height="22px" width="22px" src="img/connect.png" title="depending on: ${rulegroup.dependentRuleGroup.name} (${rulegroup.dependentRuleGroupExecuteIf})">
 			#end
 			#if(${rulegroup.numberOfRuleGroupsDependingOnThisRuleGroup}==0)
+				<a href="process?action=bsh&ro=1&scriptname=disablerulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}"><img class="disablerulegroup" height="22px" width="22px" src="img/disabled_group.png" title="disable rulegroup"></a>
 				<a href="process?action=bsh&ro=1&scriptname=selectdeleterulegroup&rulegroupid=${rulegroup.id}&projectid=${project.id}&mode=change"><img class="delete" height="22px" width="22px" src="img/remove.png" title="delete rulegroup"></a>
 			#elseif(${rulegroup.numberOfRuleGroupsDependingOnThisRuleGroup}>0)
 				<img class="dependent" height="22px" width="22px" src="img/relation.png" title="groups depending: ${rulegroup.numberOfRuleGroupsDependingOnThisRuleGroup}">

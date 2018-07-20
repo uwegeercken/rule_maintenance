@@ -15,7 +15,7 @@ projectid=Long.parseLong(request.getParameter("projectid"));
 
 Project project = new Project();
 project.setConnection(connection);
-project.setId(projectId);
+project.setId(projectid);
 project.load();
 context.put("project",project);
 
@@ -59,7 +59,7 @@ if(cancelled.equals("delete rule group"))
 	DbCollections.deleteUserHistory(connection, "rulegroup", rulegroup.id, user);
 }
 
-ArrayList list = DbCollections.getAllRuleGroups(connection,projectId);
+ArrayList list = DbCollections.getAllRuleGroups(connection,projectid);
 context.put("rulegroups",list);
 
 templatename="listrulegroups.vm";
