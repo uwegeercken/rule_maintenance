@@ -1,6 +1,11 @@
 #set($pagetitle='Rule Maintenance')
 <p class="heading">Rule maintenance: #if($mode=="add")add rule #else edit rule#end - Project ${project.name} - Rule Group: ${rulegroup.name} - Rule Subgroup: ${rulesubgroup.name}</p>
-<p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a></p>
+<p>	<img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()">
+	<a href="process?action=bsh&ro=1&scriptname=listrulesubgroups&rulegroupid=${rulegroup.id}"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Subgroups and rules"></a>
+	#if($user.canUpdateProject($project)==true)
+		<a href="process?action=bsh&ro=1&scriptname=selecteditrule&mode=add&id=0&rulegroupid=${rulegroup.id}&rulesubgroupid=${rulesubgroup.id}&projectid=${project.id}"><img class="add_external" height="22px" width="22px" src="img/rule_add2.png" title="add rule"></a>
+	#end
+</p>
 <div id="help">
 	<p class="helptitle">#if($mode=="add")Add Rule #else Edit Rule#end</p>
 	<p>Enter a name and description for the rule and specify the field to check and its type (the data type of the field). The rule engine will retrieve the data from this field.</p>
