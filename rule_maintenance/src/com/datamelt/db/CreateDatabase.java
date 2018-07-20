@@ -178,6 +178,7 @@ public class CreateDatabase
     		+ " `valid_until` date NOT NULL,"
     		+ " `dependent_rulegroup_id` int(10) unsigned DEFAULT NULL,"
     		+ " `dependent_rulegroup_execute_if` varchar(6) DEFAULT NULL,"
+    		+ " `disabled` tinyint(2) default 0," 
     		+ " `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,"
     		+ " PRIMARY KEY (`id`),"
     		+ " KEY `idx_project_id` (`project_id`)"
