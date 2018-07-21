@@ -117,10 +117,11 @@ else
 			else
 			{
 				String tempPath = fileCreator.writeFiles(project);
-				String fileName = fileCreator.zipFiles(project, tempPath);
 				
 				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, "referencefields.vm");
 				referenceFieldFileCreator.writeFile();
+				
+				String fileName = fileCreator.zipFiles(project, tempPath);
 				
 				activity.message = "Exported project [" + project.name + "], environment [" + environment + "], with validity date [" + selecteddate + "]";
 				activity.insert(connection.getPreparedStatement(Activity.INSERT_SQL));
