@@ -635,6 +635,7 @@ public class DbCollections
         String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
         		+ " from rule, rulesubgroup, rulegroup"
         		+ " where rule.rulesubgroup_id = rulesubgroup.id and rulesubgroup.rulegroup_id = rulegroup.id"
+        		+ " and (disabled=0 or disabled is null)"
         		+ " and (rule.name like " + "'%" + searchTerm + "%'"
         		+ " or rule.description like "+ "'%" + searchTerm + "%')";
         
@@ -723,6 +724,7 @@ public class DbCollections
         String sql="select rule.id as ruleid, rulegroup.id as rulegroupid, rulegroup.project_id as projectid"
         		+ " from rule, rulesubgroup, rulegroup"
         		+ " where rule.rulesubgroup_id = rulesubgroup.id and rulesubgroup.rulegroup_id = rulegroup.id"
+        		+ " and (disabled=0 or disabled is null)"
         		+ " and (rule.object1_parameter like " + "'%" + searchTerm + "%'"
         		+ " or rule.object2_parameter like "+ "'%" + searchTerm + "%')";
         
