@@ -259,7 +259,10 @@ public class DbCollections
     {
     	ArrayList <RuleGroup>list = new ArrayList<RuleGroup>();
     	
-    	String sql="select distinct dependent_rulegroup_id as id from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id>0"
+    	String sql="select distinct dependent_rulegroup_id as id from rulegroup"
+    			+ " where dependent_rulegroup_id is not null"
+    			+ " and dependent_rulegroup_id>0"
+    			+ " and (disabled=0 or disabled is null)"
     			+ " and project_id=" + projectId
     			+ " order by id";
         ResultSet rs = connection.getResultSet(sql);
@@ -282,7 +285,10 @@ public class DbCollections
     public static long getCountGroupsDependingOnThisGroup(MySqlConnection connection, long projectId, long rulegroupId) throws Exception
     {
     	// check how many rulegroups depend on the given rulegroup
-    	String sql="select count(1) as counter from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id=" + rulegroupId + " and project_id=" + projectId;
+    	String sql="select count(1) as counter from rulegroup"
+    			+ " where dependent_rulegroup_id is not null"
+    			+ " and (disabled=0 or disabled is null)"
+    			+ " and dependent_rulegroup_id=" + rulegroupId + " and project_id=" + projectId;
         ResultSet rs = connection.getResultSet(sql);
     	long counterGroupsDependingOnThisGroup = 0;
         if(rs.next())
@@ -301,7 +307,10 @@ public class DbCollections
     {
     	// check how many rulegroups depend on the given rulegroup and that have an
     	// invalid from/until validity (outside the validity of the rulegroup)
-    	String sql="select id from rulegroup where dependent_rulegroup_id is not null and dependent_rulegroup_id=" + dependentRulegroup.getId() + " and project_id=" + projectId;
+    	String sql="select id from rulegroup"
+    			+ " where dependent_rulegroup_id is not null"
+    			+ " and (disabled=0 or disabled is null)"
+    			+ "and dependent_rulegroup_id=" + dependentRulegroup.getId() + " and project_id=" + projectId;
         ResultSet rs = connection.getResultSet(sql);
         ArrayList<RuleGroup> invalidRulegroups = new ArrayList<RuleGroup>();
         while(rs.next())
@@ -393,8 +402,9 @@ public class DbCollections
      */
     public static long getAllRuleGroupsCount(MySqlConnection connection, long projectId) throws Exception
     {
-        String sql="select count(1) as counter from rulegroup where project_id=" + projectId +
-        		" and (disabled=0 or disabled is null)";
+        String sql="select count(1) as counter from rulegroup"
+        		+ " where project_id=" + projectId
+        		+ " and (disabled=0 or disabled is null)";
         ResultSet rs = connection.getResultSet(sql);
         if(rs.next())
         {
@@ -411,7 +421,8 @@ public class DbCollections
      */
     public static long getAllReferenceFieldsCount(MySqlConnection connection, long projectId) throws Exception
     {
-        String sql="select count(1) as counter from reference_fields where project_id=" + projectId;
+        String sql="select count(1) as counter from reference_fields"
+        		+ " where project_id=" + projectId;
         ResultSet rs = connection.getResultSet(sql);
         if(rs.next())
         {
@@ -479,8 +490,9 @@ public class DbCollections
      */
     public static ArrayList<RuleSubgroup> getAllRuleSubgroups(MySqlConnection connection, long rulegroupId) throws Exception
     {
-        String sql="select id from rulesubgroup where rulegroup_id=" + rulegroupId +
-        	" order by id";
+        String sql="select id from rulesubgroup"
+        		+ " where rulegroup_id=" + rulegroupId
+        		+ " order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleSubgroup>list = new ArrayList<RuleSubgroup>();
         while(rs.next())
@@ -500,8 +512,9 @@ public class DbCollections
      */
     public static ArrayList<RuleGroupAction> getAllRuleGroupActions(MySqlConnection connection, long rulegroupId) throws Exception
     {
-        String sql="select id from rulegroupaction where rulegroup_id=" + rulegroupId +
-        	" order by id";
+        String sql="select id from rulegroupaction"
+        		+ " where rulegroup_id=" + rulegroupId 
+        	    + " order by id";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroupAction>list = new ArrayList<RuleGroupAction>();
         while(rs.next())
@@ -521,8 +534,9 @@ public class DbCollections
      */
     public static ArrayList<Field> getAllFields(MySqlConnection connection, long projectId) throws Exception
     {
-        String sql="select id from reference_fields where project_id=" + projectId +
-        	" order by name_descriptive";
+        String sql="select id from reference_fields"
+        		+ " where project_id=" + projectId 
+        	    + " order by name_descriptive";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <Field>list = new ArrayList<Field>();
         while(rs.next())
