@@ -1,6 +1,12 @@
 Relase history for the Business Rule Maintenance Tool
 
-last update: Uwe Geercken, October 2016
+last update: Uwe Geercken, July 2018
+
+version 2.2.1
+=============
+- new feature: disable/enable rulegroups
+- additional shurtcuts (icons with links)
+- action for encrypting/decrypting values
 
 version 1.8.1
 =============

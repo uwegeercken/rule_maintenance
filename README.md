@@ -36,4 +36,5 @@ Make sure you have a MySQL or Mariadb server running. You will need a user and u
  under the License.
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2018-06-25
+last update: 2018-07-22
+

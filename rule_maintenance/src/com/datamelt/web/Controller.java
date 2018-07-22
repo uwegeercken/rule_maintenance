@@ -32,6 +32,7 @@ import org.apache.velocity.Template;
 import bsh.Interpreter;
 
 import com.datamelt.db.DatabaseCreator;
+import com.datamelt.db.DatabaseUpdate;
 import com.datamelt.db.MySqlConnection;
 import com.datamelt.plugin.BeanshellPlugin;
 import com.datamelt.plugin.PluginLoader;
@@ -113,6 +114,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		if(hostConnectionOk && dbConnectionOk)
 		{
 			checkAndCreateDatabaseTables();
+			alterDatabaseTables();
 		}
 		
 		interpreter = new Interpreter();
@@ -284,6 +286,30 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			MySqlConnection con = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
 			
 			DatabaseCreator.createDatabaseTables(con,dbName);
+			
+			con.close();
+
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+        
+	}
+	
+	/**
+	 * check if all required fields in the tables exit.
+	 * 
+	 * used to update an existing database when database changes happened
+	 * 
+	 */
+	private void alterDatabaseTables()
+	{
+		try
+		{
+			MySqlConnection con = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
+			
+			DatabaseUpdate.alterDatabaseTables(con,dbName);
 			
 			con.close();
 
