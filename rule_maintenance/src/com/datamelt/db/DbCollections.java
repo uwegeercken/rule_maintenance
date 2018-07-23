@@ -141,7 +141,6 @@ public class DbCollections
     public static ArrayList<RuleGroupTestData> getAllRuleGroupTestData(MySqlConnection connection, long ruleGroupId, long userId) throws Exception
     {
         String sql="select id from rulegroup_testdata where rulegroup_id=" + ruleGroupId +
-        		" and (disabled=0 or disabled is null)" +
         		" and user_id= " + userId + " order by id desc";
         ResultSet rs = connection.getResultSet(sql);
         ArrayList <RuleGroupTestData>list = new ArrayList<RuleGroupTestData>();
