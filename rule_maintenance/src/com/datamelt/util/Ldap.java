@@ -56,16 +56,16 @@ public class Ldap
 		}
 		catch (AuthenticationNotSupportedException exception) 
         {
-            System.out.println("The authentication is not supported by the server");
+            System.out.println("Ldap: The authentication is not supported by the server");
         }
         catch (AuthenticationException exception)
         {
-            System.out.println("Incorrect password or username");
+            System.out.println("Ldap: Incorrect password or username");
         }
 
         catch (NamingException exception)
         {
-            System.out.println("Error when trying to create the context");
+            System.out.println("Ldap: Error when trying to create the context: " + env.toString());
         }
 		return loginOk;
     }

@@ -30,7 +30,7 @@ import com.datamelt.db.Project;
 * Only Rule Groups which are valid for the given date are considered for the output.
 *
 *
-* all code by uwe geercken - 2014-2017
+* all code by uwe geercken - 2014-2018
 */
 
 public class ReferenceFieldsFileCreator 

@@ -37,6 +37,8 @@ import com.datamelt.db.RuleGroup;
 * If no project name is specified, then zip files for all projects will be created.
 * Only Rule Groups which are valid for the given date are considered for the output.
 *
+* The templates "ruleengine.vm" and "referencefields.vm" have to be located in the specified template folder. These two files are part of the
+* Business Rules Maintenance Tool - the web application - and can be found in the "templates" folder.
 *
 * all code by uwe geercken - 2014-2018
 */
@@ -45,24 +47,27 @@ public class RuleGroupFileCreator {
 
 	private String projectName=null;
 	private String templatePath=null;
-	private String templateName=null;
 	private String outputPath=null;
 	private String backupPath=null;
 	private String temporaryPath=null;
 	private String environment="";
 	private String selectedDate=null;
 	private String dbServerHostname=null;
-	private int dbServerPort;
+	private int    dbServerPort;
 	private String dbName=null;
 	private String dbUser=null;
 	private String dbPassword=null;
 
-	private static final String FILE_EXTENSION 			= ".xml";
+	private static final String FILE_EXTENSION 					= ".xml";
 	
-	public static final String ZIP_EXTENSION 			= ".zip";
+	public static final String ZIP_EXTENSION 					= ".zip";
 	
-	public static final String ENVIRONMENT_DEVELOPMENT 	= "dev";
-	public static final String ENVIRONMENT_PRODUCTION  	= "prod";
+	public static final String ENVIRONMENT_DEVELOPMENT 			= "dev";
+	public static final String ENVIRONMENT_QUALITY_ASSURANCE 	= "qa";
+	public static final String ENVIRONMENT_PRODUCTION  			= "prod";
+
+	public static final String TEMPLATE_RULEENGINE				= "ruleengine.vm";
+	public static final String TEMPLATE_REFERENCEFIELDS			= "referencefields.vm";
 	
 	public RuleGroupFileCreator()
 	{
@@ -88,10 +93,6 @@ public class RuleGroupFileCreator {
 	    		else if (args[i].startsWith("-p="))
 	    		{
 	    			fileCreator.templatePath = args[i].substring(3);
-	    		}
-	    		else if (args[i].startsWith("-t="))
-	    		{
-	    			fileCreator.templateName = args[i].substring(3);
 	    		}
 	    		else if (args[i].startsWith("-o="))
 	    		{
@@ -138,10 +139,6 @@ public class RuleGroupFileCreator {
 			if(fileCreator.templatePath==null)
 	    	{
 	    		throw new Exception("parameter -p: path to the template folder must be specified");
-	    	}
-			if(fileCreator.templateName==null)
-	    	{
-	    		throw new Exception("parameter -t: template filename must be specified");
 	    	}
 			if(fileCreator.outputPath==null)
 	    	{
@@ -213,6 +210,10 @@ public class RuleGroupFileCreator {
 				}
 				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath);				
 				
+				System.out.println("writing file for reference fields: " + project.getFields().size());
+				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, TEMPLATE_REFERENCEFIELDS);
+				referenceFieldFileCreator.writeFile();
+				
 				System.out.println("found rule groups: " + project.getRulegroups().size());
 				if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
 				{
@@ -241,7 +242,7 @@ public class RuleGroupFileCreator {
 			String fileName=FileUtility.addTrailingSlash(tempPath) + rulegroup.getName() + RuleGroupFileCreator.FILE_EXTENSION;
 			File file = new File(fileName);
 			FileWriter fw = new FileWriter(file);
-			fw.write(project.mergeWithTemplate(rulegroup, templatePath, templateName));
+			fw.write(project.mergeWithTemplate(rulegroup, templatePath, TEMPLATE_RULEENGINE));
 			fw.close();
 		}
 		return tempPath;
@@ -322,9 +323,15 @@ public class RuleGroupFileCreator {
 	public static void help()
     {
     	System.out.println("RuleGroupFileCreator. Program to generate a zip file for the JaRe - Java Ruleengine - from the database of the Business Rules Maintenance Tool.");
-    	System.out.println("An XML File is generated for each rulegroup and written to the temporary folder. Then the files are put/compressed into a single zip file.");
+    	System.out.println("An XML File is generated for each rulegroup and written to the temporary folder. Then the files are put/compressed into a single zip file, ");
+    	System.out.println("together with the file which contains the reference fields definitions,");
+    	System.out.println();
     	System.out.println("If no project name is specified, then zip files for all projects will be created.");
+    	System.out.println();
     	System.out.println("Only Rule Groups which are valid for the given date are considered for the output.");
+    	System.out.println();
+    	System.out.println("The templates ruleengine.vm and referencefields.vm have to be located in the specified template folder. These two files are part of the");
+    	System.out.println("Business Rules Maintenance Tool - the web application - and can be found in the \"templates\" folder.");
     	System.out.println();
     	System.out.println();
     	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder] -y=[temporary folder] -v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment] -l=[backup folder]");
@@ -332,7 +339,6 @@ public class RuleGroupFileCreator {
     	System.out.println("      [environment]      : optional. the environment the file is targeted for");
     	System.out.println("      [backup folder]    : optional. path to folder where copies of the project zip files are created.");
     	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
-    	System.out.println("      [template name]    : required. filename of the template.");
     	System.out.println("      [output folder]    : required. path to the output folder where the zip file is created.");
     	System.out.println("      [temporary folder] : required. path to the temporary folder where rulegroup files are temporarily created.");
     	System.out.println("      [validity date]    : required. validity date - determines which rule groups to be included.");
@@ -342,10 +348,10 @@ public class RuleGroupFileCreator {
     	System.out.println("      [db user]          : required. user with read access the database");
     	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -t=template1.vm -o=/home/user/testoutput -y=/home/user/temp -v=2017-01-15 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev -l=/home/user/testoutput/backup");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -o=/home/user/testoutput -y=/home/user/temp -v=2018-07-01 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev -l=/home/user/testoutput/backup");
     	System.out.println();
-    	System.out.println("published as open source under the GPL3.");
-    	System.out.println("all code by uwe geercken, 2014-2017. uwe.geercken@web.de");
+    	System.out.println("published as open source under the Apache License, Version 2.0.");
+    	System.out.println("all code by uwe geercken, 2014-2018. uwe.geercken@web.de");
     	System.out.println();
     }
 
@@ -367,16 +373,6 @@ public class RuleGroupFileCreator {
 	public void setTemplatePath(String templatePath) 
 	{
 		this.templatePath = templatePath;
-	}
-
-	public String getTemplateName() 
-	{
-		return templateName;
-	}
-
-	public void setTemplateName(String templateName) 
-	{
-		this.templateName = templateName;
 	}
 
 	public String getOutputPath() 

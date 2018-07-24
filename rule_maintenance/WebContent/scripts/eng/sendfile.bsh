@@ -78,7 +78,6 @@ else
 			fileCreator.templatePath = contextpath + "template";
 			fileCreator.environment = environment;
 			fileCreator.temporaryPath = contextpath + "tmp";
-			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
 			if(exportpath!=null && !exportpath.trim().equals(""))
@@ -92,7 +91,7 @@ else
 				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath); 
 				String tempPath = fileCreator.writeFiles(project);
 
-				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, "referencefields.vm");
+				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, RuleGroupFileCreator.TEMPLATE_REFERENCE_FIELDS);
 				referenceFieldFileCreator.writeFile();
 				
 				String fileName = fileCreator.zipFiles(project, tempPath);
@@ -118,7 +117,7 @@ else
 			{
 				String tempPath = fileCreator.writeFiles(project);
 				
-				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, "referencefields.vm");
+				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, RuleGroupFileCreator.TEMPLATE_REFERENCEFIELDS);
 				referenceFieldFileCreator.writeFile();
 				
 				String fileName = fileCreator.zipFiles(project, tempPath);
