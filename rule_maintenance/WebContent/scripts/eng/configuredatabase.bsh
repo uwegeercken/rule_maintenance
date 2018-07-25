@@ -88,11 +88,14 @@ else
 				{
 					context.put("databaseconnectionok", true);
 					DatabaseCreator.createDatabaseTables(con,request.getParameter("db_name"));
+					Controller.reloadConfig();
 					infomessage.type = "info";
 					infomessage.text="Using Database [" + request.getParameter("db_name") + "] on the server [" + request.getParameter("db_hostname") + "] on port [" + request.getParameter("db_port") + "]";				
 				}
 				connection = con;
 				//con.close();
+				
+				
 			}
 			catch(Exception ex)
 			{

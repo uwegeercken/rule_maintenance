@@ -1,6 +1,7 @@
 import com.datamelt.db.User;
 import com.datamelt.db.Group;
 import com.datamelt.util.Message;
+import com.datamelt.util.Ldap;
 import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.util.Random;
@@ -22,7 +23,7 @@ if(databaseconnectionok)
 		{
 			infomessage.text="User is deactivated";
 		}
-		else if(!user.exist(userid)&& userid!=null && !userid.equals(""))
+		else if(!user.exist(userid) && userid!=null && !userid.equals(""))
 		{
 			infomessage.text="Unknown Userid";
 		}

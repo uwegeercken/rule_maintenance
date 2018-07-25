@@ -52,7 +52,6 @@ else
 			fileCreator.projectName = project.name;
 			fileCreator.templatePath = realPath + "template";
 			fileCreator.outputPath = realPath + "tmp";
-			fileCreator.templateName = "ruleengine.vm";
 			fileCreator.selectedDate = selecteddate;
 			
 			project.loadRuleGroups(fileCreator.selectedDate);

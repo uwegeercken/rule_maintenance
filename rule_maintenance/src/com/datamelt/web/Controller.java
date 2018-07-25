@@ -92,8 +92,8 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
     private static String backupPath;
     private static int dbPort;
     private static String dbName;
-    private boolean dbConnectionOk;
-    private boolean hostConnectionOk;
+    private static boolean dbConnectionOk;
+    private static boolean hostConnectionOk;
     private static Ldap ldap;
     
     private static Interpreter interpreter=null;
@@ -199,14 +199,15 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	    }
     }	
 	
-	private void reloadConfig()
+	public static void reloadConfig()
 	{
 		readConfigFile(properties.getProperty(CONTEXT_PATH));
 		readDatabaseFile(properties.getProperty(CONTEXT_PATH));
-		hostConnectionOk = hostConnectionOk();	
+		hostConnectionOk = hostConnectionOk();
+		dbConnectionOk = databaseConnectionOk();
 	}
 	
-	private void readConfigFile(String realPath)
+	private static void readConfigFile(String realPath)
 	{
 		try
 		{
@@ -218,17 +219,20 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 			exportPath=p.getProperty(PROJECT_EXPORT_FOLDER);
 			backupPath=p.getProperty(PROJECT_BACKUP_FOLDER);
 			
-			ldap = new Ldap();
-	        ldap.setHost(p.getProperty(LDAP_HOSTNAME));
-	        ldap.setDomain(p.getProperty(LDAP_DOMAIN));
-	        if(p.getProperty(LDAP_PORT)!=null && !p.getProperty(LDAP_PORT).trim().equals(""))
-	        {
-	        	ldap.setPort(Integer.parseInt(p.getProperty(LDAP_PORT)));
-	        }
-	        else
-	        {
-	        	ldap.setPort(ConstantsWeb.LDAP_DEFAULT_PORT);
-	        }
+			if(p.getProperty(LDAP_HOSTNAME)!=null && !p.getProperty(LDAP_HOSTNAME).equals("") && p.getProperty(LDAP_DOMAIN)!=null && !p.getProperty(LDAP_DOMAIN).equals(""))
+			{
+				ldap = new Ldap();
+		        ldap.setHost(p.getProperty(LDAP_HOSTNAME));
+		        ldap.setDomain(p.getProperty(LDAP_DOMAIN));
+		        if(p.getProperty(LDAP_PORT)!=null && !p.getProperty(LDAP_PORT).trim().equals(""))
+		        {
+		        	ldap.setPort(Integer.parseInt(p.getProperty(LDAP_PORT)));
+		        }
+		        else
+		        {
+		        	ldap.setPort(ConstantsWeb.LDAP_DEFAULT_PORT);
+		        }
+			}
 		}
 		catch(Exception ex)
 		{
@@ -236,7 +240,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		}
 	}
 	
-	private void readDatabaseFile(String realPath)
+	private static void readDatabaseFile(String realPath)
 	{
 		try
 		{
@@ -256,7 +260,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		}
 	}
 	
-	private boolean databaseConnectionOk()
+	private static boolean databaseConnectionOk()
 	{
 		try
 		{
@@ -268,7 +272,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		{
 			return false;
 		}
-        
 	}
 	
 	/**
@@ -321,7 +324,7 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
         
 	}
 	
-	private boolean hostConnectionOk()
+	private static boolean hostConnectionOk()
 	{
 		try
 		{

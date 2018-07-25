@@ -1,6 +1,7 @@
 import java.io.FileOutputStream;
 import java.util.Properties;
 import com.datamelt.db.MySqlConnection;
+import com.datamelt.web.Controller;
 
 if(user!=null)
 {
@@ -27,10 +28,12 @@ if(cancelled.equals("save"))
 		p.store(fileOut, "configuration updated using Business Rule Maintenance Tool.");
 		fileOut.close();
 		infomessage.text="configuration saved to file: " + configfile + ".";
+		
+		Controller.reloadConfig();
 	}
 	catch(Exception ex)
 	{
-		infomessage.text="error saving configuration to file: " + configfile + ".";
+		infomessage.text="error saving configuration to file: " + configfile + ". error: " + ex.getMessage();
 	}
 }	
 	
