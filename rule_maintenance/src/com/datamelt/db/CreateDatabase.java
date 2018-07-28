@@ -575,7 +575,7 @@ public class CreateDatabase
     		+ "(55,2,'String','String, integer','','String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(56,2,'String','String, long',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(57,19,'long','double',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
-    		+ "(58,19,'int','float',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
+    		+ "(58,19,'integer','float',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "(59,23,'double','double',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "(60,24,'double','double',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
     		+ "(61,18,'double','double',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
@@ -645,7 +645,13 @@ public class CreateDatabase
     		+ "(133,49,'String','String, String, integer, integer','second String is the mask to use. integer is start position/end position',null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(134,49,'String','String, String','second String is the mask to use',null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(135,50,'String','String, String','second String is the encryption key to use',null,null,NULL,NULL,NULL,NULL,now()),"
-    		+ "(136,51,'String','String, String','second String is the decryption key to use',null,null,NULL,NULL,NULL,NULL,now())";
+    		+ "(136,51,'String','String, String','second String is the decryption key to use',null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(137,52,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(138,53,'long','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(139,54,'double','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(140,55,'float','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(141,56,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(142,57,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now())";
     
     public static final String CREATE_ACTIONS = "INSERT INTO " + TABLE_ACTION + " VALUES (1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
     		+ "(2,'Add a value to the beginning of a value','com.datamelt.rules.core.action.StringAction','prependValue','prepend',now()),"
@@ -697,5 +703,11 @@ public class CreateDatabase
     		+ "(48,'Replace value from a list of values','com.datamelt.rules.core.action.StringAction','replaceValueFromList','replace value from list',now()),"
     		+ "(49,'Replace value with a mask character','com.datamelt.rules.core.action.StringAction','maskValue','mask value',now()),"
     		+ "(50,'Encrypt value using a key','com.datamelt.rules.core.action.StringAction','encryptValue','encrypt value',now()),"
-    		+ "(51,'Decrypt value using a key','com.datamelt.rules.core.action.StringAction','decryptValue','decrypt value',now())";
+    		+ "(51,'Decrypt value using a key','com.datamelt.rules.core.action.StringAction','decryptValue','decrypt value',now()),"
+    		+ "(52,'Convert a String to an Integer value','com.datamelt.rules.core.action.ConvertAction','toInteger','convert to integer',now()),"
+    		+ "(53,'Convert a String to a Long value','com.datamelt.rules.core.action.ConvertAction','toLong','convert to long',now()),"
+    		+ "(54,'Convert a String to a Double value','com.datamelt.rules.core.action.ConvertAction','toDouble','convert to double',now()),"
+    		+ "(55,'Convert a String to a Float value','com.datamelt.rules.core.action.ConvertAction','toFloat','convert to float',now()),"
+    		+ "(56,'Convert a four character String which represents time (format: hhmm) to an Integer value representing minutes','com.datamelt.rules.core.action.ConvertAction','fourDigitTimetoMinutes','convert 4 characters time',now()),"
+    		+ "(57,'Convert a five character String which represents time (format: hh:mm) to an Integer value representing minutes','com.datamelt.rules.core.action.ConvertAction','fiveDigitTimetoMinutes','convert 5 characters time',now())";
     }

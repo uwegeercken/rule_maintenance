@@ -50,7 +50,7 @@ public class ReferenceFieldsFileCreator
 		this.templateName = templateName;
 	}
 	
-	public void writeFile() throws Exception
+	public String writeFile() throws Exception
 	{
 		String tempPath = FileUtility.addTrailingSlash(temporaryPath) + project.getName();
 		File folder = new File(tempPath);
@@ -63,5 +63,12 @@ public class ReferenceFieldsFileCreator
 		FileWriter fw = new FileWriter(file);
 		fw.write(project.mergeWithReferenceFieldTemplate(templatePath, templateName));
 		fw.close();
+		return fileName;
+	}
+	
+	public void deleteFile(String fileName)
+	{
+		File file = new File(fileName);
+		file.delete();
 	}
 }

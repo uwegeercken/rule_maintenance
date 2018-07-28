@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -50,7 +52,7 @@ public class RuleGroupFileCreator {
 	private String outputPath=null;
 	private String backupPath=null;
 	private String temporaryPath=null;
-	private String environment="";
+	private String environment="dev";
 	private String selectedDate=null;
 	private String dbServerHostname=null;
 	private int    dbServerPort;
@@ -58,6 +60,8 @@ public class RuleGroupFileCreator {
 	private String dbUser=null;
 	private String dbPassword=null;
 
+	private static SimpleDateFormat sdf 						= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	private static final String FILE_EXTENSION 					= ".xml";
 	
 	public static final String ZIP_EXTENSION 					= ".zip";
@@ -69,6 +73,10 @@ public class RuleGroupFileCreator {
 	public static final String TEMPLATE_RULEENGINE				= "ruleengine.vm";
 	public static final String TEMPLATE_REFERENCEFIELDS			= "referencefields.vm";
 	
+	private static final String LEVEL_INFO						= "INFO";
+	private static final String LEVEL_WARNING					= "WARNING";
+	private static final String LEVEL_ERROR						= "ERROR";
+	
 	public RuleGroupFileCreator()
 	{
 		
@@ -78,7 +86,7 @@ public class RuleGroupFileCreator {
 	{
 		RuleGroupFileCreator fileCreator = new RuleGroupFileCreator();
 		
-		if (args.length<6)
+		if (args.length<9)
         {
         	help();
         }
@@ -86,7 +94,8 @@ public class RuleGroupFileCreator {
         {
 			for(int i=0;i<args.length;i++)
 	    	{
-	    		if (args[i].startsWith("-n="))
+	    		// project name is optional
+				if (args[i].startsWith("-n="))
 	    		{
 	    			fileCreator.projectName = args[i].substring(3);
 	    		}
@@ -126,10 +135,12 @@ public class RuleGroupFileCreator {
 	    		{
 	    			fileCreator.dbPassword = args[i].substring(3);
 	    		}
+				// environment is optional
 	    		else if (args[i].startsWith("-e="))
 	    		{
 	    			fileCreator.environment = args[i].substring(3);
 	    		}
+				// backup folder is optional
 	    		else if (args[i].startsWith("-l="))
 	    		{
 	    			fileCreator.backupPath = args[i].substring(3);
@@ -138,96 +149,124 @@ public class RuleGroupFileCreator {
 			
 			if(fileCreator.templatePath==null)
 	    	{
-	    		throw new Exception("parameter -p: path to the template folder must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -p: path to the template folder must be specified"));
 	    	}
 			if(fileCreator.outputPath==null)
 	    	{
-	    		throw new Exception("parameter -o: path to the output folder must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -o: path to the output folder must be specified"));
 	    	}
 			if(fileCreator.temporaryPath==null)
 	    	{
-	    		throw new Exception("parameter -y: path to the temporary folder must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -y: path to the temporary folder must be specified"));
 	    	}
 			if(fileCreator.selectedDate==null)
 	    	{
-	    		throw new Exception("parameter -v: validity date for the rule group must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -v: validity date for the rule group must be specified"));
 	    	}
 			if(fileCreator.dbServerHostname==null)
 	    	{
-	    		throw new Exception("parameter -s: database server hostname must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -s: database server hostname must be specified"));
 	    	}
 			if(fileCreator.dbServerPort==0)
 	    	{
-	    		throw new Exception("parameter -r: database server port must be specified (integer value)");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -r: database server port must be specified (integer value)"));
 	    	}
 			if(fileCreator.dbName==null)
 	    	{
-	    		throw new Exception("parameter -b: database name must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -b: database name must be specified"));
 	    	}
 			if(fileCreator.dbUser==null)
 	    	{
-	    		throw new Exception("parameter -u: database user must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -u: database user must be specified"));
 	    	}
 			if(fileCreator.dbPassword==null)
 	    	{
-	    		throw new Exception("parameter -w: database user password must be specified");
+	    		throw new Exception(getSystemMessage(LEVEL_ERROR,"parameter -w: database user password must be specified"));
 	    	}
 			
-			System.out.println("start of program...");
-			System.out.println("getting connection to database");
+			System.out.println(getSystemMessage(LEVEL_INFO,"start of program..."));
+			System.out.println(getSystemMessage(LEVEL_INFO,"getting connection to database: " +fileCreator.dbName));
 			MySqlConnection connection = new MySqlConnection(fileCreator.dbServerHostname,fileCreator.dbServerPort,fileCreator.dbName,fileCreator.dbUser,fileCreator.dbPassword);
 			
 			ArrayList<Project> projects = new ArrayList<Project>();
 			if(fileCreator.projectName!=null)
 			{
-				System.out.println("getting project:" + fileCreator.projectName);
+				System.out.println(getSystemMessage(LEVEL_INFO,"getting project: " + fileCreator.projectName));
 				Project project = new Project();
 				project.setConnection(connection);
 				project.setName(fileCreator.projectName);
 				project.loadByName();
-				projects.add(project);
-			}
-			else
-			{
-				System.out.println("retrieving the list of projects");
-				projects = DbCollections.getAllProjects(connection);
-			}
-			
-			for(int f=0;f<projects.size();f++)
-			{
-				Project project = projects.get(f);
-				System.out.println("processing project: " + project.getName());
-				System.out.println("loading valid rule groups for date: " + fileCreator.selectedDate);
-				project.loadRuleGroups(fileCreator.selectedDate);
-					
-				if(fileCreator.backupPath!=null && !fileCreator.backupPath.equals(""))
+				if(project.getId()>0)
 				{
-					System.out.println("backing up project zip file to: " + fileCreator.backupPath);
+					projects.add(project);
 				}
 				else
 				{
-					System.out.println("backing up project zip file to: " + fileCreator.outputPath);
-				}
-				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath);				
-				
-				System.out.println("writing file for reference fields: " + project.getFields().size());
-				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, TEMPLATE_REFERENCEFIELDS);
-				referenceFieldFileCreator.writeFile();
-				
-				System.out.println("found rule groups: " + project.getRulegroups().size());
-				if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
-				{
-					System.out.println("writing files");
-					String tempPath = fileCreator.writeFiles(project);
-					
-					System.out.println("creating zip file: " + fileCreator.getZipFileName(project));
-					fileCreator.zipFiles(project,tempPath);
+					System.out.println(getSystemMessage(LEVEL_ERROR,"project not found: " + fileCreator.projectName));
 				}
 			}
-			System.out.println("end of program.");
+			else
+			{
+				System.out.println(getSystemMessage(LEVEL_INFO,"retrieving the list of projects"));
+				projects = DbCollections.getAllProjects(connection);
+			}
+			
+			if(projects.size()>0)
+			{
+				for(int f=0;f<projects.size();f++)
+				{
+					Project project = projects.get(f);
+					System.out.println(getSystemMessage(LEVEL_INFO,"processing project: " + project.getName()));
+					System.out.println(getSystemMessage(LEVEL_INFO,"loading valid rule groups for date: " + fileCreator.selectedDate));
+					project.loadRuleGroups(fileCreator.selectedDate);
+					project.loadFields();
+						
+					if(fileCreator.backupPath!=null && !fileCreator.backupPath.equals(""))
+					{
+						System.out.println(getSystemMessage(LEVEL_INFO,"backing up project zip file to: " + fileCreator.backupPath));
+					}
+					else
+					{
+						System.out.println(getSystemMessage(LEVEL_INFO,"backing up project zip file to: " + fileCreator.outputPath));
+					}
+					FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath);				
+					
+					System.out.println(getSystemMessage(LEVEL_INFO,"writing file for reference fields. number of fields: " + project.getFields().size()));
+					ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, TEMPLATE_REFERENCEFIELDS);
+					String referenceFieldsFileName = referenceFieldFileCreator.writeFile();
+					
+					System.out.println(getSystemMessage(LEVEL_INFO,"found rule groups: " + project.getRulegroups().size()));
+					if(project.getRulegroups()!=null && project.getRulegroups().size()>0)
+					{
+						System.out.println(getSystemMessage(LEVEL_INFO,"writing rule group files: " + project.getRulegroups().size()));
+						String tempPath = fileCreator.writeFiles(project);
+						
+						System.out.println(getSystemMessage(LEVEL_INFO,"creating zip file: " + fileCreator.getZipFileName(project)));
+						fileCreator.zipFiles(project,tempPath);
+					}
+
+					// delete the referencefields file for the project
+					referenceFieldFileCreator.deleteFile(referenceFieldsFileName);
+				}
+			}
+			else
+			{
+				System.out.println(getSystemMessage(LEVEL_WARNING,"no projects to process"));
+			}
+			System.out.println(getSystemMessage(LEVEL_INFO,"end of program."));
         }		
 	}
 
+	private static String getExecutionDateTime()
+	{
+		return sdf.format(new Date());
+	}
+
+	private static String getSystemMessage(String type, String text)
+	{
+		return "[" + getExecutionDateTime() + "] " + type + " " + text;
+	}
+	
 	public String writeFiles(Project project) throws Exception
 	{
 		String tempPath = FileUtility.addTrailingSlash(getTemporaryPath()) + project.getName();
@@ -336,8 +375,8 @@ public class RuleGroupFileCreator {
     	System.out.println();
     	System.out.println("RuleGroupFileCreator -n=[project name] -p=[template folder] -t=[template name] -o=[output folder] -y=[temporary folder] -v=[validity date] -s=[db server hostname] -r=[db server port] -b=[db name] -u=[db user] -w=[db password] -e=[environment] -l=[backup folder]");
     	System.out.println("where [project name]     : optional. name of the project for which files shall be generated. If no name is specified then zip files for all projects are generated.");
-    	System.out.println("      [environment]      : optional. the environment the file is targeted for");
-    	System.out.println("      [backup folder]    : optional. path to folder where copies of the project zip files are created.");
+    	System.out.println("      [environment]      : optional. the environment the file is targeted for. default is dev.");
+    	System.out.println("      [backup folder]    : optional. path to folder where copies of the project zip files are created. default is the output folder");
     	System.out.println("      [template folder]  : required. path to the folder containing the template file.");
     	System.out.println("      [output folder]    : required. path to the output folder where the zip file is created.");
     	System.out.println("      [temporary folder] : required. path to the temporary folder where rulegroup files are temporarily created.");
@@ -348,7 +387,7 @@ public class RuleGroupFileCreator {
     	System.out.println("      [db user]          : required. user with read access the database");
     	System.out.println("      [db password]      : required. user password to access the database");
     	System.out.println();
-    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -o=/home/user/testoutput -y=/home/user/temp -v=2018-07-01 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -p=mysecret -e=dev -l=/home/user/testoutput/backup");
+    	System.out.println("example: RuleGroupFileCreator -n=\"Project 1\" -p=/home/user/templates -o=/home/user/testoutput -y=/home/user/temp -v=2018-07-01 -s=localhost -r=3306 -b=ruleengine_rules -u=tom -w=mysecret -e=dev -l=/home/user/testoutput/backup");
     	System.out.println();
     	System.out.println("published as open source under the Apache License, Version 2.0.");
     	System.out.println("all code by uwe geercken, 2014-2018. uwe.geercken@web.de");
