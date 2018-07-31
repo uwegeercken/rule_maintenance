@@ -291,7 +291,6 @@ else
 					RuleExecutionCollection results = ruleEngine.getRuleExecutionCollection();
 					context.put("results",results);
 					
-					
 					if(ruleEngine.getNumberOfGroupsFailed()>0)
 	    	    	{
 	        			rowFailed = 1;
@@ -323,5 +322,6 @@ else
 	context.put("project",project);
 	context.put("rulegroup",rulegroup);
 	context.put("usedfields",rulegroup.getReferencedFields());
+	context.put("testrun",true);
 	templatename="listrulesubgroups.vm";
 }

@@ -138,7 +138,7 @@
 					<p class="small">action</p>
 					<p class="big">$action.name #if($results && ($action.executeIfInteger==2 || $action.executeIfInteger==$rulegroupfailed))<img height="22" width="22" src="img/passed.png" title="action executed">#elseif($results && $action.executeIfInteger!=$rulegroupfailed)<img height="22" width="22" src="img/failed.png" title="action not executed">#end</p>
 					<p class="normal">$action.description</p>
-					#if($ruleresult && ($action.executeIfInteger==2 || $action.executeIfInteger==$rulegroupfailed))
+					#if($testrun && ($action.executeIfInteger==2 || $action.executeIfInteger==$rulegroupfailed))
 						#if($row.getFieldValue($action.object2Parameter).length()> 32)
 							<p class="normal">field: [$action.object2Parameter] updated to: [$row.getFieldValue($action.object2Parameter).substring(0,32)...]</p>
 						#else

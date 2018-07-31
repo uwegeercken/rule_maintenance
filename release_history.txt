@@ -2,10 +2,15 @@ Relase history for the Business Rule Maintenance Tool
 
 last update: Uwe Geercken, July 2018
 
+version 2.2.3
+=============
+- additional actions for converting string to integer, long, float, double
+- additional action to convert time to minutes
+
 version 2.2.1
 =============
 - new feature: disable/enable rulegroups
-- additional shurtcuts (icons with links)
+- additional shortcuts (icons with links)
 - action for encrypting/decrypting values
 
 version 1.8.1

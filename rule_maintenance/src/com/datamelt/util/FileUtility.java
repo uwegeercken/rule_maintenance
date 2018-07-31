@@ -45,7 +45,7 @@ public class FileUtility
         {
             value = value.substring(0,value.length()-1);
         }
-        if(value.endsWith("\\"))
+        else if(value.endsWith("\\"))
         {
             value = value.substring(0,value.length()-2);
         }
