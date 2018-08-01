@@ -50,8 +50,10 @@ else
 
 	if(cancelled!=null && cancelled.equals("test"))
 	{
+		context.put("testrun",true);
+		
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String realPath = request.getSession().getServletContext().getRealPath("/");
      	if(id >0)
      	{
@@ -322,6 +324,5 @@ else
 	context.put("project",project);
 	context.put("rulegroup",rulegroup);
 	context.put("usedfields",rulegroup.getReferencedFields());
-	context.put("testrun",true);
 	templatename="listrulesubgroups.vm";
 }

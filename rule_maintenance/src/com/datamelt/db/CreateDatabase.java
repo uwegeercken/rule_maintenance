@@ -475,7 +475,8 @@ public class CreateDatabase
     		+ "    		(165,40,'String','String',NULL,'integer','The value for the distance between the two strings to be evaluated',NULL,NULL,NULL,NULL,now()),"
     		+ "    		(166,1,'Date','Date','Without parameter the String is converted to a Date using the format yyyy-MM-dd','String','Provide a date format different from the default.',NULL,NULL,NULL,NULL,now()),"
     		+ "    		(167,1,'boolean','String',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
-    		+ "    		(168,1,'String','boolean',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now())";
+    		+ "    		(168,1,'String','boolean',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now()),"
+    		+ "    		(169,41,'Date','String',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now())";
     
     public static final String CREATE_CHECKS = "INSERT INTO " + TABLE_CHECK + " VALUES (1,'Check Is Equal','Check for equality of values','is equal to','com.datamelt.rules.implementation','CheckIsEqual',0,'2014-11-27 22:03:01'),"
     		+ "(2,'Check Is Not Equal','Check if values are not equal','is not equal to','com.datamelt.rules.implementation','CheckIsNotEqual',0,'2014-11-27 20:35:35'),"
@@ -516,7 +517,8 @@ public class CreateDatabase
     		+ "(37,'Check Distance Is Greater Or Equal','Checks if the Levenshtein distance between two strings is greater or equal to a given value','is greater than or equal to (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsGreaterOrEqual',0,now()),"
     		+ "(38,'Check Distance Is Smaller Or Equal','Checks if the Levenshtein distance between two strings is smaller or equal to a given value','is smaller than or equal to (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsSmallerOrEqual',0,now()),"
     		+ "(39,'Check Distance Is Smaller','Checks if the Levenshtein distance between two strings is smaller than a given value','is smaller than (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsSmaller',0,now()),"
-    		+ "(40,'Check Distance Is Greater','Checks if the Levenshtein distance between two strings is greater than a given value','is greater than (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsGreater',0,now())";
+    		+ "(40,'Check Distance Is Greater','Checks if the Levenshtein distance between two strings is greater than a given value','is greater than (Levenshtein distance)','com.datamelt.rules.implementation','CheckDistanceIsGreater',0,now()),"
+    		+ "(41,'Check Date Time Is Between','Checks if the time part of a date is between two given time value specified in the format HH:mm:ss (hours, minutes, seconds). Separate the time values using a comma.','time part is between','com.datamelt.rules.implementation','CheckDateTimeIsBetween',0,now())";
 
     public static final String CREATE_ACTION_METHODS = "INSERT INTO " + TABLE_ACTION_METHOD + " VALUES (1,4,'String','String, double',NULL,'String','Separator to be used',NULL,NULL,NULL,NULL,now()),"
     		+ "(2,5,'String','String, integer','integer: maximum length of the String',NULL,'number of spaces to add at the begining',NULL,NULL,NULL,NULL,now()),"

@@ -91,7 +91,7 @@ else
 				FileUtility.backupFile(fileCreator.outputPath, fileCreator.getZipFileName(project),fileCreator.backupPath); 
 				String tempPath = fileCreator.writeFiles(project);
 
-				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, RuleGroupFileCreator.TEMPLATE_REFERENCE_FIELDS);
+				ReferenceFieldsFileCreator referenceFieldFileCreator = new ReferenceFieldsFileCreator(project,fileCreator.temporaryPath,fileCreator.templatePath, RuleGroupFileCreator.TEMPLATE_REFERENCEFIELDS);
 				referenceFieldFileCreator.writeFile();
 				
 				String fileName = fileCreator.zipFiles(project, tempPath);

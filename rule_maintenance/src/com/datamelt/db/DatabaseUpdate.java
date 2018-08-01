@@ -19,6 +19,7 @@
 package com.datamelt.db;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * Used to do updates (patching) on the users database. Either tables or data itself.
@@ -54,6 +55,9 @@ public class DatabaseUpdate
 	private static final String ADD_ACTION_CONVERT_5CHARACTERS_TIME						= "INSERT INTO " + CreateDatabase.TABLE_ACTION + " VALUES (57,'Convert a five character String which represents time (format: hh:mm) to an Integer value, representing minutes','com.datamelt.rules.core.action.ConvertAction','fiveDigitTimetoMinutes','convert 5 characters time',now())";
 	private static final String ADD_ACTION_METHOD_CONVERT_5CHARACTERS_TIME				= "INSERT INTO " + CreateDatabase.TABLE_ACTION_METHOD + " VALUES (142,57,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now())";
 
+	private static final String ADD_CHECK_DATE_TIME_IS_BETWEEN							= "INSERT INTO " + CreateDatabase.TABLE_CHECK + " VALUES (41,'Check Date Time Is Between','Checks if the time part of a date is between two given time value specified in the format HH:mm:ss (hours, minutes, seconds). Separate the time values using a comma.','time part is between','com.datamelt.rules.implementation','CheckDateTimeIsBetween',0,now())";
+	private static final String ADD_CHECK_METHOD_DATE_TIME_IS_BETWEEN					= "INSERT INTO " + CreateDatabase.TABLE_CHECK_METHOD + " VALUES (169,41,'Date','String',NULL,NULL,NULL,NULL,NULL,NULL,NULL,now())";
+
 	public static void alterDatabaseTables(MySqlConnection connection, String dbName)
 	{
 		// add disabled field. implemented 2018-07-20
@@ -62,8 +66,8 @@ public class DatabaseUpdate
 		// added 2018-07-28
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_TO_INTEGER);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_TO_INTEGER);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_INTEGER);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_INTEGER);
 		}
 		catch(Exception psex)
 		{
@@ -72,8 +76,8 @@ public class DatabaseUpdate
 
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_TO_LONG);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_TO_LONG);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_LONG);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_LONG);
 		}
 		catch(Exception psex)
 		{
@@ -82,8 +86,8 @@ public class DatabaseUpdate
 	
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_TO_DOUBLE);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_TO_DOUBLE);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_DOUBLE);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_DOUBLE);
 		}
 		catch(Exception psex)
 		{
@@ -92,8 +96,8 @@ public class DatabaseUpdate
 	
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_TO_FLOAT);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_TO_FLOAT);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_FLOAT);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_FLOAT);
 		}
 		catch(Exception psex)
 		{
@@ -102,8 +106,8 @@ public class DatabaseUpdate
 		
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_4CHARACTERS_TIME);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_4CHARACTERS_TIME);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_4CHARACTERS_TIME);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_4CHARACTERS_TIME);
 		}
 		catch(Exception psex)
 		{
@@ -112,8 +116,18 @@ public class DatabaseUpdate
 		
 		try
 		{
-			insertData(connection, ADD_ACTION_CONVERT_5CHARACTERS_TIME);
-			insertData(connection, ADD_ACTION_METHOD_CONVERT_5CHARACTERS_TIME);
+			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_5CHARACTERS_TIME);
+			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_5CHARACTERS_TIME);
+		}
+		catch(Exception psex)
+		{
+			psex.printStackTrace();
+		}
+		
+		try
+		{
+			insertData(connection, CreateDatabase.TABLE_CHECK, ADD_CHECK_DATE_TIME_IS_BETWEEN);
+			insertData(connection, CreateDatabase.TABLE_CHECK_METHOD, ADD_CHECK_METHOD_DATE_TIME_IS_BETWEEN);
 		}
 		catch(Exception psex)
 		{
@@ -142,8 +156,13 @@ public class DatabaseUpdate
 		}
 	}
 	
-	private static void insertData(MySqlConnection connection, String insertSql) throws Exception
+	private static void insertData(MySqlConnection connection, String tableName, String insertSql) throws Exception
 	{
+		PreparedStatement psId = connection.getPreparedStatement("select max(id) as maxid from " + tableName);
+		ResultSet rs = psId.executeQuery();
+		rs.next();
+		long maxId = rs.getLong("maxid");
+		
 		PreparedStatement ps = connection.getPreparedStatement(insertSql);
 		ps.execute();
 	}

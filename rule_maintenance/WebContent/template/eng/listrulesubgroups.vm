@@ -95,7 +95,7 @@
 					#if($results)
 					#set($ruleresult=$!{results.getSubgroupRuleResult(${rulesubgroup.name},${rule.name})})
 					#end
-					#if($ruleresult)
+					#if($testrun)
 						<p class="big">${rule.name} #if(${ruleresult.rule.failed}==1)<img height="22" width="22" src="img/failed.png" title="rule failed">#else<img height="22" width="22" src="img/passed.png" title="rule passed">#end</p>
 						#if($ruleresult.getMessage().length()> 75)
 							<p class="normal">$!{ruleresult.getMessage().substring(0,75)} ...</p>
@@ -208,7 +208,7 @@
 	</div>
 	<ul>
 		<li>Enter &quot;string&quot; values as regular text</li>
-		<li>Enter &quot;date&quot; values in the format yyyy-MM-dd (e.g. 2016-05-25) or select them from the calendar. You may manually add a time value after the date (separated by one space character) in the format hh:mm:ss (e.g. 18:54:30).</li>
+		<li>Enter &quot;date&quot; values in the format yyyy-MM-dd (e.g. 2018-05-25) or select them from the calendar. You may manually add a time value after the date (separated by one space character) in the format HH:mm:ss (e.g. 18:54:30).</li>
 		<li>Enter &quot;integer&quot; and &quot;long&quot; values as numbers without decimal point and precision (e.g. 12345)</li>
 		<li>Enter &quot;float&quot; and &quot;double&quot; values as numbers with decimal point and precision (e.g. 567.89)</li>
 		<li>Select &quot;boolean&quot; values from the dropdown list</li>
