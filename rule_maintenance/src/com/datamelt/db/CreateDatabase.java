@@ -653,9 +653,18 @@ public class CreateDatabase
     		+ "(139,54,'double','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(140,55,'float','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
     		+ "(141,56,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
-    		+ "(142,57,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now())";
+    		+ "(142,57,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(143,58,'integer','String',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(144,59,'integer','integer',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(145,59,'integer','long',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(146,59,'integer','float',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(147,59,'integer','double',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(148,59,'integer','boolean',null,null,null,NULL,NULL,NULL,NULL,now()),"
+    		+ "(149,59,'integer','BigDecimal',null,null,null,NULL,NULL,NULL,NULL,now())"
+    		;
     
-    public static final String CREATE_ACTIONS = "INSERT INTO " + TABLE_ACTION + " VALUES (1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
+    public static final String CREATE_ACTIONS = "INSERT INTO " + TABLE_ACTION + " VALUES "
+    		+ "(1,'Set a value to another value','com.datamelt.rules.core.action.StringAction','setValue','set value (string)',now()),"
     		+ "(2,'Add a value to the beginning of a value','com.datamelt.rules.core.action.StringAction','prependValue','prepend',now()),"
     		+ "(3,'Add a value to the end of a value','com.datamelt.rules.core.action.StringAction','appendValue','append',now()),"
     		+ "(4,'Concatenate two values','com.datamelt.rules.core.action.StringAction','concatValues','concat',now()),"
@@ -711,5 +720,8 @@ public class CreateDatabase
     		+ "(54,'Convert a String to a Double value','com.datamelt.rules.core.action.ConvertAction','toDouble','convert to double',now()),"
     		+ "(55,'Convert a String to a Float value','com.datamelt.rules.core.action.ConvertAction','toFloat','convert to float',now()),"
     		+ "(56,'Convert a four character String which represents time (format: hhmm) to an Integer value representing minutes','com.datamelt.rules.core.action.ConvertAction','fourDigitTimetoMinutes','convert 4 characters time',now()),"
-    		+ "(57,'Convert a five character String which represents time (format: hh:mm) to an Integer value representing minutes','com.datamelt.rules.core.action.ConvertAction','fiveDigitTimetoMinutes','convert 5 characters time',now())";
+    		+ "(57,'Convert a five character String which represents time (format: hh:mm) to an Integer value representing minutes','com.datamelt.rules.core.action.ConvertAction','fiveDigitTimetoMinutes','convert 5 characters time',now()),"
+    		+ "(58,'Calculate the hash of a value','com.datamelt.rules.core.action.StringAction','hashValue','hash a value (String)',now()),"
+    		+ "(59,'Calculate the hash of a value','com.datamelt.rules.core.action.MathAction','hashValue','hash a value (number)',now())"
+    		;
     }

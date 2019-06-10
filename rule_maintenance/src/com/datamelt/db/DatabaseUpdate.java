@@ -61,13 +61,13 @@ public class DatabaseUpdate
 	public static void alterDatabaseTables(MySqlConnection connection, String dbName)
 	{
 		// add disabled field. implemented 2018-07-20
-		alterTable(connection, CHECK_TABLE_RULEGROUP, UPDATE_TABLE_RULEGROUP);
+		//alterTable(connection, CHECK_TABLE_RULEGROUP, UPDATE_TABLE_RULEGROUP);
 		
 		// added 2018-07-28
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_INTEGER);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_INTEGER);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_INTEGER);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_INTEGER);
 		}
 		catch(Exception psex)
 		{
@@ -76,8 +76,8 @@ public class DatabaseUpdate
 
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_LONG);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_LONG);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_LONG);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_LONG);
 		}
 		catch(Exception psex)
 		{
@@ -86,8 +86,8 @@ public class DatabaseUpdate
 	
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_DOUBLE);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_DOUBLE);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_DOUBLE);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_DOUBLE);
 		}
 		catch(Exception psex)
 		{
@@ -96,8 +96,8 @@ public class DatabaseUpdate
 	
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_FLOAT);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_FLOAT);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_TO_FLOAT);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_TO_FLOAT);
 		}
 		catch(Exception psex)
 		{
@@ -106,8 +106,8 @@ public class DatabaseUpdate
 		
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_4CHARACTERS_TIME);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_4CHARACTERS_TIME);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_4CHARACTERS_TIME);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_4CHARACTERS_TIME);
 		}
 		catch(Exception psex)
 		{
@@ -116,8 +116,8 @@ public class DatabaseUpdate
 		
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_5CHARACTERS_TIME);
-			insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_5CHARACTERS_TIME);
+			//insertData(connection, CreateDatabase.TABLE_ACTION, ADD_ACTION_CONVERT_5CHARACTERS_TIME);
+			//insertData(connection, CreateDatabase.TABLE_ACTION_METHOD, ADD_ACTION_METHOD_CONVERT_5CHARACTERS_TIME);
 		}
 		catch(Exception psex)
 		{
@@ -126,8 +126,8 @@ public class DatabaseUpdate
 		
 		try
 		{
-			insertData(connection, CreateDatabase.TABLE_CHECK, ADD_CHECK_DATE_TIME_IS_BETWEEN);
-			insertData(connection, CreateDatabase.TABLE_CHECK_METHOD, ADD_CHECK_METHOD_DATE_TIME_IS_BETWEEN);
+			//insertData(connection, CreateDatabase.TABLE_CHECK, ADD_CHECK_DATE_TIME_IS_BETWEEN);
+			//insertData(connection, CreateDatabase.TABLE_CHECK_METHOD, ADD_CHECK_METHOD_DATE_TIME_IS_BETWEEN);
 		}
 		catch(Exception psex)
 		{
