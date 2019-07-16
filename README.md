@@ -16,7 +16,7 @@ The latest version has enhanced user support: filtering on pages, storing filter
 Make sure you have a MySQL or Mariadb server running. You will need a user and user password which allows to create the database, tables and some initial data.
 
 
-    Copyright (C) 2008-2018  Uwe Geercken
+    Copyright (C) 2008-2019  Uwe Geercken
 
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -36,5 +36,5 @@ Make sure you have a MySQL or Mariadb server running. You will need a user and u
  under the License.
 
 Uwe Geercken - uwe.geercken@web.de
-last update: 2018-07-31
+last update: 2019-07-17
 
