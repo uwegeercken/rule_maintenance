@@ -4,10 +4,8 @@
 
 <table border="0" width="100%">
 	<tr class="light">
-		<td width="27%">Mandatory: Field or Parameter(s)</td>
-		<td width="20%">optional Parameter</td>
-		<td width="20%">optional Parameter</td>
-		<td width="20%">optional Parameter</td>
+		<td width="40%">Mandatory: Field or Parameter(s)</td>
+		<td width="47%">Note</td>
 		<td width="13%">Field to update</td>
 	<tr>
 	#set($counter=0)
@@ -18,18 +16,8 @@
 			<tr class="light2">
 		#end
 		<td>$!{method.methodTypes}</td>
-		#if($!{method.optionalType1})
-			<td>$!{method.optionalType1} - $!{method.optionalType1Explanation}</p>
-		#else
-			<td></td>
-		#end
-		#if($!{method.optionalType2})
-			<td>$!{method.optionalType2} - $!{method.optionalType3Explanation}</p>
-		#else
-			<td></td>
-		#end
-		#if($!{method.optionalType3})
-			<td>$!{method.optionalType3} - $!{method.optionalType3Explanation}</p>
+		#if($!{method.note})
+			<td>$!{method.note}</p>
 		#else
 			<td></td>
 		#end

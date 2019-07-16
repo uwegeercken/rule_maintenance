@@ -41,9 +41,10 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 	private static final String TABLENAME="check_method";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(check_id, compare, compare_to, note, parameter1, parameter1_explanation, parameter2, parameter2_explanation, parameter3, parameter3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, compare=?, compare_to=?, note=?, parameter1=?, parameter1_explanation=?, parameter2=?, parameter2_explanation=?, parameter3=?, parameter3_explanation=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (check_id, compare, compare_to, note, parameter1, parameter1_explanation, parameter2, parameter2_explanation, parameter3, parameter3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set check_id=?, compare=?, compare_to=?, note=?, parameter1=?, parameter1_explanation=?, parameter2=?, parameter2_explanation=?, parameter3=?, parameter3_explanation=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
+    public static final String EXIST_METHOD_SQL  = "select id from " + TABLENAME + "  where check_id=? and compare=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
 	public CheckMethod()
@@ -143,6 +144,65 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 		}
 	}
 	
+	public boolean existMethod() throws Exception
+    {
+		String existSql = EXIST_METHOD_SQL;
+		
+        if(compareTo != null)
+        {
+        	existSql = existSql + " and compare_to = ?";
+        }
+        else
+        {
+        	existSql = existSql + " and compare_to is ?";
+        }
+        if(parameter1 != null)
+        {
+        	existSql = existSql + " and parameter1 = ?";
+        }
+        else
+        {
+        	existSql = existSql + " and parameter1 is ?";
+        }
+        if(parameter2 != null)
+        {
+        	existSql = existSql + " and parameter2 = ?";
+        }
+        else
+        {
+        	existSql = existSql + " and parameter2 is ?";
+        }
+        if(parameter3 != null)
+        {
+        	existSql = existSql + " and parameter3 = ?";
+        }
+        else
+        {
+        	existSql = existSql + " and parameter3 is ?";
+        }
+        
+		ResultSet rs = selectExistMethod(getConnection().getPreparedStatement(existSql));
+		boolean exists=false;
+        if(rs.next())
+		{
+        	this.setId(rs.getLong("id"));
+	        exists = true;
+		}
+        rs.close();
+        return exists;
+    }
+
+	private ResultSet selectExistMethod(PreparedStatement p) throws Exception
+	{
+		p.setLong(1,checkId);
+		p.setString(2,compare);
+		p.setString(3, compareTo);
+		p.setString(4, parameter1);
+		p.setString(5, parameter2);
+		p.setString(6, parameter3);
+		return p.executeQuery();
+	}
+	
 	public String getCompare()
 	{
 		return compare;
@@ -231,6 +291,16 @@ public class CheckMethod extends DatabaseRecord implements Loadable
 	public void setParameter3Explanation(String parameter3Explanation) 
 	{
 		this.parameter3Explanation = parameter3Explanation;
+	}
+
+	public long getCheckId() 
+	{
+		return checkId;
+	}
+
+	public void setCheckId(long checkId) 
+	{
+		this.checkId = checkId;
 	}
 
 

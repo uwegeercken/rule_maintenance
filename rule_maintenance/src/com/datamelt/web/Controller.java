@@ -18,7 +18,9 @@
  */ 
 package com.datamelt.web;  
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -33,6 +35,7 @@ import bsh.Interpreter;
 
 import com.datamelt.db.DatabaseCreator;
 import com.datamelt.db.DatabaseUpdate;
+import com.datamelt.db.JareVersion;
 import com.datamelt.db.MySqlConnection;
 import com.datamelt.plugin.BeanshellPlugin;
 import com.datamelt.plugin.PluginLoader;
@@ -275,29 +278,60 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 	}
 	
 	/**
-	 * check if all required tables exit.
+	 * check if all required tables exist. also checks if there is a new Jare ruleengine jar file available in WEB-INF/lib.
+	 * If so, then the jar file is scanned for new checks, check methods, actions and action methods. If new ones are found
+	 * then the current database is modified: updated for already existing checks, check methods, actions and action methods
+	 * and insert for new ones.
 	 * 
-	 * all executed sql queries have a "if not exist" statement, so if the table already
+	 * all executed sql queries that create database tabels and keys/indexes have a "if not exist" statement, so if the table already
 	 * exists, nothing will happen. if it does not it will be created.
 	 * 
-	 * this method does not create any data in the tables.
 	 */
 	private void checkAndCreateDatabaseTables()
 	{
 		try
 		{
-			MySqlConnection con = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
-			
-			DatabaseCreator.createDatabaseTables(con,dbName);
-			
-			con.close();
+			MySqlConnection connection = getConnection(dbHostname,dbPort,dbName, dbUser,dbUserPassword);
+			// create database tables if they don't exist
+			DatabaseCreator.createDatabaseTables(connection,dbName);
 
+			// get the latest database version of the jare ruleengine jar file
+			JareVersion jareVersion = new JareVersion();
+			jareVersion.setConnection(connection);
+			jareVersion.loadLatest();
+			
+			// get the latest file version of the jare ruleengine jar file from the tomcat WEB-INF/lib folder
+			File jareJarFile = DatabaseCreator.getJareJarFile();
+			if(jareJarFile!=null && jareJarFile.exists() && jareJarFile.canRead())
+			{
+				String jareJarFilename = jareJarFile.getName();
+				// if we have no version in the database or if the ruleengine jar file name /version) has changed
+				// process the jar file for updated checks, check methods, actions and action methods
+				if(jareVersion.getVersion()==null || !jareJarFilename.equals(jareVersion.getVersion()))
+				{
+					DatabaseCreator.createOrUpdateDatabaseTablesChecks(connection, jareJarFile, dbName);
+					DatabaseCreator.createOrUpdateDatabaseTablesActions(connection,jareJarFile, dbName);
+					
+					jareVersion.setVersion(jareJarFilename);
+					// update version in database if it exists otherwise insert
+					if(jareVersion.getId()>0)
+					{
+						PreparedStatement statement = connection.getPreparedStatement(JareVersion.UPDATE_SQL);
+						jareVersion.update(statement);
+					}
+					else
+					{
+						PreparedStatement statement = connection.getPreparedStatement(JareVersion.INSERT_SQL);
+						jareVersion.insert(statement);
+					}
+				}
+			}
+			connection.close();
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
 		}
-        
 	}
 	
 	/**
@@ -336,7 +370,6 @@ public class Controller extends org.apache.velocity.tools.view.VelocityLayoutSer
 		{
 			return false;
 		}
-        
 	}
 	
 	public Template handleRequest(HttpServletRequest request,HttpServletResponse response, org.apache.velocity.context.Context context ) 

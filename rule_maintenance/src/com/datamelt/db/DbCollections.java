@@ -914,7 +914,7 @@ public class DbCollections
         }
         else
         {
-        	compareTypeSql = "compare = '" + compareType + "'";
+        	compareTypeSql = "compare = '" + convertType(compareType) + "'";
         }
         String compareToTypeSql;
         if(compareToType==null)
@@ -923,7 +923,7 @@ public class DbCollections
         }
         else
         {
-        	compareToTypeSql = "compare_to = '" + compareToType + "'";
+        	compareToTypeSql = "compare_to = '" + convertType(compareToType) + "'";
         }
         String sql="select count(1) as counter from check_method where check_id=" + checkId +
         		" and " + compareTypeSql + " and " + compareToTypeSql;
@@ -936,6 +936,19 @@ public class DbCollections
         }
         rs.close();
         return numberOfMethods>=1;
+    }
+    
+    private static String convertType(String type)
+    {
+    	// the database contains int and not integer - so we translate it here
+    	if(type.equals("integer"))
+    	{
+    		return "int";
+    	}
+    	else
+    	{
+    		return type;
+    	}
     }
     
     /**

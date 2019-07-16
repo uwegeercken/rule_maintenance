@@ -36,9 +36,9 @@ public class Action extends DatabaseRecord implements Loadable
 	private static final String TABLENAME="action";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(description, classname, methodname, methoddisplayname) values (?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set description=?, classname=?, methodname=?, methoddisplayname=? where id =?";
-    public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (description, classname, methodname, methoddisplayname) values (?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + "  set description=?, classname=?, methodname=?, methoddisplayname=? where id =?";
+    public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where classname=? and methodname=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
 	public Action()
@@ -74,9 +74,10 @@ public class Action extends DatabaseRecord implements Loadable
 		return p.executeQuery();
 	}
 
-	private ResultSet selectExistCheck(PreparedStatement p,String newName) throws Exception
+	private ResultSet selectExistAction(PreparedStatement p) throws Exception
 	{
-		p.setString(1,newName);
+		p.setString(1,classname);
+		p.setString(2,methodname);
 		return p.executeQuery();
 	}
 	
@@ -126,13 +127,14 @@ public class Action extends DatabaseRecord implements Loadable
 		}
 	}
 	
-	public boolean exist(String newName) throws Exception
+	public boolean exist() throws Exception
     {
-        ResultSet rs = selectExistCheck(getConnection().getPreparedStatement(EXIST_SQL),newName);
+        ResultSet rs = selectExistAction(getConnection().getPreparedStatement(EXIST_SQL));
 		boolean exists=false;
         if(rs.next())
 		{
-	        exists = true;
+	        this.setId(rs.getLong("id"));
+        	exists = true;
 		}
         rs.close();
         return exists;

@@ -39,9 +39,10 @@ public class Check extends DatabaseRecord implements Loadable
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	private static final String SELECT_BY_NAME_SQL="select * from " + TABLENAME + " where name=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(name, description, name_descriptive, package, class, check_single_field) values (?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set name=?, description=?, name_descriptive=?, package=?, class=?, check_single_field=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (name, description, name_descriptive, package, class, check_single_field) values (?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set name=?, description=?, name_descriptive=?, package=?, class=?, check_single_field=? where id =?";
     public static final String EXIST_SQL  = "select id from " + TABLENAME + "  where name =?";
+    public static final String EXIST_CLASS_SQL  = "select id from " + TABLENAME + "  where class=?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
 
 	public Check()
@@ -106,6 +107,12 @@ public class Check extends DatabaseRecord implements Loadable
 		return p.executeQuery();
 	}
 	
+	private ResultSet selectExistClass(PreparedStatement p) throws Exception
+	{
+		p.setString(1,className);
+		return p.executeQuery();
+	}
+	
 	public void update(PreparedStatement p) throws Exception
 	{
 		p.setString(1,name);
@@ -162,6 +169,19 @@ public class Check extends DatabaseRecord implements Loadable
 		boolean exists=false;
         if(rs.next())
 		{
+	        exists = true;
+		}
+        rs.close();
+        return exists;
+    }
+	
+	public boolean existClass() throws Exception
+    {
+        ResultSet rs = selectExistClass(getConnection().getPreparedStatement(EXIST_CLASS_SQL));
+		boolean exists=false;
+        if(rs.next())
+		{
+        	this.setId(rs.getLong("id"));
 	        exists = true;
 		}
         rs.close();

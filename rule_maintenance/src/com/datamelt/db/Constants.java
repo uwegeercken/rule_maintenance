@@ -20,12 +20,17 @@ package com.datamelt.db;
 
 public class Constants
 {
-    public static final String PROPERTY_HOSTNAME        = "hostname";
-    public static final String PROPERTY_PORT            = "port";
-    public static final String PROPERTY_DATABASENAME    = "databasename";
-    public static final String PROPERTY_TEMPLATEPATH    = "templatepath";
-    public static final String DATABASE_PROPERTIES_FILE = "/db.properties";
+    public static final String PROPERTY_HOSTNAME          = "hostname";
+    public static final String PROPERTY_PORT              = "port";
+    public static final String PROPERTY_DATABASENAME      = "databasename";
+    public static final String PROPERTY_TEMPLATEPATH      = "templatepath";
+    public static final String DATABASE_PROPERTIES_FILE   = "/db.properties";
     
-    public static final String DEFAULT_LAYOUT           = "default.vm";
+    public static final String DEFAULT_LAYOUT             = "default.vm";
+    
+    public static final String PACKAGE_RULEENGINE_CHECKS  = "com.datamelt.rules.implementation"; 
+    public static final String PACKAGE_RULEENGINE_ACTIONS = "com.datamelt.rules.core.action";
+    
+    public static final String JARE_JAR_FILE_PATTERN 		= "jare-.*.jar";
     
 }

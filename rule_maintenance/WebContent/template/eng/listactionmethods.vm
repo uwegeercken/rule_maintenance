@@ -3,7 +3,7 @@
 <p><img id="helpimg" height="22" width="22" src="img/help_black.png" title="show help" onclick="switchHelp()"><a href="process?action=bsh&ro=1&scriptname=listactions"><img class="go_back" height="22" width="22" src="img/go_back.png" title="go back: Actions"></a></p>
 <div id="help">
 	<p class="helptitle">List of methods for the selected Action</p>
-	<p>The listed methods show which data types can be used. Some methods allow the user to specify additional (sometimes optional) parameters.</p>
+	<p>The listed methods show which data types can be used. Some methods allow the user to specify additional parameters.</p>
 	<p>An Action usually updates one field from another one or updates the field from a given fixed value (parameter). Specify additional parameters as required by the method. </p>
 	<p>Important: The first value for the methods (displayed below) is the value of the field from which the data is retrieved. If this field is not specified then it is the value of the first parameter. The type of the field to update must correspond to the return type (displayed below) of the method.</p>
 </div>
@@ -13,21 +13,12 @@
 		<div class="grouptop">
 			<p class="small">action</p>
 			<p class="big">$!{method.methodTypes}</p>
-			#if($!{method.optionalType1})
-			<p class="normal">optional: $!{method.optionalType1} - $!{method.optionalType1Explanation}</p>
-			#end
-			#if($!{method.optionalType2})
-			<p class="normal">optional: $!{method.optionalType2} - $!{method.optionalType2Explanation}</p>
-			#end
-			#if($!{method.optionalType3})
-			<p class="normal">optional: $!{method.optionalType3} - $!{method.optionalType3Explanation}</p>
+			#if($!{method.note})
+			<p class="normal">$!{method.note}</p>
 			#end
 			#if($!{method.returnType})
 			<p class="normal">return type: ${method.returnType}</p>
 			#end
-		</div>
-		<div>
-			<p class="small">$!method.note</p>
 		</div>
 	</div>
 #end

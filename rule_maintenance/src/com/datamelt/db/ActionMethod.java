@@ -41,9 +41,10 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 	private static final String TABLENAME="action_method";
 	private static final String SELECT_SQL="select * from " + TABLENAME + " where id=?";
 	
-	public static final String INSERT_SQL = "insert into " + TABLENAME + " +(action_id, return_type, value, note, optionalType1, optionalType1_explanation, optionalType2, optionalType2_explanation, optionalType3, optionalType3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_SQL = "update " + TABLENAME + " + set check_id=?, return_type=?, value=?, note=?, optionalType1=?, optionalType1_explanation=?, optionalType2=?, optionalType2_explanation=?, optionalType3=?, optionalType3_explanation=? where id =?";
+	public static final String INSERT_SQL = "insert into " + TABLENAME + " (action_id, return_type, method_types, note, optional_type1, optional_type1_explanation, optional_type2, optional_type2_explanation, optional_type3, optional_type3_explanation) values (?,?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_SQL = "update " + TABLENAME + " set action_id=?, return_type=?, method_types=?, note=?, optional_type1=?, optional_type1_explanation=?, optional_type2=?, optional_type2_explanation=?, optional_type3=?, optional_type3_explanation=? where id =?";
     public static final String DELETE_SQL = "delete from " + TABLENAME + " where id=?";
+    public static final String EXIST_METHOD_SQL  = "select id from " + TABLENAME + "  where return_type=? and method_types=? and action_id=?";
 
 	public ActionMethod()
 	{
@@ -76,6 +77,14 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 	        
 		}
         rs.close();
+	}
+	
+	private ResultSet selectExistMethod(PreparedStatement p) throws Exception
+	{
+		p.setString(1,returnType);
+		p.setString(2,methodTypes);
+		p.setLong(3, actionId);
+		return p.executeQuery();
 	}
 	
 	private ResultSet selectRecordById(PreparedStatement p) throws Exception
@@ -141,6 +150,19 @@ public class ActionMethod extends DatabaseRecord implements Loadable
 			ex.printStackTrace();
 		}
 	}
+	
+	public boolean existMethod() throws Exception
+    {
+        ResultSet rs = selectExistMethod(getConnection().getPreparedStatement(EXIST_METHOD_SQL));
+		boolean exists=false;
+        if(rs.next())
+		{
+        	this.setId(rs.getLong("id"));
+	        exists = true;
+		}
+        rs.close();
+        return exists;
+    }
 	
 	public long getActionId() 
 	{
