@@ -499,7 +499,7 @@ public class DatabaseCreator
 		    	
 		    	Action action = new Action();
 				action.setConnection(connection);
-				action.setClassname(Constants.PACKAGE_RULEENGINE_CHECKS + "." + genericAction.getSimpleName());
+				action.setClassname(Constants.PACKAGE_RULEENGINE_ACTIONS + "." + genericAction.getSimpleName());
 				action.setMethodname(method.getName());
 	
 				boolean actionExists = action.exist();
