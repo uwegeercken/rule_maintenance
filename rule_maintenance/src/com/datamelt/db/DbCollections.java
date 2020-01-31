@@ -914,7 +914,7 @@ public class DbCollections
         }
         else
         {
-        	compareTypeSql = "compare = '" + convertType(compareType) + "'";
+        	compareTypeSql = "compare = '" + compareType + "'";
         }
         String compareToTypeSql;
         if(compareToType==null)
@@ -923,7 +923,7 @@ public class DbCollections
         }
         else
         {
-        	compareToTypeSql = "compare_to = '" + convertType(compareToType) + "'";
+        	compareToTypeSql = "compare_to = '" + compareToType + "'";
         }
         String sql="select count(1) as counter from check_method where check_id=" + checkId +
         		" and " + compareTypeSql + " and " + compareToTypeSql;
@@ -936,19 +936,6 @@ public class DbCollections
         }
         rs.close();
         return numberOfMethods>=1;
-    }
-    
-    private static String convertType(String type)
-    {
-    	// the database contains int and not integer - so we translate it here
-    	if(type.equals("integer"))
-    	{
-    		return "int";
-    	}
-    	else
-    	{
-    		return type;
-    	}
     }
     
     /**
@@ -1039,7 +1026,7 @@ public class DbCollections
     		}
     		// check if a method from the db equals to the method specified by the user
     		// and if the return type is the same
-    		if(methodTypes.equals(buffer.toString().toLowerCase()) && actionReturnType.toLowerCase().equals(object2Type.toLowerCase()))
+    		if(methodTypes.toLowerCase().equals(buffer.toString().toLowerCase()) && actionReturnType.toLowerCase().equals(object2Type.toLowerCase()))
     		{
     			found++;
     			break;
