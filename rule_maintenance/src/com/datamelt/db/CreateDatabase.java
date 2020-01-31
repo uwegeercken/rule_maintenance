@@ -314,8 +314,8 @@ public class CreateDatabase
     
     public static final String CREATE_GROUPUSERS = "INSERT INTO " + TABLE_GROUPUSER + " VALUES (1,1,1,now())";
     
-    public static final String CREATE_TYPES =  "INSERT INTO " + TABLE_TYPES + " VALUES (1,'string',now()),"
-    			+ "(2,'integer',now()),"
+    public static final String CREATE_TYPES =  "INSERT INTO " + TABLE_TYPES + " VALUES (1,'String',now()),"
+    			+ "(2,'int',now()),"
     			+ "(3,'float',now()),"
     			+ "(4,'double',now()),"
     			+ "(5,'boolean',now()),"
